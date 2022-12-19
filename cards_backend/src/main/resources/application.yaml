@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    username: sa
+    url: jdbc:h2:file:./data/demo
+    password: password
+  sql:
+    init:
+      mode: always # important!
+  h2:
+    console:
+      enabled: 'true'
+      settings:
+        web-allow-others: 'false'
+        trace: 'false'
+      path: /h2-console
+
+# TODO: Folgende löschen oder behalten?
+# spring.jpa.hibernate.ddl-auto=none
+# spring.datasource.driver-class-name=org.h2.Driver
+# spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+# spring.jpa.defer-datasource-initialization=true
