@@ -24,7 +24,7 @@ public class CategoryValidator extends Validator {
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(validateConstraints(command));
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
-        errors.addAll(checkifSubcategoryExists(command.getSubCategories(), allCategories));
+        errors.addAll(checkIfSubcategoryExists(command.getSubCategories(), allCategories));
         throwIfNeeded(errors);
     }
 
@@ -32,12 +32,12 @@ public class CategoryValidator extends Validator {
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(validateConstraints(command));
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
-        errors.addAll(checkifSubcategoryExists(Arrays.asList(command.getSubCategories()), allCategories));
-        errors.addAll(throwIfCycleInSubCategoriesFound(allCategories, Arrays.asList(command.getSubCategories()), new ArrayList<UUID>(Arrays.asList(command.getId()))));
+        errors.addAll(checkIfSubcategoryExists(Arrays.asList(command.getSubCategories()), allCategories));
+        errors.addAll(checkIfCycleInSubCategoriesFound(allCategories, Arrays.asList(command.getSubCategories()), new ArrayList<UUID>(Arrays.asList(command.getId()))));
         throwIfNeeded(errors);
     }
 
-    private List<ErrorEntry> checkifSubcategoryExists(List<UUID> subCategories, List<Category> allCategories) {
+    private List<ErrorEntry> checkIfSubcategoryExists(List<UUID> subCategories, List<Category> allCategories) {
         List<ErrorEntry> errors = new ArrayList<>();
         for (UUID subCategoryId : subCategories) {
             if (allCategories.stream().filter(x -> x.getId().equals(subCategoryId)).collect(Collectors.toList()).isEmpty()) {
@@ -51,7 +51,7 @@ public class CategoryValidator extends Validator {
         return errors;
     }
 
-    private List<ErrorEntry> throwIfCycleInSubCategoriesFound
+    private List<ErrorEntry> checkIfCycleInSubCategoriesFound
             (List<Category> allCategories, List<UUID> subCategories, ArrayList<UUID> visited) {
         // Rekursiv subcategories von einzusetzender Subcategory durchsuchen, wenn alle leer - alles super.
         // Liste mitschleifen von bereits besuchten Subcategories; wenn eine besucht wird - throw.
@@ -74,7 +74,7 @@ public class CategoryValidator extends Validator {
 
             ArrayList<UUID> subSubCategories = new ArrayList<>(categoryFromUUID.getSubCategories());
             visited.add(subCategory);
-            errors.addAll(throwIfCycleInSubCategoriesFound(allCategories, subSubCategories, visited));
+            errors.addAll(checkIfCycleInSubCategoriesFound(allCategories, subSubCategories, visited));
         }
         return errors;
     }
