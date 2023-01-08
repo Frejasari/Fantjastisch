@@ -1,17 +1,19 @@
 package de.fantjastisch.cards_backend.category;
 
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.UUID;
+
 @Data
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
-  String id; //todo
-  String label;
-//  UUID[] subCategories;
+    UUID id;
+    String label;
+    List<UUID> subCategories;
 }

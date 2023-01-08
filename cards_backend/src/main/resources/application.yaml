@@ -13,7 +13,9 @@ spring:
         web-allow-others: 'false'
         trace: 'false'
       path: /h2-console
-
+server:
+  error:
+    include-message: always
 # TODO: Folgende löschen oder behalten?
 # spring.jpa.hibernate.ddl-auto=none
 # spring.datasource.driver-class-name=org.h2.Driver
