@@ -37,23 +37,6 @@ public class CategoryValidator extends Validator {
         throwIfNeeded(errors);
     }
 
-    private void throwIfLabelTaken(String label, List<Category> categories) {
-        List<ErrorEntry> errors = new ArrayList<>();
-        List<Category> withSameName = categories
-                .stream()
-                .filter(category -> category.getLabel().equals(label))
-                .collect(Collectors.toList());
-        if (!withSameName.isEmpty()) {
-            errors.add(
-                    ErrorEntry.builder()
-                            .code(LABEL_TAKEN)
-                            .field("label")
-                            .build());
-        }
-
-//  TODO -> lookup on category branch!!        return errors;
-    }
-
     private List<ErrorEntry> checkifSubcategoryExists(List<UUID> subCategories, List<Category> allCategories) {
         List<ErrorEntry> errors = new ArrayList<>();
         for (UUID subCategoryId : subCategories) {
