@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -40,5 +41,5 @@ public class UpdateCategory implements Commandable {
             value = "An array of child-category UUIDs.",
             required = true,
             example = "[fa9d9f26-8e58-4653-809c-c3b5d8e7d97f]")
-    private UUID[] subCategories;
+    private List<UUID> subCategories;
 }

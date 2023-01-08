@@ -32,8 +32,8 @@ public class CategoryValidator extends Validator {
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(validateConstraints(command));
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
-        errors.addAll(checkIfSubcategoryExists(Arrays.asList(command.getSubCategories()), allCategories));
-        errors.addAll(checkIfCycleInSubCategoriesFound(allCategories, Arrays.asList(command.getSubCategories()), new ArrayList<UUID>(Arrays.asList(command.getId()))));
+        errors.addAll(checkIfSubcategoryExists(command.getSubCategories(), allCategories));
+        errors.addAll(checkIfCycleInSubCategoriesFound(allCategories, command.getSubCategories(), new ArrayList<UUID>(Arrays.asList(command.getId()))));
         throwIfNeeded(errors);
     }
 

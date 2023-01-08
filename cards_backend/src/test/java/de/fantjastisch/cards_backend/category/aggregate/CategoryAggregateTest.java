@@ -16,7 +16,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -74,7 +73,7 @@ public class CategoryAggregateTest {
 
         UpdateCategory toUpdate = UpdateCategory.builder()
                 .id(UUID.fromString("b1f5e79c-2f2b-4a48-bf93-5a2439f2301e"))
-                .label("Praktische Informatik").subCategories(new UUID[0]).build();
+                .label("Praktische Informatik").subCategories(Collections.emptyList()).build();
 
         exception = Assertions.assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(toUpdate));
 
@@ -83,7 +82,7 @@ public class CategoryAggregateTest {
 
     @Test
     public void shouldThrowWhenCategoryNotFound() {
-        UpdateCategory toUpdate = UpdateCategory.builder().id(UUID.fromString("b7913a6f-6152-436e-b3ef-e38eb54d4725")).label("NOT FOUND").subCategories(new UUID[0]).build();
+        UpdateCategory toUpdate = UpdateCategory.builder().id(UUID.fromString("b7913a6f-6152-436e-b3ef-e38eb54d4725")).label("NOT FOUND").subCategories(Collections.emptyList()).build();
         assertThrows(ResponseStatusException.class, () -> categoryAggregate.handle(toUpdate));
 
         DeleteCategory toDelete = DeleteCategory.builder().id(UUID.fromString("b7913a6f-6152-436e-b3ef-e38eb54d4725")).build();
@@ -101,7 +100,7 @@ public class CategoryAggregateTest {
                 .build();
         assertTrue(exception.getErrors().contains(blankLabel));
 
-        UpdateCategory toUpdate = UpdateCategory.builder().id(UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323")).label("").subCategories(new UUID[0]).build();
+        UpdateCategory toUpdate = UpdateCategory.builder().id(UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323")).label("").subCategories(Collections.emptyList()).build();
 
         exception = Assertions.assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(toUpdate));
 
@@ -130,12 +129,12 @@ public class CategoryAggregateTest {
                         UUID.fromString("0d090c42-99b0-46a0-8bec-112936437cad")
                 );
         UUID idOfC = categoryAggregate.handle(c);
-        CreateCategory b = CreateCategory.builder().label("b").subCategories(Arrays.asList(idOfC)).build();
+        CreateCategory b = CreateCategory.builder().label("b").subCategories(Collections.singletonList(idOfC)).build();
         UUID idOfB = categoryAggregate.handle(b);
-        CreateCategory a = CreateCategory.builder().label("a").subCategories(Arrays.asList(idOfB)).build();
+        CreateCategory a = CreateCategory.builder().label("a").subCategories(Collections.singletonList(idOfB)).build();
         UUID idOfA = categoryAggregate.handle(a);
 
-        UpdateCategory newC = UpdateCategory.builder().id(idOfC).label("c").subCategories(new UUID[]{idOfA}).build();
+        UpdateCategory newC = UpdateCategory.builder().id(idOfC).label("c").subCategories(Collections.singletonList(idOfA)).build();
         CommandValidationException exception = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(newC));
         ErrorEntry cyclicSubcategoryError = ErrorEntry.builder()
                 .code(CYCLIC_SUBCATEGORY_RELATION)

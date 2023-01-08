@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +35,9 @@ public class CategoryAggregate {
 
     public UUID handle(final CreateCategory command) {
         List<Category> allCategories = categoryQueryRepository.getList();
+        if (command.getSubCategories() == null) {
+            command.setSubCategories(Collections.emptyList());
+        }
         categoryValidator.validate(command, allCategories);
 
         Category category = Category.builder()
@@ -47,11 +51,19 @@ public class CategoryAggregate {
 
     public void handle(final UpdateCategory command) {
         List<Category> allCategories = categoryQueryRepository.getList();
-
+        if (command.getSubCategories() == null) {
+            command.setSubCategories(Collections.emptyList());
+        }
+        
         categoryValidator.validate(command, allCategories);
-        Category category = throwOrGet(command.getId());
+        throwOrGet(command.getId());
+        final Category updatedCategory = Category.builder()
+                .id(command.getId())
+                .label(command.getLabel())
+                .subCategories(command.getSubCategories())
+                .build();
 
-        categoryCommandRepository.update(category);
+        categoryCommandRepository.update(updatedCategory);
     }
 
     public void handle(final DeleteCategory command) {
