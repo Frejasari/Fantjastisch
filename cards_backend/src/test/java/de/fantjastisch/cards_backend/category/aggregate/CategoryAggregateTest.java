@@ -62,7 +62,7 @@ public class CategoryAggregateTest {
                 .build();
 
         ErrorEntry labelTakenError = ErrorEntry.builder()
-                .code(LABEL_TAKEN)
+                .code(LABEL_TAKEN_VIOLATION)
                 .field("label")
                 .build();
 
@@ -79,7 +79,7 @@ public class CategoryAggregateTest {
                 () -> categoryAggregate.handle(DeleteCategory.builder().id(category.getId()).build()));
         assertTrue(exception.getErrors().contains(ErrorEntry
                 .builder()
-                .code(CATEGORY_NOT_EMPTY)
+                .code(CATEGORY_NOT_EMPTY_VIOLATION)
                 .field("id").build()
         ));
     }
@@ -116,11 +116,12 @@ public class CategoryAggregateTest {
 
         UpdateCategory toUpdate = UpdateCategory
                 .builder()
-                .id(UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323"))
+                .id(category.getId())
                 .label("")
-                .subCategories(Collections.emptyList())
+                .subCategories(category.getSubCategories())
                 .build();
 
+        when(categoryQueryRepository.get(toUpdate.getId())).thenReturn(category);
         exception = Assertions.assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(toUpdate));
 
         assertTrue(exception.getErrors().contains(blankLabel));
@@ -174,10 +175,47 @@ public class CategoryAggregateTest {
         when(categoryQueryRepository.get(newC.getId())).thenReturn(catC);
         CommandValidationException exception = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(newC));
         ErrorEntry cyclicSubcategoryError = ErrorEntry.builder()
-                .code(CYCLIC_SUBCATEGORY_RELATION)
+                .code(CYCLIC_SUBCATEGORY_RELATION_VIOLATION)
                 .field("subCategories")
                 .build();
         assertTrue(exception.getErrors().contains(cyclicSubcategoryError));
+
+    }
+
+    @Test
+    public void shouldThrowWhenSubcategoryIsNull() {
+        // create
+         CreateCategory cat = CreateCategory
+                .builder()
+                .label("cat")
+                .subCategories(Collections.singletonList(null))
+                .build();
+        CommandValidationException exception = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(cat));
+        ErrorEntry nullSubcategoryError = ErrorEntry.builder()
+                .code(SUBCATEGORY_IS_NULL_VIOLATION)
+                .field("subCategories")
+                .build();
+        assertTrue(exception.getErrors().contains(nullSubcategoryError));
+
+        // update
+        final UUID id = UUID.fromString("9db2d0a7-6733-4678-9c1d-4defbe9b425f");
+        final Category newCat = Category
+                .builder()
+                .id(id)
+                .label("cat")
+                .subCategories(Collections.emptyList())
+                .build();
+
+        UpdateCategory updateNewCat = UpdateCategory.builder()
+                .id(id)
+                .label("cat")
+                .subCategories(Collections.singletonList(null))
+                        .build();
+
+        when(categoryQueryRepository.get(id)).thenReturn(newCat);
+        CommandValidationException exception2 = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(updateNewCat));
+
+        assertTrue(exception2.getErrors().contains(nullSubcategoryError));
 
     }
     // cant add self

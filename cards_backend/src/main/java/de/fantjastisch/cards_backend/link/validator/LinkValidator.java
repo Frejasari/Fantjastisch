@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.LABEL_TAKEN;
+import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.LABEL_TAKEN_VIOLATION;
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry.mapErrorsToString;
 
 
@@ -46,14 +46,14 @@ public class LinkValidator extends Validator{
     }
 
 
-    private void throwIfNameTaken(String name, List<Link> link) {
+    private void throwIfNameTaken(String name, List<Link> allLinks) {
         List<ErrorEntry> errors = new ArrayList<>();
-        List<Link> withSameName = link.stream().filter(x -> x.getName().equals(name)).toList();
+        List<Link> withSameName = allLinks.stream().filter(link -> link.getName().equals(name)).toList();
 
         if (!withSameName.isEmpty()) {
             errors.add(
                     ErrorEntry.builder()
-                            .code(LABEL_TAKEN)
+                            .code(LABEL_TAKEN_VIOLATION)
                             .field("label")
                             .build());
         }
@@ -71,7 +71,7 @@ public class LinkValidator extends Validator{
         if (!question.contains(name) || !answer.contains(name)){
             errors.add(
                     ErrorEntry.builder()
-                            .code(LABEL_TAKEN)
+                            .code(LABEL_TAKEN_VIOLATION)
                             .field("name")
                             .build());
         }

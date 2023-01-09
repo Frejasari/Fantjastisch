@@ -20,7 +20,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.UUID;
 
-import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.LABEL_TAKEN;
+import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.LABEL_TAKEN_VIOLATION;
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.NOT_NULL_VIOLATION;
 
 @SpringBootTest
@@ -98,7 +98,7 @@ public class LinkCommandRepositoryTest {
                 .build();
 
         ErrorEntry labelTakenError = ErrorEntry.builder()
-                .code(LABEL_TAKEN)
+                .code(LABEL_TAKEN_VIOLATION)
                 .field("label")
                 .build();
 
