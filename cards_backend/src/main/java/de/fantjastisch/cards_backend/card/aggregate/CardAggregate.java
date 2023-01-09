@@ -46,7 +46,6 @@ public class CardAggregate {
                 .build();
         cardCommandRepository.create(newCard);
         return newCard.getId();
-
     }
 
     public Card handle(final UUID id) {

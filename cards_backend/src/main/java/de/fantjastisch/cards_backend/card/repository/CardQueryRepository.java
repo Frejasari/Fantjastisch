@@ -2,6 +2,7 @@ package de.fantjastisch.cards_backend.card.repository;
 
 import de.fantjastisch.cards_backend.card.Card;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -44,8 +45,12 @@ public class CardQueryRepository {
     // queryForObject: bei nicht gefundener ID abfangen (Fehlermeldung)
     public Card get(UUID id) {
         final String query = "select id, answer, question, tag, categories from public.cards where id = :cardId;";
-        return namedParameterJdbcTemplate.queryForObject(query,
-                new MapSqlParameterSource().addValue("cardId", id), CARD_ROW_MAPPER);
+        try {
+            return namedParameterJdbcTemplate.queryForObject(query,
+                    new MapSqlParameterSource().addValue("cardId", id), CARD_ROW_MAPPER);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public List<Card> getPage() {

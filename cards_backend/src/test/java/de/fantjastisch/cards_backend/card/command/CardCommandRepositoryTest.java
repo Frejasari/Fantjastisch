@@ -225,7 +225,6 @@ public class CardCommandRepositoryTest {
         cardCommandRepository.create(card);
         Assertions.assertEquals(card, cardQueryRepository.get(card.getId()));
 
-        // TODO: Partial updates? War das eine bewusste Entscheidung?
         Card updated = Card.builder()
                 .id(card.getId())
                 .answer("Rudolf Bayer")
