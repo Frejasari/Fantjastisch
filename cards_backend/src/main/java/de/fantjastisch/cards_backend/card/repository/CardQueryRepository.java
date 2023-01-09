@@ -53,4 +53,14 @@ public class CardQueryRepository {
         return namedParameterJdbcTemplate.query(query, CARD_ROW_MAPPER);
     }
 
+
+    // queryForObject: bei nicht gefundener ID abfangen (Fehlermeldung)
+//    TODO: Db-Test
+    public Boolean isCategoryEmpty(UUID categoryId) {
+        final String query = "select CASE WHEN EXISTS (SELECT 1 FROM public.cards where " +
+                "ARRAY_CONTAINS ( categories, :categoryId )) THEN 'FALSE' ELSE 'TRUE' END";
+        return namedParameterJdbcTemplate.queryForObject(query,
+                new MapSqlParameterSource().addValue("categoryId", categoryId), Boolean.class);
+    }
+
 }

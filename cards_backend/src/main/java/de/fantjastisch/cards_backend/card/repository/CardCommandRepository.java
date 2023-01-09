@@ -41,6 +41,6 @@ public class CardCommandRepository {
                 .addValue("question", card.getQuestion())
                 .addValue("answer", card.getAnswer())
                 .addValue("tag", card.getTag())
-                .addValue("categories", card.getCategories());
+                .addValue("categories", card.getCategories().toArray());
     }
 }

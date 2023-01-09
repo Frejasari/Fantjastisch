@@ -20,12 +20,12 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
+import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.CONSTRAINT_VIOLATION;
+import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.NOT_BLANK_VIOLATION;
 
 @SpringBootTest
 @Sql({"file:src/main/resources/schema.sql", "file:src/test/resources/test-data.sql"})
@@ -34,8 +34,6 @@ public class CardCommandRepositoryTest {
     private CardCommandRepository cardCommandRepository;
     private CardQueryRepository cardQueryRepository;
     private CardAggregate cardAggregate;
-    private CardValidator cardValidator;
-    private UUIDGenerator uuidGenerator;
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -44,8 +42,8 @@ public class CardCommandRepositoryTest {
     public void setUp() {
         cardCommandRepository = new CardCommandRepository(namedParameterJdbcTemplate);
         cardQueryRepository = new CardQueryRepository(namedParameterJdbcTemplate);
-        cardValidator = new CardValidator();
-        uuidGenerator = new UUIDGenerator();
+        CardValidator cardValidator = new CardValidator();
+        UUIDGenerator uuidGenerator = new UUIDGenerator();
         cardAggregate = new CardAggregate(cardCommandRepository, cardQueryRepository, cardValidator, uuidGenerator);
     }
 
@@ -56,7 +54,7 @@ public class CardCommandRepositoryTest {
                 .question("Was bedeutet CISC")
                 .answer("Complex Instruction Set Computer")
                 .tag("Wichtig")
-                //.categories(categories)
+                .categories(Collections.emptyList())
                 .build();
         cardCommandRepository.create(newCard);
         Card actual = cardQueryRepository.get(newCard.getId());
@@ -70,17 +68,15 @@ public class CardCommandRepositoryTest {
                 .question("Was bedeutet CISC")
                 .answer("Complex Instruction Set Computer")
                 .tag("Wichtig")
-                //.categories(categories)
+                .categories(Collections.emptyList())
                 .build();
-        Assertions.assertThrows(DataIntegrityViolationException.class, () -> cardCommandRepository.create(newCard));
 
-//        Card actual = cardQueryRepository.get(newCard.getId());
-//        Assertions.assertEquals(newCard, actual);
+        Assertions.assertThrows(DataIntegrityViolationException.class, () -> cardCommandRepository.create(newCard));
     }
 
     @Test
     public void saveCardEmptyQuestion() {
-        List<UUID> categories = Arrays.asList(UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323"));
+        List<UUID> categories = List.of(UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323"));
         CreateCard command = CreateCard.builder()
                 .question("")
                 .answer("Answer")
@@ -103,17 +99,13 @@ public class CardCommandRepositoryTest {
                 .categories(categories)
                 .build();
 
-        ErrorEntry labelTakenError1 = ErrorEntry.builder()
-                .code(NOT_NULL_VIOLATION)
-                .field("question")
-                .build();
         CommandValidationException exception1 = Assertions.assertThrows(CommandValidationException.class, () -> cardAggregate.handle(command1));
         Assertions.assertTrue(exception1.getErrors().contains(labelTakenError));
     }
 
     @Test
     public void saveCardEmptyAnswer() {
-        List<UUID> categories = Arrays.asList(UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323"));
+        List<UUID> categories = List.of(UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323"));
         CreateCard command = CreateCard.builder()
                 .question("Question")
                 .answer("")
@@ -135,10 +127,6 @@ public class CardCommandRepositoryTest {
                 .categories(categories)
                 .build();
 
-        ErrorEntry labelTakenError1 = ErrorEntry.builder()
-                .code(NOT_NULL_VIOLATION)
-                .field("answer")
-                .build();
         CommandValidationException exception1 = Assertions.assertThrows(CommandValidationException.class, () -> cardAggregate.handle(command1));
         Assertions.assertTrue(exception1.getErrors().contains(labelTakenError));
     }
@@ -201,7 +189,7 @@ public class CardCommandRepositoryTest {
                 .question("Was ist die Laufzeit von Bubble Sort?")
                 .answer("O(n^2)")
                 .tag("Wichtig")
-                .categories(Arrays.asList(cat.getId()))
+                .categories(Collections.singletonList(cat.getId()))
                 .build();
 
         // first: successfull insert
@@ -215,9 +203,7 @@ public class CardCommandRepositoryTest {
 
     @Test
     public void deleteNonExistentCard() {
-        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
-            cardQueryRepository.get(UUID.randomUUID());
-        });
+        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> cardQueryRepository.get(UUID.randomUUID()));
     }
 
     @Test
@@ -227,25 +213,26 @@ public class CardCommandRepositoryTest {
                 .label("Praktische Informatik 2")
                 .build();
 
-        final Card toBeUpdated = Card.builder()
+        final Card card = Card.builder()
                 .id(UUID.fromString("2e7bb4ff-50fe-48db-9337-d3e8838a7df5"))
                 .question("Wer hat Rot-Schwarz-Bäume erfunden?")
                 .answer("Rudolf The Red Nosed Reindeer")
                 .tag("Wichtig")
-                .categories(Arrays.asList(cat.getId()))
+                .categories(Collections.singletonList(cat.getId()))
                 .build();
 
         // first: successfull insert
-        cardCommandRepository.create(toBeUpdated);
-        Assertions.assertEquals(toBeUpdated, cardQueryRepository.get(toBeUpdated.getId()));
+        cardCommandRepository.create(card);
+        Assertions.assertEquals(card, cardQueryRepository.get(card.getId()));
 
         // TODO: Partial updates? War das eine bewusste Entscheidung?
         Card updated = Card.builder()
-                .id(toBeUpdated.getId())
+                .id(card.getId())
                 .answer("Rudolf Bayer")
+                .categories(Collections.emptyList())
                 .build();
         cardCommandRepository.update(updated);
-        Assertions.assertEquals(updated, cardQueryRepository.get(toBeUpdated.getId()));
+        Assertions.assertEquals(updated, cardQueryRepository.get(card.getId()));
     }
 
     @Test

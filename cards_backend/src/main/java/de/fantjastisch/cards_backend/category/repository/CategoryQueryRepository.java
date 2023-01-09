@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class CategoryQueryRepository {
@@ -36,8 +35,7 @@ public class CategoryQueryRepository {
         String[] res = arr.replaceAll("\\[|\\]", "").split(", ");
         return Arrays.stream(res).map(str -> !str.isEmpty() ? UUID.fromString(str) : null)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList())
-                .stream().toList();
+                .toList();
     }
 
     public List<Category> getList() {

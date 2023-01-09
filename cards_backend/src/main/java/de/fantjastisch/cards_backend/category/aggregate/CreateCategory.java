@@ -28,9 +28,10 @@ public class CreateCategory implements Commandable {
             example = "Category #1")
     private String label;
 
+    @NotNull
     @ApiModelProperty(
             value = "An array of child-category UUIDs.",
-            required = false,
+            required = true,
             example = "[fa9d9f26-8e58-4653-809c-c3b5d8e7d97f]")
     private List<UUID> subCategories;
 }

@@ -37,7 +37,8 @@ public class CardsController {
 
     // PostMapping -> post something to API -> in API POST
     // GetMapping -> request from API -> in API GET
-    // Put -> partielle Abhängigkeiten
+    // Put -> replace entity
+    // Patch -> Partielle Updates
     // Delete
     @PostMapping(path = "create", produces = "application/json")
     // @ApiOperation -> io.swagger generiert ein Client
@@ -58,33 +59,19 @@ public class CardsController {
         }
     }
 
-
-    @GetMapping(path = "get", produces = "application/json")
+    @PutMapping(path = "update")
     @ApiOperation(
-            value = "Get the Card from the given Id",
-            notes = "Get the Card from the given Id",
-            nickname = "getCard")
+            value = "Update a card",
+            notes = "Update a card",
+            nickname = "updateCard")
     @ApiResponses(
             value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
-    public Card get(@RequestParam UUID id)
-            throws RuntimeException {
+    public void updateCategory(@RequestBody UpdateCard command) {
         try {
-            return cardAggregate.handle(id);
+            cardAggregate.handle(command);
         } catch (CommandValidationException c) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, mapErrorsToString(c.getErrors()));
         }
-    }
-
-
-    @GetMapping(path = "getPage", produces = "application/json")
-    @ApiOperation(
-            value = "Get all cards",
-            notes = "Get all cards",
-            nickname = "getList")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
-    public List<Card> getPage() {
-        return cardAggregate.handle();
     }
 
     @DeleteMapping(path = "delete")
@@ -102,20 +89,32 @@ public class CardsController {
         }
     }
 
-
-    @PutMapping(path = "update")
+    @GetMapping(path = "get", produces = "application/json")
     @ApiOperation(
-            value = "Update a card",
-            notes = "Update a card",
-            nickname = "updateCard")
+            value = "Get the Card from the given Id",
+            notes = "Get the Card from the given Id",
+            nickname = "getCard")
     @ApiResponses(
             value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
-    public void updateCategory(@RequestBody UpdateCard command) {
+    public Card get(@RequestParam UUID id)
+            throws RuntimeException {
         try {
-            cardAggregate.handle(command);
+            return cardAggregate.handle(id);
         } catch (CommandValidationException c) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, mapErrorsToString(c.getErrors()));
         }
+    }
+
+    //TODO : Filter + Sort!
+    @GetMapping(path = "getList", produces = "application/json")
+    @ApiOperation(
+            value = "Get all cards",
+            notes = "Get all cards",
+            nickname = "getList")
+    @ApiResponses(
+            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    public List<Card> getPage() {
+        return cardAggregate.handle();
     }
 
 }

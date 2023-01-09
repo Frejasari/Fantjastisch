@@ -4,7 +4,6 @@ import de.fantjastisch.cards_backend.util.validation.Commandable;
 import io.swagger.annotations.ApiModelProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,6 @@ import java.util.UUID;
 public class CreateCard implements Commandable {
 
     @NotBlank
-    @NotNull
     @ApiModelProperty(
             value = "The question to be asked",
             required = true,
@@ -30,7 +28,6 @@ public class CreateCard implements Commandable {
     private String question;
 
     @NotBlank
-    @NotNull
     @ApiModelProperty(
             value = "The answer to the question",
             required = true,
@@ -42,7 +39,6 @@ public class CreateCard implements Commandable {
             example = "I am a tag")
     private String tag;
 
-    @NotNull
     @NotEmpty
     @ApiModelProperty(
             value = "Zugehörige Kategorien",
