@@ -8,7 +8,6 @@ import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
 import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository;
 import de.fantjastisch.cards_backend.util.validation.Validator;
 import de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -21,6 +20,9 @@ import java.util.UUID;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
 
+/**
+ * @Author
+ */
 @Component
 public class CategoryValidator extends Validator {
 
@@ -34,9 +36,11 @@ public class CategoryValidator extends Validator {
     }
 
     public void validate(CreateCategory command) {
-        throwIfNeeded(validateConstraints(command));
-
         List<ErrorEntry> errors = new ArrayList<>();
+        errors.addAll(validateConstraints(command));
+        errors.addAll(checkIfSubcategoriesContainNull(command.getSubCategories()));
+        throwIfNeeded(errors);
+
         final List<Category> allCategories = categoryQueryRepository.getList();
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
         errors.addAll(checkIfSubcategoryExists(command.getSubCategories(), allCategories));
@@ -44,12 +48,14 @@ public class CategoryValidator extends Validator {
     }
 
     public void validate(UpdateCategory command) {
-        throwIfNeeded(validateConstraints(command));
         throwIfCategoryDoesNotExist(command.getId());
 
         List<ErrorEntry> errors = new ArrayList<>();
-        final List<Category> allCategories = categoryQueryRepository.getList();
+        errors.addAll(validateConstraints(command));
+        errors.addAll(checkIfSubcategoriesContainNull(command.getSubCategories()));
+        throwIfNeeded(errors);
 
+        final List<Category> allCategories = categoryQueryRepository.getList();
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
         errors.addAll(checkIfSubcategoryExists(command.getSubCategories(), allCategories));
         errors.addAll(checkIfCycleInSubCategoriesFound(allCategories, command.getSubCategories(),
@@ -67,11 +73,11 @@ public class CategoryValidator extends Validator {
     }
 
 
-    public void validateExists(UUID categoryId) {
+    public void validateGet(UUID categoryId) {
         throwIfCategoryDoesNotExist(categoryId);
     }
 
-    private void throwIfCategoryDoesNotExist(@NotNull final UUID categoryId) {
+    private void throwIfCategoryDoesNotExist(final UUID categoryId) {
         Category category = categoryQueryRepository.get(categoryId);
         if (category == null) {
             throw new ResponseStatusException(
@@ -80,12 +86,12 @@ public class CategoryValidator extends Validator {
         }
     }
 
-    private List<ErrorEntry> checkIfCategoryIsInUse(@NotNull final UUID categoryId) {
+    private List<ErrorEntry> checkIfCategoryIsInUse(final UUID categoryId) {
         if (cardQueryRepository.isCategoryEmpty(categoryId)) {
             return Collections.emptyList();
         }
         return Collections.singletonList(ErrorEntry.builder()
-                .code(CATEGORY_NOT_EMPTY)
+                .code(CATEGORY_NOT_EMPTY_VIOLATION)
                 .field("id")
                 .build()
         );
@@ -97,7 +103,7 @@ public class CategoryValidator extends Validator {
             if (allCategories.stream().noneMatch(category -> category.getId().equals(subCategoryId))) {
                 return Collections.singletonList(
                         ErrorEntry.builder()
-                                .code(SUBCATEGORY_DOESNT_EXIST)
+                                .code(SUBCATEGORY_DOESNT_EXIST_VIOLATION)
                                 .field("subCategories")
                                 .build());
             }
@@ -105,27 +111,50 @@ public class CategoryValidator extends Validator {
         return Collections.emptyList();
     }
 
+    private List<ErrorEntry> checkIfSubcategoriesContainNull(List<UUID> uuids) {
+        List<ErrorEntry> errors = new ArrayList<>();
+        if (uuids.contains(null)) {
+            errors.add(
+                    ErrorEntry.builder()
+                            .code(SUBCATEGORY_IS_NULL_VIOLATION)
+                            .field("subCategories")
+                            .build());
+
+        }
+        return errors;
+    }
+
     private List<ErrorEntry> checkIfCycleInSubCategoriesFound
             (List<Category> allCategories, List<UUID> subCategories, ArrayList<UUID> visited) {
-        // Rekursiv subcategories von einzusetzender Subcategory durchsuchen, wenn alle leer - alles super.
-        // Liste mitschleifen von bereits besuchten Subcategories; wenn eine besucht wird - throw.
-        List<ErrorEntry> errors = new ArrayList<>();
+        /*
+        Prüfe rekursiv, ob beim Aktualisieren der Unterkategorien einer
+        vorhandenen Kategorie Zyklen in der Kategorien-Hierarchie entstehen.
 
+        Dafür werden alle Kategorien als Parameter übergeben, sowie die Unterkategorien der zu
+        aktualisierenden Kategorie (als Laufparameter), wie auch eine Liste besuchter Kategorien, um den Kreis in der
+        Hierarchie feststellen zu können.
+         */
+
+        List<ErrorEntry> errors = new ArrayList<>();
+        // Prüfe für alle Unterkategorien der zu aktualisierenden Kategorie:
         for (UUID subCategory : subCategories) {
+            // Wurde diese Kategorie bereits traversiert, so ist ein Kreis in der Struktur entstanden. Fehler!
             if (visited.contains(subCategory)) {
                 errors.add(
                         ErrorEntry.builder()
-                                .code(CYCLIC_SUBCATEGORY_RELATION)
+                                .code(CYCLIC_SUBCATEGORY_RELATION_VIOLATION)
                                 .field("subCategories")
                                 .build());
                 break;
             }
+            // Hole die Unterkategorie über die UUID ein
             Category categoryFromUUID = allCategories
                     .stream()
-                    .filter(x -> x.getId().equals(subCategory))
+                    .filter(category -> category.getId().equals(subCategory))
                     .toList()
                     .get(0);
 
+            // Betrachte ihre Unterkategorien rekursiv und vermerke aktuelle Kategorie als besucht
             ArrayList<UUID> subSubCategories = new ArrayList<>(categoryFromUUID.getSubCategories());
             visited.add(subCategory);
             errors.addAll(checkIfCycleInSubCategoriesFound(allCategories, subSubCategories, visited));
@@ -136,12 +165,12 @@ public class CategoryValidator extends Validator {
     private List<ErrorEntry> checkIfLabelTaken(String label, List<Category> allCategories) {
         List<ErrorEntry> errors = new ArrayList<>();
         List<Category> withSameName = allCategories.stream()
-                .filter(x -> x.getLabel().equals(label))
+                .filter(category -> category.getLabel().equals(label))
                 .toList();
         if (!withSameName.isEmpty()) {
             errors.add(
                     ErrorEntry.builder()
-                            .code(LABEL_TAKEN)
+                            .code(LABEL_TAKEN_VIOLATION)
                             .field("label")
                             .build());
         }

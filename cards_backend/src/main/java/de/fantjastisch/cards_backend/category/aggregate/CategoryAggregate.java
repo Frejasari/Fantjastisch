@@ -61,7 +61,7 @@ public class CategoryAggregate {
     }
 
     public Category handle(final UUID categoryId) {
-        categoryValidator.validateExists(categoryId);
+        categoryValidator.validateGet(categoryId);
         return categoryQueryRepository.get(categoryId);
     }
 
