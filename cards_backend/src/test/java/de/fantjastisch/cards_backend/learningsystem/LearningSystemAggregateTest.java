@@ -1,5 +1,6 @@
-package de.fantjastisch.cards_backend.learningsystem.aggregate;
+package de.fantjastisch.cards_backend.learningsystem;
 
+import de.fantjastisch.cards_backend.learningsystem.aggregate.LearningSystemAggregate;
 import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemCommandRepository;
 import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemQueryRepository;
 import de.fantjastisch.cards_backend.learningsystem.validator.LearningSystemValidator;

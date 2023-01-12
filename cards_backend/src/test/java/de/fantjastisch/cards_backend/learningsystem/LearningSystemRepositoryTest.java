@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_backend.learningsystem.command;
+package de.fantjastisch.cards_backend.learningsystem;
 
 import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemCommandRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +10,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
 @Sql({"file:src/main/resources/schema.sql", "file:src/test/resources/test-data.sql"})
-public class LearningSystemCommandRepositoryTest {
+public class LearningSystemRepositoryTest {
     private LearningSystemCommandRepository learningSystemCommandRepository;
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -30,6 +30,22 @@ public class LearningSystemCommandRepositoryTest {
 
     @Test
     public void shouldDeleteLearningSystem() {
+    }
+
+
+    @Test
+    public void shouldFindLearningSystem() {
+        // TODO: Implementieren
+    }
+
+    @Test
+    public void shouldNotFindLearningSystem() {
+        // TODO: Implementieren
+    }
+
+    @Test
+    public void shouldFindAllLearningSystems() {
+        // TODO: Implementieren
     }
 
     // TODO: Welche Fehler kann namedParameterJdbcTemplate werfen?
