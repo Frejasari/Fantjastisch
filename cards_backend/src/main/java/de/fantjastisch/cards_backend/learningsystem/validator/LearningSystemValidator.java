@@ -20,11 +20,14 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.UUID;
 
 @Component
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class LearningSystemValidator {
 
     private final LearningSystemQueryRepository learningSystemQueryRepository;
 
+    @Autowired
+    public LearningSystemValidator(LearningSystemQueryRepository learningSystemQueryRepository) {
+        this.learningSystemQueryRepository = learningSystemQueryRepository;
+    }
     public LearningSystem validate(CreateLearningSystem command) {
         if (command.getLabel().isEmpty()) {
             throw new ResponseStatusException(

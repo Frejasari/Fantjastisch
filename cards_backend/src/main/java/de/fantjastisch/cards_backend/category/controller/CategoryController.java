@@ -22,6 +22,17 @@ import java.util.UUID;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry.mapErrorsToString;
 
+/**
+ * Diese Klasse stellt eine Schnittstelle zum Frontend dar und bietet API-Endpunkte, welche von der Außenwelt aufgerufen werden können.
+ *
+ * Die gängigen CRUD-Operationen, Create Read Update Delete, werden hier zur Verfügung gestellt. Aufrufe werden an das
+ * {@link CategoryAggregate} weitergeleitet, es werden {@link CommandValidationException}-Instanzen abgefangen und nach außen
+ * als {@link ResponseStatusException}-Objekte weitergegeben, zusammen mit den empfangenen Fehlern, welche von der
+ * entsprechenden {@link CommandValidationException}-Instanz gekapselt werden.
+ *
+ * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.
+ * @Author Semjon Nirmann, Alexander Kück
+ */
 @RestController
 @Api(tags = {"Category"})
 @RequestMapping("category")
@@ -34,6 +45,13 @@ public class CategoryController {
         this.categoryAggregate = categoryAggregate;
     }
 
+    /**
+     * Diese Funktion stellt den API-Endpunkt zum Erstellen einer Kategorien-Entität bereit.
+     * @param command Eine Instanz der Klasse {@link CreateCategory}.
+     * @return Eine Instanz der Klasse {@link CreatedResponse}.
+     * @throws RuntimeException Eine {@link ResponseStatusException}, welche Auskunft über Fehlermeldungen gibt,
+     * die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
+     */
     @PostMapping(path = "create", produces = "application/json")
     @ApiOperation(
             value = "Create a new category",
@@ -51,6 +69,12 @@ public class CategoryController {
         }
     }
 
+    /**
+     * Diese Funktion stellt den API-Endpunkt zum Aktualisieren einer Kategorien-Entität bereit.
+     * @param command Eine Instanz der Klasse {@link UpdateCategory}.
+     * @throws RuntimeException Eine {@link ResponseStatusException}, welche Auskunft über Fehlermeldungen gibt,
+     * die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
+     */
     @PutMapping(path = "update")
     @ApiOperation(
             value = "Update a category",
@@ -66,6 +90,12 @@ public class CategoryController {
         }
     }
 
+    /**
+     * Diese Funktion stellt den API-Endpunkt zum Löschen einer Kategorien-Entität bereit.
+     * @param command Eine Instanz der Klasse {@link DeleteCategory}.
+     * @throws RuntimeException Eine {@link ResponseStatusException}, welche Auskunft über Fehlermeldungen gibt,
+     * die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
+     */
     @DeleteMapping(path = "delete")
     @ApiOperation(
             value = "Delete a category",
@@ -81,6 +111,13 @@ public class CategoryController {
         }
     }
 
+    /**
+     * Diese Funktion stellt den API-Endpunkt zum Lesen einer Kategorien-Entität bereit.
+     * @param id Die UUID der Kategorien-Entität, welche gelesen werden soll.
+     * @return Eine {@link Category}-Instanz, welche die angefragte Kategorie repräsentiert.
+     * @throws RuntimeException Eine {@link ResponseStatusException}, welche Auskunft über Fehlermeldungen gibt,
+     * die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
+     */
     @GetMapping(path = "get", produces = "application/json")
     @ApiOperation(
             value = "Get specific category",
@@ -96,6 +133,10 @@ public class CategoryController {
         }
     }
 
+    /**
+     * Diese Funktion stellt den API-Endpunkt zum Lesen aller Kategorien-Entitäten bereit.
+     * @return Eine Liste von {@link Category}-Instanzen.
+     */
     @GetMapping(path = "getList", produces = "application/json")
     @ApiOperation(
             value = "Get all categories",

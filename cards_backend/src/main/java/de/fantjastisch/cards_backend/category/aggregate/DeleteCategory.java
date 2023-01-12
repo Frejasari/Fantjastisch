@@ -11,6 +11,11 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
+/**
+ * Diese Klasse stellt ein CRUD-Kommando zum Löschen einer Kategorie-Entität dar.
+ * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.
+ * @Author Semjon Nirmann
+ */
 @Data
 @SuperBuilder
 @ToString(callSuper = true)

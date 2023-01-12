@@ -10,6 +10,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+/**
+ * Diese Klasse stellt den Teil des Persistence-Layers bereit, welcher sich mit dem Lesen von Kategorien-Entitäten beschäftigt.
+ *
+ * Im Rahmen des Persistence-Layers wird die JDBC Bibliothek für die Low-Level-Interaktion mit der Datenbank genutzt.
+ *
+ * @author Semjon Nirmann, Alexander Kück
+ */
 @Repository
 public class CategoryQueryRepository {
 
@@ -38,11 +45,22 @@ public class CategoryQueryRepository {
                 .toList();
     }
 
+    /**
+     * Diese Funktion holt alle Kategorien-Entitäten aus der Datenbank ein.
+     * @return Eine Liste aller Kategorien-Entitäten, gekapselt in {@link Category}-Instanzen.
+     */
     public List<Category> getList() {
         final String query = "select * from public.categories;";
         return namedParameterJdbcTemplate.query(query, CATEGORY_ROW_MAPPER);
     }
 
+    /**
+     * Diese Funktion holt eine Kategorien-Entität aus der Datenbank ein.
+     * @param id Die ID der Entität, welche aus der Datenbank ausgegeben werden soll.
+     * @return Die gesuchte Entität, gekapselt in eine {@link Category}-Instanz,
+     * oder null, sofern die Entität nicht gefunden werden konnte.
+     * @throws EmptyResultDataAccessException Die Entität konnte nicht gefunden werden.
+     */
     public Category get(UUID id) {
         final String query = "select * from public.categories where id = :id;";
         try {

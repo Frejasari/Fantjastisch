@@ -1,7 +1,11 @@
-package de.fantjastisch.cards_backend.category.aggregate;
+package de.fantjastisch.cards_backend.category;
 
 import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.category.Category;
+import de.fantjastisch.cards_backend.category.aggregate.CategoryAggregate;
+import de.fantjastisch.cards_backend.category.aggregate.CreateCategory;
+import de.fantjastisch.cards_backend.category.aggregate.DeleteCategory;
+import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
 import de.fantjastisch.cards_backend.category.repository.CategoryCommandRepository;
 import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository;
 import de.fantjastisch.cards_backend.category.validator.CategoryValidator;
@@ -121,7 +125,6 @@ public class CategoryAggregateTest {
                 .subCategories(category.getSubCategories())
                 .build();
 
-        when(categoryQueryRepository.get(toUpdate.getId())).thenReturn(category);
         exception = Assertions.assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(toUpdate));
 
         assertTrue(exception.getErrors().contains(blankLabel));
@@ -185,7 +188,7 @@ public class CategoryAggregateTest {
     @Test
     public void shouldThrowWhenSubcategoryIsNull() {
         // create
-         CreateCategory cat = CreateCategory
+        CreateCategory cat = CreateCategory
                 .builder()
                 .label("cat")
                 .subCategories(Collections.singletonList(null))
@@ -210,9 +213,8 @@ public class CategoryAggregateTest {
                 .id(id)
                 .label("cat")
                 .subCategories(Collections.singletonList(null))
-                        .build();
+                .build();
 
-        when(categoryQueryRepository.get(id)).thenReturn(newCat);
         CommandValidationException exception2 = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(updateNewCat));
 
         assertTrue(exception2.getErrors().contains(nullSubcategoryError));
