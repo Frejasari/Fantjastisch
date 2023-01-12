@@ -41,6 +41,7 @@ public class CreateCard implements Commandable {
 
     @NotBlank
     @Schema(
+            required = true,
             example = "wichtig")
     private String tag;
 

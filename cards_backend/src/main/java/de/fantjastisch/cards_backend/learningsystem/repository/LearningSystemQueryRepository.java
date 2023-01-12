@@ -36,7 +36,7 @@ public class LearningSystemQueryRepository {
         }
     }
 
-    public List<LearningSystem> getList() {
+    public List<LearningSystem> getPage() {
         final String query = "select * from public.learning_systems;";
         return namedParameterJdbcTemplate.query(query, LEARNING_SYSTEM_ROW_MAPPER);
     }

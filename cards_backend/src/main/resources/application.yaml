@@ -18,7 +18,7 @@ server:
     include-message: always
 springdoc:
   packagesToScan: de.fantjastisch.cards_backend
-  pathsToMatch: /card/create
+  pathsToMatch: /**
 # TODO: Folgende löschen oder behalten?
 # spring.jpa.hibernate.ddl-auto=none
 # spring.datasource.driver-class-name=org.h2.Driver

@@ -7,13 +7,10 @@ import de.fantjastisch.cards_backend.category.aggregate.DeleteCategory;
 import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
 import de.fantjastisch.cards_backend.util.CreatedResponse;
 import de.fantjastisch.cards_backend.util.validation.CommandValidationException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -35,7 +32,7 @@ import static de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry.ma
  * @Author Semjon Nirmann, Alexander Kück
  */
 @RestController
-@Api(tags = {"Category"})
+@Tag(name = "Category")
 @RequestMapping("category")
 public class CategoryController {
 
@@ -55,12 +52,9 @@ public class CategoryController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @PostMapping(path = "create", produces = "application/json")
-    @ApiOperation(
-            value = "Create a new category",
-            notes = "Create a new category",
-            nickname = "createCategory")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            summary = "Create a new category",
+            operationId = "createCategory")
     public CreatedResponse createCategory(
             @RequestBody CreateCategory command)
             throws RuntimeException {
@@ -79,12 +73,9 @@ public class CategoryController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @PutMapping(path = "update")
-    @ApiOperation(
-            value = "Update a category",
-            notes = "Update a category",
-            nickname = "updateCategory")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            summary = "Update a category",
+            operationId = "updateCategory")
     public void updateCategory(@RequestBody UpdateCategory command) {
         try {
             categoryAggregate.handle(command);
@@ -101,12 +92,9 @@ public class CategoryController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @DeleteMapping(path = "delete")
-    @ApiOperation(
-            value = "Delete a category",
-            notes = "Delete a category",
-            nickname = "deleteCategory")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            summary = "Delete a category",
+            operationId = "deleteCategory")
     public void deleteCategory(@RequestBody DeleteCategory command) {
         try {
             categoryAggregate.handle(command);
@@ -124,12 +112,9 @@ public class CategoryController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @GetMapping(path = "get", produces = "application/json")
-    @ApiOperation(
-            value = "Get specific category",
-            notes = "Get specific category",
-            nickname = "get")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            summary = "Get specific category",
+            operationId = "getCategory")
     public Category get(@RequestParam UUID id) {
         try {
             return categoryAggregate.handle(id);
@@ -143,14 +128,11 @@ public class CategoryController {
      *
      * @return Eine Liste von {@link Category}-Instanzen.
      */
-    @GetMapping(path = "getList", produces = "application/json")
-    @ApiOperation(
-            value = "Get all categories",
-            notes = "Get all categories",
-            nickname = "getList")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
-    public List<Category> getList() {
+    @GetMapping(path = "getPage", produces = "application/json")
+    @Operation(
+            summary = "Get all categories",
+            operationId = "getCategoryList")
+    public List<Category> getPage() {
         return categoryAggregate.handle();
     }
 

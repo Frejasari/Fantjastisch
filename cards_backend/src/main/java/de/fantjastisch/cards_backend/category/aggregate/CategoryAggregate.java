@@ -97,7 +97,7 @@ public class CategoryAggregate {
      * @return Eine Liste aller Entitäten vom Typ Kategorie, gekapselt in entsprechenden {@link Category}-Instanzen.
      */
     public List<Category> handle() {
-        return categoryQueryRepository.getList();
+        return categoryQueryRepository.getPage();
     }
 
 }

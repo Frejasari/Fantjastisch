@@ -63,7 +63,7 @@ public class CategoryAggregateTest {
 
     @Test
     public void shouldThrowWhenLabelTaken() {
-        when(categoryQueryRepository.getList()).thenReturn(Collections.singletonList(category));
+        when(categoryQueryRepository.getPage()).thenReturn(Collections.singletonList(category));
 
         CreateCategory toCreate = CreateCategory.builder()
                 .label(category.getLabel())
@@ -79,6 +79,7 @@ public class CategoryAggregateTest {
                 () -> categoryAggregate.handle(toCreate));
         assertTrue(exception.getErrors().contains(labelTakenError));
     }
+
 
     @Test
     public void shouldThrowWhenCategoryNotEmpty() {
@@ -136,8 +137,31 @@ public class CategoryAggregateTest {
     }
 
     @Test
-    public void shouldThrowWhenNull() {
-        CreateCategory toCreate = CreateCategory.builder().label(null).subCategories(Collections.emptyList()).build();
+    public void
+    shouldThrowWhenSubCategoriesNull() {
+
+        CreateCategory toCreate = CreateCategory.builder()
+                .label("new")
+                .subCategories(null)
+                .build();
+
+        ErrorEntry labelTakenError = ErrorEntry.builder()
+                .code(NOT_NULL_VIOLATION)
+                .field("subCategories")
+                .build();
+
+        CommandValidationException exception = assertThrows(CommandValidationException.class,
+                () -> categoryAggregate.handle(toCreate));
+        assertTrue(exception.getErrors().contains(labelTakenError));
+    }
+
+    @Test
+    public void shouldThrowWhenLabelNull() {
+        CreateCategory toCreate = CreateCategory
+                .builder()
+                .label(null)
+                .subCategories(Collections.emptyList())
+                .build();
 
         CommandValidationException exception = Assertions.assertThrows(CommandValidationException.class,
                 () -> categoryAggregate.handle(toCreate));
@@ -179,7 +203,7 @@ public class CategoryAggregateTest {
                 .subCategories(Collections.singletonList(idOfA))
                 .build();
 
-        when(categoryQueryRepository.getList()).thenReturn(Arrays.asList(catC, catB, catA));
+        when(categoryQueryRepository.getPage()).thenReturn(Arrays.asList(catC, catB, catA));
         when(categoryQueryRepository.get(newC.getId())).thenReturn(catC);
         CommandValidationException exception = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(newC));
         ErrorEntry cyclicSubcategoryError = ErrorEntry.builder()

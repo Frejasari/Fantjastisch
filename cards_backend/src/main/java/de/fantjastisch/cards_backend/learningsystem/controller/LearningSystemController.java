@@ -7,19 +7,16 @@ import de.fantjastisch.cards_backend.learningsystem.aggregate.LearningSystemAggr
 import de.fantjastisch.cards_backend.learningsystem.aggregate.UpdateLearningSystem;
 import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemQueryRepository;
 import de.fantjastisch.cards_backend.util.CreatedResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@Api(tags = {"LearningSystem"})
+@Tag(name = "LearningSystem")
 @RequestMapping("learningSystem")
 public class LearningSystemController {
 
@@ -34,12 +31,9 @@ public class LearningSystemController {
     }
 
     @PostMapping(path = "create", produces = "application/json")
-    @ApiOperation(
-            value = "Create a new learning system",
-            notes = "Create a new learning system",
-            nickname = "createLearningSystem")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            summary = "Create a new learning system",
+            operationId = "createLearningSystem")
     public CreatedResponse createLearningSystem(
             @RequestBody CreateLearningSystem command)
             throws RuntimeException {
@@ -47,46 +41,34 @@ public class LearningSystemController {
     }
 
     @PutMapping(path = "update")
-    @ApiOperation(
-            value = "Update a learning system",
-            notes = "Update a learning system",
-            nickname = "updateLearningSystem")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            summary = "Update a learning system",
+            operationId = "updateLearningSystem")
     public void updateLearningSystem(@RequestBody UpdateLearningSystem command) {
         learningSystemAggregate.handle(command);
     }
 
     @DeleteMapping(path = "delete")
-    @ApiOperation(
-            value = "Delete a learning system",
-            notes = "Delete a learning system",
-            nickname = "deleteLearningSystem")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            summary = "Delete a learning system",
+            operationId = "deleteLearningSystem")
     public void deleteLearningSystem(@RequestBody DeleteLearningSystem command) {
         learningSystemAggregate.handle(command);
     }
 
     @GetMapping(path = "get", produces = "application/json")
-    @ApiOperation(
-            value = "Get specific learning system",
-            notes = "Get specific learning system",
-            nickname = "get")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            summary = "Get specific learning system",
+            operationId = "getLearningSystem")
     public LearningSystem get(@RequestParam UUID id) {
         return learningSystemAggregate.handle(id);
     }
 
-    @GetMapping(path = "getList", produces = "application/json")
-    @ApiOperation(
-            value = "Get all learning systems",
-            notes = "Get all learning systems",
-            nickname = "getList")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
-    public List<LearningSystem> getList() {
+    @GetMapping(path = "getPage", produces = "application/json")
+    @Operation(
+            summary = "Get all learning systems",
+            operationId = "getLearningSystemList")
+    public List<LearningSystem> getPage() {
         return learningSystemAggregate.handle();
     }
 }
