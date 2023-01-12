@@ -21,7 +21,10 @@ import java.util.UUID;
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
 
 /**
- * @Author
+ * Diese Klasse stellt die Erweiterung der Basis-Klasse {@link Validator} dar und führt weitere Prüfungen durch,
+ * welche an die mit Kategorien verbundenen Anwendungsfälle angepasst sind.
+ *
+ * @Author Semjon Nirmann
  */
 @Component
 public class CategoryValidator extends Validator {
@@ -35,6 +38,16 @@ public class CategoryValidator extends Validator {
         this.categoryQueryRepository = categoryQueryRepository;
     }
 
+    /**
+     * Diese Funktion validiert das Erstellen einer Kategorie.
+     *
+     * In diesem Rahmen wird geprüft, ob ein Constraint verletzt wurden (ein Attribut ist leer oder null),
+     * ob das Label der Kategorie ggf. bereits vergeben ist, und ob die Unterkategorien, die übergeben werden,
+     * nicht existieren.
+     *
+     * Es wird eine {@link de.fantjastisch.cards_backend.util.validation.CommandValidationException} geworfen, sofern einer dieser Fälle gilt.
+     * @param command Eine {@link CreateCategory}-Instanz, welche validiert werden soll.
+     */
     public void validate(CreateCategory command) {
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(validateConstraints(command));
@@ -47,6 +60,19 @@ public class CategoryValidator extends Validator {
         throwIfNeeded(errors);
     }
 
+    /**
+     * Diese Funktion validiert das Aktualisieren einer Kategorie.
+     *
+     * In diesem Rahmen wird geprüft, ob ein Constraint verletzt wurden (ein Attribut ist leer oder null),
+     * ob die zu aktualisierende Kategorie nicht existiert,
+     * ob das Label der Kategorie ggf. bereits vergeben ist,
+     * und ob die Unterkategorien, die übergeben werden, nicht existieren.
+     * Es wird außerdem geprüft, ob Kreise in der Kategorien-Hierarchie entstehen, wenn die Unterkategorien der übergebenen
+     * Instanz eingefügt werden.
+     * Es wird eine {@link de.fantjastisch.cards_backend.util.validation.CommandValidationException} bzw.
+     * eine {@link ResponseStatusException} geworfen, sofern einer dieser Fälle gilt.
+     * @param command Eine {@link UpdateCategory}-Instanz, welche validiert werden soll.
+     */
     public void validate(UpdateCategory command) {
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(validateConstraints(command));
@@ -63,6 +89,16 @@ public class CategoryValidator extends Validator {
         throwIfNeeded(errors);
     }
 
+    /**
+     * Diese Funktion validiert das Löschen einer Kategorie.
+     *
+     * In diesem Rahmen wird geprüft, ob ein Constraint verletzt wurden (ein Attribut ist leer oder null),
+     * ob die zu löschende Kategorie nicht existiert,
+     * und ob die Kategorie ggf. benutzt wird bzw. Karten enthält.
+     * Es wird eine {@link de.fantjastisch.cards_backend.util.validation.CommandValidationException} bzw.
+     * eine {@link ResponseStatusException} geworfen, sofern einer dieser Fälle gilt.
+     * @param command Eine {@link DeleteCategory}-Instanz, welche validiert werden soll.
+     */
     public void validate(DeleteCategory command) {
         throwIfNeeded(validateConstraints(command));
         throwIfCategoryDoesNotExist(command.getId());
@@ -72,7 +108,13 @@ public class CategoryValidator extends Validator {
         throwIfNeeded(errors);
     }
 
-
+    /**
+     * Diese Funktion validiert das Lesen einer Kategorie.
+     *
+     * In diesem Rahmen wird geprüft, ob die zu Kategorie nicht existiert.
+     * Es wird eine {@link ResponseStatusException} geworfen, sofern dieser Fall eintritt.
+     * @param categoryId Die ID der Kategorie, welche gelöscht werden soll.
+     */
     public void validateGet(UUID categoryId) {
         throwIfCategoryDoesNotExist(categoryId);
     }

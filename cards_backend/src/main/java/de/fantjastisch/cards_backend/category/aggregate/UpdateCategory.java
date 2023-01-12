@@ -13,13 +13,17 @@ import lombok.experimental.SuperBuilder;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Diese Klasse stellt ein CRUD-Kommando zum Aktualisieren einer Kategorie-Entität dar.
+ * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.
+ * @Author Semjon Nirmann
+ */
 @Data
 @SuperBuilder
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateCategory implements Commandable {
-
     @NotNull
     @ApiModelProperty(
             value = "The UUID of the category that is to be updated.",

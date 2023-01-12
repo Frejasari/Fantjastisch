@@ -19,17 +19,33 @@ public class CategoryCommandRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
+    /**
+     * Diese Funktion fügt eine übergebene Kategorie in die Datenbank ein.
+     *
+     * @param category Die Kategorie, welche in die Datenbank eingefügt werden soll.
+     */
     public void create(Category category) {
         final String sql = "INSERT INTO public.categories (id, label, sub_category_ids) VALUES (:id, :label, :sub_category_ids)";
 
         namedParameterJdbcTemplate.update(sql, toParameterSource(category));
     }
 
+    /**
+     * Diese Funktion löscht eine übergebene Kategorie aus der Datenbank.
+     *
+     * @param categoryId Die Id der Kategorie, welche aus der Datenbank gelöscht werden soll.
+     */
     public void delete(final UUID categoryId) {
         final String sql = "DELETE FROM public.categories WHERE id = :id";
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource().addValue("id", categoryId));
     }
 
+    /**
+     * Diese Funktion aktualisiert eine Kategorie in der Datenbank, in dem diese mit den Feldern der übergebenen
+     * Kategorie überschrieben wird.
+     *
+     * @param category Die aktualisierte Kategorie.
+     */
     public void update(Category category) {
         final String sql = "UPDATE public.categories SET label = :label, sub_category_ids = :sub_category_ids WHERE id = :id";
         namedParameterJdbcTemplate.update(sql, toParameterSource(category));

@@ -1,5 +1,11 @@
 package de.fantjastisch.cards_backend.util.validation.errors;
 
+/**
+ * Eine Aufzählung konstanter Fehler-Codes, welche von einem {@link ErrorEntry}-Objekt gesammelt werden und der
+ * Aufrufer*in eines CRUD API-Endpunktes mitgeteilt werden sollen, sofern eine Rahmenbedingung der Validierung verletzt wurde.
+ *
+ * @Author Semjon Nirmann
+ */
 public enum ErrorCode {
     CONSTRAINT_VIOLATION,
 
