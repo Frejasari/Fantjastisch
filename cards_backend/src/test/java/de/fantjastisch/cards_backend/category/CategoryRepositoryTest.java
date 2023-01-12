@@ -12,6 +12,11 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.*;
 
+/**
+ * Test Klasse für die Category Repositories
+ *
+ * @author Semjon Nirmann, Freja Sender
+ */
 @SpringBootTest
 @Sql({"file:src/main/resources/schema.sql", "file:src/test/resources/test-data.sql"})
 public class CategoryRepositoryTest {

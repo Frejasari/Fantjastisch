@@ -29,6 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+
+/**
+ * Test Klasse für Card Aggregates
+ *
+ * @author Tamari Bayer, Freja Sender
+ */
 @ExtendWith(MockitoExtension.class)
 public class CardAggregateTests {
     private CardAggregate cardAggregate;

@@ -1,7 +1,6 @@
 package de.fantjastisch.cards_backend.category;
 
 import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
-import de.fantjastisch.cards_backend.category.Category;
 import de.fantjastisch.cards_backend.category.aggregate.CategoryAggregate;
 import de.fantjastisch.cards_backend.category.aggregate.CreateCategory;
 import de.fantjastisch.cards_backend.category.aggregate.DeleteCategory;
@@ -29,6 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+
+/**
+ * Test Klasse für die Category Repositories
+ *
+ * @author Freja Sender, Semjon Nirmann
+ */
 @ExtendWith(MockitoExtension.class)
 public class CategoryAggregateTest {
 

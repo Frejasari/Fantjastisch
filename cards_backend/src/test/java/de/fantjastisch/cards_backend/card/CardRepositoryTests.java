@@ -23,6 +23,11 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test Klasse für die Card Repositories
+ *
+ * @author Tamari Bayer, Jessica Repty, Freja Sender
+ */
 @SpringBootTest
 @Sql({"file:src/main/resources/schema.sql", "file:src/test/resources/test-data.sql"})
 public class CardRepositoryTests {
