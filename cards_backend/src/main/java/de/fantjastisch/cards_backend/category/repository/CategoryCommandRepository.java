@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
 public class CategoryCommandRepository {
 
@@ -23,9 +25,9 @@ public class CategoryCommandRepository {
         namedParameterJdbcTemplate.update(sql, toParameterSource(category));
     }
 
-    public void delete(Category category) {
+    public void delete(final UUID categoryId) {
         final String sql = "DELETE FROM public.categories WHERE id = :id";
-        namedParameterJdbcTemplate.update(sql, toParameterSource(category));
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource().addValue("id", categoryId));
     }
 
     public void update(Category category) {
@@ -33,6 +35,7 @@ public class CategoryCommandRepository {
         namedParameterJdbcTemplate.update(sql, toParameterSource(category));
     }
 
+    //
     private SqlParameterSource toParameterSource(Category category) {
         return new MapSqlParameterSource()
                 .addValue("id", category.getId())

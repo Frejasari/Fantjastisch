@@ -39,6 +39,7 @@ public class CategoryQueryRepositoryTest {
                         UUID.fromString("dbfa51dd-e8e9-4cc6-ae34-ce62e12ab2c2"),
                         UUID.fromString("fce013e8-0282-4106-8ff9-b05dba5ba550")))
                 .build();
+        categoryCommandRepository.create(expected);
         Category actual = categoryQueryRepository.get(UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323"));
         Assertions.assertEquals(expected, actual);
     }
@@ -76,8 +77,8 @@ public class CategoryQueryRepositoryTest {
                         UUID.fromString("c880b0a4-6106-4394-8e7d-521dae20b644"),
                         UUID.fromString("fce013e8-0282-4106-8ff9-b05dba5ba550")))
                 .build();
-//        categoryCommandRepository.create(expected1);
-//        categoryCommandRepository.create(expected2);
+        categoryCommandRepository.create(expected1);
+        categoryCommandRepository.create(expected2);
         List<Category> expected = List.of(expected1, expected2);
         List<Category> actual = categoryQueryRepository.getList();
         Assertions.assertEquals(expected, actual);
