@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.AppDatabase
-import de.fantjastisch.cards.card.Card
-import de.fantjastisch.cards.card.CardRepository
+import de.fantjastisch.cards.card.LearningObject
+import de.fantjastisch.cards.card.LearningObjectRepository
 import kotlinx.coroutines.launch
 
 class ComposeActivity : AppCompatActivity() {
@@ -41,7 +41,7 @@ fun QuestionInput(
 }
 
 class QuestionInputViewModel(
-    private val cardRepository: CardRepository = CardRepository(AppDatabase.database.cardDao()),
+    private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository(AppDatabase.database.cardDao()),
 ): ViewModel() {
 
     val question = mutableStateOf("")
@@ -49,7 +49,7 @@ class QuestionInputViewModel(
 
     fun onSave() {
         viewModelScope.launch {
-            cardRepository.insert(Card(question=question.value, answer=answer.value))
+            learningObjectRepository.insert(LearningObject(question=question.value, answer=answer.value))
         }
     }
 }

@@ -8,11 +8,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import de.fantjastisch.cards.card.Card
-import de.fantjastisch.cards.card.CardRepository
-import de.fantjastisch.cards.card.generateCardId
+import de.fantjastisch.cards.card.LearningObject
+import de.fantjastisch.cards.card.LearningObjectRepository
+import de.fantjastisch.cards.card.generateId
 import de.fantjastisch.cards.validation.ValidationException
 import java.util.UUID
 
@@ -59,12 +58,12 @@ class MyFirstFragment: Fragment() {
 
 class MyFirstPresenter(private val view: MyFirstFragment){
 
-    private val repo = CardRepository(AppDatabase.database.cardDao())
+    private val repo = LearningObjectRepository(AppDatabase.database.cardDao())
 
     fun onSaveClicked(answer: String, question: String, id: UUID? =null){
        try {
            validate(answer, question, id)
-           repo.insert(Card(question=question, answer=answer, id = id?: generateCardId()))
+           repo.insert(LearningObject(question=question, answer=answer, id = id?: generateId()))
        } catch (ex: ValidationException){
            ex.errors.forEach { error -> view.showError(error) }
        }

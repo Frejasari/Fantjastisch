@@ -1,4 +1,4 @@
-package de.fantjastisch.cards.card
+package de.fantjastisch.cards.learning_object
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
