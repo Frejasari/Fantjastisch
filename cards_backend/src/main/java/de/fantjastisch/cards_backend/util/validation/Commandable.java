@@ -6,4 +6,5 @@ package de.fantjastisch.cards_backend.util.validation;
  *
  * @author Semjon Nirmann
  */
-public interface Commandable {}
+public interface Commandable {
+}

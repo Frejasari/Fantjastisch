@@ -24,12 +24,12 @@ import static de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry.ma
 
 /**
  * Diese Klasse stellt eine Schnittstelle zum Frontend dar und bietet API-Endpunkte, welche von der Außenwelt aufgerufen werden können.
- *
+ * <p>
  * Die gängigen CRUD-Operationen, Create Read Update Delete, werden hier zur Verfügung gestellt. Aufrufe werden an das
  * {@link CardAggregate} weitergeleitet, es werden {@link CommandValidationException}-Instanzen abgefangen und nach außen
  * als {@link ResponseStatusException}-Objekte weitergegeben, zusammen mit den empfangenen Fehlern, welche von der
  * entsprechenden {@link CommandValidationException}-Instanz gekapselt werden.
- *
+ * <p>
  * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.
  *
  * @Author Tamari Bayer, Jessica Repty, Freja Sender
@@ -89,7 +89,7 @@ public class CardsController {
             nickname = "updateCard")
     @ApiResponses(
             value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
-    public void updateCategory (@RequestBody UpdateCard command) throws RuntimeException{
+    public void updateCategory(@RequestBody UpdateCard command) throws RuntimeException {
         try {
             cardAggregate.handle(command);
         } catch (CommandValidationException c) {
@@ -149,9 +149,9 @@ public class CardsController {
      *
      * @param categoryFilter Eine Liste der UUIDs der {@link de.fantjastisch.cards_backend.category.Category}-Entitäten,
      *                       wonach alle Karteikarten gefiltert werden sollen.
-     * @param search Ein String, wonach die Fragen und Antworten aller Karteikarten gefiltert werden.
-     * @param tag Ein String, wonach aller Karteikarten gefiltert werden.
-     * @param sort Ein Boolean, wenn er true ist, werden entsprechende Karteikarten alphabetisch nach Tags sortiert
+     * @param search         Ein String, wonach die Fragen und Antworten aller Karteikarten gefiltert werden.
+     * @param tag            Ein String, wonach aller Karteikarten gefiltert werden.
+     * @param sort           Ein Boolean, wenn er true ist, werden entsprechende Karteikarten alphabetisch nach Tags sortiert
      * @return Eine Liste der Instanzen der Klasse {@link Card}
      * @throws RuntimeException Eine {@link ResponseStatusException}, welche Auskunft über Fehlermeldungen gibt,
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
@@ -164,7 +164,7 @@ public class CardsController {
     @ApiResponses(
             value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
     public List<Card> getPage(@RequestParam(required = false) List<UUID> categoryFilter,
-                              @RequestParam(required = false)  String search,
+                              @RequestParam(required = false) String search,
                               @RequestParam(required = false) String tag,
                               @RequestParam(required = false) boolean sort) {
         return cardAggregate.handle(categoryFilter, search, tag, sort);

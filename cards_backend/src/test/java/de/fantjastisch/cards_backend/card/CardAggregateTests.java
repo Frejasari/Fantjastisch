@@ -288,7 +288,7 @@ public class CardAggregateTests {
                 .build();
 
         ErrorEntry duplicateError = ErrorEntry.builder()
-                .code(CARD_DUPLICATE)
+                .code(CARD_DUPLICATE_VIOLATION)
                 .field("question")
                 .build();
 

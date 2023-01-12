@@ -14,6 +14,7 @@ import static jakarta.validation.Validation.buildDefaultValidatorFactory;
  * Basis-Klasse für die Validator-Klassen der unterschiedlichen CRUD - Kommandos der Modelle.
  * Validiert Annotationen der Modelle und wirft eine {@link CommandValidationException}, sofern entsprechende
  * {@link ErrorEntry}-Instanzen in einer Liste übergeben werden.
+ *
  * @author Semjon Nirmann
  */
 public class Validator {
@@ -24,10 +25,11 @@ public class Validator {
 
     /**
      * Eine Funktion zum Validieren der Annotationen bzw. Constraints von Kommando-Objekten.
+     *
      * @param command Das Kommando-Objekt.
+     * @param <T>     Der Typ-Parameter der Funktion, wobei T das Marker-Interface {@link Commandable} implementieren muss.
      * @return Eine Liste von {@link ErrorEntry}-Objekten, welche von {@link ConstraintViolation} zu konkreten {@link ErrorEntry}'s
      * umgewandelt werden.
-     * @param <T> Der Typ-Parameter der Funktion, wobei T das Marker-Interface {@link Commandable} implementieren muss.
      */
     public <T extends Commandable> List<ErrorEntry> validateConstraints(final T command) {
         final Set<ConstraintViolation<T>> constraintViolations = annotationValidator.validate(command);

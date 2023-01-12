@@ -38,6 +38,7 @@ public class CategoryAggregate {
 
     /**
      * Diese Funktion validiert und vermittelt eine Anfrage zum Erstellen einer Kategorie.
+     *
      * @param command Das CRUD-Kommando-Objekt zum Erstellen einer Kategorie.
      * @return Eine UUID, die die erstellte Entität darstellt.
      */
@@ -55,6 +56,7 @@ public class CategoryAggregate {
 
     /**
      * Diese Funktion validiert und vermittelt eine Anfrage zum Aktualisieren einer Kategorie.
+     *
      * @param command Das CRUD-Kommando-Objekt zum Aktualisieren einer Kategorie.
      */
     public void handle(final UpdateCategory command) {
@@ -70,6 +72,7 @@ public class CategoryAggregate {
 
     /**
      * Diese Funktion validiert und vermittelt eine Anfrage zum Löschen einer Kategorie.
+     *
      * @param command Das CRUD-Kommando-Objekt zum Löschen einer Kategorie.
      */
     public void handle(final DeleteCategory command) {
@@ -79,6 +82,7 @@ public class CategoryAggregate {
 
     /**
      * Diese Funktion validiert und vermittelt eine Anfrage zum Lesen einer Kategorie.
+     *
      * @param categoryId Die UUID einer Kategorie, welche angefordert wird.
      * @return Die entsprechende Entität der Kategorie, gekapselt in einer {@link Category}-Instanz.
      */
@@ -89,6 +93,7 @@ public class CategoryAggregate {
 
     /**
      * Diese Funktion liest alle Kategorien als Liste aus.
+     *
      * @return Eine Liste aller Entitäten vom Typ Kategorie, gekapselt in entsprechenden {@link Category}-Instanzen.
      */
     public List<Category> handle() {

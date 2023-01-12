@@ -16,6 +16,7 @@ import java.util.UUID;
 /**
  * Diese Klasse stellt ein CRUD-Kommando zum Erstellen einer Kategorie-Entität dar.
  * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.
+ *
  * @Author Semjon Nirmann
  */
 @Data
