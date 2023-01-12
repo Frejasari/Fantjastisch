@@ -16,7 +16,7 @@ import java.util.UUID;
 /**
  * Test Klasse für die Category Repositories
  *
- * @author Freja Sender
+ * @author Freja Sender, Alexander Kück
  */
 
 @SpringBootTest
