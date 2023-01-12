@@ -10,6 +10,7 @@ import java.util.UUID;
 
 /**
  * Diese Klasse stellt das Modell einer Kategorie dar.
+ *
  * @Author Semjon Nirmann, Alexander Kück
  */
 @Data

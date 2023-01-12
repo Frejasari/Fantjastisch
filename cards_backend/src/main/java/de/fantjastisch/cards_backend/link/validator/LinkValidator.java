@@ -5,10 +5,9 @@ import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.link.Link;
 import de.fantjastisch.cards_backend.link.aggregate.CreateLink;
 import de.fantjastisch.cards_backend.link.aggregate.UpdateLink;
-import de.fantjastisch.cards_backend.util.validation.CommandValidationException;
-import lombok.NoArgsConstructor;
-import de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry;
+import de.fantjastisch.cards_backend.link.repository.LinkQueryRepository;
 import de.fantjastisch.cards_backend.util.validation.Validator;
+import de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,82 +16,110 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.LABEL_TAKEN_VIOLATION;
-import static de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry.mapErrorsToString;
-
-
+/**
+ * Diese Klasse stellt die Erweiterung der Basis-Klasse {@link Validator} dar und führt weitere Prüfungen durch,
+ * welche an die mit Link verbundenen Anwendungsfälle angepasst sind.
+ *
+ * @Author Jessica Repty, Tamari Bayer
+ */
 @Component
-@NoArgsConstructor
-public class LinkValidator extends Validator{
+public class LinkValidator extends Validator {
 
-    private CardQueryRepository cardQueryRepository;
+    final private LinkQueryRepository linkQueryRepository;
+    final private CardQueryRepository cardQueryRepository;
 
-    public void validate(CreateLink command, List<Link> links) {
+    public LinkValidator(LinkQueryRepository linkQueryRepository, CardQueryRepository cardQueryRepository) {
+        this.linkQueryRepository = linkQueryRepository;
+        this.cardQueryRepository = cardQueryRepository;
+    }
+
+    /**
+     * Diese Funktion validiert das Erstellen eines Links.
+     * <p>
+     * In diesem Rahmen wird geprüft, ob ein Constraint verletzt wurde (ein Attribut ist leer oder null),
+     * und ob die beiden Instanzen von {@link Card}, die übergeben werden, nicht existieren.
+     * <p>
+     *
+     * @param command Eine {@link CreateLink}-Instanz, welche validiert werden soll.
+     * @throws org.hibernate.tool.schema.spi.CommandAcceptanceException Constraint verletzt
+     * @throws ResponseStatusException                                  wenn Link oder Karte nicht existieren.
+     */
+    public void validate(CreateLink command) {
         List<ErrorEntry> errors = new ArrayList<>();
+
         errors.addAll(validateConstraints(command));
         throwIfNeeded(errors);
 
-        throwIfNameTaken(command.getName(), links);
-        throwIfNoNameOnCard(command.getName(), command.getSource());
+        throwIfCardDoesNotExist(command.getSource());
+        throwIfCardDoesNotExist(command.getTarget());
     }
 
-    public void validate(UpdateLink command, List<Link> link) {
+    /**
+     * Diese Funktion validiert das Aktualisieren eines Links.
+     * <p>
+     * In diesem Rahmen wird geprüft, ob ein Constraint verletzt wurden (ein Attribut ist leer oder null),
+     * ob der zu aktualisierende Link nicht existiert,
+     * ob die beiden Instanzen von {@link Card}, die übergeben werden, nicht existieren.
+     *
+     * @param command Eine {@link UpdateLink}-Instanz, welche validiert werden soll.
+     * @throws org.hibernate.tool.schema.spi.CommandAcceptanceException Constraint verletzt
+     * @throws ResponseStatusException                                  wenn Link oder Karte nicht existieren.
+     */
+    public void validate(UpdateLink command) {
         List<ErrorEntry> errors = new ArrayList<>();
+
         errors.addAll(validateConstraints(command));
         throwIfNeeded(errors);
 
-        throwIfNameTaken(command.getName(), link);
-        throwIfNoNameOnCard(command.getName(), command.getSource());
+        throwIfLinkDoesNotExist(command.getId());
+        throwIfCardDoesNotExist(command.getSource());
+        throwIfCardDoesNotExist(command.getTarget());
+    }
+
+    // eventuell noch umschreiben auf direkter Zugriff auf CardValidator, bisher dort keine passende Methode
+
+    /**
+     * Diese Funktion validiert das Lesen einer {@link Card}.
+     * <p>
+     * In diesem Rahmen wird geprüft, ob der zu lesende Link nicht existiert.
+     *
+     * @param cardId Die ID der Karteikarte, welche geprüft werden soll.
+     * @throws ResponseStatusException wenn Karte nicht existiert.
+     */
+    public void validateCard(UUID cardId) {
+        throwIfCardDoesNotExist(cardId);
+    }
+
+    /**
+     * Diese Funktion validiert das Lesen eines Links.
+     * <p>
+     * In diesem Rahmen wird geprüft, ob der zu lesende Link nicht existiert.
+     *
+     * @param linkId Die ID des Links, welche geprüft werden soll.
+     * @throws ResponseStatusException wenn Link nicht existiert.
+     */
+    public void validateLink(UUID linkId) {
+        throwIfLinkDoesNotExist(linkId);
     }
 
 
-    private void throwIfNameTaken(String name, List<Link> allLinks) {
-        List<ErrorEntry> errors = new ArrayList<>();
-        List<Link> withSameName = allLinks.stream().filter(link -> link.getName().equals(name)).toList();
-
-        if (!withSameName.isEmpty()) {
-            errors.add(
-                    ErrorEntry.builder()
-                            .code(LABEL_TAKEN_VIOLATION)
-                            .field("label")
-                            .build());
+    private void throwIfCardDoesNotExist(UUID cardId) {
+        Card card = cardQueryRepository.get(cardId);
+        if (card == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Entity not found CardId: " + cardId
+            );
         }
-
-        throwIfNeeded(errors);
-
     }
 
-
-    private void throwIfNoNameOnCard(String name, UUID cardID) {
-        List<ErrorEntry> errors = new ArrayList<>();
-        String question = cardQueryRepository.get(cardID).getQuestion();
-        String answer = cardQueryRepository.get(cardID).getAnswer();
-
-        if (!question.contains(name) || !answer.contains(name)){
-            errors.add(
-                    ErrorEntry.builder()
-                            .code(LABEL_TAKEN_VIOLATION)
-                            .field("name")
-                            .build());
+    private void throwIfLinkDoesNotExist(final UUID linkId) {
+        Link link = linkQueryRepository.get(linkId);
+        if (link == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Entity not found LinkId: " + linkId
+            );
         }
-
-        throwIfNeeded(errors);
     }
-
-    private void throwIfCardsDoNotExist(UUID source, UUID target) {
-        List<ErrorEntry> errors = new ArrayList<>();
-        try {
-            Card from = cardQueryRepository.get(source);
-            Card to = cardQueryRepository.get(target);
-        } catch (CommandValidationException e) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, mapErrorsToString(e.getErrors()));
-        }
-
-    }
-
-
-
-
 }
 
 

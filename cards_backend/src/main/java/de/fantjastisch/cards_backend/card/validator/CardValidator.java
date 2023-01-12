@@ -118,7 +118,7 @@ public class CardValidator extends Validator {
         if (!duplicateCard.isEmpty()) {
             return Collections.singletonList(
                     ErrorEntry.builder()
-                            .code(CARD_DUPLICATE)
+                            .code(CARD_DUPLICATE_VIOLATION)
                             .field("question")
                             .build());
         }

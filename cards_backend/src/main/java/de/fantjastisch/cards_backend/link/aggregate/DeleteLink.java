@@ -1,7 +1,6 @@
 package de.fantjastisch.cards_backend.link.aggregate;
 
 import io.swagger.annotations.ApiModelProperty;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +10,12 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
+/**
+ * Diese Klasse stellt ein CRUD-Kommando zum Löschen einer Link-Entität dar.
+ * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.
+ *
+ * @Author Jessica Repty, Tamari Bayer
+ */
 @Data
 @SuperBuilder
 @ToString(callSuper = true)
@@ -18,19 +23,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class DeleteLink {
 
-    @NotBlank
     @NotNull
     @ApiModelProperty(
-            value = "The name of the link",
+            value = "The UUID of the link that is to be deleted.",
             required = true,
-            example = "Wichtig")
-    private String name;
-
-    @NotBlank
-    @NotNull
-    @ApiModelProperty(
-            value = "The Source-Card",
-            required = true,
-            example = "3b1824120d6d4857843aedfc1973d323")
-    private UUID source;
+            example = "dce61f5d-93f8-421d-9552-5567d707b650")
+    private UUID id;
 }

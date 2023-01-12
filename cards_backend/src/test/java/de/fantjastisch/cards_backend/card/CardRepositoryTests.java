@@ -3,11 +3,8 @@ package de.fantjastisch.cards_backend.card;
 
 import de.fantjastisch.cards_backend.card.repository.CardCommandRepository;
 import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
-import de.fantjastisch.cards_backend.card.validator.CardValidator;
 import de.fantjastisch.cards_backend.category.Category;
 import de.fantjastisch.cards_backend.category.repository.CategoryCommandRepository;
-import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository;
-import de.fantjastisch.cards_backend.util.UUIDGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +32,24 @@ public class CardRepositoryTests {
     private CardQueryRepository cardQueryRepository;
     private CardCommandRepository cardCommandRepository;
     private CategoryCommandRepository categoryCommandRepository;
+
+
+    @BeforeEach
+    public void setUp() {
+        cardQueryRepository = new CardQueryRepository(namedParameterJdbcTemplate);
+        cardCommandRepository = new CardCommandRepository(namedParameterJdbcTemplate);
+        categoryCommandRepository = new CategoryCommandRepository(namedParameterJdbcTemplate);
+
+    }
+
+    private void createCards() {
+        categoryCommandRepository.create(cat0);
+        categoryCommandRepository.create(cat1);
+
+        cardCommandRepository.create(card1);
+        cardCommandRepository.create(card2);
+        cardCommandRepository.create(card3);
+    }
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -77,39 +92,25 @@ public class CardRepositoryTests {
             .categories(Collections.singletonList(cat1.getId()))
             .build();
 
-    @BeforeEach
-    public void setUp() {
-        cardQueryRepository = new CardQueryRepository(namedParameterJdbcTemplate);
-        cardCommandRepository = new CardCommandRepository(namedParameterJdbcTemplate);
-        categoryCommandRepository = new CategoryCommandRepository(namedParameterJdbcTemplate);
-        CategoryQueryRepository categoryQueryRepository = new CategoryQueryRepository(namedParameterJdbcTemplate);
-        CardValidator cardValidator = new CardValidator(cardQueryRepository, categoryQueryRepository);
-        UUIDGenerator uuidGenerator = new UUIDGenerator();
-
-
-        categoryCommandRepository.create(cat0);
-        categoryCommandRepository.create(cat1);
-
-        cardCommandRepository.create(card1);
-        cardCommandRepository.create(card2);
-        cardCommandRepository.create(card3);
-    }
 
     //cardCommandTest
     @Test
-    public void createCard() {
+    public void createAndCard() {
+        cardCommandRepository.create(card1);
         Card actual = cardQueryRepository.get(card1.getId());
         Assertions.assertEquals(card1, actual);
     }
 
     @Test
     public void deleteCard() {
+        createCards();
         cardCommandRepository.delete(card1.getId());
         Assertions.assertNull(cardQueryRepository.get(card1.getId()));
     }
 
     @Test
     public void updateCard() {
+        createCards();
         Assertions.assertEquals(card1, cardQueryRepository.get(card1.getId()));
 
         Card updated = Card.builder()
@@ -121,6 +122,11 @@ public class CardRepositoryTests {
                 .build();
         cardCommandRepository.update(updated);
         Assertions.assertEquals(updated, cardQueryRepository.get(card1.getId()));
+    }
+
+    @Test
+    public void findNonExistentCard() {
+        Assertions.assertNull(cardQueryRepository.get(UUID.randomUUID()));
     }
 
     @Test
@@ -154,18 +160,17 @@ public class CardRepositoryTests {
 
     @Test
     public void findAllCards() {
+        createCards();
+
         List<Card> expected = List.of(card2, card3, card1);
         List<Card> actual = cardQueryRepository.getPage(null, null, null, false);
         assertEquals(expected, actual);
     }
 
     @Test
-    public void findNonExistentCard() {
-        Assertions.assertNull(cardQueryRepository.get(UUID.randomUUID()));
-    }
-
-    @Test
     public void findOnlyCardsWithTag() {
+        createCards();
+
         List<Card> actual = cardQueryRepository.getPage(Collections.emptyList(), null, "sehr wichtig", false);
         List<Card> expected = Arrays.asList(card2);
         assertEquals(expected, actual);
@@ -173,18 +178,24 @@ public class CardRepositoryTests {
 
     @Test
     public void shouldNotFindCardWithNonExistentTag() {
+        createCards();
+
         assertEquals(Collections.emptyList(),
                 cardQueryRepository.getPage(Collections.emptyList(), null, "bye", false));
     }
 
     @Test
     public void shouldNotFindCardWithNonExistentSubstring() {
+        createCards();
+
         assertEquals(Collections.emptyList(),
                 cardQueryRepository.getPage(Collections.emptyList(), "bye", null, false));
     }
 
     @Test
     public void sortTagsAlphabetically() {
+        createCards();
+
         List<Card> actual = cardQueryRepository.getPage(Collections.emptyList(), null, null, true);
 
         assertEquals(Arrays.asList(card2, card1, card3), actual);
@@ -192,6 +203,8 @@ public class CardRepositoryTests {
 
     @Test
     public void findOnlyCardsWithString() {
+        createCards();
+
         List<Card> actual = cardQueryRepository.getPage(Collections.emptyList(), "existieren", null, false);
         List<Card> expected = Arrays.asList(card2, card1);
 
@@ -200,6 +213,8 @@ public class CardRepositoryTests {
 
     @Test
     public void filterCardsWithCategory() {
+        createCards();
+
         List<UUID> categoryFilter = List.of(cat0.getId());
         List<Card> actual = cardQueryRepository.getPage(categoryFilter, null, null, false);
         List<Card> expected = Arrays.asList(card2, card1);
@@ -209,6 +224,8 @@ public class CardRepositoryTests {
 
     @Test
     public void filterCardsWithCategories() {
+        createCards();
+
         Card card4 = Card.builder()
                 .id(UUID.fromString("bc63f480-8a44-4f31-b964-30b44934f473"))
                 .question("Finde mich nicht.")
@@ -227,6 +244,8 @@ public class CardRepositoryTests {
 
     @Test
     public void filterCardsAndSort() {
+        createCards();
+
         List<UUID> categoryFilter = List.of(cat0.getId());
         List<Card> actual = cardQueryRepository.getPage(categoryFilter, null, null, true);
 
@@ -237,6 +256,8 @@ public class CardRepositoryTests {
 
     @Test
     public void filterCardsAndFindTag() {
+        createCards();
+
         List<UUID> categoryFilter = List.of(cat0.getId());
         List<Card> actual = cardQueryRepository.getPage(categoryFilter, null, "unwichtig", true);
 
@@ -247,6 +268,8 @@ public class CardRepositoryTests {
 
     @Test
     public void filterCardsAndFindString() {
+        createCards();
+
         List<UUID> categoryFilter = List.of(cat0.getId());
         List<Card> actual = cardQueryRepository.getPage(categoryFilter, "Davio", null, false);
 
@@ -257,6 +280,8 @@ public class CardRepositoryTests {
 
     @Test
     public void filterSearchTagSort() {
+        createCards();
+
         Card card4 = Card.builder()
                 .id(UUID.fromString("c801de3c-736e-423f-a24d-5917eba854a0"))
                 .question("Was ist negativ Davio?")
@@ -275,6 +300,8 @@ public class CardRepositoryTests {
 
     @Test
     public void filterSearchSort() {
+        createCards();
+
         List<UUID> categoryFilter = List.of(cat0.getId());
 
         List<Card> actual = Arrays.asList(card2, card1);

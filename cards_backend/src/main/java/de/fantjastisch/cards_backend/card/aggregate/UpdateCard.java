@@ -12,8 +12,8 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
+
 /**
  * Diese Klasse stellt ein CRUD-Kommando zum Aktualisieren einer Karteikarte-Entität dar.
  * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.

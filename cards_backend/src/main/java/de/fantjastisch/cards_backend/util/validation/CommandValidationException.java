@@ -16,13 +16,14 @@ import java.util.stream.Collectors;
  * @author Semjon Nirmann
  */
 @Getter
-public class CommandValidationException extends RuntimeException{
+public class CommandValidationException extends RuntimeException {
 
     private final transient List<ErrorEntry> errors;
 
     /**
      * Konstruktor für eine CommandValidationException.
      * Erhält einen oder mehrere {@link ErrorEntry}s, und fügt sie in das Attribut errors ein.
+     *
      * @param errors Eine Liste von Fehlermeldungen, welche zusammen weitergegeben werden sollen.
      */
     public CommandValidationException(final ErrorEntry... errors) {

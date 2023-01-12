@@ -8,6 +8,7 @@ import java.util.UUID;
 
 /**
  * Diese Klasse stellt das Modell einer Karteikarte dar.
+ *
  * @Author Tamari Bayer, Jessica Repty, Freja Sender
  */
 @Builder

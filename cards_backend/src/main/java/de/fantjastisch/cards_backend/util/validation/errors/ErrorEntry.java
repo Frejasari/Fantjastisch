@@ -38,6 +38,7 @@ public class ErrorEntry {
 
     /**
      * Erzeugt eine leicht-verständliche String-Repräsentation aus einer Liste von {@ErrorEntry}-Objekten.
+     *
      * @param errors Die Liste von {@ErrorEntry}-Objekten.
      * @return Der String, welcher kurz zusammenfasst, welche Attribute fehlerhaft übermittelt wurden und welche
      * Rahmenbedingungen dabei nicht eingehalten wurden.

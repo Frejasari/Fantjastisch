@@ -12,6 +12,12 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
+/**
+ * Diese Klasse stellt ein CRUD-Kommando zum Erstellen einer Link-Entität dar.
+ * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.
+ *
+ * @Author Jessica Repty, Tamari Bayer
+ */
 @Data
 @SuperBuilder
 @ToString(callSuper = true)
