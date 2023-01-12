@@ -135,9 +135,8 @@ public class CategoryCommandRepositoryTest {
 
     @Test
     public void shouldDeleteCategory() {
-        Category toDelete = categoryQueryRepository.get(UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323"));
-        categoryCommandRepository.delete(toDelete);
-
-        Assertions.assertNull(categoryQueryRepository.get(toDelete.getId()));
+        final UUID id = UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323");
+        categoryCommandRepository.delete(id);
+        Assertions.assertNull(categoryQueryRepository.get(id));
     }
 }

@@ -11,8 +11,15 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+/**
+ * Diese Klasse stellt ein CRUD-Kommando zum Aktualisieren einer Karteikarte-Entität dar.
+ * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.
+ *
+ * @Author Tamari Bayer, Jessica Repty, Freja Sender
+ */
 
 @Data
 @SuperBuilder
@@ -28,7 +35,7 @@ public class UpdateCard implements Commandable {
             example = "dce61f5d-93f8-421d-9552-5567d707b650")
     private UUID id;
 
-    @NotNull
+
     @NotBlank
     @ApiModelProperty(
             value = "The question to be asked",
@@ -36,7 +43,7 @@ public class UpdateCard implements Commandable {
             example = "Who am I?")
     private String question;
 
-    @NotNull
+
     @NotBlank
     @ApiModelProperty(
             value = "The answer to the question",
@@ -44,6 +51,7 @@ public class UpdateCard implements Commandable {
             example = "I am me")
     private String answer;
 
+    @NotBlank
     @ApiModelProperty(
             value = "Tag",
             example = "I am a tag")
@@ -55,5 +63,5 @@ public class UpdateCard implements Commandable {
             value = "Zugehörige Kategorien",
             required = true,
             example = "[3b1824120d6d4857843aedfc1973d323, 40ac4fcc97024a87b0bdbffe1f7f49f8]")
-    private UUID[] categories;
+    private List<UUID> categories;
 }

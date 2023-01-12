@@ -48,12 +48,12 @@ public class CategoryValidator extends Validator {
     }
 
     public void validate(UpdateCategory command) {
-        throwIfCategoryDoesNotExist(command.getId());
-
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(validateConstraints(command));
         errors.addAll(checkIfSubcategoriesContainNull(command.getSubCategories()));
         throwIfNeeded(errors);
+
+        throwIfCategoryDoesNotExist(command.getId());
 
         final List<Category> allCategories = categoryQueryRepository.getList();
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
@@ -176,5 +176,4 @@ public class CategoryValidator extends Validator {
         }
         return errors;
     }
-
 }

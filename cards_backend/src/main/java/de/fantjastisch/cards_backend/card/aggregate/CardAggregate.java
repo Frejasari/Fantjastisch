@@ -6,14 +6,17 @@ import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.card.validator.CardValidator;
 import de.fantjastisch.cards_backend.util.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
 
-// @Component -> erzeugt ein Bean von der Klasse -> s. CardController
+/**
+ * Das CardAggregate stellt die Verbindung zwischen dem Controller und dem Persistance-Layer her, fungiert also
+ * als Command-Handler für CRUD-Kommando-Objekte, welcher die eingehenden Kommandos vorher mit dem {@link CardValidator} validiert.
+ *
+ * @Author Tamari Bayer, Jessica Repty, Freja Sender
+ */
 @Component
 public class CardAggregate {
 
@@ -32,10 +35,14 @@ public class CardAggregate {
         this.uuidGenerator = uuidGenerator;
     }
 
-
+    /**
+     * Diese Funktion validiert und vermittelt eine Anfrage zum Erstellen einer Karteikarte.
+     *
+     * @param command Das CRUD-Kommando-Objekt zum Erstellen einer Karteikarte.
+     * @return Eine UUID, die die erstellte Entität darstellt.
+     */
     public UUID handle(final CreateCard command) {
-        List<Card> allCards = cardQueryRepository.getPage();
-        cardValidator.validate(command, allCards);
+        cardValidator.validate(command);
 
         Card newCard = Card.builder()
                 .id(uuidGenerator.randomUUID())
@@ -48,35 +55,57 @@ public class CardAggregate {
         return newCard.getId();
     }
 
-    public Card handle(final UUID id) {
-        return throwOrGet(id);
+    /**
+     * Diese Funktion validiert und vermittelt eine Anfrage zum Lesen einer Karteikarte.
+     *
+     * @param cardId Die UUID einer Karteikarte, welche angefordert wird.
+     * @return Die entsprechende Entität der Karteikarte, gekapselt in einer {@link Card}-Instanz.
+     */
+    public Card handle(final UUID cardId) {
+        cardValidator.validateGet(cardId);
+        return cardQueryRepository.get(cardId);
     }
 
-    public List<Card> handle() {
-        return cardQueryRepository.getPage();
+    /**
+     * Diese Funktion validiert und bearbeitet eine Anfrage zum Lesen aller Karteikarten {@link Card},
+     * die nach entsprechendem Filtern gefunden werden.
+     *
+     * @param categoryFilter Die Liste der UUIDs der {@link de.fantjastisch.cards_backend.category.Category}-Entitäten,
+     *                       wonach alle Karteikarten gefiltert werden sollen.
+     * @param search         Ein String, wonach die Fragen und Antworten aller Karteikarten gefiltert werden.
+     * @param tag            Ein String, wonach aller Karteikarten gefiltert werden.
+     * @param sort           Ein Boolean, wenn er true ist, werden entsprechende Karteikarten alphabetisch nach Tags sortiert
+     * @return Eine Liste der Instanzen der Klasse {@link Card}
+     */
+    public List<Card> handle(List<UUID> categoryFilter, String search, String tag, boolean sort) {
+        return cardQueryRepository.getPage(categoryFilter, search, tag, sort);
     }
 
+    /**
+     * Diese Funktion validiert und vermittelt eine Anfrage zum Löschen einer Karteikarte.
+     *
+     * @param command Das CRUD-Kommando-Objekt zum Löschen einer Karteikarte.
+     */
     public void handle(final DeleteCard command) {
-        Card card = throwOrGet(command.getId());
-        cardCommandRepository.delete(card);
+        cardValidator.validate(command);
+        cardCommandRepository.delete(command.getId());
     }
 
+    /**
+     * Diese Funktion validiert und vermittelt eine Anfrage zum Aktualisieren einer Karteikarte.
+     *
+     * @param command Das CRUD-Kommando-Objekt zum Aktualisieren einer Karteikarte.
+     */
     public void handle(final UpdateCard command) {
-        List<Card> allCategories = cardQueryRepository.getPage();
-        cardValidator.validate(command, allCategories);
-        Card category = throwOrGet(command.getId());
 
-        cardCommandRepository.update(category);
+        cardValidator.validate(command);
+        final Card card = Card.builder()
+                .tag(command.getTag())
+                .answer(command.getAnswer())
+                .id(command.getId())
+                .categories(command.getCategories())
+                .question(command.getQuestion())
+                .build();
+        cardCommandRepository.update(card);
     }
-
-    private Card throwOrGet(UUID id) {
-        Card card = cardQueryRepository.get(id);
-        if (card == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Entity not found"
-            );
-        }
-        return card;
-    }
-
 }

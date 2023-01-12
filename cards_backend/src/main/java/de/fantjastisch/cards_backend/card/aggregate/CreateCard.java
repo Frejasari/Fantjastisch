@@ -12,6 +12,12 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 import java.util.UUID;
+/**
+ * Diese Klasse stellt ein CRUD-Kommando zum Erstellen einer Karteikarte-Entität dar.
+ * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.
+ *
+ * @Author Tamari Bayer, Jessica Repty, Freja Sender
+ */
 
 @Data
 @SuperBuilder
@@ -34,6 +40,7 @@ public class CreateCard implements Commandable {
             example = "I am me")
     private String answer;
 
+    @NotBlank
     @ApiModelProperty(
             value = "Tag",
             example = "I am a tag")

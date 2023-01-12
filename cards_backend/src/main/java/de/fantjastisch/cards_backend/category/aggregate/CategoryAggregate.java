@@ -44,7 +44,6 @@ public class CategoryAggregate {
 
     public void handle(final UpdateCategory command) {
         categoryValidator.validate(command);
-        categoryQueryRepository.get(command.getId());
         final Category updatedCategory = Category.builder()
                 .id(command.getId())
                 .label(command.getLabel())
@@ -56,8 +55,7 @@ public class CategoryAggregate {
 
     public void handle(final DeleteCategory command) {
         categoryValidator.validate(command);
-        Category category = categoryQueryRepository.get(command.getId());
-        categoryCommandRepository.delete(category);
+        categoryCommandRepository.delete(command.getId());
     }
 
     public Category handle(final UUID categoryId) {
