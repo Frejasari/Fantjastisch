@@ -88,4 +88,10 @@ class CategoryGraphFragment : DialogFragment() {
         this.presenter.onSaveClicked(label = label)
     }
 
+    fun closeDialog() {
+//        as? - safe cast, falls null
+//        ?.callsomething -> nur wenn nicht null
+        (childFragmentManager.findFragmentByTag("createCategoryChild") as? DialogFragment)?.dismiss()
+    }
+
 }

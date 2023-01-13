@@ -1,3 +1,5 @@
 <resources>
   <string name="app_name">Cards</string>
+  <string name="menu_learning_object_overview_label">Lernen</string>
+  <string name="menu_glossar_label">Glossar</string>
 </resources>

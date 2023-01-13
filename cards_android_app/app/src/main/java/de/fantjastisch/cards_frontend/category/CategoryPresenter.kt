@@ -22,13 +22,8 @@ class CategoryPresenter(private val view: CategoryGraphFragment) {
                 subCategories = listOf()
             ),
             {
-                view.showSuccess(
-                    CategoryEntity(
-                        label = label,
-                        subCategories = listOf(),
-                        id = UUID.fromString(it)
-                    )
-                )
+                view.closeDialog()
+                getPage()
             },
             { view.showError("Something went wrong") }
         )
@@ -42,7 +37,7 @@ class CategoryPresenter(private val view: CategoryGraphFragment) {
     private fun validate(label: String?, id: UUID?) {
         val errors = mutableListOf<String>()
         if (label.isNullOrBlank()) {
-            errors.add("question is empty");
+            errors.add("label is empty");
         }
         if (errors.isNotEmpty()) {
             throw ValidationException(errors)
