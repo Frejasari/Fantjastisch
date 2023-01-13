@@ -11,10 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
- * Test Klasse für die Category Repositories
+ * Test Klasse für die LearningSystem Repositories
  *
  * @author Freja Sender, Alexander Kück
  */
@@ -51,7 +52,7 @@ public class LearningSystemRepositoryTest {
 
     @Test
     public void shouldUpdateLearningSystemLabel() {
-        String[] boxl ={"box1,box2"};
+        String[] boxl ={"box1","box2"};
         LearningSystem toupdate = LearningSystem.builder()
                 .id(UUID.fromString("8cdd43f0-4d5c-44d6-972f-b18ed068e9a6"))
                 .label("2box")
@@ -70,7 +71,7 @@ public class LearningSystemRepositoryTest {
 
     @Test
     public void shouldUpdateLearningSystemBoxLabels() {
-        String[] boxl ={"box1,box2"};
+        String[] boxl ={"box1","box2"};
         LearningSystem toupdate = LearningSystem.builder()
                 .id(UUID.fromString("49b00687-bd00-4a87-9c37-5d8645a44c2a"))
                 .label("2box")
@@ -79,7 +80,7 @@ public class LearningSystemRepositoryTest {
 
         learningSystemCommandRepository.save(toupdate);
 
-        String[] boxln = {"box1,box2,box3"};
+        String[] boxln = {"box1","box2","box3"};
 
         toupdate.setBoxLabels(boxln);
         learningSystemCommandRepository.update(toupdate);
@@ -91,7 +92,7 @@ public class LearningSystemRepositoryTest {
 
     @Test
     public void shouldDeleteLearningSystem() {
-        String[] boxl ={"box1,box2"};
+        String[] boxl ={"box1","box2"};
         LearningSystem todelete = LearningSystem.builder()
                 .id(UUID.fromString("098e616d-4a45-4813-900b-6aa0b2ef7ebf"))
                 .label("2box")
@@ -109,17 +110,53 @@ public class LearningSystemRepositoryTest {
 
     @Test
     public void shouldFindLearningSystem() {
-        // TODO: Implementieren
+        String[] boxl ={"box1"};
+        LearningSystem expected = LearningSystem.builder()
+                .id(UUID.fromString("faf58948-c0a6-467b-b3ac-3097877bc235"))
+                .label("1box")
+                .boxLabels(boxl)
+                .build();
+
+        learningSystemCommandRepository.save(expected);
+
+        LearningSystem actual = learningSystemQueryRepository.get(UUID.fromString("faf58948-c0a6-467b-b3ac-3097877bc235"));
+
+        Assertions.assertEquals(expected,actual);
+
     }
 
     @Test
     public void shouldNotFindLearningSystem() {
-        // TODO: Implementieren
+
+        Assertions.assertNull(learningSystemQueryRepository.get(UUID.fromString("7953f9cc-f919-4c17-8b68-840be804d922")));
+
     }
 
     @Test
     public void shouldFindAllLearningSystems() {
-        // TODO: Implementieren
+        String[] boxl ={"box1"};
+        LearningSystem expected1 = LearningSystem.builder()
+                .id(UUID.fromString("6c24fc2b-edab-4928-a4e4-fbd73f4341c7"))
+                .label("1box")
+                .boxLabels(boxl)
+                .build();
+
+        String[] boxl2 ={"box1","box2"};
+        LearningSystem expected2 = LearningSystem.builder()
+                .id(UUID.fromString("8f041566-cbd6-4f24-bc75-e83e027e7d71"))
+                .label("2box")
+                .boxLabels(boxl2)
+                .build();
+
+        learningSystemCommandRepository.save(expected1);
+        learningSystemCommandRepository.save(expected2);
+
+        List<LearningSystem> expected = List.of(expected1, expected2);
+
+        List<LearningSystem> actual = learningSystemQueryRepository.getList();
+
+        Assertions.assertEquals(expected,actual);
+
     }
 
     // TODO: Welche Fehler kann namedParameterJdbcTemplate werfen?
