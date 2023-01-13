@@ -55,6 +55,12 @@ public class CardsController {
     @PostMapping(path = "create", produces = "application/json")
     // @Operation -> io.swagger generiert ein Client
     @Operation(description = "Create a new Card")
+//    @ApiResponses(value = {
+////            @ApiResponse(responseCode = "422", content = {@Content(mediaType = "application/json",
+////                    schema = @Schema(implementation = ErrorResponse.class))}),
+//            @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json",
+//                    schema = @Schema(implementation = CreatedResponse.class))})
+//    })
     public CreatedResponse createCard(
             @RequestBody CreateCard command)
             throws RuntimeException {
@@ -139,7 +145,7 @@ public class CardsController {
     @GetMapping(path = "getPage", produces = "application/json")
     @Operation(
             summary = "Get all cards",
-            operationId = "getCardList")
+            operationId = "getCardPage")
     public List<Card> getPage(@RequestParam(required = false) List<UUID> categoryFilter,
                               @RequestParam(required = false) String search,
                               @RequestParam(required = false) String tag,

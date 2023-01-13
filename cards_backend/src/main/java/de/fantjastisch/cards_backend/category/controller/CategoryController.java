@@ -131,7 +131,7 @@ public class CategoryController {
     @GetMapping(path = "getPage", produces = "application/json")
     @Operation(
             summary = "Get all categories",
-            operationId = "getCategoryList")
+            operationId = "getCategoryPage")
     public List<Category> getPage() {
         return categoryAggregate.handle();
     }
