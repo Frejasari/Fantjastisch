@@ -1,6 +1,6 @@
 package de.fantjastisch.cards_backend.learningsystem;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+//import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemCommandRepository;
 import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemQueryRepository;
 import org.junit.jupiter.api.Assertions;
@@ -11,8 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Test Klasse für die LearningSystem Repositories
@@ -27,6 +26,7 @@ public class LearningSystemRepositoryTest {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private LearningSystemQueryRepository learningSystemQueryRepository;
+
 
     @BeforeEach
     public void setUp() {

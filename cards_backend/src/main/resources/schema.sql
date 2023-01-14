@@ -82,8 +82,9 @@ CREATE TABLE IF NOT EXISTS public.learning_systems
     TEXT
     NOT
     NULL,
-    num_boxes
-    INTEGER
+    box_labels
+    TEXT
+    ARRAY
 );
 
 CREATE TABLE IF NOT EXISTS public.categories_to_cards
