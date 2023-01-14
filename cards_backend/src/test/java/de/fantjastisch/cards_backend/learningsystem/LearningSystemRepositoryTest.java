@@ -31,6 +31,7 @@ public class LearningSystemRepositoryTest {
     @BeforeEach
     public void setUp() {
         learningSystemCommandRepository = new LearningSystemCommandRepository(namedParameterJdbcTemplate);
+        learningSystemQueryRepository = new LearningSystemQueryRepository(namedParameterJdbcTemplate);
     }
 
     @Test
