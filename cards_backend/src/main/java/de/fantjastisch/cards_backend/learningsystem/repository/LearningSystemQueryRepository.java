@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Array;
 import java.util.*;
 
 @Repository
@@ -19,11 +20,20 @@ public class LearningSystemQueryRepository {
     public LearningSystemQueryRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
-    private final RowMapper<LearningSystem> LEARNING_SYSTEM_ROW_MAPPER = (rs, rowNum) -> LearningSystem.builder()
-            .id(UUID.fromString(rs.getString("id")))
-            .label(rs.getString("label"))
-            .boxLabels((String[]) rs.getArray("box_labels").getArray()).build();
-
+    private final RowMapper<LearningSystem> LEARNING_SYSTEM_ROW_MAPPER = (rs, rowNum) ->
+    {
+        //Array labels = rs.getArray("box_labels");
+        //Object[] obox_labels = (Object[])labels.getArray();
+        //String[] box_labels = {null};
+        //for(int i=0; i<obox_labels.length;i++) {
+        //    box_labels[i] = (String)obox_labels[i];
+        //}
+        return LearningSystem.builder()
+                .id(UUID.fromString(rs.getString("id")))
+                .label(rs.getString("label"))
+                .boxLabels((String[]) rs.getArray("box_labels").getArray()).build();
+                //.boxLabels(box_labels).build();
+    };
 
 
     public LearningSystem get(UUID id) {
