@@ -44,8 +44,8 @@ public class ErrorEntry {
      * Rahmenbedingungen dabei nicht eingehalten wurden.
      */
     public static String mapErrorsToString(List<ErrorEntry> errors) {
-        List<String> toStrings = errors.stream().map(x -> String.format("Error code: %s on field %s", x.getCode(), x.getField())).collect(Collectors.toList());
-        return String.join("| ", toStrings);
+        List<String> toStrings = errors.stream().map(x -> String.format("%s @ field: %s", x.getCode().getMsg(), x.getField())).collect(Collectors.toList());
+        return String.join(" | ", toStrings);
     }
 }
 
