@@ -37,8 +37,7 @@ class CategoryRepository {
     fun getPage(
         onSuccess: (List<CategoryEntity>) -> Unit,
         onFailure: () -> Unit
-    ) =
-        service.getCategoryPage().enqueue(onSuccess, onFailure)
+    ) = service.getCategoryPage().enqueue(onSuccess, onFailure)
 
     fun createCategory(
         category: CreateCategoryEntity,

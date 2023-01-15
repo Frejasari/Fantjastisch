@@ -4,4 +4,6 @@
   <string name="menu_glossar_label">Glossar</string>
   <string name="select_category_title">Kategorie auswählen</string>
   <string name="card_category_select_button">Select Categories</string>
+  <string name="create_category_label_text">Label</string>
+  <string name="create_category_save_button_text">Speichern</string>
 </resources>

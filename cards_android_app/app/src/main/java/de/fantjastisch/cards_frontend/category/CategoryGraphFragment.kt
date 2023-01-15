@@ -56,10 +56,19 @@ class CategoryGraphFragment : DialogFragment() {
 
         val createButton = view.findViewById<Button>(R.id.create_category_button)
         createButton.setOnClickListener {
-            CreateCategoryDialogFragment().show(
-                childFragmentManager,
-                "createCategoryChild"
-            )
+            val categoryChooserDialogFragment = CreateCategoryDialogFragment()
+            val tag = "createCategoryChild"
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.animator.fragment_enter,
+                    R.animator.fragment_exit,
+                    R.animator.fragment_enter,
+                    R.animator.fragment_exit,
+                )
+                .add(android.R.id.content, categoryChooserDialogFragment, tag)
+                .addToBackStack(tag)
+                .commit()
         }
 
         super.onViewCreated(view, savedInstanceState)

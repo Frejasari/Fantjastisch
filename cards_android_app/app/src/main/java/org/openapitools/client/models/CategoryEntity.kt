@@ -26,16 +26,17 @@ import com.squareup.moshi.Json
  * @param subCategories 
  */
 
+
 data class CategoryEntity (
 
     @Json(name = "id")
-    val id: java.util.UUID? = null,
+    val id: java.util.UUID,
 
     @Json(name = "label")
-    val label: kotlin.String? = null,
+    val label: kotlin.String,
 
     @Json(name = "subCategories")
-    val subCategories: kotlin.collections.List<java.util.UUID>? = null
+    val subCategories: kotlin.collections.List<java.util.UUID>
 
 )
 
