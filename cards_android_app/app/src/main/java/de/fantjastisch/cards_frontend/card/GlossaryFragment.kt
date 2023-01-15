@@ -18,9 +18,9 @@ class GlossaryFragment : Fragment() {
     private lateinit var presenter: GlossaryPresenter
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val outerView = inflater.inflate(R.layout.layout_with_save, container, false)
         val inputContainer = outerView.findViewById<FrameLayout>(R.id.input_content_container)
@@ -35,9 +35,9 @@ class GlossaryFragment : Fragment() {
         val questionInput = view.findViewById<TextInputEditText>(R.id.card_question_textinput)
         saveButton.setOnClickListener {
             this.presenter.onSaveClicked(
-                    answer = answerInput.text.toString(),
-                    question = questionInput.text.toString(),
-                    tag = "I"
+                answer = answerInput.text.toString(),
+                question = questionInput.text.toString(),
+                tag = "I"
             )
         }
         selectCategoryButton.setOnClickListener {
@@ -62,19 +62,16 @@ class GlossaryFragment : Fragment() {
 
     fun showCategoriesDialog(categories: List<MultiSelectionList.Item>) {
         val categoryChooserDialogFragment = CategoryChooserDialogFragment()
-        categoryChooserDialogFragment.categories = categories
         requireActivity().supportFragmentManager.beginTransaction()
-                .setCustomAnimations(
-                        R.animator.fragment_enter,
-                        R.animator.fragment_exit,
-                        R.animator.fragment_enter,
-                        R.animator.fragment_exit,
-                )
-                .add(android.R.id.content, categoryChooserDialogFragment, "categoryChooserDialog")
-                .addToBackStack("categoryChooserDialog")
-                .commit()
-//        categoryChooserDialogFragment
-//                .show(childFragmentManager, "categoryChooserDialog")
+            .setCustomAnimations(
+                R.animator.fragment_enter,
+                R.animator.fragment_exit,
+                R.animator.fragment_enter,
+                R.animator.fragment_exit,
+            )
+            .add(android.R.id.content, categoryChooserDialogFragment, "categoryChooserDialog")
+            .addToBackStack("categoryChooserDialog")
+            .commit()
 
     }
 }
