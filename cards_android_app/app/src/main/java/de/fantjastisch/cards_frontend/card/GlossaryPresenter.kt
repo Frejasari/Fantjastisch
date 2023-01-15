@@ -1,7 +1,7 @@
 package de.fantjastisch.cards_frontend.card
 
 import de.fantjastisch.cards_frontend.validation.ValidationException
-import de.fantjastisch.categorys_frontend.category.CategoryRepository
+import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.MultiSelectionList
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CreateCardEntity

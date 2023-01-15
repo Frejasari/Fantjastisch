@@ -1,7 +1,7 @@
-package de.fantjastisch.categorys_frontend.category
+package de.fantjastisch.cards_frontend.category
 
 import de.fantjastisch.cards_frontend.validation.ValidationException
-import org.openapitools.client.models.CategoryEntity
+import de.fantjastisch.categorys_frontend.category.CategoryGraphFragment
 import org.openapitools.client.models.CreateCategoryEntity
 import java.util.*
 

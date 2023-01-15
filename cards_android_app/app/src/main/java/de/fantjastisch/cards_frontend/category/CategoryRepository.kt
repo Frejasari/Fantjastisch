@@ -1,4 +1,4 @@
-package de.fantjastisch.categorys_frontend.category
+package de.fantjastisch.cards_frontend.category
 
 import org.openapitools.client.apis.CategoryApi
 import org.openapitools.client.infrastructure.ApiClient

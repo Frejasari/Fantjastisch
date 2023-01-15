@@ -8,14 +8,13 @@ import android.widget.Button
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.GlossaryFragment
-import de.fantjastisch.cards_frontend.card.LearningObjectRepository
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
+import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
 import de.fantjastisch.cards_frontend.learning_object.generateId
 import de.fantjastisch.cards_frontend.validation.ValidationException
 import de.fantjastisch.categorys_frontend.category.CategoryGraphFragment
@@ -26,21 +25,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val bottomNavigationView = this.findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        val fragmentContainerView =
-            findViewById<FragmentContainerView>(R.id.fragmentContainerView)
         bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_learning -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView,
-                        CategoryGraphFragment(), "categoryFragment"
-                    ).commit()
+                        .replace(
+                            R.id.fragmentContainerView,
+                            CategoryGraphFragment(), "categoryFragment"
+                        ).commit()
                     // Respond to navigation item 1 click
                     true
                 }
                 R.id.menu_glossar -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView,
+                        .replace(
+                            R.id.fragmentContainerView,
                             GlossaryFragment(), "glossarFragment"
                         ).commit()
                     // Respond to navigation item 2 click
@@ -50,9 +49,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 }
-
 
 class MyFirstFragment : Fragment() {
     private lateinit var presenter: MyFirstPresenter

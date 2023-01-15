@@ -1,4 +1,4 @@
-package de.fantjastisch.categorys_frontend.category
+package de.fantjastisch.cards_frontend.category
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,8 +24,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.category.CategorySelect
-import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import org.openapitools.client.models.CreateCategoryEntity
 import java.util.*
 
