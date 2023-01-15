@@ -13,6 +13,7 @@ import de.fantjastisch.cards_frontend.card.LearningObjectRepository
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import kotlinx.coroutines.launch
+import org.openapitools.client.models.CategoryEntity
 
 class ComposeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

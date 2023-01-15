@@ -26,7 +26,6 @@ import com.squareup.moshi.Json
  * @param subCategories 
  */
 
-
 data class CategoryEntity (
 
     @Json(name = "id")

@@ -1,5 +1,7 @@
 <resources>
-  <string name="app_name">Cards</string>
+  <string name="app_name">Karten</string>
   <string name="menu_learning_object_overview_label">Lernen</string>
   <string name="menu_glossar_label">Glossar</string>
+  <string name="select_category_title">Kategorie auswählen</string>
+  <string name="card_category_select_button">Select Categories</string>
 </resources>
