@@ -44,6 +44,6 @@ public class LearningSystemAggregate {
     }
 
     public List<LearningSystem> handle() {
-        return learningSystemQueryRepository.getList();
+        return learningSystemQueryRepository.getPage();
     }
 }

@@ -50,7 +50,7 @@ public class CategoryQueryRepository {
      *
      * @return Eine Liste aller Kategorien-Entitäten, gekapselt in {@link Category}-Instanzen.
      */
-    public List<Category> getList() {
+    public List<Category> getPage() {
         final String query = "select * from public.categories;";
         return namedParameterJdbcTemplate.query(query, CATEGORY_ROW_MAPPER);
     }

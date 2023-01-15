@@ -30,5 +30,11 @@ tools:context=".MainActivity"
       android:layout_height="wrap_content"
       android:inputType="textMultiLine"
       />
+    <Button
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/card_category_select_button"
+      android:text="@string/card_category_select_button"
+      />
   </com.google.android.material.textfield.TextInputLayout>
   </LinearLayout>

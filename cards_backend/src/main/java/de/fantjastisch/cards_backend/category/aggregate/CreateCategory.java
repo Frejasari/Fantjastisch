@@ -1,7 +1,7 @@
 package de.fantjastisch.cards_backend.category.aggregate;
 
 import de.fantjastisch.cards_backend.util.validation.Commandable;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -28,15 +28,15 @@ public class CreateCategory implements Commandable {
 
     @NotBlank
     @NotNull
-    @ApiModelProperty(
-            value = "The category label",
+    @Schema(
+            description = "The category label",
             required = true,
             example = "Category #1")
     private String label;
 
     @NotNull
-    @ApiModelProperty(
-            value = "An array of child-category UUIDs.",
+    @Schema(
+            description = "An array of child-category UUIDs.",
             required = true,
             example = "[fa9d9f26-8e58-4653-809c-c3b5d8e7d97f]")
     private List<UUID> subCategories;

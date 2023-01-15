@@ -7,13 +7,10 @@ import de.fantjastisch.cards_backend.link.aggregate.LinkAggregate;
 import de.fantjastisch.cards_backend.link.aggregate.UpdateLink;
 import de.fantjastisch.cards_backend.util.CreatedResponse;
 import de.fantjastisch.cards_backend.util.validation.CommandValidationException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -35,7 +32,7 @@ import static de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry.ma
  * @Author Jessica Repty, Tamari Bayer
  */
 @RestController
-@Api(tags = {"Link"})
+@Tag(name = "Link")
 @RequestMapping("link")
 public class LinkController {
 
@@ -55,13 +52,10 @@ public class LinkController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @PostMapping(path = "create", produces = "application/json")
-    // @ApiOperation -> io.swagger generiert ein Client
-    @ApiOperation(
-            value = "Create a new Link",
-            notes = "Create a new Link",
-            nickname = "createLink")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    // @Operation -> io.swagger generiert ein Client
+    @Operation(
+            summary = "Create a new Link",
+            operationId = "createLink")
     public CreatedResponse createLink(
             @RequestBody CreateLink command)
             throws RuntimeException {
@@ -80,12 +74,9 @@ public class LinkController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @PutMapping(path = "update")
-    @ApiOperation(
-            value = "Update a link",
-            notes = "Update a link",
-            nickname = "update")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            summary = "Update a link",
+            operationId = "updateLink")
     public void update(@RequestBody UpdateLink command) {
         try {
             linkAggregate.handle(command);
@@ -102,12 +93,8 @@ public class LinkController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @DeleteMapping(path = "delete")
-    @ApiOperation(
-            value = "Delete a link",
-            notes = "Delete a link",
-            nickname = "delete")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(summary = "Delete a link",
+            operationId = "deleteLink")
     public void delete(@RequestBody DeleteLink command) {
         try {
             linkAggregate.handle(command);
@@ -126,12 +113,9 @@ public class LinkController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @GetMapping(path = "get", produces = "application/json")
-    @ApiOperation(
-            value = "Get the Link from the given name and source",
-            notes = "Get the Link from the given name and source",
-            nickname = "getLink")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            summary = "Get the Link from the given name and source",
+            operationId = "getLink")
     public Link get(@RequestParam UUID id)
             throws RuntimeException {
         try {
@@ -151,13 +135,10 @@ public class LinkController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @GetMapping(path = "getPage", produces = "application/json")
-    @ApiOperation(
-            value = "Get all links",
-            notes = "Get all links",
-            nickname = "getList")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
-    public List<Link> getList(@RequestParam UUID id) {
+    @Operation(
+            summary = "Get all links",
+            operationId = "getPage")
+    public List<Link> getPage(@RequestParam UUID id) {
         return linkAggregate.handleGetAllLinksFromCard(id);
     }
 }

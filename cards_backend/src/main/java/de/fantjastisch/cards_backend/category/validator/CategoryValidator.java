@@ -50,12 +50,11 @@ public class CategoryValidator extends Validator {
      * @param command Eine {@link CreateCategory}-Instanz, welche validiert werden soll.
      */
     public void validate(CreateCategory command) {
-        List<ErrorEntry> errors = new ArrayList<>();
-        errors.addAll(validateConstraints(command));
-        errors.addAll(checkIfSubcategoriesContainNull(command.getSubCategories()));
-        throwIfNeeded(errors);
+        throwIfNeeded(validateConstraints(command));
+        throwIfNeeded(checkIfSubcategoriesContainNull(command.getSubCategories()));
 
-        final List<Category> allCategories = categoryQueryRepository.getList();
+        List<ErrorEntry> errors = new ArrayList<>();
+        final List<Category> allCategories = categoryQueryRepository.getPage();
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
         errors.addAll(checkIfSubcategoryExists(command.getSubCategories(), allCategories));
         throwIfNeeded(errors);
@@ -83,7 +82,7 @@ public class CategoryValidator extends Validator {
 
         throwIfCategoryDoesNotExist(command.getId());
 
-        final List<Category> allCategories = categoryQueryRepository.getList();
+        final List<Category> allCategories = categoryQueryRepository.getPage();
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
         errors.addAll(checkIfSubcategoryExists(command.getSubCategories(), allCategories));
         errors.addAll(checkIfCycleInSubCategoriesFound(allCategories, command.getSubCategories(),

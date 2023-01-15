@@ -2,7 +2,7 @@ package de.fantjastisch.cards_backend.util.validation.errors;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.ConstraintViolation;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -26,14 +26,14 @@ import java.util.stream.Collectors;
 @SuperBuilder
 public class ErrorEntry {
 
-    @ApiModelProperty(example = "1002", required = true)
+    @Schema(example = "1002", required = true)
     private ErrorCode code;
 
-    @ApiModelProperty(example = "name", required = true)
+    @Schema(example = "name", required = true)
     private String field;
 
     @JsonIgnore
-    @ApiModelProperty(hidden = true)
+    @Schema(hidden = true)
     private transient ConstraintViolation violation;
 
     /**

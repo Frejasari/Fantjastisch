@@ -209,7 +209,7 @@ public class CategoryRepositoryTest {
         categoryCommandRepository.create(expected1);
         categoryCommandRepository.create(expected2);
         List<Category> expected = List.of(expected1, expected2);
-        List<Category> actual = categoryQueryRepository.getList();
+        List<Category> actual = categoryQueryRepository.getPage();
         Assertions.assertEquals(expected, actual);
     }
 }
