@@ -22,20 +22,22 @@ public class LearningSystemQueryRepository {
     }
     private final RowMapper<LearningSystem> LEARNING_SYSTEM_ROW_MAPPER = (rs, rowNum) ->
     {
-        //Array labels = rs.getArray("box_labels");
-        //Object[] obox_labels = (Object[])labels.getArray();
-        //String[] box_labels = {null};
-        //for(int i=0; i<obox_labels.length;i++) {
-        //    box_labels[i] = (String)obox_labels[i];
-        //}
+        String[] resultSetArr = parseSQLArrayToUUIDArray(rs.getString("box_labels")).toArray(String[]::new);
         return LearningSystem.builder()
                 .id(UUID.fromString(rs.getString("id")))
                 .label(rs.getString("label"))
-                .boxLabels((String[]) rs.getArray("box_labels").getArray()).build();
-                //.boxLabels(box_labels).build();
+                .boxLabels(resultSetArr).build();
     };
 
-
+    private List<String> parseSQLArrayToUUIDArray(String arr) {
+        if (arr == null) {
+            return Collections.emptyList();
+        }
+        String[] res = arr.replaceAll("\\[|\\]", "").split(", ");
+        return Arrays.stream(res).map(str -> !str.isEmpty() ? str : null)
+                .filter(str -> !str.equals("null"))
+                .toList();
+    }
     public LearningSystem get(UUID id) {
         final String query = "select * from public.learning_systems where id = :id;";
         try {
