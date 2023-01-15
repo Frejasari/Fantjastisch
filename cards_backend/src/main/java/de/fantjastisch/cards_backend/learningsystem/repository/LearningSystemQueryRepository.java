@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Array;
 import java.util.*;
 
 @Repository
@@ -22,14 +21,14 @@ public class LearningSystemQueryRepository {
     }
     private final RowMapper<LearningSystem> LEARNING_SYSTEM_ROW_MAPPER = (rs, rowNum) ->
     {
-        String[] resultSetArr = parseSQLArrayToUUIDArray(rs.getString("box_labels")).toArray(String[]::new);
+        List<String> resultSetArr = parseSQLArrayToStringArray(rs.getString("box_labels"));
         return LearningSystem.builder()
                 .id(UUID.fromString(rs.getString("id")))
                 .label(rs.getString("label"))
                 .boxLabels(resultSetArr).build();
     };
 
-    private List<String> parseSQLArrayToUUIDArray(String arr) {
+    private List<String> parseSQLArrayToStringArray(String arr) {
         if (arr == null) {
             return Collections.emptyList();
         }

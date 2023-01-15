@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Data
 @SuperBuilder
 @ToString(callSuper = true)
@@ -21,8 +23,8 @@ public class CreateLearningSystem {
     private String label;
 
     @ApiModelProperty(
-            value = "An array of Strings representing box labels.",
+            value = "A List of Strings representing box labels.",
             required = true,
             example = "[schlecht, mittel, gut, fantjastisch]")
-    private String[] boxLabels;
+    private List<String> boxLabels;
 }

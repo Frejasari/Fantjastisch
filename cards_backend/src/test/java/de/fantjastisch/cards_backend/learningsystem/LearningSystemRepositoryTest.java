@@ -36,11 +36,10 @@ public class LearningSystemRepositoryTest {
 
     @Test
     public void shouldSaveLearningSystem() {
-        String[] boxl ={"box1"};
         LearningSystem tosave = LearningSystem.builder()
                 .id(UUID.fromString("866092d7-b90c-4976-8fea-08012ab01b68"))
                 .label("1box")
-                .boxLabels(boxl)
+                .boxLabels(Arrays.asList("box1"))
                 .build();
 
         learningSystemCommandRepository.save(tosave);
@@ -53,11 +52,10 @@ public class LearningSystemRepositoryTest {
 
     @Test
     public void shouldUpdateLearningSystemLabel() {
-        String[] boxl ={"box1","box2"};
         LearningSystem toupdate = LearningSystem.builder()
                 .id(UUID.fromString("8cdd43f0-4d5c-44d6-972f-b18ed068e9a6"))
                 .label("2box")
-                .boxLabels(boxl)
+                .boxLabels(Arrays.asList("box1","box2"))
                 .build();
 
         learningSystemCommandRepository.save(toupdate);
@@ -72,16 +70,15 @@ public class LearningSystemRepositoryTest {
 
     @Test
     public void shouldUpdateLearningSystemBoxLabels() {
-        String[] boxl ={"box1","box2"};
         LearningSystem toupdate = LearningSystem.builder()
                 .id(UUID.fromString("49b00687-bd00-4a87-9c37-5d8645a44c2a"))
                 .label("2box")
-                .boxLabels(boxl)
+                .boxLabels(Arrays.asList("box1","box2"))
                 .build();
 
         learningSystemCommandRepository.save(toupdate);
 
-        String[] boxln = {"box1","box2","box3"};
+        List<String> boxln = Arrays.asList("box1","box2");
 
         toupdate.setBoxLabels(boxln);
         learningSystemCommandRepository.update(toupdate);
@@ -93,11 +90,10 @@ public class LearningSystemRepositoryTest {
 
     @Test
     public void shouldDeleteLearningSystem() {
-        String[] boxl ={"box1","box2"};
         LearningSystem todelete = LearningSystem.builder()
                 .id(UUID.fromString("098e616d-4a45-4813-900b-6aa0b2ef7ebf"))
                 .label("2box")
-                .boxLabels(boxl)
+                .boxLabels(Arrays.asList("box1","box2"))
                 .build();
 
         learningSystemCommandRepository.save(todelete);
@@ -111,11 +107,11 @@ public class LearningSystemRepositoryTest {
 
     @Test
     public void shouldFindLearningSystem() {
-        String[] boxl ={"box1"};
+
         LearningSystem expected = LearningSystem.builder()
                 .id(UUID.fromString("faf58948-c0a6-467b-b3ac-3097877bc235"))
                 .label("1box")
-                .boxLabels(boxl)
+                .boxLabels(Arrays.asList("box1"))
                 .build();
 
         learningSystemCommandRepository.save(expected);
@@ -135,18 +131,16 @@ public class LearningSystemRepositoryTest {
 
     @Test
     public void shouldFindAllLearningSystems() {
-        String[] boxl ={"box1"};
         LearningSystem expected1 = LearningSystem.builder()
                 .id(UUID.fromString("6c24fc2b-edab-4928-a4e4-fbd73f4341c7"))
                 .label("1box")
-                .boxLabels(boxl)
+                .boxLabels(Arrays.asList("box1"))
                 .build();
 
-        String[] boxl2 ={"box1","box2"};
         LearningSystem expected2 = LearningSystem.builder()
                 .id(UUID.fromString("8f041566-cbd6-4f24-bc75-e83e027e7d71"))
                 .label("2box")
-                .boxLabels(boxl2)
+                .boxLabels(Arrays.asList("box1","box2"))
                 .build();
 
         learningSystemCommandRepository.save(expected1);
