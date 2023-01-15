@@ -38,8 +38,8 @@ public class LearningSystemRepositoryTest {
     public void shouldSaveLearningSystem() {
         LearningSystem tosave = LearningSystem.builder()
                 .id(UUID.fromString("866092d7-b90c-4976-8fea-08012ab01b68"))
-                .label("1box")
-                .boxLabels(Arrays.asList("box1"))
+                .label("2box")
+                .boxLabels(Arrays.asList("box1","box2"))
                 .build();
 
         learningSystemCommandRepository.save(tosave);
@@ -78,9 +78,7 @@ public class LearningSystemRepositoryTest {
 
         learningSystemCommandRepository.save(toupdate);
 
-        List<String> boxln = Arrays.asList("box1","box2");
-
-        toupdate.setBoxLabels(boxln);
+        toupdate.setBoxLabels(Arrays.asList("box1","box2","box3"));
         learningSystemCommandRepository.update(toupdate);
 
         LearningSystem actual = learningSystemQueryRepository.get(toupdate.getId());
@@ -110,8 +108,8 @@ public class LearningSystemRepositoryTest {
 
         LearningSystem expected = LearningSystem.builder()
                 .id(UUID.fromString("faf58948-c0a6-467b-b3ac-3097877bc235"))
-                .label("1box")
-                .boxLabels(Arrays.asList("box1"))
+                .label("2box")
+                .boxLabels(Arrays.asList("box1","box2"))
                 .build();
 
         learningSystemCommandRepository.save(expected);
@@ -133,8 +131,8 @@ public class LearningSystemRepositoryTest {
     public void shouldFindAllLearningSystems() {
         LearningSystem expected1 = LearningSystem.builder()
                 .id(UUID.fromString("6c24fc2b-edab-4928-a4e4-fbd73f4341c7"))
-                .label("1box")
-                .boxLabels(Arrays.asList("box1"))
+                .label("2box")
+                .boxLabels(Arrays.asList("box1","box2"))
                 .build();
 
         LearningSystem expected2 = LearningSystem.builder()

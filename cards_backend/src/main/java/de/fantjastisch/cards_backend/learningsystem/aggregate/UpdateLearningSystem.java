@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -33,5 +34,5 @@ public class UpdateLearningSystem {
             value = "An array of child-category UUIDs.",
             required = true,
             example = "[schlecht, mittel, gut, fantjastisch]")
-    private String[] boxLabels;
+    private List<String> boxLabels;
 }
