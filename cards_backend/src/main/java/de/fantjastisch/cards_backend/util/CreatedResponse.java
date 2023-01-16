@@ -12,7 +12,7 @@ import java.util.UUID;
  * Sie gibt einen 201 HTTP-Status-Code zurück, wenn die Operation erfolgreich beendet wird und kommuniziert der
  * Aufrufer*in des API-Endpunktes die ID der eingefügten Entität.
  *
- * @Author Freja Sender
+ * @author Freja Sender
  */
 public class CreatedResponse extends ResponseEntity<CreatedResponseData> {
 

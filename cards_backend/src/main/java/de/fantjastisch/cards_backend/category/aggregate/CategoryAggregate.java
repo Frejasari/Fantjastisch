@@ -15,7 +15,7 @@ import java.util.UUID;
  * Das CategoryAggregate stellt die Verbindung zwischen dem Controller und dem Persistance-Layer her, fungiert also
  * als Command-Handler für CRUD-Kommando-Objekte, welcher die eingehenden Kommandos vorher mit dem {@link CategoryValidator} validiert.
  *
- * @Author Semjon Nirmann
+ * @author Semjon Nirmann
  */
 @Component
 public class CategoryAggregate {

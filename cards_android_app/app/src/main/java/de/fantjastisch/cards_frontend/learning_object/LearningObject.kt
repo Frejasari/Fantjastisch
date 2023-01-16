@@ -2,15 +2,15 @@ package de.fantjastisch.cards_frontend.learning_object
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import java.util.UUID
 
-// TODO ADD CORRECT FIELDS
 @Entity(tableName = "learning_object")
 data class LearningObject(
-    @ColumnInfo(name = "question") val question: String,
-    @ColumnInfo(name = "answer") val answer: String,
-
+    @ColumnInfo(name = "label") val label: String,
+    @ColumnInfo(name = "progress", defaultValue="0") val progress: Int,
     @PrimaryKey val id: UUID = generateId()
 )
 

@@ -3,9 +3,7 @@ package de.fantjastisch.cards_frontend.category
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import java.util.*
 
 //TODO Fehler anzeigen.
@@ -34,15 +33,13 @@ fun CreateCategoryView(
             .padding(16.dp)
             .fillMaxSize()
     ) {
-        OutlinedTextField(
+        OutlinedTextFieldWithErrors(
             maxLines = 1,
-            keyboardActions = KeyboardActions(
-                onDone = { viewModel.onAddCategoryClicked() },
-            ),
-            modifier = Modifier.fillMaxWidth(),
             value = viewModel.categoryLabel.value,
             onValueChange = { viewModel.categoryLabel.value = it },
-            placeholder = { Text(text = stringResource(id = R.string.create_category_label_text)) },
+            placeholder = stringResource(id = R.string.create_category_label_text),
+            errors = viewModel.errors.value,
+            field = "label"
         )
 
         CategorySelect(

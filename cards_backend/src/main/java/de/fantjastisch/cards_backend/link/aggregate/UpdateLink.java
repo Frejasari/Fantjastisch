@@ -16,7 +16,7 @@ import java.util.UUID;
  * Diese Klasse stellt ein CRUD-Kommando zum Aktualisieren einer Link-Entität dar.
  * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.
  *
- * @Author Jessica Repty, Tamari Bayer
+ * @author Jessica Repty, Tamari Bayer
  */
 @Data
 @SuperBuilder

@@ -6,7 +6,7 @@ import lombok.Getter;
  * Eine Aufzählung konstanter Fehler-Codes, welche von einem {@link ErrorEntry}-Objekt gesammelt werden und der
  * Aufrufer*in eines CRUD API-Endpunktes mitgeteilt werden sollen, sofern eine Rahmenbedingung der Validierung verletzt wurde.
  *
- * @Author Semjon Nirmann
+ * @author Semjon Nirmann
  */
 @Getter
 public enum ErrorCode {
@@ -23,7 +23,7 @@ public enum ErrorCode {
     SUBCATEGORY_IS_NULL_VIOLATION("Cannot pass empty or null-valued subcategories"),
     CARD_DUPLICATE_VIOLATION("Another card with equivalent attributes already exists");
 
-    public final String msg;
+    private final String msg;
 
     private ErrorCode(final String msg) {
         this.msg = msg;

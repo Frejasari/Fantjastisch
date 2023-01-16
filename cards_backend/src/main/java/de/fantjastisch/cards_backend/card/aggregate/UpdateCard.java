@@ -19,7 +19,7 @@ import java.util.UUID;
  * Diese Klasse stellt ein CRUD-Kommando zum Aktualisieren einer Karteikarte-Entität dar.
  * Eine Instanz dieser Klasse wird als Parameter vom entsprechenden API-Endpunkt entgegengenommen.
  *
- * @Author Tamari Bayer, Jessica Repty, Freja Sender
+ * @author Tamari Bayer, Jessica Repty, Freja Sender
  */
 
 @Data

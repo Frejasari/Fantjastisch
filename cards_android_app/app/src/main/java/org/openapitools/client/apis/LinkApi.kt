@@ -8,6 +8,7 @@ import com.squareup.moshi.Json
 
 import org.openapitools.client.models.CreateLinkEntity
 import org.openapitools.client.models.DeleteLinkEntity
+import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.LinkEntity
 import org.openapitools.client.models.UpdateLinkEntity
 
@@ -16,7 +17,9 @@ interface LinkApi {
      * Create a new Link
      * 
      * Responses:
-     *  - 200: OK
+     *  - 201: Created
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param createLinkEntity 
      * @return [Call]<[kotlin.String]>
@@ -29,6 +32,8 @@ interface LinkApi {
      * 
      * Responses:
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param deleteLinkEntity 
      * @return [Call]<[Unit]>
@@ -41,6 +46,8 @@ interface LinkApi {
      * 
      * Responses:
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param id 
      * @return [Call]<[LinkEntity]>
@@ -53,6 +60,8 @@ interface LinkApi {
      * 
      * Responses:
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param id 
      * @return [Call]<[kotlin.collections.List<LinkEntity>]>
@@ -65,6 +74,8 @@ interface LinkApi {
      * 
      * Responses:
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param updateLinkEntity 
      * @return [Call]<[Unit]>

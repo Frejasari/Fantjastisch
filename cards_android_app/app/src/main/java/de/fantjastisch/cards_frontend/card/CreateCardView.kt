@@ -1,12 +1,13 @@
 package de.fantjastisch.cards_frontend.card
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material3.*
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -18,11 +19,10 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategorySelect
+import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import org.openapitools.client.models.ErrorEntryEntity
-import java.util.*
 
 //TODO Fehler anzeigen.
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateCardView(
     modifier: Modifier = Modifier
@@ -34,43 +34,32 @@ fun CreateCardView(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
-            .fillMaxSize()
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        OutlinedTextField(
+        OutlinedTextFieldWithErrors(
             maxLines = 1,
-            keyboardActions = KeyboardActions(
-                onDone = { viewModel.onAddCardClicked() },
-            ),
-            modifier = Modifier.fillMaxWidth(),
             value = viewModel.cardQuestion.value,
-            supportingText = {
-                val questionError = viewModel.errors.value.find { it.field == "question" }
-                if (questionError != null) {
-                    Text(text = mapError(questionError.code))
-                }
-            },
+            errors = viewModel.errors.value,
             onValueChange = { viewModel.cardQuestion.value = it },
-            placeholder = { Text(text = stringResource(id = R.string.create_card_question_text)) },
+            placeholder = stringResource(id = R.string.create_card_question_text),
+            field = "question"
         )
-        OutlinedTextField(
+        OutlinedTextFieldWithErrors(
             maxLines = 1,
-            keyboardActions = KeyboardActions(
-                onDone = { viewModel.onAddCardClicked() },
-            ),
-            modifier = Modifier.fillMaxWidth(),
             value = viewModel.cardAnswer.value,
+            errors = viewModel.errors.value,
             onValueChange = { viewModel.cardAnswer.value = it },
-            placeholder = { Text(text = stringResource(id = R.string.create_card_answer_text)) },
+            placeholder = stringResource(id = R.string.create_card_answer_text),
+            field = "answer"
         )
-        OutlinedTextField(
+        OutlinedTextFieldWithErrors(
             maxLines = 1,
-            keyboardActions = KeyboardActions(
-                onDone = { viewModel.onAddCardClicked() },
-            ),
-            modifier = Modifier.fillMaxWidth(),
             value = viewModel.cardTag.value,
+            errors = viewModel.errors.value,
             onValueChange = { viewModel.cardTag.value = it },
-            placeholder = { Text(text = stringResource(id = R.string.create_card_tag_text)) },
+            placeholder = stringResource(id = R.string.create_card_tag_text),
+            field = "tag"
         )
         CategorySelect(
             modifier = Modifier.weight(1f),
@@ -96,7 +85,6 @@ fun CreateCardView(
                 navigator.pop()
             }
         })
-
 }
 
 fun mapError(code: ErrorEntryEntity.Code): String {

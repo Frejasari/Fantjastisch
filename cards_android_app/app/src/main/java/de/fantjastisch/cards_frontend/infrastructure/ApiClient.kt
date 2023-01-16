@@ -42,7 +42,7 @@ fun <T> Call<T>.enqueue(onSuccess: (T) -> Unit, onFailure: (errors: ErrorRespons
                         onFailure(errors)
                     }
                 }
-                onFailure(null)
+                    onFailure(null)
             }
         }
 

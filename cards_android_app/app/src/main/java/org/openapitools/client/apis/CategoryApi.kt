@@ -9,6 +9,7 @@ import com.squareup.moshi.Json
 import org.openapitools.client.models.CategoryEntity
 import org.openapitools.client.models.CreateCategoryEntity
 import org.openapitools.client.models.DeleteCategoryEntity
+import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.UpdateCategoryEntity
 
 interface CategoryApi {
@@ -16,7 +17,9 @@ interface CategoryApi {
      * Create a new category
      * 
      * Responses:
-     *  - 200: OK
+     *  - 201: Created
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param createCategoryEntity 
      * @return [Call]<[kotlin.String]>
@@ -29,6 +32,8 @@ interface CategoryApi {
      * 
      * Responses:
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param deleteCategoryEntity 
      * @return [Call]<[Unit]>
@@ -40,7 +45,9 @@ interface CategoryApi {
      * Get specific category
      * 
      * Responses:
+     *  - 404: Not Found
      *  - 200: OK
+     *  - 422: Unprocessable Entity
      *
      * @param id 
      * @return [Call]<[CategoryEntity]>
@@ -52,7 +59,9 @@ interface CategoryApi {
      * Get all categories
      * 
      * Responses:
+     *  - 404: Not Found
      *  - 200: OK
+     *  - 422: Unprocessable Entity
      *
      * @return [Call]<[kotlin.collections.List<CategoryEntity>]>
      */
@@ -64,6 +73,8 @@ interface CategoryApi {
      * 
      * Responses:
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param updateCategoryEntity 
      * @return [Call]<[Unit]>

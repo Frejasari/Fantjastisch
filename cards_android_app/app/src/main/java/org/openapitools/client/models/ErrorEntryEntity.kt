@@ -22,6 +22,7 @@ import com.squareup.moshi.Json
  * 
  *
  * @param code 
+ * @param message 
  * @param `field` 
  */
 
@@ -30,6 +31,9 @@ data class ErrorEntryEntity (
 
     @Json(name = "code")
     val code: ErrorEntryEntity.Code,
+
+    @Json(name = "message")
+    val message: kotlin.String,
 
     @Json(name = "field")
     val `field`: kotlin.String

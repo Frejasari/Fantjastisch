@@ -1,34 +1,33 @@
-package de.fantjastisch.cards_frontend.category
+package de.fantjastisch.cards_frontend.learning_system
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import java.util.*
+
+data class LearningSystemSelectItem(val label: String, val id: UUID, val boxLabels: List<String>, val isChecked: Boolean)
 
 @Composable
-fun CategoryGraphFragment(
-    modifier: Modifier = Modifier
+fun LearningSystemSelect(
+    modifier: Modifier = Modifier,
+    learningSystems: List<LearningSystemSelectItem>,
+    onLearningSystemSelected: (UUID) -> Unit = {}
 ) {
-    val viewModel = viewModel { CategoryGraphViewModel() }
-    LaunchedEffect(key1 = Unit, block = { viewModel.onPageLoaded() })
-
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     LazyColumn(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+            .fillMaxWidth(),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
-        items(viewModel.categories.value) { category ->
+        items(learningSystems) { learningSystem ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -37,18 +36,13 @@ fun CategoryGraphFragment(
                 Text(
                     modifier = Modifier
                         .weight(1f),
-                    text = category.label
+                    text = learningSystem.label
                 )
-                Text(
-                    modifier = Modifier
-                        .weight(1f),
-//                    TODO backend: evtl eher die label rausgeben anstatt der ids? oder beides?
-//                    TODO items hübsch machen.
-                    text = category.subCategories.toString()
+                Checkbox(
+                    checked = learningSystem.isChecked,
+                    onCheckedChange = { onLearningSystemSelected(learningSystem.id) }
                 )
             }
         }
     }
 }
-
-

@@ -30,7 +30,6 @@ public class LearningSystemRepositoryTest {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private LearningSystemQueryRepository learningSystemQueryRepository;
 
-
     @BeforeEach
     public void setUp() {
         learningSystemCommandRepository = new LearningSystemCommandRepository(namedParameterJdbcTemplate);
@@ -155,5 +154,4 @@ public class LearningSystemRepositoryTest {
 
     }
 
-    // TODO: Welche Fehler kann namedParameterJdbcTemplate werfen?
 }

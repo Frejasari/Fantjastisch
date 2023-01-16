@@ -8,6 +8,7 @@ import com.squareup.moshi.Json
 
 import org.openapitools.client.models.CreateLearningSystemEntity
 import org.openapitools.client.models.DeleteLearningSystemEntity
+import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.LearningSystemEntity
 import org.openapitools.client.models.UpdateLearningSystemEntity
 
@@ -16,7 +17,9 @@ interface LearningSystemApi {
      * Create a new learning system
      * 
      * Responses:
-     *  - 200: OK
+     *  - 201: Created
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param createLearningSystemEntity 
      * @return [Call]<[kotlin.String]>
@@ -29,6 +32,8 @@ interface LearningSystemApi {
      * 
      * Responses:
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param deleteLearningSystemEntity 
      * @return [Call]<[Unit]>
@@ -41,6 +46,8 @@ interface LearningSystemApi {
      * 
      * Responses:
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param id 
      * @return [Call]<[LearningSystemEntity]>
@@ -52,6 +59,8 @@ interface LearningSystemApi {
      * Get all learning systems
      * 
      * Responses:
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *  - 200: OK
      *
      * @return [Call]<[kotlin.collections.List<LearningSystemEntity>]>
@@ -64,6 +73,8 @@ interface LearningSystemApi {
      * 
      * Responses:
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param updateLearningSystemEntity 
      * @return [Call]<[Unit]>

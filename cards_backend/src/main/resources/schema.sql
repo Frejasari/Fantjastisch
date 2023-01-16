@@ -24,14 +24,6 @@ CREATE TABLE IF NOT EXISTS public.categories
     sub_category_ids UUID ARRAY
 );
 
-CREATE TABLE IF NOT EXISTS public.learning_box
-(
-    learning_system_id UUID,
-    box_no INTEGER NOT NULL,
-    label TEXT NOT NULL,
-    PRIMARY KEY (box_no, learning_system_id)
-    );
-
 CREATE TABLE IF NOT EXISTS public.learning_systems
 (
     id UUID PRIMARY KEY,
