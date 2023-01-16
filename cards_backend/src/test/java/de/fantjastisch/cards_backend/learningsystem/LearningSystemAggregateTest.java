@@ -4,6 +4,7 @@ import de.fantjastisch.cards_backend.learningsystem.aggregate.LearningSystemAggr
 import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemCommandRepository;
 import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemQueryRepository;
 import de.fantjastisch.cards_backend.learningsystem.validator.LearningSystemValidator;
+import de.fantjastisch.cards_backend.util.UUIDGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class LearningSystemAggregateTest {
         LearningSystemCommandRepository learningSystemCommandRepository = new LearningSystemCommandRepository(namedParameterJdbcTemplate);
         LearningSystemQueryRepository learningSystemQueryRepository = new LearningSystemQueryRepository(namedParameterJdbcTemplate);
         LearningSystemValidator learningSystemValidator = new LearningSystemValidator(learningSystemQueryRepository);
-        learningSystemAggregate = new LearningSystemAggregate(learningSystemCommandRepository, learningSystemValidator, learningSystemQueryRepository);
+        learningSystemAggregate = new LearningSystemAggregate(learningSystemCommandRepository, learningSystemValidator, learningSystemQueryRepository, new UUIDGenerator());
     }
 
     @Test

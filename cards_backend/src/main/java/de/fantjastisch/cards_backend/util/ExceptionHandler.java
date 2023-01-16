@@ -20,18 +20,23 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler({CommandValidationException.class})
     protected ResponseEntity<ErrorResponse> handleCommandValidationException(CommandValidationException e) {
-        return new ResponseEntity(ErrorResponse.builder()
-                .errors(e.getErrors()).build(),
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .errors(e.getErrors().stream().map(errorEntry ->
+                        errorEntry.toBuilder()
+                                .message(errorEntry.getCode().getMsg())
+                                .build()).toList())
+                .build(),
                 HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler({EntityDoesNotExistException.class})
     protected ResponseEntity<ErrorResponse> handleEntityDoesNotExiistException(EntityDoesNotExistException e) {
-        return new ResponseEntity(ErrorResponse.builder()
+        return new ResponseEntity<>(ErrorResponse.builder()
                 .errors(Collections.singletonList(
                         ErrorEntry.builder()
                                 .field(e.getField())
                                 .code(ErrorCode.ENTITY_DOES_NOT_EXIST)
+                                .message(ErrorCode.ENTITY_DOES_NOT_EXIST.getMsg())
                                 .build())
                 ).build(),
                 HttpStatus.NOT_FOUND);

@@ -20,7 +20,7 @@ import java.util.UUID;
  * Diese Klasse stellt die Erweiterung der Basis-Klasse {@link Validator} dar und führt weitere Prüfungen durch,
  * welche an die mit Link verbundenen Anwendungsfälle angepasst sind.
  *
- * @Author Jessica Repty, Tamari Bayer
+ * @author Jessica Repty, Tamari Bayer
  */
 @Component
 public class LinkValidator extends Validator {
@@ -75,8 +75,6 @@ public class LinkValidator extends Validator {
         throwIfCardDoesNotExist(command.getSource());
         throwIfCardDoesNotExist(command.getTarget());
     }
-
-    // eventuell noch umschreiben auf direkter Zugriff auf CardValidator, bisher dort keine passende Methode
 
     /**
      * Diese Funktion validiert das Lesen einer {@link Card}.

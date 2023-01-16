@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_backend.learningsystem;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LearningSystem {
+    @Schema(required = true)
     UUID id;
+    @Schema(required = true)
     String label;
+    @Schema(required = true)
     List<String> boxLabels;
 }

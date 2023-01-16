@@ -25,7 +25,7 @@ import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
  * Diese Klasse stellt die Erweiterung der Basis-Klasse {@link Validator} dar und führt weitere Prüfungen durch,
  * welche an die mit Karteikarten verbundenen Anwendungsfälle angepasst sind.
  *
- * @Author Tamari Bayer, Jessica Repty, Freja Sender
+ * @author Tamari Bayer, Jessica Repty, Freja Sender
  */
 @Component
 public class CardValidator extends Validator {
@@ -56,7 +56,7 @@ public class CardValidator extends Validator {
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(checkIfCategoriesExist(command.getCategories()));
         errors.addAll(validateCardTaken(command.getQuestion(), command.getAnswer(), command.getTag(), command.getCategories(),
-                cardQueryRepository.getPage(null, null, null, false)));
+                cardQueryRepository.getPage(null, null, command.getTag(), false)));
         throwIfNeeded(errors);
     }
 
