@@ -1,7 +1,7 @@
 package de.fantjastisch.cards_backend.card.aggregate;
 
 import de.fantjastisch.cards_backend.util.validation.Commandable;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -28,28 +28,25 @@ import java.util.UUID;
 public class CreateCard implements Commandable {
 
     @NotBlank
-    @ApiModelProperty(
-            value = "The question to be asked",
+    @Schema(
             required = true,
             example = "Who am I?")
     private String question;
 
     @NotBlank
-    @ApiModelProperty(
-            value = "The answer to the question",
+    @Schema(
             required = true,
             example = "I am me")
     private String answer;
 
     @NotBlank
-    @ApiModelProperty(
-            value = "Tag",
-            example = "I am a tag")
+    @Schema(
+            required = true,
+            example = "wichtig")
     private String tag;
 
     @NotEmpty
-    @ApiModelProperty(
-            value = "Zugehörige Kategorien",
+    @Schema(
             required = true,
             example = "[3b1824120d6d4857843aedfc1973d323, 40ac4fcc97024a87b0bdbffe1f7f49f8]")
     private List<UUID> categories;

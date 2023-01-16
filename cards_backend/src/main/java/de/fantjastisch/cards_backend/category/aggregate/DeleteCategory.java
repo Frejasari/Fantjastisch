@@ -1,7 +1,7 @@
 package de.fantjastisch.cards_backend.category.aggregate;
 
 import de.fantjastisch.cards_backend.util.validation.Commandable;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,8 +25,8 @@ import java.util.UUID;
 public class DeleteCategory implements Commandable {
 
     @NotNull
-    @ApiModelProperty(
-            value = "The UUID of the category that is to be deleted.",
+    @Schema(
+            description = "The UUID of the category that is to be deleted.",
             required = true,
             example = "dce61f5d-93f8-421d-9552-5567d707b650")
     private UUID id;

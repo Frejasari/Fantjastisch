@@ -1,3 +1,19 @@
 <resources>
-  <string name="app_name">Cards</string>
+  <string name="app_name">Karten</string>
+  <string name="menu_learning_object_overview_label">Lernen</string>
+  <string name="menu_glossar_label">Glossar</string>
+  <string name="select_category_title">Kategorie auswählen</string>
+  <string name="card_category_select_button">Select Categories</string>
+  <string name="create_category_label_text">Label</string>
+  <string name="create_category_save_button_text">Speichern</string>
+  <string name="create_card_question_text">Frage</string>
+  <string name="create_card_answer_text">Antwort</string>
+  <string name="create_card_tag_text">Tag</string>
+  <string name="create_card_categories_text">Kategorien</string>
+  <string name="create_card_save_button_text">Speichern</string>
+  <string name="menu_categories_overview_label">Kategorien</string>
+  <string name="menu_create_category">neue Kategorie</string>
+  <string name="menu_create_card">Neue Karte</string>
+  <string name="create_category_headline">Kategorie erstellen</string>
+  <string name="create_card_headline">Karte erstellen</string>
 </resources>

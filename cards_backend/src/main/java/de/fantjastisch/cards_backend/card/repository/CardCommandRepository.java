@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_backend.card.repository;
 
-import de.fantjastisch.cards_backend.card.Card;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

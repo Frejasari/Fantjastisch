@@ -1,9 +1,7 @@
 package de.fantjastisch.cards_backend.util.validation.errors;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
-import jakarta.validation.ConstraintViolation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -15,7 +13,7 @@ import java.util.stream.Collectors;
  * {@link de.fantjastisch.cards_backend.util.validation.CommandValidationException}-Instanz
  * übermittelt werden können und beim Validieren von CRUD-Kommando-Objekten entstehen können.
  *
- * @author Semjon Nirmann
+ * @author Semjon Nirmann, Freja Sender
  */
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,15 +24,11 @@ import java.util.stream.Collectors;
 @SuperBuilder
 public class ErrorEntry {
 
-    @ApiModelProperty(example = "1002", required = true)
+    @Schema(example = "NOT_NULL_VIOLATION", required = true)
     private ErrorCode code;
 
-    @ApiModelProperty(example = "name", required = true)
+    @Schema(example = "name", required = true)
     private String field;
-
-    @JsonIgnore
-    @ApiModelProperty(hidden = true)
-    private transient ConstraintViolation violation;
 
     /**
      * Erzeugt eine leicht-verständliche String-Repräsentation aus einer Liste von {@ErrorEntry}-Objekten.
@@ -44,8 +38,11 @@ public class ErrorEntry {
      * Rahmenbedingungen dabei nicht eingehalten wurden.
      */
     public static String mapErrorsToString(List<ErrorEntry> errors) {
-        List<String> toStrings = errors.stream().map(x -> String.format("Error code: %s on field %s", x.getCode(), x.getField())).collect(Collectors.toList());
-        return String.join("| ", toStrings);
+        List<String> toStrings = errors
+                .stream()
+                .map(error -> String.format("Error code: %s on field %s", error.getCode(), error.getField()))
+                .collect(Collectors.toList());
+        return String.join(" | ", toStrings);
     }
 }
 

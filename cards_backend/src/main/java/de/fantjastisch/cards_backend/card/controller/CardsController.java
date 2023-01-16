@@ -6,14 +6,16 @@ import de.fantjastisch.cards_backend.card.aggregate.CreateCard;
 import de.fantjastisch.cards_backend.card.aggregate.DeleteCard;
 import de.fantjastisch.cards_backend.card.aggregate.UpdateCard;
 import de.fantjastisch.cards_backend.util.CreatedResponse;
+import de.fantjastisch.cards_backend.util.ErrorResponse;
 import de.fantjastisch.cards_backend.util.validation.CommandValidationException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -36,7 +38,7 @@ import static de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry.ma
  */
 
 @RestController
-@Api(tags = {"Card"})
+@Tag(name = "card")
 @RequestMapping("card")
 public class CardsController {
 
@@ -47,7 +49,6 @@ public class CardsController {
         this.cardAggregate = cardAggregate;
     }
 
-
     /**
      * Diese Funktion stellt den API-Endpunkt zum Erstellen einer Link-Entität bereit.
      *
@@ -57,22 +58,20 @@ public class CardsController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @PostMapping(path = "create", produces = "application/json")
-    // @ApiOperation -> io.swagger generiert ein Client
-    @ApiOperation(
-            value = "Create a new Card",
-            notes = "Create a new Card",
-            nickname = "createCard")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
-
+    // @Operation -> io.swagger generiert ein Client
+    @Operation(description = "Create a new Card")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "422", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class))}),
+            @ApiResponse(responseCode = "404", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class))}),
+            @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = CreatedResponse.class))})
+    })
     public CreatedResponse createCard(
             @RequestBody CreateCard command)
             throws RuntimeException {
-        try {
-            return new CreatedResponse(cardAggregate.handle(command));
-        } catch (CommandValidationException c) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, mapErrorsToString(c.getErrors()));
-        }
+        return new CreatedResponse(cardAggregate.handle(command));
     }
 
     /**
@@ -83,12 +82,16 @@ public class CardsController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @PutMapping(path = "update")
-    @ApiOperation(
-            value = "Update a card",
-            notes = "Update a card",
-            nickname = "updateCard")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(description = "Update a card",
+            operationId = "updateCard")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "422", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class))}),
+            @ApiResponse(responseCode = "404", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class))})
+//            @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json",
+//                    schema = @Schema(implementation = CreatedResponse.class))})
+    })
     public void updateCategory(@RequestBody UpdateCard command) throws RuntimeException {
         try {
             cardAggregate.handle(command);
@@ -105,12 +108,9 @@ public class CardsController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @DeleteMapping(path = "delete")
-    @ApiOperation(
-            value = "Delete a card",
-            notes = "Delete a card",
-            nickname = "delete")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            description = "Delete a card",
+            operationId = "deleteCard")
     public void delete(@RequestBody DeleteCard command) throws RuntimeException {
         try {
             cardAggregate.handle(command);
@@ -128,12 +128,9 @@ public class CardsController {
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
     @GetMapping(path = "get", produces = "application/json")
-    @ApiOperation(
-            value = "Get the Card from the given Id",
-            notes = "Get the Card from the given Id",
-            nickname = "getCard")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @Operation(
+            description = "Get the Card from the given Id",
+            operationId = "getCard")
     public Card get(@RequestParam UUID id)
             throws RuntimeException {
         try {
@@ -156,13 +153,10 @@ public class CardsController {
      * @throws RuntimeException Eine {@link ResponseStatusException}, welche Auskunft über Fehlermeldungen gibt,
      *                          die während der Validierung des Kommandos entstanden sind und den entsprechenden HTTP-Status-Code ausgibt.
      */
-    @GetMapping(path = "getList", produces = "application/json")
-    @ApiOperation(
-            value = "Get all cards",
-            notes = "Get all cards",
-            nickname = "getList")
-    @ApiResponses(
-            value = {@ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
+    @GetMapping(path = "getPage", produces = "application/json")
+    @Operation(
+            summary = "Get all cards",
+            operationId = "getCardPage")
     public List<Card> getPage(@RequestParam(required = false) List<UUID> categoryFilter,
                               @RequestParam(required = false) String search,
                               @RequestParam(required = false) String tag,

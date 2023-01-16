@@ -6,10 +6,10 @@ import de.fantjastisch.cards_backend.category.aggregate.CreateCategory;
 import de.fantjastisch.cards_backend.category.aggregate.DeleteCategory;
 import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
 import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository;
+import de.fantjastisch.cards_backend.util.validation.EntityDoesNotExistException;
 import de.fantjastisch.cards_backend.util.validation.Validator;
 import de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,7 +24,7 @@ import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
  * Diese Klasse stellt die Erweiterung der Basis-Klasse {@link Validator} dar und führt weitere Prüfungen durch,
  * welche an die mit Kategorien verbundenen Anwendungsfälle angepasst sind.
  *
- * @Author Semjon Nirmann
+ * @Author Semjon Nirmann, Freja Sender
  */
 @Component
 public class CategoryValidator extends Validator {
@@ -50,12 +50,11 @@ public class CategoryValidator extends Validator {
      * @param command Eine {@link CreateCategory}-Instanz, welche validiert werden soll.
      */
     public void validate(CreateCategory command) {
-        List<ErrorEntry> errors = new ArrayList<>();
-        errors.addAll(validateConstraints(command));
-        errors.addAll(checkIfSubcategoriesContainNull(command.getSubCategories()));
-        throwIfNeeded(errors);
+        throwIfNeeded(validateConstraints(command));
+        throwIfNeeded(checkIfSubcategoriesContainNull(command.getSubCategories()));
 
-        final List<Category> allCategories = categoryQueryRepository.getList();
+        List<ErrorEntry> errors = new ArrayList<>();
+        final List<Category> allCategories = categoryQueryRepository.getPage();
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
         errors.addAll(checkIfSubcategoryExists(command.getSubCategories(), allCategories));
         throwIfNeeded(errors);
@@ -83,7 +82,7 @@ public class CategoryValidator extends Validator {
 
         throwIfCategoryDoesNotExist(command.getId());
 
-        final List<Category> allCategories = categoryQueryRepository.getList();
+        final List<Category> allCategories = categoryQueryRepository.getPage();
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
         errors.addAll(checkIfSubcategoryExists(command.getSubCategories(), allCategories));
         errors.addAll(checkIfCycleInSubCategoriesFound(allCategories, command.getSubCategories(),
@@ -126,9 +125,7 @@ public class CategoryValidator extends Validator {
     private void throwIfCategoryDoesNotExist(final UUID categoryId) {
         Category category = categoryQueryRepository.get(categoryId);
         if (category == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Entity not found"
-            );
+            throw new EntityDoesNotExistException(categoryId, "id");
         }
     }
 
