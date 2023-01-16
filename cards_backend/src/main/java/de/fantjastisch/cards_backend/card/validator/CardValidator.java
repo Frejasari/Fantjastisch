@@ -55,8 +55,7 @@ public class CardValidator extends Validator {
 
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(checkIfCategoriesExist(command.getCategories()));
-        errors.addAll(validateCardTaken(command.getQuestion(), command.getAnswer(), command.getTag(), command.getCategories(),
-                cardQueryRepository.getPage(null, null, command.getTag(), false)));
+        errors.addAll(validateCardTaken(command.getQuestion(), command.getAnswer(), command.getTag(), command.getCategories()));
         throwIfNeeded(errors);
     }
 
@@ -104,10 +103,10 @@ public class CardValidator extends Validator {
      * @param answer     Die zu überprüfende Antwort.
      * @param tag        Der zu überprüfende Tag.
      * @param categories Die zu überprüfende Liste von UUIDs, die Instanzen {@link Category} sind.
-     * @param cards      Die Liste aller Karteikarten.
      * @return Die Liste aller Fehlermeldungen, die ermittelt wurden.
      */
-    private List<ErrorEntry> validateCardTaken(String question, String answer, String tag, List<UUID> categories, List<Card> cards) {
+    private List<ErrorEntry> validateCardTaken(String question, String answer, String tag, List<UUID> categories) {
+        List<Card> cards = cardQueryRepository.getPage(null, null, tag, false);
         List<Card> duplicateCard = cards.stream().filter
                 (card -> card.getQuestion().equals(question)
                         && card.getAnswer().equals(answer)
