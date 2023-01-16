@@ -17,9 +17,9 @@ interface CardApi {
      * 
      * Create a new Card
      * Responses:
-     *  - 200: OK
-     *  - 422: Unprocessable Entity
      *  - 404: Not Found
+     *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param createCardEntity 
      * @return [Call]<[kotlin.String]>
@@ -70,8 +70,8 @@ interface CardApi {
      * 
      * Update a card
      * Responses:
-     *  - 422: Unprocessable Entity
      *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param updateCardEntity 
      * @return [Call]<[Unit]>

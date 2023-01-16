@@ -22,7 +22,7 @@ import com.squareup.moshi.Json
  * 
  *
  * @param label The learning system's label
- * @param boxLabels An array of Strings representing box labels.
+ * @param boxLabels A List of Strings representing box labels.
  */
 
 
@@ -32,7 +32,7 @@ data class CreateLearningSystemEntity (
     @Json(name = "label")
     val label: kotlin.String,
 
-    /* An array of Strings representing box labels. */
+    /* A List of Strings representing box labels. */
     @Json(name = "boxLabels")
     val boxLabels: kotlin.collections.List<kotlin.String>
 
