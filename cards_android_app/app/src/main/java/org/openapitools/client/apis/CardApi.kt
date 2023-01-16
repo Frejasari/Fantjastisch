@@ -9,6 +9,7 @@ import com.squareup.moshi.Json
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CreateCardEntity
 import org.openapitools.client.models.DeleteCardEntity
+import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.UpdateCardEntity
 
 interface CardApi {
@@ -17,6 +18,8 @@ interface CardApi {
      * Create a new Card
      * Responses:
      *  - 200: OK
+     *  - 422: Unprocessable Entity
+     *  - 404: Not Found
      *
      * @param createCardEntity 
      * @return [Call]<[kotlin.String]>
@@ -67,7 +70,8 @@ interface CardApi {
      * 
      * Update a card
      * Responses:
-     *  - 200: OK
+     *  - 422: Unprocessable Entity
+     *  - 404: Not Found
      *
      * @param updateCardEntity 
      * @return [Call]<[Unit]>

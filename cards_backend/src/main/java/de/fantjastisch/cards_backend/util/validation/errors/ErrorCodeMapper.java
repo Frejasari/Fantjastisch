@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Hilfsklasse welche im Rahmen der Constraint-Validierung von CRUD-Kommando-Objekten verwendet wird.
@@ -42,10 +43,6 @@ public class ErrorCodeMapper {
      */
     public ErrorCode mapErrorCode(final Class clazz) {
         ErrorCode error = constraintViolationMap.get(clazz);
-        if (error == null) {
-            return ErrorCode.CONSTRAINT_VIOLATION;
-        } else {
-            return error;
-        }
+        return Objects.requireNonNullElse(error, ErrorCode.CONSTRAINT_VIOLATION);
     }
 }

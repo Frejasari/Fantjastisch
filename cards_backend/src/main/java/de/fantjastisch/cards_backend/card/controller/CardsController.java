@@ -6,8 +6,13 @@ import de.fantjastisch.cards_backend.card.aggregate.CreateCard;
 import de.fantjastisch.cards_backend.card.aggregate.DeleteCard;
 import de.fantjastisch.cards_backend.card.aggregate.UpdateCard;
 import de.fantjastisch.cards_backend.util.CreatedResponse;
+import de.fantjastisch.cards_backend.util.ErrorResponse;
 import de.fantjastisch.cards_backend.util.validation.CommandValidationException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,20 +60,18 @@ public class CardsController {
     @PostMapping(path = "create", produces = "application/json")
     // @Operation -> io.swagger generiert ein Client
     @Operation(description = "Create a new Card")
-//    @ApiResponses(value = {
-////            @ApiResponse(responseCode = "422", content = {@Content(mediaType = "application/json",
-////                    schema = @Schema(implementation = ErrorResponse.class))}),
-//            @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json",
-//                    schema = @Schema(implementation = CreatedResponse.class))})
-//    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "422", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class))}),
+            @ApiResponse(responseCode = "404", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class))}),
+            @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = CreatedResponse.class))})
+    })
     public CreatedResponse createCard(
             @RequestBody CreateCard command)
             throws RuntimeException {
-        try {
-            return new CreatedResponse(cardAggregate.handle(command));
-        } catch (CommandValidationException c) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, mapErrorsToString(c.getErrors()));
-        }
+        return new CreatedResponse(cardAggregate.handle(command));
     }
 
     /**
@@ -81,6 +84,14 @@ public class CardsController {
     @PutMapping(path = "update")
     @Operation(description = "Update a card",
             operationId = "updateCard")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "422", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class))}),
+            @ApiResponse(responseCode = "404", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class))})
+//            @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json",
+//                    schema = @Schema(implementation = CreatedResponse.class))})
+    })
     public void updateCategory(@RequestBody UpdateCard command) throws RuntimeException {
         try {
             cardAggregate.handle(command);

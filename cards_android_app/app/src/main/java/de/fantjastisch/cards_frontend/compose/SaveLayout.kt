@@ -1,11 +1,13 @@
 package de.fantjastisch.cards_frontend.compose
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import de.fantjastisch.cards_frontend.infrastructure.CardsAppTheme
 
 @Composable
 fun SaveLayout(
@@ -15,7 +17,8 @@ fun SaveLayout(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize().padding(all = 16.dp),
+            .fillMaxSize()
+            .padding(all = 16.dp),
     ) {
         Box(
             modifier = Modifier
@@ -25,9 +28,7 @@ fun SaveLayout(
             innerLayout()
         }
         ElevatedButton(
-            modifier = Modifier
-                .fillMaxWidth(),
-            onClick = onSave
+            modifier = Modifier.fillMaxWidth(), onClick = onSave
         ) {
             Text("Speichern")
         }
@@ -37,7 +38,7 @@ fun SaveLayout(
 @Preview
 @Composable
 fun SaveLayoutPreview() {
-    MaterialTheme {
+    CardsAppTheme {
         SaveLayout(
             innerLayout = { },
             onSave = { },

@@ -10,6 +10,7 @@ import lombok.Getter;
  */
 @Getter
 public enum ErrorCode {
+    ENTITY_DOES_NOT_EXIST("Entity does not exist"),
     CONSTRAINT_VIOLATION("Unknown error - a constraint has been broken"),
     NO_CATEGORIES_VIOLATION("No categories found"),
     NOT_NULL_VIOLATION("Field must not be null"),

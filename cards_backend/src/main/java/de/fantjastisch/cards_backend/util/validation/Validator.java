@@ -39,7 +39,7 @@ public class Validator {
                         ErrorEntry.builder()
                                 .code(mapper.mapErrorCode(violation))
                                 .field(violation.getPropertyPath().toString())
-                                .violation(violation)
+//                                .violation(violation)
                                 .build())
                 .collect(Collectors.toList());
     }

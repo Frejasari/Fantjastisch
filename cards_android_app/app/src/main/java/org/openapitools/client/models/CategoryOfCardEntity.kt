@@ -15,7 +15,6 @@
 
 package org.openapitools.client.models
 
-import org.openapitools.client.models.CategoryOfCardEntity
 
 import com.squareup.moshi.Json
 
@@ -23,29 +22,17 @@ import com.squareup.moshi.Json
  * 
  *
  * @param id 
- * @param question 
- * @param answer 
- * @param tag 
- * @param categories 
+ * @param label 
  */
 
 
-data class CardEntity (
+data class CategoryOfCardEntity (
 
     @Json(name = "id")
     val id: java.util.UUID,
 
-    @Json(name = "question")
-    val question: kotlin.String,
-
-    @Json(name = "answer")
-    val answer: kotlin.String,
-
-    @Json(name = "tag")
-    val tag: kotlin.String,
-
-    @Json(name = "categories")
-    val categories: kotlin.collections.List<CategoryOfCardEntity>
+    @Json(name = "label")
+    val label: kotlin.String
 
 )
 

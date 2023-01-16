@@ -46,9 +46,30 @@ public class CardRepositoryTests {
         categoryCommandRepository.create(cat0);
         categoryCommandRepository.create(cat1);
 
-        cardCommandRepository.create(card1);
-        cardCommandRepository.create(card2);
-        cardCommandRepository.create(card3);
+        cardCommandRepository.create(de.fantjastisch.cards_backend.card.repository.Card
+                .builder()
+                .id(card1.getId())
+                .question(card1.getQuestion())
+                .answer(card1.getAnswer())
+                .tag(card1.getTag())
+                .categories(card1.getCategories().stream().map(category -> category.id).toList())
+                .build());
+        cardCommandRepository.create(de.fantjastisch.cards_backend.card.repository.Card
+                .builder()
+                .id(card2.getId())
+                .question(card2.getQuestion())
+                .answer(card2.getAnswer())
+                .tag(card2.getTag())
+                .categories(card2.getCategories().stream().map(category -> category.id).toList())
+                .build());
+        cardCommandRepository.create(de.fantjastisch.cards_backend.card.repository.Card
+                .builder()
+                .id(card3.getId())
+                .question(card3.getQuestion())
+                .answer(card3.getAnswer())
+                .tag(card3.getTag())
+                .categories(card3.getCategories().stream().map(category -> category.id).toList())
+                .build());
     }
 
     @Autowired
@@ -73,7 +94,14 @@ public class CardRepositoryTests {
             .question("Welche Cachearten existieren?")
             .answer("Vollassoziativ, Direct mapped")
             .tag("unwichtig")
-            .categories(Arrays.asList(cat1.getId(), cat0.getId()))
+            .categories(Arrays.asList(Card.Category.builder()
+                            .label(cat0.getLabel())
+                            .id(cat0.getId())
+                            .build(),
+                    Card.Category.builder()
+                            .label(cat1.getLabel())
+                            .id(cat1.getId())
+                            .build()))
             .build();
 
     private final Card card2 = Card.builder()
@@ -81,7 +109,10 @@ public class CardRepositoryTests {
             .question("Welche Davio-Zerlegungtypen existieren?")
             .answer("positiv und negativ Davio")
             .tag("sehr wichtig")
-            .categories(Collections.singletonList(cat0.getId()))
+            .categories(Collections.singletonList(Card.Category.builder()
+                    .label(cat0.getLabel())
+                    .id(cat0.getId())
+                    .build()))
             .build();
 
     private final Card card3 = Card.builder()
@@ -89,14 +120,17 @@ public class CardRepositoryTests {
             .question("Welche Wahrheitswerte gibt es?")
             .answer("True und False")
             .tag("wichtig")
-            .categories(Collections.singletonList(cat1.getId()))
+            .categories(Collections.singletonList(Card.Category.builder()
+                    .label(cat1.getLabel())
+                    .id(cat1.getId())
+                    .build()))
             .build();
 
 
     //cardCommandTest
     @Test
     public void createAndCard() {
-        cardCommandRepository.create(card1);
+        createCards();
         Card actual = cardQueryRepository.get(card1.getId());
         Assertions.assertEquals(card1, actual);
     }
@@ -112,17 +146,27 @@ public class CardRepositoryTests {
     public void updateCard() {
         createCards();
         Assertions.assertEquals(card1, cardQueryRepository.get(card1.getId()));
+        //cardQueryRepository.get(card1.getId());
 
-        Card updated = Card.builder()
+        de.fantjastisch.cards_backend.card.repository.Card updated = de.fantjastisch.cards_backend.card.repository.Card.builder()
                 .id(card1.getId())
                 .answer("Rudolf Bayer")
                 .question("?")
-                .categories(Collections.emptyList())
+                .categories(card1.getCategories().stream().map(category -> category.id).toList())
                 .tag("wichtig")
                 .build();
+
+        //cardQueryRepository.get(card1.getId());
         cardCommandRepository.update(updated);
-        Assertions.assertEquals(updated, cardQueryRepository.get(card1.getId()));
+        Assertions.assertEquals(Card.builder()
+                .id(updated.getId())
+                .answer(updated.getAnswer())
+                .question(updated.getQuestion())
+                .categories(card1.getCategories())
+                .tag(updated.getTag())
+                .build(), cardQueryRepository.get(card1.getId()));
     }
+
 
     @Test
     public void findNonExistentCard() {
@@ -148,11 +192,22 @@ public class CardRepositoryTests {
                 .question("Welche Verdrängungsstrategien gibt es?")
                 .answer("FIFO, LRU, LFU")
                 .tag("Wichtig")
-                .categories(Collections.singletonList(cat.getId()))
+                .categories(Collections.singletonList(Card.Category
+                        .builder()
+                        .id(cat.getId())
+                        .label(cat.getLabel())
+                        .build()))
                 .build();
 
         categoryCommandRepository.create(cat);
-        cardCommandRepository.create(expected);
+        cardCommandRepository.create(de.fantjastisch.cards_backend.card.repository.Card
+                .builder()
+                .id(expected.getId())
+                .question(expected.getQuestion())
+                .answer(expected.getAnswer())
+                .tag(expected.getTag())
+                .categories(expected.getCategories().stream().map(Card.Category::getId).toList())
+                .build());
 
         Card actual = cardQueryRepository.get(expected.getId());
         assertEquals(expected, actual);
@@ -172,7 +227,7 @@ public class CardRepositoryTests {
         createCards();
 
         List<Card> actual = cardQueryRepository.getPage(Collections.emptyList(), null, "sehr wichtig", false);
-        List<Card> expected = Arrays.asList(card2);
+        List<Card> expected = Collections.singletonList(card2);
         assertEquals(expected, actual);
     }
 
@@ -226,7 +281,7 @@ public class CardRepositoryTests {
     public void filterCardsWithCategories() {
         createCards();
 
-        Card card4 = Card.builder()
+        de.fantjastisch.cards_backend.card.repository.Card card4 = de.fantjastisch.cards_backend.card.repository.Card.builder()
                 .id(UUID.fromString("bc63f480-8a44-4f31-b964-30b44934f473"))
                 .question("Finde mich nicht.")
                 .answer("Ok.")
@@ -282,7 +337,7 @@ public class CardRepositoryTests {
     public void filterSearchTagSort() {
         createCards();
 
-        Card card4 = Card.builder()
+        de.fantjastisch.cards_backend.card.repository.Card card4 = de.fantjastisch.cards_backend.card.repository.Card.builder()
                 .id(UUID.fromString("c801de3c-736e-423f-a24d-5917eba854a0"))
                 .question("Was ist negativ Davio?")
                 .answer("Ein Zerlegungstyp")
@@ -294,7 +349,17 @@ public class CardRepositoryTests {
         List<UUID> categoryFilter = List.of(cat0.getId());
         List<Card> actual = cardQueryRepository.getPage(categoryFilter, "Davio", "sehr wichtig", true);
 
-        List<Card> expected = Arrays.asList(card2, card4);
+        List<Card> expected = Arrays.asList(card2, Card.builder()
+                .id(card4.getId())
+                .question(card4.getQuestion())
+                .answer(card4.getAnswer())
+                .tag(card4.getTag())
+                .categories(Collections.singletonList(Card.Category
+                        .builder()
+                        .id(cat0.getId())
+                        .label(cat0.getLabel())
+                        .build()))
+                .build());
         Assertions.assertEquals(expected, actual);
     }
 
