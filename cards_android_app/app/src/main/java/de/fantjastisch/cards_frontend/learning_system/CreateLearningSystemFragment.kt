@@ -5,10 +5,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 
-class CreateLearningSystemFragment : Screen {
+class CreateLearningSystemFragment : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
