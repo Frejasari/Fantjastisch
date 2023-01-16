@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_backend.card.aggregate;
 
+import de.fantjastisch.cards_backend.card.Card;
 import de.fantjastisch.cards_backend.util.validation.Commandable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

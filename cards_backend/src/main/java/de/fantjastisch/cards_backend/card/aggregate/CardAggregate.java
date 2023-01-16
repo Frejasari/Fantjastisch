@@ -44,7 +44,7 @@ public class CardAggregate {
     public UUID handle(final CreateCard command) {
         cardValidator.validate(command);
 
-        Card newCard = Card.builder()
+        de.fantjastisch.cards_backend.card.repository.Card newCard = de.fantjastisch.cards_backend.card.repository.Card.builder()
                 .id(uuidGenerator.randomUUID())
                 .question(command.getQuestion())
                 .answer(command.getAnswer())
@@ -99,7 +99,7 @@ public class CardAggregate {
     public void handle(final UpdateCard command) {
 
         cardValidator.validate(command);
-        final Card card = Card.builder()
+        final de.fantjastisch.cards_backend.card.repository.Card card = de.fantjastisch.cards_backend.card.repository.Card.builder()
                 .tag(command.getTag())
                 .answer(command.getAnswer())
                 .id(command.getId())

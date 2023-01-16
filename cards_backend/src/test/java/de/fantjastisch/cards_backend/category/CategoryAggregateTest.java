@@ -10,6 +10,7 @@ import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository
 import de.fantjastisch.cards_backend.category.validator.CategoryValidator;
 import de.fantjastisch.cards_backend.util.UUIDGenerator;
 import de.fantjastisch.cards_backend.util.validation.CommandValidationException;
+import de.fantjastisch.cards_backend.util.validation.EntityDoesNotExistException;
 import de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,6 +62,11 @@ public class CategoryAggregateTest {
     }
 
     @Test
+    public void jackson(){
+        
+    }
+
+    @Test
     public void shouldThrowWhenLabelTaken() {
         when(categoryQueryRepository.getPage()).thenReturn(Collections.singletonList(category));
 
@@ -100,10 +105,10 @@ public class CategoryAggregateTest {
                 .id(category.getId())
                 .label("NOT FOUND").subCategories(Collections.emptyList())
                 .build();
-        assertThrows(ResponseStatusException.class, () -> categoryAggregate.handle(toUpdate));
+        assertThrows(EntityDoesNotExistException.class, () -> categoryAggregate.handle(toUpdate));
 
         DeleteCategory toDelete = DeleteCategory.builder().id(UUID.fromString("b7913a6f-6152-436e-b3ef-e38eb54d4725")).build();
-        assertThrows(ResponseStatusException.class, () -> categoryAggregate.handle(toDelete));
+        assertThrows(EntityDoesNotExistException.class, () -> categoryAggregate.handle(toDelete));
     }
 
     @Test

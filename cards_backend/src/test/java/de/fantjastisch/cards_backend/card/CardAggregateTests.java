@@ -56,7 +56,7 @@ public class CardAggregateTests {
             .label("SWP")
             .subCategories(Collections.emptyList())
             .build();
-    private final Card card = Card
+    private final de.fantjastisch.cards_backend.card.repository.Card cardForSave = de.fantjastisch.cards_backend.card.repository.Card
             .builder()
             .id(UUID.fromString("b7913a6f-6152-436e-b3ef-e38eb54d4725"))
             .question("I am the question")
@@ -65,22 +65,35 @@ public class CardAggregateTests {
             .categories(List.of(category.getId()))
             .build();
 
+    private final Card card = Card
+            .builder()
+            .id(cardForSave.getId())
+            .question(cardForSave.getQuestion())
+            .answer(cardForSave.getAnswer())
+            .tag(cardForSave.getTag())
+            .categories(List.of(Card.Category
+                    .builder()
+                    .id(category.getId())
+                    .label(category.getLabel())
+                    .build()))
+            .build();
+
 
     @BeforeEach
     public void setUp() {
         CardValidator cardValidator = new CardValidator(cardQueryRepository, categoryQueryRepository);
         cardAggregate = new CardAggregate(cardCommandRepository, cardQueryRepository, cardValidator, uuidGenerator);
         categoryCommandRepository.create(category);
-        cardCommandRepository.create(card);
+        cardCommandRepository.create(cardForSave);
     }
 
     @Test
     public void shouldThrowWhenQuestionBlank() {
         CreateCard toCreate = CreateCard.builder()
                 .question("")
-                .answer(card.getAnswer())
-                .tag(card.getTag())
-                .categories(card.getCategories())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
                 .build();
 
         CommandValidationException exception = assertThrows(CommandValidationException.class,
@@ -94,11 +107,11 @@ public class CardAggregateTests {
 
 
         UpdateCard toUpdate = UpdateCard.builder()
-                .id(card.getId())
+                .id(cardForSave.getId())
                 .question("")
-                .answer(card.getAnswer())
-                .tag(card.getTag())
-                .categories(card.getCategories())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
                 .build();
 
         exception = assertThrows(CommandValidationException.class, () -> cardAggregate.handle(toUpdate));
@@ -109,18 +122,18 @@ public class CardAggregateTests {
     @Test
     public void shouldThrowWhenAnswerBlank() {
         CreateCard toCreate = CreateCard.builder()
-                .question(card.getQuestion())
+                .question(cardForSave.getQuestion())
                 .answer("")
-                .tag(card.getTag())
-                .categories(card.getCategories())
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
                 .build();
 
         UpdateCard toUpdate = UpdateCard.builder()
-                .id(card.getId())
-                .question(card.getQuestion())
+                .id(cardForSave.getId())
+                .question(cardForSave.getQuestion())
                 .answer("")
-                .tag(card.getTag())
-                .categories(card.getCategories())
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
                 .build();
 
         ErrorEntry blankError = ErrorEntry.builder()
@@ -141,18 +154,18 @@ public class CardAggregateTests {
     @Test
     public void shouldThrowWhenTagBlank() {
         CreateCard toCreate = CreateCard.builder()
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
                 .tag("")
-                .categories(card.getCategories())
+                .categories(cardForSave.getCategories())
                 .build();
 
         UpdateCard toUpdate = UpdateCard.builder()
-                .id(card.getId())
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
+                .id(cardForSave.getId())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
                 .tag("")
-                .categories(card.getCategories())
+                .categories(cardForSave.getCategories())
                 .build();
 
         ErrorEntry blankError = ErrorEntry.builder()
@@ -173,17 +186,17 @@ public class CardAggregateTests {
     @Test
     public void shouldThrowWhenCategoriesEmptyOrNull() {
         CreateCard toCreate = CreateCard.builder()
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
-                .tag(card.getTag())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
                 .categories(List.of())
                 .build();
 
         UpdateCard toUpdate = UpdateCard.builder()
-                .id(card.getId())
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
-                .tag(card.getTag())
+                .id(cardForSave.getId())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
                 .categories(List.of())
                 .build();
 
@@ -200,9 +213,9 @@ public class CardAggregateTests {
         assertTrue(exceptionUpdate.getErrors().contains(constraintError));
 
         CreateCard toCreateNull = CreateCard.builder()
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
-                .tag(card.getTag())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
                 .categories(null)
                 .build();
 
@@ -210,10 +223,10 @@ public class CardAggregateTests {
         assertTrue(exception.getErrors().contains(constraintError));
 
         UpdateCard toUpdateNull = UpdateCard.builder()
-                .id(card.getId())
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
-                .tag(card.getTag())
+                .id(cardForSave.getId())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
                 .categories(null)
                 .build();
 
@@ -227,9 +240,9 @@ public class CardAggregateTests {
         DeleteCard toDelete = DeleteCard.builder().id(UUID.randomUUID()).build();
         UpdateCard toUpdate = UpdateCard.builder()
                 .id(UUID.randomUUID())
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
-                .tag(card.getTag())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
                 .categories(Collections.singletonList(category.getId()))
                 .build();
 
@@ -240,9 +253,9 @@ public class CardAggregateTests {
     @Test
     public void shouldThrowWhenCategoriesNonExistent() {
         CreateCard toCreate = CreateCard.builder()
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
-                .tag(card.getTag())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
                 .categories(List.of(UUID.randomUUID()))
                 .build();
 
@@ -256,10 +269,10 @@ public class CardAggregateTests {
         assertTrue(exception.getErrors().contains(categoryError));
 
         UpdateCard toUpdate = UpdateCard.builder()
-                .id(card.getId())
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
-                .tag(card.getTag())
+                .id(cardForSave.getId())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
                 .categories(List.of(UUID.randomUUID()))
                 .build();
 
@@ -268,7 +281,7 @@ public class CardAggregateTests {
                 .field("categories")
                 .build();
 
-        when(cardQueryRepository.get(card.getId())).thenReturn(card);
+        when(cardQueryRepository.get(cardForSave.getId())).thenReturn(card);
 
         exception = assertThrows(CommandValidationException.class,
                 () -> cardAggregate.handle(toUpdate));
@@ -281,10 +294,10 @@ public class CardAggregateTests {
         when(categoryQueryRepository.get(category.getId())).thenReturn(category);
 
         CreateCard toCreate = CreateCard.builder()
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
-                .tag(card.getTag())
-                .categories(card.getCategories())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
                 .build();
 
         ErrorEntry duplicateError = ErrorEntry.builder()
@@ -294,7 +307,6 @@ public class CardAggregateTests {
 
         CommandValidationException exception = assertThrows(CommandValidationException.class,
                 () -> cardAggregate.handle(toCreate));
-        System.out.print(exception.getErrors());
         assertTrue(exception.getErrors().contains(duplicateError));
     }
 
@@ -302,9 +314,9 @@ public class CardAggregateTests {
     public void shouldThrowNullQuestion() {
         CreateCard toCreate = CreateCard.builder()
                 .question(null)
-                .answer(card.getAnswer())
-                .tag(card.getTag())
-                .categories(card.getCategories())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
                 .build();
 
         ErrorEntry constraintError = ErrorEntry.builder()
@@ -318,10 +330,10 @@ public class CardAggregateTests {
         assertTrue(exception.getErrors().contains(constraintError));
 
         UpdateCard toUpdate = UpdateCard.builder()
-                .id(card.getId())
+                .id(cardForSave.getId())
                 .question(null)
-                .answer(card.getAnswer())
-                .tag(card.getTag())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
                 .categories(List.of())
                 .build();
 
@@ -333,10 +345,10 @@ public class CardAggregateTests {
     @Test
     public void shouldThrowNullAnswer() {
         CreateCard toCreate = CreateCard.builder()
-                .question(card.getQuestion())
+                .question(cardForSave.getQuestion())
                 .answer(null)
-                .tag(card.getTag())
-                .categories(card.getCategories())
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
                 .build();
 
         ErrorEntry constraintError = ErrorEntry.builder()
@@ -350,10 +362,10 @@ public class CardAggregateTests {
         assertTrue(exception.getErrors().contains(constraintError));
 
         UpdateCard toUpdate = UpdateCard.builder()
-                .id(card.getId())
-                .question(card.getQuestion())
+                .id(cardForSave.getId())
+                .question(cardForSave.getQuestion())
                 .answer(null)
-                .tag(card.getTag())
+                .tag(cardForSave.getTag())
                 .categories(List.of())
                 .build();
 
@@ -365,10 +377,10 @@ public class CardAggregateTests {
     @Test
     public void shouldThrowNullTag() {
         CreateCard toCreate = CreateCard.builder()
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
                 .tag(null)
-                .categories(card.getCategories())
+                .categories(cardForSave.getCategories())
                 .build();
 
         ErrorEntry constraintError = ErrorEntry.builder()
@@ -382,9 +394,9 @@ public class CardAggregateTests {
         assertTrue(exception.getErrors().contains(constraintError));
 
         UpdateCard toUpdate = UpdateCard.builder()
-                .id(card.getId())
-                .question(card.getQuestion())
-                .answer(card.getAnswer())
+                .id(cardForSave.getId())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
                 .tag(null)
                 .categories(List.of())
                 .build();

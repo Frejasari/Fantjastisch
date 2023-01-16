@@ -8,9 +8,9 @@ import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.category.Category;
 import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository;
 import de.fantjastisch.cards_backend.util.validation.CommandValidationException;
+import de.fantjastisch.cards_backend.util.validation.EntityDoesNotExistException;
 import de.fantjastisch.cards_backend.util.validation.Validator;
 import de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -93,9 +93,7 @@ public class CardValidator extends Validator {
     private void throwIfCardDoesNotExist(final UUID cardId) {
         Card card = cardQueryRepository.get(cardId);
         if (card == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Entity not found"
-            );
+            throw new EntityDoesNotExistException(cardId, "id");
         }
     }
 
@@ -114,7 +112,7 @@ public class CardValidator extends Validator {
                 (card -> card.getQuestion().equals(question)
                         && card.getAnswer().equals(answer)
                         && card.getTag().equals(tag)
-                        && card.getCategories().equals(categories)).toList();
+                        && card.getCategories().stream().map(Card.Category::getId).toList().equals(categories)).toList();
         if (!duplicateCard.isEmpty()) {
             return Collections.singletonList(
                     ErrorEntry.builder()
