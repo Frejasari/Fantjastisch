@@ -45,6 +45,6 @@ public class LearningSystemCommandRepository {
         return new MapSqlParameterSource()
                 .addValue("id", learningSystem.getId())
                 .addValue("label", learningSystem.getLabel())
-                .addValue("box_labels", learningSystem.getBoxLabels());
+                .addValue("box_labels", learningSystem.getBoxLabels().toArray());
     }
 }

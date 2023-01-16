@@ -12,13 +12,13 @@ import de.fantjastisch.cards_backend.category.repository.CategoryCommandReposito
 import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository;
 import de.fantjastisch.cards_backend.util.UUIDGenerator;
 import de.fantjastisch.cards_backend.util.validation.CommandValidationException;
+import de.fantjastisch.cards_backend.util.validation.EntityDoesNotExistException;
 import de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
@@ -246,8 +246,8 @@ public class CardAggregateTests {
                 .categories(Collections.singletonList(category.getId()))
                 .build();
 
-        assertThrows(ResponseStatusException.class, () -> cardAggregate.handle(toDelete));
-        assertThrows(ResponseStatusException.class, () -> cardAggregate.handle(toUpdate));
+        assertThrows(EntityDoesNotExistException.class, () -> cardAggregate.handle(toDelete));
+        assertThrows(EntityDoesNotExistException.class, () -> cardAggregate.handle(toUpdate));
     }
 
     @Test

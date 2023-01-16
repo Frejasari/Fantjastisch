@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
+/**
+ * Test Klasse für die Category Repositories
+ *
+ * @author Freja Sender
+ */
 
 @SpringBootTest
 @Sql({"file:src/main/resources/schema.sql", "file:src/test/resources/test-data.sql"})

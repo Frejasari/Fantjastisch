@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS public.learning_systems
 (
     id UUID PRIMARY KEY,
     label TEXT NOT NULL,
-    num_boxes INTEGER
+    box_labels TEXT ARRAY
 );
 
 CREATE TABLE IF NOT EXISTS public.categories_to_cards
