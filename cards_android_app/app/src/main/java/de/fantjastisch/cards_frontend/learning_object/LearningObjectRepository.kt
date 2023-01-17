@@ -1,20 +1,30 @@
 package de.fantjastisch.cards_frontend.learning_object
 
-import androidx.room.*
+import org.openapitools.client.models.ErrorResponseEntity
 
-class LearningObjectRepository(private val dao: LearningObjectDao): LearningObjectDao by dao
 
-@Dao
-interface LearningObjectDao {
-    @Query("SELECT * FROM learning_object")
-    fun getAll(): List<LearningObject>
+class LearningObjectRepository(val repository: InternalLearningObjectRepository) {
 
-    @Query("SELECT * FROM learning_object WHERE id = :id")
-    fun findById(id: String): LearningObject
+    fun getAll(): List<LearningObject>{
+        return repository.getAll()
+    }
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(learningObject: LearningObject)
+    fun findById(id: String) : LearningObject {
+        return repository.findById(id)
+    }
 
-    @Query("delete from learning_object where id=:id")
-    fun delete(id: String)
+    fun insert(learningObject: LearningObject,
+               onSuccess: () -> Unit,
+               onFailure: (errors: ErrorResponseEntity?) -> Unit){
+        try {
+            repository.insert(learningObject)
+            onSuccess()
+        } catch (ex: Throwable) {
+            onFailure(null)
+        }
+    }
+
+    fun delete(id: String) {
+        return repository.delete(id)
+    }
 }

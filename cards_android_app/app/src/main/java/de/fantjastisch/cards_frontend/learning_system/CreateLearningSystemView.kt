@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import java.util.*
 
 //TODO Fehler anzeigen.
@@ -43,16 +44,12 @@ fun CreateLearningSystemView(
                     .verticalScroll(rememberScrollState())
                     .fillMaxSize()
     ) {
-        OutlinedTextField(
-                maxLines = 1,
-                keyboardActions = KeyboardActions(
-                        onDone = { viewModel.onAddLearningSystemClicked() },
-                ),
-                modifier = Modifier.fillMaxWidth(),
+        OutlinedTextFieldWithErrors(
                 value = viewModel.learningSystemLabel.value,
                 onValueChange = { viewModel.learningSystemLabel.value = it },
-                placeholder = { Text(text = stringResource(id = R.string.create_category_label_text)) },
-                label = { Text(text = "Bezeichnung") }
+                placeholder = stringResource(id = R.string.create_category_label_text),
+                errors = viewModel.errors.value,
+                field = "label",
         )
         Divider()
         OutlinedTextField(
@@ -65,33 +62,19 @@ fun CreateLearningSystemView(
                 value = if (viewModel.numBoxes.value == 0) "" else viewModel.numBoxes.value.toString(),
                 onValueChange = { viewModel.onBoxesSelected(it) },
                 placeholder = { Text(text = stringResource(id = R.string.select_num_of_boxes_label)) },
-                label = { Text(text = "Anzahl der Lernkästen") }
+                label = { Text(text = "Anzahl der Lernkästen") },
+                isError = viewModel.numBoxes.value == 0
         )
-//        repeat (viewModel.numBoxes.value) { index ->
-//            OutlinedTextField(
-//                    maxLines = 1,
-//                    modifier = Modifier.fillMaxWidth(),
-//                    value = viewModel.learningSystemBoxLabels.value[index],
-//                    onValueChange = { viewModel.learningSystemBoxLabels.value[index] = it },
-//                    placeholder = { Text(text = stringResource(id = R.string.create_category_label_text)) },
-//                    label = { Text(text = "Box " + (index + 1).toString()) }
-//            )
-//        }
 
         viewModel.learningSystemBoxLabels.value.forEachIndexed { index, element ->
-            OutlinedTextField(
-                    maxLines = 1,
-                    modifier = Modifier.fillMaxWidth(),
+            OutlinedTextFieldWithErrors(
                     value = viewModel.learningSystemBoxLabels.value[index],
                     onValueChange = { viewModel.onBoxLabelChanged(index, it) },
-                    placeholder = { Text(text = stringResource(id = R.string.create_category_label_text)) },
-                    label = { Text(text = "Box " + (index + 1).toString()) }
+                    placeholder = stringResource(id = R.string.create_category_label_text),
+                    errors = viewModel.errors.value,
+                    field = "boxLabels",
             )
         }
-        Text(
-                text = "Karten aus Kategorien hinzufügen",
-                style = MaterialTheme.typography.titleMedium
-        )
         FilledTonalButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = viewModel::onAddLearningSystemClicked
@@ -101,11 +84,11 @@ fun CreateLearningSystemView(
     }
 
     val navigator = LocalNavigator.currentOrThrow
-// einmaliger Effekt
+    // einmaliger Effekt
     LaunchedEffect(
-// wenn sich diese Variable ändert
+            // wenn sich diese Variable ändert
             key1 = viewModel.isFinished.value,
-// dann wird dieses Lambda ausgeführt.
+            // dann wird dieses Lambda ausgeführt.
             block = {
                 if (viewModel.isFinished.value) {
                     navigator.pop()

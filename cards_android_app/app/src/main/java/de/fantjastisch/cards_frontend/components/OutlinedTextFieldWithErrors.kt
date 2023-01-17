@@ -1,6 +1,7 @@
 package de.fantjastisch.cards_frontend.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -13,12 +14,13 @@ import org.openapitools.client.models.ErrorEntryEntity
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OutlinedTextFieldWithErrors(
-    maxLines: Int = 1,
-    value: String,
-    onValueChange: (String) -> Unit,
-    placeholder: String,
-    errors: List<ErrorEntryEntity>,
-    field: String
+        maxLines: Int = 1,
+        value: String,
+        onValueChange: (String) -> Unit,
+        placeholder: String,
+        errors: List<ErrorEntryEntity>,
+        keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+        field: String
 ) {
     val error = errors.find { it.field == field }
     OutlinedTextField(
@@ -36,5 +38,6 @@ fun OutlinedTextFieldWithErrors(
         },
         onValueChange = onValueChange,
         placeholder = { Text(text = placeholder) },
+        keyboardOptions = keyboardOptions
     )
 }

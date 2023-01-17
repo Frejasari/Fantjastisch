@@ -43,7 +43,6 @@ public class UpdateLearningSystem implements Commandable {
             example = "4-boxen-system")
     private String label;
 
-    @NotBlank
     @NotNull
     @Schema(
             description = "An array of child-category UUIDs.",
