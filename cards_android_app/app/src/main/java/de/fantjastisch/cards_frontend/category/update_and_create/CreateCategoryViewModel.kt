@@ -1,7 +1,9 @@
-package de.fantjastisch.cards_frontend.category
+package de.fantjastisch.cards_frontend.category.update_and_create
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import de.fantjastisch.cards_frontend.category.CategoryRepository
+import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import org.openapitools.client.models.CreateCategoryEntity
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*

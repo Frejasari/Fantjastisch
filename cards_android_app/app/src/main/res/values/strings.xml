@@ -16,7 +16,11 @@
   <string name="menu_create_card">Neue Karte</string>
   <string name="create_category_headline">Kategorie erstellen</string>
   <string name="create_card_headline">Karte erstellen</string>
+  <string name="update_card_headline">Karte bearbeiten</string>
   <string name="create_learningobject_headline">Lernobjekt erstellen</string>
   <string name="create_learningSystem_headline">Lernsystem erstellen</string>
   <string name="select_num_of_boxes_label">Anzahl der Lernkästen wählen</string>
+  <string name="card_menu_update">Bearbeiten</string>
+  <string name="card_menu_delete">Löschen</string>
+  <string name="delete_card_dialog_title">Möchtest du die Karte wirklich löschen?</string>
 </resources>

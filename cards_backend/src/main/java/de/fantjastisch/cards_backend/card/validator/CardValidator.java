@@ -2,7 +2,6 @@ package de.fantjastisch.cards_backend.card.validator;
 
 import de.fantjastisch.cards_backend.card.Card;
 import de.fantjastisch.cards_backend.card.aggregate.CreateCard;
-import de.fantjastisch.cards_backend.card.aggregate.DeleteCard;
 import de.fantjastisch.cards_backend.card.aggregate.UpdateCard;
 import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.category.Category;
@@ -80,9 +79,8 @@ public class CardValidator extends Validator {
         throwIfNeeded(errors);
     }
 
-    public void validate(DeleteCard command) {
-        throwIfNeeded(validateConstraints(command));
-        throwIfCardDoesNotExist(command.getId());
+    public void validateDelete(UUID cardId) {
+        throwIfCardDoesNotExist(cardId);
     }
 
     public void validateGet(UUID cardId) {

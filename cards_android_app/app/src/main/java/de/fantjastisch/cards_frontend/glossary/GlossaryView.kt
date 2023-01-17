@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card
+package de.fantjastisch.cards_frontend.glossary
 
 //import de.fantjastisch.cards_frontend.category.CategoryGraphFragment
 import androidx.compose.foundation.layout.*
@@ -10,17 +10,27 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import de.fantjastisch.cards_frontend.card.CardContextMenu
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@Preview
 fun GlossaryView(
     modifier: Modifier = Modifier
 ) {
+
     val viewModel = viewModel { GlossaryViewModel() }
-    LaunchedEffect(key1 = Unit, block = { viewModel.onPageLoaded() })
+    LaunchedEffect(
+        // wenn sich diese Variable ändert
+        key1 = Unit,
+        // dann wird dieses Lambda ausgeführt.
+        block = {
+            viewModel.onPageLoaded()
+        })
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     LazyColumn(
         modifier = modifier
@@ -32,20 +42,37 @@ fun GlossaryView(
         items(viewModel.cards.value) { card ->
             Surface(
                 modifier = Modifier,
-                shadowElevation = 6.dp
+                shadowElevation = 6.dp,
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 16.dp),
-                ) {
-                    Text(
-                        modifier = Modifier,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        text = card.question
+
+                    ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .weight(weight = 1f, fill = false),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            text = card.question
+                        )
+                        CardContextMenu(
+                            cardId = card.id,
+                            tag = card.tag
+                        )
+                    }
+
+                    Divider(
+                        modifier = Modifier
+                            .padding(vertical = 6.dp)
                     )
-                    Divider(modifier = Modifier.padding(vertical = 6.dp))
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -65,8 +92,6 @@ fun GlossaryView(
                                     )
                                 })
                         }
-
-
                     }
                 }
             }

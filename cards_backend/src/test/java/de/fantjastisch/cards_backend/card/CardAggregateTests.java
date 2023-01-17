@@ -2,7 +2,6 @@ package de.fantjastisch.cards_backend.card;
 
 import de.fantjastisch.cards_backend.card.aggregate.CardAggregate;
 import de.fantjastisch.cards_backend.card.aggregate.CreateCard;
-import de.fantjastisch.cards_backend.card.aggregate.DeleteCard;
 import de.fantjastisch.cards_backend.card.aggregate.UpdateCard;
 import de.fantjastisch.cards_backend.card.repository.CardCommandRepository;
 import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
@@ -237,7 +236,7 @@ public class CardAggregateTests {
     @Test
     public void shouldThrowWhenCardNonExistent() {
 
-        DeleteCard toDelete = DeleteCard.builder().id(UUID.randomUUID()).build();
+        UUID toDelete = UUID.randomUUID();
         UpdateCard toUpdate = UpdateCard.builder()
                 .id(UUID.randomUUID())
                 .question(cardForSave.getQuestion())
