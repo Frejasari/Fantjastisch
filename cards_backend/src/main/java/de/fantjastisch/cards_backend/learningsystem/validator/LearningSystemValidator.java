@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.BOX_LABELS_IS_NULL_VIOLATION;
+
 /**
  * Diese Klasse stellt die Erweiterung der Basis-Klasse {@link Validator} dar und führt weitere Prüfungen durch,
  * welche an die mit Link verbundenen Anwendungsfälle angepasst sind.
@@ -42,8 +44,9 @@ public class LearningSystemValidator extends Validator {
      */
     public void validate(CreateLearningSystem command) {
         List<ErrorEntry> errors = new ArrayList<>();
-
         errors.addAll(validateConstraints(command));
+        throwIfNeeded(errors);
+        errors.addAll(checkIfBoxLabelsContainNull(command.getBoxLabels()));
         throwIfNeeded(errors);
     }
 
@@ -62,7 +65,8 @@ public class LearningSystemValidator extends Validator {
 
         errors.addAll(validateConstraints(command));
         throwIfNeeded(errors);
-
+        errors.addAll(checkIfBoxLabelsContainNull(command.getBoxLabels()));
+        throwIfNeeded(errors);
         throwIfLearningSystemDoesNotExist(command.getId());
     }
 
@@ -86,5 +90,17 @@ public class LearningSystemValidator extends Validator {
                     HttpStatus.NOT_FOUND, "Entity not found LearningSystemId: " + learningSystemId
             );
         }
+    }
+
+    private List<ErrorEntry> checkIfBoxLabelsContainNull(List<String> labels) {
+        List<ErrorEntry> errors = new ArrayList<>();
+        if (labels.contains(null) || labels.contains("")) {
+            errors.add(
+                    ErrorEntry.builder()
+                            .code(BOX_LABELS_IS_NULL_VIOLATION)
+                            .field("boxLabels")
+                            .build());
+        }
+        return errors;
     }
 }

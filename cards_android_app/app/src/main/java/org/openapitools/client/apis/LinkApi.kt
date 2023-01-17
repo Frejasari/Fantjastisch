@@ -17,8 +17,8 @@ interface LinkApi {
      * Create a new Link
      * 
      * Responses:
-     *  - 201: Created
      *  - 404: Not Found
+     *  - 201: Created
      *  - 422: Unprocessable Entity
      *
      * @param createLinkEntity 
@@ -31,8 +31,8 @@ interface LinkApi {
      * Delete a link
      * 
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
      * @param deleteLinkEntity 
@@ -45,8 +45,8 @@ interface LinkApi {
      * Get the Link from the given name and source
      * 
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
      * @param id 
@@ -59,8 +59,8 @@ interface LinkApi {
      * Get all links
      * 
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
      * @param id 
@@ -73,8 +73,8 @@ interface LinkApi {
      * Update a link
      * 
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
      * @param updateLinkEntity 

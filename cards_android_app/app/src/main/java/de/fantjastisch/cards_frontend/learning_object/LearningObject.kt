@@ -10,7 +10,6 @@ import java.util.UUID
 @Entity(tableName = "learning_object")
 data class LearningObject(
     @ColumnInfo(name = "label") val label: String,
-    @ColumnInfo(name = "progress", defaultValue="0") val progress: Int,
     @PrimaryKey val id: UUID = generateId()
 )
 

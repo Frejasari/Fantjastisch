@@ -17,8 +17,8 @@ interface CategoryApi {
      * Create a new category
      * 
      * Responses:
-     *  - 201: Created
      *  - 404: Not Found
+     *  - 201: Created
      *  - 422: Unprocessable Entity
      *
      * @param createCategoryEntity 
@@ -31,8 +31,8 @@ interface CategoryApi {
      * Delete a category
      * 
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
      * @param deleteCategoryEntity 
@@ -46,8 +46,8 @@ interface CategoryApi {
      * 
      * Responses:
      *  - 404: Not Found
-     *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param id 
      * @return [Call]<[CategoryEntity]>
@@ -72,8 +72,8 @@ interface CategoryApi {
      * Update a category
      * 
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
      * @param updateCategoryEntity 

@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import org.openapitools.client.models.CreateLearningSystemEntity
+import org.openapitools.client.models.ErrorEntryEntity
 
 class CreateLearningSystemViewModel(
         private val learningSystemRepository: LearningSystemRepository = LearningSystemRepository()
@@ -13,8 +14,8 @@ class CreateLearningSystemViewModel(
     // states, die vom view gelesen werden können -> automatisches Update vom View.
 
     val categories = mutableStateOf(listOf<CategorySelectItem>())
-    val learningSystems = mutableStateOf(listOf<LearningSystemSelectItem>())
-    val errors = mutableStateOf<String?>(null)
+    val error = mutableStateOf<String?>(null)
+    val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
     val isFinished = mutableStateOf(false)
 
     val learningSystemLabel = mutableStateOf("")
@@ -26,7 +27,7 @@ class CreateLearningSystemViewModel(
     }
 
     fun onAddLearningSystemClicked() {
-        errors.value = null
+        errors.value = emptyList()
         learningSystemRepository.createLearningsystem(
                 learningSystem = CreateLearningSystemEntity(
                         label = learningSystemLabel.value,
@@ -37,8 +38,12 @@ class CreateLearningSystemViewModel(
                     // on Success -> dialog schliessen, zur Category  übersicht?
                 },
                 onFailure = {
-                    // Fehler anzeigen:
-                    errors.value = "There is an error"
+                    if (it == null) {
+                        // Fehler anzeigen:
+                        error.value = "Irgendwas ist schief gelaufen"
+                    } else {
+                        errors.value = it.errors
+                    }
                 })
     }
 

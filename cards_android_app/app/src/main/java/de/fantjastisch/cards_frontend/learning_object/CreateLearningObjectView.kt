@@ -56,8 +56,9 @@ fun CreateLearningObjectView(
         )
         LearningSystemSelect(
                 modifier = Modifier.weight(1f),
-                learningSystems = viewModel.learningSystems.value,
-                onLearningSystemSelected = viewModel::onLearningSystemSelected,
+                items = viewModel.learningSystems.value,
+                selectedItem = viewModel.selectedSystem.value,
+                onItemSelected = viewModel::onLearningSystemSelected,
         )
         Divider()
         Text(
