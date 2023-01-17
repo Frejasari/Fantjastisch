@@ -58,5 +58,5 @@ class MainScreen : Screen {
 private val mainScreenTabs = listOf(
     LearningTab,
     GlossaryTab,
-    CategoriesTab,
+    CategoriesTab
 )

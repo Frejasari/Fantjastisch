@@ -53,11 +53,10 @@ class CreateCardViewModel(
                 answer = cardAnswer.value,
                 tag = cardTag.value,
                 categories = cardCategories.value.filter { it.isChecked }
-                    .map { it.id }//cardCategories.value,
+                    .map { it.id }
             ),
             onSuccess = {
                 isFinished.value = true
-                // on Success -> dialog schliessen, zur Card  übersicht?
             },
             onFailure = {
                 if (it == null) {

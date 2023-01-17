@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -19,8 +21,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun GlossaryView(
     modifier: Modifier = Modifier
 ) {
+    val navigator = LocalNavigator.currentOrThrow
     val viewModel = viewModel { GlossaryViewModel() }
-    LaunchedEffect(key1 = Unit, block = { viewModel.onPageLoaded() })
+    LaunchedEffect(
+        // wenn sich diese Variable ändert
+        key1 = Unit,
+        // dann wird dieses Lambda ausgeführt.
+        block = {
+            viewModel.onPageLoaded()
+        })
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     LazyColumn(
         modifier = modifier
@@ -32,12 +41,15 @@ fun GlossaryView(
         items(viewModel.cards.value) { card ->
             Surface(
                 modifier = Modifier,
-                shadowElevation = 6.dp
+                shadowElevation = 6.dp,
+                onClick = {
+                    navigator.push(UpdateCardFragment(card.id))}
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 16.dp),
+
                 ) {
                     Text(
                         modifier = Modifier,
