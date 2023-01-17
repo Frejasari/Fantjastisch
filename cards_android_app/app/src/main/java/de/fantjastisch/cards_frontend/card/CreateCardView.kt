@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
@@ -22,12 +21,13 @@ import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import org.openapitools.client.models.ErrorEntryEntity
 
+
 //TODO Fehler anzeigen.
 @Composable
-fun CreateCardView(
-    modifier: Modifier = Modifier
+fun UpdateAndCreateCardView(
+    modifier: Modifier = Modifier,
+    viewModel: CardViewModel
 ) {
-    val viewModel = viewModel { CreateCardViewModel() }
 
     // Componente die ihre Kinder untereinander anzeigt.
     Column(
@@ -68,7 +68,7 @@ fun CreateCardView(
         )
         FilledTonalButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = viewModel::onAddCardClicked
+            onClick = viewModel::save
         ) {
             Text(text = stringResource(R.string.create_card_save_button_text))
         }

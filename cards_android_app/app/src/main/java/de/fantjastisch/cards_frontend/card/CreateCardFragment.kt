@@ -24,7 +24,8 @@ class CreateCardFragment : AndroidScreen() {
             )
         })
         {
-            CreateCardView(modifier = Modifier.padding(it))
+            UpdateAndCreateCardView(modifier = Modifier.padding(it),
+                viewModel = CreateCardViewModel())
         }
     }
 }

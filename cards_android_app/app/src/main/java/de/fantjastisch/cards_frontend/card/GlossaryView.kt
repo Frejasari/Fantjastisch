@@ -63,7 +63,10 @@ fun GlossaryView(
                             overflow = TextOverflow.Ellipsis,
                             text = card.question
                         )
-                        CardContextMenu(navigator = navigator, cardId = card.id)
+                        CardContextMenu(
+                            navigator = navigator,
+                            cardId = card.id
+                        )
                     }
 
                     Divider(
