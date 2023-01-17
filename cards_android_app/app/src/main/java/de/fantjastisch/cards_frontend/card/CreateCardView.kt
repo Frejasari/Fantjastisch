@@ -38,7 +38,7 @@ fun UpdateAndCreateCardView(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         OutlinedTextFieldWithErrors(
-            maxLines = 1,
+            maxLines = 3,
             value = viewModel.cardQuestion.value,
             errors = viewModel.errors.value,
             onValueChange = { viewModel.cardQuestion.value = it },
@@ -46,7 +46,7 @@ fun UpdateAndCreateCardView(
             field = "question"
         )
         OutlinedTextFieldWithErrors(
-            maxLines = 1,
+            maxLines = 5,
             value = viewModel.cardAnswer.value,
             errors = viewModel.errors.value,
             onValueChange = { viewModel.cardAnswer.value = it },
