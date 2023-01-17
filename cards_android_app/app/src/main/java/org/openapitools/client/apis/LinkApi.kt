@@ -45,8 +45,8 @@ interface LinkApi {
      * Get the Link from the given name and source
      * 
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
      * @param id 

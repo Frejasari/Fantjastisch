@@ -61,6 +61,7 @@ interface CardApi {
      *  - 404: Not Found
      *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param categoryFilter  (optional)
      * @param search  (optional)

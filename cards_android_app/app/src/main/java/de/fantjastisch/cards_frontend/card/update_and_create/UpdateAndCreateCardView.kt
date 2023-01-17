@@ -102,6 +102,7 @@ fun mapError(code: ErrorEntryEntity.Code): String {
         ErrorEntryEntity.Code.sUBCATEGORYISNULLVIOLATION -> "Subkategorien dürfen nicht null sein"
         ErrorEntryEntity.Code.eNTITYDOESNOTEXIST -> "Entität exisitert nicht"
         ErrorEntryEntity.Code.cARDDUPLICATEVIOLATION -> "Karte existiert schon."
+        ErrorEntryEntity.Code.bOXLABELSISNULLVIOLATION -> "Die Box Labels dürfen nicht leer sein."
     }
 }
 

@@ -33,7 +33,6 @@ public class CreateLearningSystem implements Commandable {
             example = "4-Boxen-System")
     private String label;
 
-    @NotBlank
     @NotNull
     @Schema(
             description = "A List of Strings representing box labels.",
