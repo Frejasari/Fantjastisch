@@ -10,10 +10,10 @@ import java.util.*
 
 class CreateCardViewModel(
     private val cardRepository: CardRepository = CardRepository(),
-    private val categoryRepository: CategoryRepository = CategoryRepository()
+    categoryRepository: CategoryRepository = CategoryRepository()
 ) : ViewModel() {
 
-    // states, die vom view gelesen werden können -> automatisches Update vom View.
+    // states, die vom View gelesen werden können -> automatisches Update vom View.
     val card = mutableStateOf(listOf<CardSelectItem>())
     val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
     val error = mutableStateOf<String?>(null)
@@ -60,12 +60,11 @@ class CreateCardViewModel(
             },
             onFailure = {
                 if (it == null) {
+                    // Fehler anzeigen:
                     error.value = "Irgendwas ist schief gelaufen"
                 } else {
                     errors.value = it.errors
                 }
-                // Fehler anzeigen:
-                error.value = "There is an error"
             }
         )
     }

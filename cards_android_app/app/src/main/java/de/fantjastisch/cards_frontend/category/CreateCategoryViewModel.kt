@@ -3,6 +3,7 @@ package de.fantjastisch.cards_frontend.category
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import org.openapitools.client.models.CreateCategoryEntity
+import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
 class CreateCategoryViewModel(
@@ -12,7 +13,8 @@ class CreateCategoryViewModel(
 
     // states, die vom view gelesen werden können -> automatisches Update vom View.
     val categories = mutableStateOf(listOf<CategorySelectItem>())
-    val errors = mutableStateOf<String?>(null)
+    val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
+    val error = mutableStateOf<String?>(null)
     val isFinished = mutableStateOf(false)
 
     val categoryLabel = mutableStateOf("")
@@ -21,7 +23,8 @@ class CreateCategoryViewModel(
     init {
         categoryRepository.getPage(
             onSuccess = {
-                errors.value = null
+                errors.value = emptyList()
+                error.value = null
                 categories.value = it.map { category ->
                     CategorySelectItem(
                         id = category.id,
@@ -31,7 +34,7 @@ class CreateCategoryViewModel(
                 }
             },
             onFailure = {
-                errors.value = "Da ist aber was kaputt gegangen, hihi"
+                error.value = "Da ist aber was kaputt gegangen, hihi"
             },
         )
     }
@@ -47,7 +50,8 @@ class CreateCategoryViewModel(
     }
 
     fun onAddCategoryClicked() {
-        errors.value = null
+        errors.value = emptyList()
+        error.value = null
         categoryRepository.createCategory(
             category = CreateCategoryEntity(
                 label = categoryLabel.value,
@@ -59,7 +63,12 @@ class CreateCategoryViewModel(
             },
             onFailure = {
                 // Fehler anzeigen:
-                errors.value = "There is an error"
+                if (it == null) {
+                    // Fehler anzeigen:
+                    error.value = "Irgendwas ist schief gelaufen"
+                } else {
+                    errors.value = it.errors
+                }
             }
         )
     }

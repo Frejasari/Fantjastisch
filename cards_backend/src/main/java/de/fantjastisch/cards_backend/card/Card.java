@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * Diese Klasse stellt das Modell einer Karteikarte dar, externe Kommunikation über die API.
  *
- * @Author Tamari Bayer, Jessica Repty, Freja Sender
+ * @author Tamari Bayer, Jessica Repty, Freja Sender
  */
 @Builder
 @Data // getter, setter, toString

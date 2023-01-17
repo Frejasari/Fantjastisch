@@ -42,7 +42,7 @@ fun QuestionInput(
 
 class QuestionInputViewModel(
     private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository(
-        AppDatabase.database.cardDao()
+        AppDatabase.database.learningObjectDao()
     ),
 ) : ViewModel() {
 
@@ -53,8 +53,8 @@ class QuestionInputViewModel(
         viewModelScope.launch {
             learningObjectRepository.insert(
                 LearningObject(
-                    question = question.value,
-                    answer = answer.value
+                    label = question.value,
+                    progress = 0
                 )
             )
         }

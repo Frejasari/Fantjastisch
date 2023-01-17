@@ -14,6 +14,8 @@ import cafe.adriel.voyager.navigator.tab.TabNavigator
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CreateCardFragment
 import de.fantjastisch.cards_frontend.category.CreateCategoryFragment
+import de.fantjastisch.cards_frontend.learning_object.CreateLearningObjectFragment
+import de.fantjastisch.cards_frontend.learning_system.CreateLearningSystemFragment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,10 +56,14 @@ fun TopBar(
                         })
                     DropdownMenuItem(
                         text = { Text("Neues Lernsystem") },
-                        onClick = { /* Handle ! */ })
+                        onClick = { isAddMenuOpen.value = false
+                            navigator.push(CreateLearningSystemFragment()) })
                     DropdownMenuItem(
                         text = { Text("Neues Lernobjekt") },
-                        onClick = { /* Handle ! */ })
+                        onClick = {
+                            isAddMenuOpen.value = false
+                            navigator.push(CreateLearningObjectFragment())
+                        })
                 }
             }
 

@@ -24,7 +24,7 @@ import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
  * Diese Klasse stellt die Erweiterung der Basis-Klasse {@link Validator} dar und führt weitere Prüfungen durch,
  * welche an die mit Kategorien verbundenen Anwendungsfälle angepasst sind.
  *
- * @Author Semjon Nirmann, Freja Sender
+ * @author Semjon Nirmann, Freja Sender
  */
 @Component
 public class CategoryValidator extends Validator {

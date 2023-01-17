@@ -25,7 +25,7 @@ import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
  * Diese Klasse stellt die Erweiterung der Basis-Klasse {@link Validator} dar und führt weitere Prüfungen durch,
  * welche an die mit Karteikarten verbundenen Anwendungsfälle angepasst sind.
  *
- * @Author Tamari Bayer, Jessica Repty, Freja Sender
+ * @author Tamari Bayer, Jessica Repty, Freja Sender
  */
 @Component
 public class CardValidator extends Validator {
@@ -55,8 +55,7 @@ public class CardValidator extends Validator {
 
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(checkIfCategoriesExist(command.getCategories()));
-        errors.addAll(validateCardTaken(command.getQuestion(), command.getAnswer(), command.getTag(), command.getCategories(),
-                cardQueryRepository.getPage(null, null, null, false)));
+        errors.addAll(validateCardTaken(command.getQuestion(), command.getAnswer(), command.getTag(), command.getCategories()));
         throwIfNeeded(errors);
     }
 
@@ -104,10 +103,10 @@ public class CardValidator extends Validator {
      * @param answer     Die zu überprüfende Antwort.
      * @param tag        Der zu überprüfende Tag.
      * @param categories Die zu überprüfende Liste von UUIDs, die Instanzen {@link Category} sind.
-     * @param cards      Die Liste aller Karteikarten.
      * @return Die Liste aller Fehlermeldungen, die ermittelt wurden.
      */
-    private List<ErrorEntry> validateCardTaken(String question, String answer, String tag, List<UUID> categories, List<Card> cards) {
+    private List<ErrorEntry> validateCardTaken(String question, String answer, String tag, List<UUID> categories) {
+        List<Card> cards = cardQueryRepository.getPage(null, null, tag, false);
         List<Card> duplicateCard = cards.stream().filter
                 (card -> card.getQuestion().equals(question)
                         && card.getAnswer().equals(answer)

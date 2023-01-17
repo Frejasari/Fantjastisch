@@ -15,7 +15,7 @@ import java.util.UUID;
  * Das CardAggregate stellt die Verbindung zwischen dem Controller und dem Persistance-Layer her, fungiert also
  * als Command-Handler für CRUD-Kommando-Objekte, welcher die eingehenden Kommandos vorher mit dem {@link CardValidator} validiert.
  *
- * @Author Tamari Bayer, Jessica Repty, Freja Sender
+ * @author Tamari Bayer, Jessica Repty, Freja Sender
  */
 @Component
 public class CardAggregate {

@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category
+package de.fantjastisch.cards_frontend.learning_system
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
@@ -8,7 +8,7 @@ import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 
-class CreateCategoryFragment : AndroidScreen() {
+class CreateLearningSystemFragment : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -20,11 +20,10 @@ class CreateCategoryFragment : AndroidScreen() {
                         titleContentColor = MaterialTheme.colorScheme.onPrimary,
                         actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                     ),
-                    title = { Text(text = stringResource(id = R.string.create_category_headline)) },
+                    title = { Text(text = stringResource(R.string.create_learningSystem_headline)) },
                 )
             }) {
-            CreateCategoryView(modifier = Modifier.padding(it))
-
+            CreateLearningSystemView(modifier = Modifier.padding(it))
         }
     }
 }

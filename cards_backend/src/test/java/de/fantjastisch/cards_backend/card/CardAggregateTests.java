@@ -290,7 +290,7 @@ public class CardAggregateTests {
 
     @Test
     public void shouldThrowWhenDuplicateCard() {
-        when(cardQueryRepository.getPage(null, null, null, false)).thenReturn(Collections.singletonList(card));
+        when(cardQueryRepository.getPage(null, null, card.getTag(), false)).thenReturn(Collections.singletonList(card));
         when(categoryQueryRepository.get(category.getId())).thenReturn(category);
 
         CreateCard toCreate = CreateCard.builder()

@@ -30,13 +30,13 @@ import com.squareup.moshi.Json
 data class LearningSystemEntity (
 
     @Json(name = "id")
-    val id: java.util.UUID? = null,
+    val id: java.util.UUID,
 
     @Json(name = "label")
-    val label: kotlin.String? = null,
+    val label: kotlin.String,
 
     @Json(name = "boxLabels")
-    val boxLabels: kotlin.collections.List<kotlin.String>? = null
+    val boxLabels: kotlin.collections.List<kotlin.String>
 
 )
 

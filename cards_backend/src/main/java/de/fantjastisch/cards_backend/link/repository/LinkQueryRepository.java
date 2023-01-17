@@ -17,7 +17,7 @@ import java.util.UUID;
  * <p>
  * Im Rahmen des Persistence-Layers wird die JDBC Bibliothek für die Low-Level-Interaktion mit der Datenbank genutzt.
  *
- * @author Jessica Repty
+ * @author Jessica Repty, Tamari Bayer
  */
 @Repository
 public class LinkQueryRepository {

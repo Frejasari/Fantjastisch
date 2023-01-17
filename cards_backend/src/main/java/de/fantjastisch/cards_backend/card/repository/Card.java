@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Diese Klasse stellt das Modell einer Karteikarte dar, zur internen Kommunikation mit der Datenbank.
  *
- * @Author Tamari Bayer, Freja Sender
+ * @author Tamari Bayer, Freja Sender
  */
 @Builder
 @Data // getter, setter, toString

@@ -16,9 +16,8 @@ import java.util.UUID;
  * Das LinkAggregate stellt die Verbindung zwischen dem Controller und dem Persistance-Layer her, fungiert also
  * als Command-Handler für CRUD-Kommando-Objekte, welcher die eingehenden Kommandos vorher mit dem {@link LinkValidator} validiert.
  *
- * @Author Jessica Repty, Tamari Bayer
+ * @author Jessica Repty, Tamari Bayer
  */
-
 @Component
 public class LinkAggregate {
 
