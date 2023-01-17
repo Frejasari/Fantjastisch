@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
@@ -22,7 +21,6 @@ import cafe.adriel.voyager.transitions.FadeTransition
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.GlossaryView
-import de.fantjastisch.cards_frontend.card.UpdateCardView
 import de.fantjastisch.cards_frontend.category.CategoryGraphFragment
 import java.util.*
 
@@ -54,21 +52,20 @@ object LearningTab : Tab {
     @Composable
     override fun Content() {
         Text(
-                modifier = Modifier.fillMaxSize(),
-                textAlign = TextAlign.Center,
-                text = "TODO! LearningOverviewFragment",
+            modifier = Modifier.fillMaxSize(),
+            textAlign = TextAlign.Center,
+            text = "TODO! LearningOverviewFragment",
         )
     }
 
     override val options: TabOptions
         // object: = innere anonyme klasse erzeugen
         @Composable get() = TabOptions(
-                index = 0u,
-                title = stringResource(id = R.string.menu_learning_object_overview_label),
-                icon = rememberVectorPainter(Icons.Default.TipsAndUpdates),
+            index = 0u,
+            title = stringResource(id = R.string.menu_learning_object_overview_label),
+            icon = rememberVectorPainter(Icons.Default.TipsAndUpdates),
         )
 }
-
 
 
 object GlossaryTab : Tab {
@@ -80,9 +77,9 @@ object GlossaryTab : Tab {
     override val options: TabOptions
         // object: = innere anonyme klasse erzeugen
         @Composable get() = TabOptions(
-                index = 1u,
-                title = stringResource(id = R.string.menu_glossar_label),
-                icon = painterResource(id = R.drawable.ic_menu_glossar),
+            index = 1u,
+            title = stringResource(id = R.string.menu_glossar_label),
+            icon = painterResource(id = R.drawable.ic_menu_glossar),
         )
 }
 
@@ -96,8 +93,8 @@ object CategoriesTab : Tab {
     override val options: TabOptions
         // object: = innere anonyme klasse erzeugen
         @Composable get() = TabOptions(
-                index = 2u,
-                title = stringResource(id = R.string.menu_categories_overview_label),
-                icon = painterResource(id = R.drawable.ic_menu_categories),
+            index = 2u,
+            title = stringResource(id = R.string.menu_categories_overview_label),
+            icon = painterResource(id = R.drawable.ic_menu_categories),
         )
 }
