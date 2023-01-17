@@ -7,8 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -23,7 +21,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 fun GlossaryView(
     modifier: Modifier = Modifier
 ) {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.currentOrThrow.parent!!
     val viewModel = viewModel { GlossaryViewModel() }
     LaunchedEffect(
         // wenn sich diese Variable ändert
@@ -45,14 +43,15 @@ fun GlossaryView(
                 modifier = Modifier,
                 shadowElevation = 6.dp,
                 onClick = {
-                    navigator.push(UpdateCardFragment(card.id))}
+                    navigator.push(UpdateCardFragment(card.id))
+                }
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 16.dp),
 
-                ) {
+                    ) {
                     Text(
                         modifier = Modifier,
                         maxLines = 1,
