@@ -5,11 +5,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import cafe.adriel.voyager.navigator.tab.Tab
 import de.fantjastisch.cards.R
 import java.util.*
 
-class UpdateCardFragment(val id: UUID) : AndroidScreen() {
+data class UpdateCardFragment(val id: UUID) : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -27,4 +31,17 @@ class UpdateCardFragment(val id: UUID) : AndroidScreen() {
             UpdateCardView(id = id, modifier = Modifier.padding(it))
         }
     }
+
+   // companion object : SingletonHolder<UpdateCardFragment, UUID>(::UpdateCardFragment)
 }
+/*
+open class SingletonHolder<out T, in A>(private val constructor: (A) -> T) {
+
+    @Volatile
+    private var instance: T? = null
+
+    fun getInstance(arg: A): T =
+        instance ?: synchronized(this) {
+            instance ?: constructor(arg).also { instance = it }
+        }
+}*/

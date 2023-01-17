@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
@@ -67,6 +68,7 @@ object LearningTab : Tab {
                 icon = rememberVectorPainter(Icons.Default.TipsAndUpdates),
         )
 }
+
 
 
 object GlossaryTab : Tab {

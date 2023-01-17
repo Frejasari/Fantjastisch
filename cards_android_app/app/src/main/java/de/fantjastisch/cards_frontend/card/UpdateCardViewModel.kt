@@ -9,7 +9,7 @@ import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.UpdateCardEntity
 import java.util.*
 
-class UpdateCardViewModel(
+class UpdateCardViewModel (
     private val id : UUID,
     private val cardRepository: CardRepository = CardRepository(),
     private val categoryRepository: CategoryRepository = CategoryRepository()
