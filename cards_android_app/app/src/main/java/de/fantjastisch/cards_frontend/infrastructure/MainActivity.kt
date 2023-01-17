@@ -20,7 +20,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.FadeTransition
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.card.GlossaryView
+import de.fantjastisch.cards_frontend.glossary.GlossaryView
 import de.fantjastisch.cards_frontend.category.CategoryGraphFragment
 import java.util.*
 

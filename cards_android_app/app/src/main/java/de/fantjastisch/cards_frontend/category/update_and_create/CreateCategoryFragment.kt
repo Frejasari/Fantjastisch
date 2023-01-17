@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category
+package de.fantjastisch.cards_frontend.category.update_and_create
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*

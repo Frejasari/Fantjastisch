@@ -1,13 +1,15 @@
-package de.fantjastisch.cards_frontend.card
+package de.fantjastisch.cards_frontend.card.update_and_create
 
 import androidx.compose.runtime.mutableStateOf
+import de.fantjastisch.cards_frontend.card.CardRepository
+import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import org.openapitools.client.models.CreateCardEntity
 
 class CreateCardViewModel(
     private val cardRepository: CardRepository = CardRepository(),
     categoryRepository: CategoryRepository = CategoryRepository()
-) : CardViewModel(
+) : UpdateAndCreateCardViewModel(
     cardRepository = cardRepository,
     categoryRepository = categoryRepository
 ) {

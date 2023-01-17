@@ -1,7 +1,8 @@
-package de.fantjastisch.cards_frontend.card
+package de.fantjastisch.cards_frontend.glossary
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import de.fantjastisch.cards_frontend.card.CardRepository
 import org.openapitools.client.models.CardEntity
 
 class GlossaryViewModel(

@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card
+package de.fantjastisch.cards_frontend.glossary
 
 //import de.fantjastisch.cards_frontend.category.CategoryGraphFragment
 import androidx.compose.foundation.layout.*
@@ -13,8 +13,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import de.fantjastisch.cards_frontend.card.CardContextMenu
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,7 +22,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 fun GlossaryView(
     modifier: Modifier = Modifier
 ) {
-    val navigator = LocalNavigator.currentOrThrow.parent!!
+
     val viewModel = viewModel { GlossaryViewModel() }
     LaunchedEffect(
         // wenn sich diese Variable ändert
@@ -58,14 +57,15 @@ fun GlossaryView(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            modifier = Modifier,
+                            modifier = Modifier
+                                .weight(weight = 1f, fill = false),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             text = card.question
                         )
                         CardContextMenu(
-                            navigator = navigator,
-                            cardId = card.id
+                            cardId = card.id,
+                            tag = card.tag
                         )
                     }
 

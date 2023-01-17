@@ -3,7 +3,6 @@ package de.fantjastisch.cards_backend.card.controller;
 import de.fantjastisch.cards_backend.card.Card;
 import de.fantjastisch.cards_backend.card.aggregate.CardAggregate;
 import de.fantjastisch.cards_backend.card.aggregate.CreateCard;
-import de.fantjastisch.cards_backend.card.aggregate.DeleteCard;
 import de.fantjastisch.cards_backend.card.aggregate.UpdateCard;
 import de.fantjastisch.cards_backend.util.CreatedResponse;
 import de.fantjastisch.cards_backend.util.ErrorResponse;
@@ -86,7 +85,7 @@ public class CardController {
     /**
      * Diese Funktion stellt den API-Endpunkt zum Löschen einer Link-Entität bereit.
      *
-     * @param command Eine Instanz der Klasse {@link DeleteCard}.
+     * @param id die Id der zu löschenden Karte
      */
     @DeleteMapping(path = "delete")
     @Operation(
@@ -95,8 +94,8 @@ public class CardController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json")})
     })
-    public void delete(@RequestBody DeleteCard command) throws RuntimeException {
-        cardAggregate.handle(command);
+    public void delete(@RequestParam UUID id) throws RuntimeException {
+        cardAggregate.handleDelete(id);
     }
 
     /**

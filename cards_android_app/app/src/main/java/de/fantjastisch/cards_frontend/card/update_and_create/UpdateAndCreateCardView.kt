@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.card.update_and_create.UpdateAndCreateCardViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import org.openapitools.client.models.ErrorEntryEntity
@@ -26,7 +27,7 @@ import org.openapitools.client.models.ErrorEntryEntity
 @Composable
 fun UpdateAndCreateCardView(
     modifier: Modifier = Modifier,
-    viewModel: CardViewModel
+    viewModel: UpdateAndCreateCardViewModel
 ) {
 
     // Componente die ihre Kinder untereinander anzeigt.

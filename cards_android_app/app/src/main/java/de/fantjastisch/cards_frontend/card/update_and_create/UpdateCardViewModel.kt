@@ -1,5 +1,6 @@
-package de.fantjastisch.cards_frontend.card
+package de.fantjastisch.cards_frontend.card.update_and_create
 
+import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import org.openapitools.client.models.UpdateCardEntity
@@ -9,7 +10,7 @@ class UpdateCardViewModel(
     id: UUID,
     private val cardRepository: CardRepository = CardRepository(),
     private val categoryRepository: CategoryRepository = CategoryRepository()
-) : CardViewModel(
+) : UpdateAndCreateCardViewModel(
     id = id,
     cardRepository = cardRepository,
     categoryRepository = categoryRepository

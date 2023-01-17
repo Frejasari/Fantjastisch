@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category
+package de.fantjastisch.cards_frontend.category.update_and_create
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import java.util.*
 

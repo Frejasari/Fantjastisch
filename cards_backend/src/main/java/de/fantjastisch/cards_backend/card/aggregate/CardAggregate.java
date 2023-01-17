@@ -84,11 +84,11 @@ public class CardAggregate {
     /**
      * Diese Funktion validiert und vermittelt eine Anfrage zum Löschen einer Karteikarte.
      *
-     * @param command Das CRUD-Kommando-Objekt zum Löschen einer Karteikarte.
+     * @param cardId Die Id der zu löschenden Karte
      */
-    public void handle(final DeleteCard command) {
-        cardValidator.validate(command);
-        cardCommandRepository.delete(command.getId());
+    public void handleDelete(final UUID cardId) {
+        cardValidator.validateDelete(cardId);
+        cardCommandRepository.delete(cardId);
     }
 
     /**

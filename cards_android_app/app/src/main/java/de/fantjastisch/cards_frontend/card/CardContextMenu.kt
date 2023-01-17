@@ -7,15 +7,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
-import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.category.CreateCategoryFragment
-import java.util.UUID
+import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
+import de.fantjastisch.cards_frontend.card.update_and_create.UpdateCardFragment
+import java.util.*
 
 
 @Composable
-fun CardContextMenu(navigator: Navigator, cardId: UUID) {
+fun CardContextMenu(cardId: UUID, tag: String) {
+    val navigator = LocalNavigator.currentOrThrow.parent!!
     val isMenuOpen = remember { mutableStateOf(false) }
+    val isDeleteDialogOpen = remember { mutableStateOf(false) }
 
     IconButton(onClick = { isMenuOpen.value = !isMenuOpen.value }) {
         Icon(Icons.Outlined.MoreVert, contentDescription = "context actions")
@@ -34,8 +38,13 @@ fun CardContextMenu(navigator: Navigator, cardId: UUID) {
                 text = { Text(text = stringResource(id = R.string.card_menu_delete)) },
                 onClick = {
                     isMenuOpen.value = false
-                    navigator.push(CreateCategoryFragment())
+                    isDeleteDialogOpen.value = true
                 })
         }
     }
+    DeleteCardDialog(
+        tag = tag,
+        cardId = cardId,
+        isOpen = isDeleteDialogOpen.value,
+        setIsOpen = { isDeleteDialogOpen.value = it })
 }

@@ -8,7 +8,6 @@ import com.squareup.moshi.Json
 
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CreateCardEntity
-import org.openapitools.client.models.DeleteCardEntity
 import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.UpdateCardEntity
 
@@ -17,8 +16,8 @@ interface CardApi {
      * 
      * Create a new Card
      * Responses:
-     *  - 201: Created
      *  - 404: Not Found
+     *  - 201: Created
      *  - 422: Unprocessable Entity
      *
      * @param createCardEntity 
@@ -31,22 +30,22 @@ interface CardApi {
      * 
      * Delete a card
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
-     * @param deleteCardEntity 
+     * @param id 
      * @return [Call]<[Unit]>
      */
     @DELETE("card/delete")
-    fun deleteCard(@Body deleteCardEntity: DeleteCardEntity): Call<Unit>
+    fun deleteCard(@Query("id") id: java.util.UUID): Call<Unit>
 
     /**
      * 
      * Get the Card from the given Id
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
      * @param id 
@@ -59,8 +58,8 @@ interface CardApi {
      * Get all cards
      * 
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
      * @param categoryFilter  (optional)
@@ -76,8 +75,8 @@ interface CardApi {
      * 
      * Update a card
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
      * @param updateCardEntity 
