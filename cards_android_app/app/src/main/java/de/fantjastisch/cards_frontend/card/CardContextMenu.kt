@@ -13,6 +13,7 @@ import de.fantjastisch.cards_frontend.category.CreateCategoryFragment
 import java.util.UUID
 
 
+
 @Composable
 fun CardContextMenu(navigator: Navigator, cardId: UUID) {
     val isMenuOpen = remember { mutableStateOf(false) }

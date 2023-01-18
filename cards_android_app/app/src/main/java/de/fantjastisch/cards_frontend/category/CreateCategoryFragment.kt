@@ -7,6 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.card.CreateCardViewModel
+import de.fantjastisch.cards_frontend.card.UpdateAndCreateCardView
 
 class CreateCategoryFragment : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -23,7 +25,9 @@ class CreateCategoryFragment : AndroidScreen() {
                     title = { Text(text = stringResource(id = R.string.create_category_headline)) },
                 )
             }) {
-            CreateCategoryView(modifier = Modifier.padding(it))
+            UpdateOrCreateCategoryView(modifier = Modifier.padding(it),
+                viewModel = CreateCategoryViewModel()
+            )
 
         }
     }

@@ -2,50 +2,48 @@ package de.fantjastisch.cards_frontend.category
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import de.fantjastisch.cards_frontend.card.CardSelectItem
+import de.fantjastisch.cards_frontend.card.CardViewModel
+import org.openapitools.client.models.CreateCardEntity
 import org.openapitools.client.models.CreateCategoryEntity
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
 class CreateCategoryViewModel(
     private val categoryRepository: CategoryRepository = CategoryRepository(),
-    // : ViewModel() = extends ViewModel
-) : ViewModel() {
+) : CategoryViewModel(
+    categoryRepository = categoryRepository) {
 
-    // states, die vom view gelesen werden können -> automatisches Update vom View.
+    val category = mutableStateOf(listOf<CategorySelectItem>())
     val categories = mutableStateOf(listOf<CategorySelectItem>())
-    val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
-    val error = mutableStateOf<String?>(null)
-    val isFinished = mutableStateOf(false)
-
     val categoryLabel = mutableStateOf("")
 
-    // constructor (wird ganz am Anfang aufgerufen)
-    init {
-        categoryRepository.getPage(
-            onSuccess = {
-                errors.value = emptyList()
-                error.value = null
-                categories.value = it.map { category ->
-                    CategorySelectItem(
-                        id = category.id,
-                        label = category.label,
-                        isChecked = false,
-                    )
-                }
-            },
-            onFailure = {
-                error.value = "Da ist aber was kaputt gegangen, hihi"
-            },
-        )
-    }
+    override fun save() {
+        error.value = null
+        errors.value = emptyList()
 
-    fun onCategorySelected(id: UUID) {
-        categories.value = categories.value.map {
-            if (it.id == id) {
-                it.copy(isChecked = !it.isChecked)
-            } else {
-                it
-            }
+        subcategories.value?.filter { it.isChecked }?.let {
+            CreateCategoryEntity(
+                label = catLabel.value,
+                subCategories = it
+                    .map { it.id },
+
+                )
+        }?.let {
+            categoryRepository.createCategory(
+                category = it,
+                onSuccess = {
+                    isFinished.value = true
+                },
+                onFailure = {
+                    if (it == null) {
+                        // Fehler anzeigen:
+                        error.value = "Irgendwas ist schief gelaufen"
+                    } else {
+                        errors.value = it.errors
+                    }
+                }
+            )
         }
     }
 

@@ -22,4 +22,7 @@
   <string name="select_num_of_boxes_label">Anzahl der Lernkästen wählen</string>
   <string name="card_menu_update">Bearbeiten</string>
   <string name="card_menu_delete">Löschen</string>
+  <string name="category_menu_update">Bearbeiten</string>
+  <string name="category_menu_delete">Löschen</string>
+  <string name="update_category_headline">Kategorie bearbeiten</string>
 </resources>

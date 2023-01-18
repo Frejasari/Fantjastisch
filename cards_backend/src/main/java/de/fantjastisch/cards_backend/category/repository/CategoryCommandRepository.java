@@ -24,7 +24,16 @@ public class CategoryCommandRepository {
      *
      * @param category Die Kategorie, welche in die Datenbank eingefügt werden soll.
      */
-    public void create(Category category) {
+    public void create(de.fantjastisch.cards_backend.category.repository.Category category) {
+        if(!category.getSubCategories().isEmpty()) {
+            for (int i = 0; i < category.getSubCategories().size(); i++) {
+                UUID categoryId = category.getSubCategories().get(i);
+                String sql = "INSERT INTO public.cat_to_subcat (cat_id, subcat_id) VALUES (:cat_id, :subcat_id)";
+                namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
+                        .addValue("cat_id", category.getId())
+                        .addValue("subcat_id", categoryId));
+            }
+        }
         final String sql = "INSERT INTO public.categories (id, label, sub_category_ids) VALUES (:id, :label, :sub_category_ids)";
 
         namedParameterJdbcTemplate.update(sql, toParameterSource(category));
@@ -46,13 +55,25 @@ public class CategoryCommandRepository {
      *
      * @param category Die aktualisierte Kategorie.
      */
-    public void update(Category category) {
+    public void update(de.fantjastisch.cards_backend.category.repository.Category category) {
+        if(!category.getSubCategories().isEmpty()) {
+         namedParameterJdbcTemplate.update("delete from public.cat_to_subcat cc where cc.cat_id = :category_id",
+                new MapSqlParameterSource()
+                        .addValue("category_id", category.getId()));
+
+            for (int i = 0; i < category.getSubCategories().size(); i++) {
+                UUID categoryId = category.getSubCategories().get(i);
+                String sql = "INSERT INTO public.cat_to_subcat (cat_id, subcat_id) VALUES (:cat_id, :subcat_id)";
+                namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
+                        .addValue("cat_id", category.getId())
+                        .addValue("subcat_id", categoryId));
+            }}
         final String sql = "UPDATE public.categories SET label = :label, sub_category_ids = :sub_category_ids WHERE id = :id";
         namedParameterJdbcTemplate.update(sql, toParameterSource(category));
     }
 
     //
-    private SqlParameterSource toParameterSource(Category category) {
+    private SqlParameterSource toParameterSource(de.fantjastisch.cards_backend.category.repository.Category category) {
         return new MapSqlParameterSource()
                 .addValue("id", category.getId())
                 .addValue("label", category.getLabel())

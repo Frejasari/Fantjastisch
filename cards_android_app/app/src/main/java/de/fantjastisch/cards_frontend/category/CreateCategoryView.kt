@@ -16,15 +16,16 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
+import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
 //TODO Fehler anzeigen.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateCategoryView(
-    modifier: Modifier = Modifier
+fun UpdateOrCreateCategoryView(
+    modifier: Modifier = Modifier,
+    viewModel : CategoryViewModel
 ) {
-    val viewModel = viewModel { CreateCategoryViewModel() }
 
     // Componente die ihre Kinder untereinander anzeigt.
     Column(
@@ -35,22 +36,24 @@ fun CreateCategoryView(
     ) {
         OutlinedTextFieldWithErrors(
             maxLines = 1,
-            value = viewModel.categoryLabel.value,
-            onValueChange = { viewModel.categoryLabel.value = it },
+            value = viewModel.catLabel.value,
+            onValueChange = { viewModel.catLabel.value = it },
             placeholder = stringResource(id = R.string.create_category_label_text),
             errors = viewModel.errors.value,
             field = "label"
         )
 
-        CategorySelect(
-            modifier = Modifier.weight(1f),
-            categories = viewModel.categories.value,
-            onCategorySelected = viewModel::onCategorySelected
-        )
+        viewModel.subcategories.value?.let {
+            CategorySelect(
+                modifier = Modifier.weight(1f),
+                categories = it,
+                onCategorySelected = viewModel::onCategorySelected
+            )
+        }
 
         FilledTonalButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = viewModel::onAddCategoryClicked
+            onClick = viewModel::save
         ) {
             Text(text = stringResource(R.string.create_category_save_button_text))
         }
@@ -68,5 +71,22 @@ fun CreateCategoryView(
             }
         })
 
+}
+
+fun mapError(code: ErrorEntryEntity.Code): String {
+    return when (code) {
+        ErrorEntryEntity.Code.cONSTRAINTVIOLATION -> "Darf nicht leer sein"
+        ErrorEntryEntity.Code.nOCATEGORIESVIOLATION -> "Darf nicht leer sein"
+        ErrorEntryEntity.Code.nOTNULLVIOLATION -> "Darf nicht leer sein"
+        ErrorEntryEntity.Code.nOTBLANKVIOLATION -> "Darf nicht blank sein"
+        ErrorEntryEntity.Code.lABELTAKENVIOLATION -> "Label schon vergeben"
+        ErrorEntryEntity.Code.cATEGORYDOESNTEXISTVIOLATION -> "Categorie existiert nicht"
+        ErrorEntryEntity.Code.sUBCATEGORYDOESNTEXISTVIOLATION -> "Categorie existiert nicht"
+        ErrorEntryEntity.Code.cATEGORYNOTEMPTYVIOLATION -> "Es muss eine Kategorie ausgewaehlt werden"
+        ErrorEntryEntity.Code.cYCLICSUBCATEGORYRELATIONVIOLATION -> "Zyklen sind nicht erlaubt"
+        ErrorEntryEntity.Code.sUBCATEGORYISNULLVIOLATION -> "Subkategorien dürfen nicht null sein"
+        ErrorEntryEntity.Code.eNTITYDOESNOTEXIST -> "Entität exisitert nicht"
+        ErrorEntryEntity.Code.cARDDUPLICATEVIOLATION -> "Karte existiert schon."
+    }
 }
 

@@ -45,7 +45,7 @@ public class CategoryAggregate {
     public UUID handle(final CreateCategory command) {
         categoryValidator.validate(command);
 
-        Category category = Category.builder()
+        final de.fantjastisch.cards_backend.category.repository.Category category = de.fantjastisch.cards_backend.category.repository.Category.builder()
                 .id(uuidGenerator.randomUUID())
                 .label(command.getLabel())
                 .subCategories(command.getSubCategories())
@@ -61,7 +61,7 @@ public class CategoryAggregate {
      */
     public void handle(final UpdateCategory command) {
         categoryValidator.validate(command);
-        final Category updatedCategory = Category.builder()
+        final de.fantjastisch.cards_backend.category.repository.Category updatedCategory = de.fantjastisch.cards_backend.category.repository.Category.builder()
                 .id(command.getId())
                 .label(command.getLabel())
                 .subCategories(command.getSubCategories())
