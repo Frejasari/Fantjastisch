@@ -31,7 +31,7 @@ import java.util.UUID
                     text = { Text(text = stringResource(id = R.string.category_menu_update)) },
                     onClick = {
                         isMenuOpen.value = false
-                        //navigator.push(UpdateCategoryFragment(id))
+                        navigator.push(UpdateCategoryFragment(id))
                     })
                 DropdownMenuItem(
                     text = { Text(text = stringResource(id = R.string.category_menu_delete)) },
