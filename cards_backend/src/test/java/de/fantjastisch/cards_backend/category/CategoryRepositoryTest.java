@@ -33,13 +33,13 @@ public class CategoryRepositoryTest {
 
     @Test
     public void shouldCreateCategory() {
-        UUID generatedId = UUID.fromString("2ced78d5-cf73-4d71-bf85-8350e20527b6");
+        UUID generatedId = UUID.fromString("2cedc8d5-cf73-4d71-bf85-8350e20527b6");
         Category toInsert = Category.builder()
                 .id(generatedId)
                 .label("New label")
                 .subCategories(Arrays.asList(
-                        UUID.fromString("45443819-012e-4b27-a2c1-67db24bf5be9"),
-                        UUID.fromString("e08e0323-077a-42b7-b7e7-a3b6a4ffff18")
+                        UUID.fromString("45143819-012e-4b27-a2c1-67db24bf5be9"),
+                        UUID.fromString("e08e5323-077a-42b7-b7e7-a3b6a4ffff18")
                 ))
                 .build();
         categoryCommandRepository.create(toInsert);
@@ -48,8 +48,8 @@ public class CategoryRepositoryTest {
                 .label("New label")
                 .subCategories(
                         Arrays.asList(
-                                UUID.fromString("45443819-012e-4b27-a2c1-67db24bf5be9"),
-                                UUID.fromString("e08e0323-077a-42b7-b7e7-a3b6a4ffff18")
+                                UUID.fromString("45143819-012e-4b27-a2c1-67db24bf5be9"),
+                                UUID.fromString("e08e5323-077a-42b7-b7e7-a3b6a4ffff18")
                         ))
                 .build();
         Category actual = categoryQueryRepository.get(generatedId);
@@ -90,7 +90,7 @@ public class CategoryRepositoryTest {
     public void shouldUpdateCategoryLabel() {
 
         Category category = Category.builder()
-                .id(UUID.fromString("42ac4fcc-9702-4a87-b0bd-bffe1f7f49f8"))
+                .id(UUID.fromString("40ac4fcc-9702-4a87-b0bd-bffe1f7f49f8"))
                 .label("UPDATED")
                 .subCategories(Arrays.asList(
                         UUID.fromString("c880b0a4-6106-4394-8e7d-521dae20b644"),
@@ -158,43 +158,18 @@ public class CategoryRepositoryTest {
         Assertions.assertNull(categoryQueryRepository.get(id));
     }
 
-    @Test
-    public void test() {
-        Category expected1 = Category.builder()
-                .id(UUID.fromString("dbfa11dd-e8e9-4cc6-ae34-ce62e12ab2c2"))
-                .label("Technische Informatik 1")
-                .subCategories(Collections.emptyList())
-                .build();
-        categoryCommandRepository.create(expected1);
-        Category expected2 = Category.builder()
-                .id(UUID.fromString("fce113e8-0282-4106-8ff9-b05dba5ba550"))
-                .label("Technische Informatik 2")
-                .subCategories(Collections.emptyList())
-                .build();
-        categoryCommandRepository.create(expected2);
-        Category expected3 = Category.builder()
-                .id(UUID.fromString("3b172412-0d6d-4857-843a-edfc1973d323"))
-                .label("Technische Informatik 2")
-                .subCategories(Arrays.asList(
-                        UUID.fromString("dbfa11dd-e8e9-4cc6-ae34-ce62e12ab2c2"),
-                        UUID.fromString("fce113e8-0282-4106-8ff9-b05dba5ba550")))
-                .build();
-        categoryCommandRepository.create(expected3);
-        System.out.print(categoryQueryRepository.getLabels(expected3.getId()));
-    }
-
 
     @Test
     public void shouldFindCategory() {
         Category expected = Category.builder()
-                .id(UUID.fromString("3b172412-0d6d-4857-843a-edfc1973d323"))
+                .id(UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323"))
                 .label("Technische Informatik")
                 .subCategories(Arrays.asList(
-                        UUID.fromString("dbfa11dd-e8e9-4cc6-ae34-ce62e12ab2c2"),
-                        UUID.fromString("fce113e8-0282-4106-8ff9-b05dba5ba550")))
+                        UUID.fromString("dbfa51dd-e8e9-4cc6-ae34-ce62e12ab2c2"),
+                        UUID.fromString("fce013e8-0282-4106-8ff9-b05dba5ba550")))
                 .build();
         categoryCommandRepository.create(expected);
-        Category actual = categoryQueryRepository.get(UUID.fromString("3b172412-0d6d-4857-843a-edfc1973d323"));
+        Category actual = categoryQueryRepository.get(UUID.fromString("3b182412-0d6d-4857-843a-edfc1973d323"));
         Assertions.assertEquals(expected, actual);
     }
 
@@ -225,7 +200,7 @@ public class CategoryRepositoryTest {
                         UUID.fromString("fce013e8-0282-4106-8ff9-b05dba5ba550")))
                 .build();
         Category expected2 = Category.builder()
-                .id(UUID.fromString("41ac4fcc-9702-4a87-b0bd-bffe1f7f49f8"))
+                .id(UUID.fromString("40ac4fcc-9702-4a87-b0bd-bffe1f7f49f8"))
                 .label("Praktische Informatik")
                 .subCategories(Arrays.asList(
                         UUID.fromString("c880b0a4-6106-4394-8e7d-521dae20b644"),

@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import java.util.*
 
-data class CategorySelectItem(val label: String, val id: UUID, val isChecked: Boolean)
+data class CategorySelectItem(val label : String, val id: UUID, val isChecked: Boolean)
 
 @Composable
 fun CategorySelect(
