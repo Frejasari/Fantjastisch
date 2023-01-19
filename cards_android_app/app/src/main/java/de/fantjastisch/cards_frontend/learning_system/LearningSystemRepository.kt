@@ -13,7 +13,7 @@ class LearningSystemRepository {
 
     val service = client.createService(LearningSystemApi::class.java)
 
-    fun getCategory(id: UUID,
+    fun getLearningSystem(id: UUID,
                     onSuccess: (LearningSystemEntity) -> Unit,
                     onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) = service.getLearningSystem(id).enqueue(onSuccess, onFailure)
