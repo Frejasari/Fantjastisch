@@ -15,7 +15,7 @@ class LearningObjectRepository(val repository: InternalLearningObjectRepository)
 
     fun insert(learningObject: LearningObject,
                onSuccess: () -> Unit,
-               onFailure: (errors: ErrorResponseEntity?) -> Unit){
+               onFailure: (errors: ErrorResponseEntity?) -> Unit) {
         try {
             repository.insert(learningObject)
             onSuccess()
