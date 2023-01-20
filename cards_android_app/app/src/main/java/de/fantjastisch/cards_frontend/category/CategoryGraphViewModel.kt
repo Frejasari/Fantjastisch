@@ -13,7 +13,6 @@ class CategoryGraphViewModel(
     var category = mutableStateOf<CategoryEntity?>(null)
     var cat = ArrayList<CategoryEntity>()
     var name = mutableStateOf<String?>(null)
-    var subCatsWithName = ArrayList<String>()
 
     init {
         onPageLoaded()
@@ -23,25 +22,11 @@ class CategoryGraphViewModel(
         categoryRepository.getPage(
             onSuccess = {
                 categories.value = it
-                /* it.forEach{
-                     subCatsWithName = getNames(it)
-                 }*/
             },
             onFailure = {}
         )
     }
 
-    fun getNames(cat: CategoryEntity): ArrayList<String> {
-        val result = ArrayList<String>()
-        cat.subCategories.forEach {
-            categoryRepository.getCategory(id = it,
-                onSuccess = {
-                    result.add(it.label)
-                },
-                onFailure = { category.value = null })
-        }
-        return result
-    }
 
     fun onCategoryLoaded(id: UUID) {
         cat = ArrayList<CategoryEntity>()

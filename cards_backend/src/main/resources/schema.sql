@@ -39,9 +39,3 @@ CREATE TABLE IF NOT EXISTS public.categories_to_cards
 --     foreign key (category_id) references public.categories(id),
 --     foreign key (card_id) references public.cards(id)
     );
-CREATE TABLE IF NOT EXISTS public.cat_to_subcat
-(
-    cat_id UUID,
-    subcat_id UUID,
-    PRIMARY KEY (cat_id, subcat_id)
-);
