@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.components.SingleSelect
 import java.util.*
@@ -24,58 +25,59 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateLearningObjectView(
-        modifier: Modifier = Modifier
+    modifier: Modifier = Modifier
 ) {
     val viewModel = viewModel { CreateLearningObjectViewModel() }
 
     // Componente die ihre Kinder untereinander anzeigt.
     Column(
-            modifier = modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState())
-                    .fillMaxSize()
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+            .fillMaxSize()
     ) {
         OutlinedTextField(
-                maxLines = 1,
-                keyboardActions = KeyboardActions(
-                        onDone = { viewModel.onAddLearningObjectClicked() },
-                ),
-                modifier = Modifier.fillMaxWidth(),
-                value = viewModel.learningObjectLabel.value,
-                onValueChange = { viewModel.learningObjectLabel.value = it },
-                placeholder = { Text(text = stringResource(id = R.string.create_category_label_text)) },
-                label = { Text(text = "Bezeichnung") },
-                isError = viewModel.learningObjectLabel.value.isBlank()
+            maxLines = 1,
+            keyboardActions = KeyboardActions(
+                onDone = { viewModel.onAddLearningObjectClicked() },
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            value = viewModel.learningObjectLabel.value,
+            onValueChange = { viewModel.learningObjectLabel.value = it },
+            placeholder = { Text(text = stringResource(id = R.string.create_category_label_text)) },
+            label = { Text(text = "Bezeichnung") },
+            isError = viewModel.learningObjectLabel.value.isBlank()
         )
         Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
-
         SingleSelect(
-                items = viewModel.learningSystems.value,
-                selectedItem = viewModel.selectedSystem.value,
-                onItemSelected = viewModel::onLearningSystemSelected,
-                placeholder = { Text(text = "Lernsystem") }
+            items = viewModel.learningSystems.value,
+            selectedItem = viewModel.selectedSystem.value,
+            onItemSelected = viewModel::onLearningSystemSelected,
+            placeholder = { Text(text = "Lernsystem") }
         )
         Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
         Text(
-                text = "Kategorien hinzufügen",
-                style = MaterialTheme.typography.titleMedium
+            text = "Kategorien hinzufügen",
+            style = MaterialTheme.typography.titleMedium
         )
-        Box(modifier = Modifier.height(100.dp)) {
-            CategorySelect(
-                    categories = viewModel.categories.value,
-                    onCategorySelected = viewModel::onCategorySelected
-            )
-        }
+        CategorySelect(
+            categories = viewModel.categories.value,
+            onCategorySelected = viewModel::onCategorySelected
+        )
+        Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
+        Text(
+            text = "Einzelne Karten hinzufügen",
+            style = MaterialTheme.typography.titleMedium
+        )
+        CardSelect(
+            cards = viewModel.cards.value,
+            onCardSelected = viewModel::onCardSelected
+        )
 
-        Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
-        Text(
-                text = "Einzelne Karten hinzufügen",
-                style = MaterialTheme.typography.titleMedium
-        )
         FilledTonalButton(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = viewModel::onAddLearningObjectClicked
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onClick = viewModel::onAddLearningObjectClicked
         ) {
             Text(text = stringResource(R.string.create_category_save_button_text))
         }
@@ -84,14 +86,14 @@ fun CreateLearningObjectView(
     val navigator = LocalNavigator.currentOrThrow
     // einmaliger Effekt
     LaunchedEffect(
-            // wenn sich diese Variable ändert
-            key1 = viewModel.isFinished.value,
-            // dann wird dieses Lambda ausgeführt.
-            block = {
-                if (viewModel.isFinished.value) {
-                    navigator.pop()
-                }
-            })
+        // wenn sich diese Variable ändert
+        key1 = viewModel.isFinished.value,
+        // dann wird dieses Lambda ausgeführt.
+        block = {
+            if (viewModel.isFinished.value) {
+                navigator.pop()
+            }
+        })
 
 }
 
