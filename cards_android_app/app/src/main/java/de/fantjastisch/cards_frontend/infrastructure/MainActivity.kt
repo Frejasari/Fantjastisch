@@ -22,6 +22,7 @@ import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.glossary.GlossaryView
 import de.fantjastisch.cards_frontend.category.CategoryGraphFragment
+import de.fantjastisch.cards_frontend.learning_overview.LearningOverview
 import java.util.*
 
 @Composable
@@ -51,11 +52,7 @@ class MainActivity : AppCompatActivity() {
 object LearningTab : Tab {
     @Composable
     override fun Content() {
-        Text(
-            modifier = Modifier.fillMaxSize(),
-            textAlign = TextAlign.Center,
-            text = "TODO! LearningOverviewFragment",
-        )
+        LearningOverview()
     }
 
     override val options: TabOptions

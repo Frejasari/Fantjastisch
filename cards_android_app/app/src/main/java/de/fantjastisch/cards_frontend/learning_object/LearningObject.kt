@@ -2,11 +2,8 @@ package de.fantjastisch.cards_frontend.learning_object
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import de.fantjastisch.cards_frontend.learning_box.LearningBox
-import org.openapitools.client.models.LearningSystemEntity
-import java.util.UUID
+import java.util.*
 
 @Entity(tableName = "learning_object")
 data class LearningObject(
