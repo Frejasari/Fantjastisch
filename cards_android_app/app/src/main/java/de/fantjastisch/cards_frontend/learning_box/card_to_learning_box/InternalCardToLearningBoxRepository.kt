@@ -1,9 +1,12 @@
 package de.fantjastisch.cards_frontend.learning_box.card_to_learning_box
 
 import androidx.room.*
+import de.fantjastisch.cards_frontend.learning_object.LearningObject
+import org.openapitools.client.models.CardEntity
 import java.util.*
 
-class InternalCardToLearningBoxRepository(private val dao: CardToLearningBoxDao) : CardToLearningBoxDao by dao
+class InternalCardToLearningBoxRepository(private val dao: CardToLearningBoxDao) :
+    CardToLearningBoxDao by dao
 
 @Dao
 interface CardToLearningBoxDao {

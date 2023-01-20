@@ -1,21 +1,45 @@
 package de.fantjastisch.cards_frontend.learning_box
 
+import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
 class LearningBoxRepository(val repository: InternalLearningBoxRepository) {
 
-    fun getAllBoxesForLearningObject(learningObjectId: UUID): List<LearningBox> {
-        return repository.getAllBoxesForLearningObject(learningObjectId)
+    fun getAllBoxesForLearningObject(
+        learningObjectId: UUID,
+        onSuccess: (List<LearningBox>) -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    ) {
+            try {
+                onSuccess(repository.getAllBoxesForLearningObject(learningObjectId))
+            } catch (ex: Throwable) {
+                onFailure(null)
+            }
     }
+
+    fun getCardsFromLearningBoxInLearningObject(
+        learningObjectId: UUID,
+        onSuccess: (List<Int>) -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    ) {
+        try {
+            onSuccess(repository.getCardsFromLearningObject(learningObjectId))
+        } catch  (ex: Throwable) {
+            onFailure(null)
+        }
+    }
+
 
     fun findById(learningBoxId: UUID): LearningBox {
         return repository.findById(learningBoxId)
     }
 
-    fun insert(learningBox: LearningBox,
-               onSuccess: () -> Unit,
-               onFailure: (errors: ErrorResponseEntity?) -> Unit){
+    fun insert(
+        learningBox: LearningBox,
+        onSuccess: () -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    ) {
         try {
             repository.insert(learningBox)
             onSuccess()
