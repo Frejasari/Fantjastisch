@@ -26,7 +26,7 @@ fun CategoryGraphFragment(
 ) {
     val navigator = LocalNavigator.currentOrThrow.parent!!
     val viewModel = viewModel { CategoryGraphViewModel() }
-    var nameOfSubcategory = mutableStateOf("")
+
     LaunchedEffect(key1 = Unit, block = { viewModel.onPageLoaded() })
 
     // Ein RecyclerView -> Eine lange liste von Eintraegen
@@ -69,14 +69,16 @@ fun CategoryGraphFragment(
                                 }
                             )
                         } else {
+
                             category.subCategories.forEach {
+                                val nameOfSubcategory = mutableStateOf("")
+                                viewModel.categoryRepository.getCategory(id = it,
+                                    onSuccess = {
+                                        nameOfSubcategory.value = it.label
+                                    },
+                                    onFailure = {})
                                 DropdownMenuItem(
                                     text = {
-                                        viewModel.categoryRepository.getCategory(id = it,
-                                            onSuccess = {
-                                                nameOfSubcategory.value = it.label
-                                            },
-                                            onFailure = {})
                                         Text(nameOfSubcategory.value) },
                                     onClick = {
                                         expanded = false
