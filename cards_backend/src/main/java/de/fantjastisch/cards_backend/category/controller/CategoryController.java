@@ -86,7 +86,7 @@ public class CategoryController {
     /**
      * Diese Funktion stellt den API-Endpunkt zum Löschen einer Kategorien-Entität bereit.
      *
-     * @param command Eine Instanz der Klasse {@link DeleteCategory}.
+     * @param id Die UUID einer zu löschenden Kategorie.
      */
     @DeleteMapping(path = "delete")
     @Operation(

@@ -91,7 +91,7 @@ public class CategoryAggregateTest {
         when(cardQueryRepository.isCategoryEmpty(category.getId())).thenReturn(false);
         when(categoryQueryRepository.get(category.getId())).thenReturn(category);
         CommandValidationException exception = assertThrows(CommandValidationException.class,
-                () -> categoryAggregate.handle(DeleteCategory.builder().id(category.getId()).build()));
+                () -> categoryAggregate.handleDelete(category.getId()));
         assertTrue(exception.getErrors().contains(ErrorEntry
                 .builder()
                 .code(CATEGORY_NOT_EMPTY_VIOLATION)
@@ -107,7 +107,7 @@ public class CategoryAggregateTest {
                 .build();
         assertThrows(EntityDoesNotExistException.class, () -> categoryAggregate.handle(toUpdate));
 
-        DeleteCategory toDelete = DeleteCategory.builder().id(UUID.fromString("b7913a6f-6152-436e-b3ef-e38eb54d4725")).build();
+        UUID toDelete = UUID.fromString("b7913a6f-6152-436e-b3ef-e38eb54d4725");
         assertThrows(EntityDoesNotExistException.class, () -> categoryAggregate.handle(toDelete));
     }
 

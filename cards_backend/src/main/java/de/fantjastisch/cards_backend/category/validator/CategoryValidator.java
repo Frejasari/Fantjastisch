@@ -98,7 +98,7 @@ public class CategoryValidator extends Validator {
      * Es wird eine {@link de.fantjastisch.cards_backend.util.validation.CommandValidationException} bzw.
      * eine {@link ResponseStatusException} geworfen, sofern einer dieser Fälle gilt.
      *
-     * @param command Eine {@link DeleteCategory}-Instanz, welche validiert werden soll.
+     * @param id eine UUID, welche validiert werden soll.
      */
     public void validateDelete(UUID id) {
         throwIfCategoryDoesNotExist(id);

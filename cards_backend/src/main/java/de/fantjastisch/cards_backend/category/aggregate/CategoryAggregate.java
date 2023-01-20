@@ -73,7 +73,7 @@ public class CategoryAggregate {
     /**
      * Diese Funktion validiert und vermittelt eine Anfrage zum Löschen einer Kategorie.
      *
-     * @param command Das CRUD-Kommando-Objekt zum Löschen einer Kategorie.
+     * @param categoryId Die UUID einer zu löschenden Kategorie.
      */
     public void handleDelete(final UUID categoryId) {
         categoryValidator.validateDelete(categoryId);
