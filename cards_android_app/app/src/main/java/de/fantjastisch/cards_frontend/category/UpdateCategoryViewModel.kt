@@ -24,19 +24,20 @@ class UpdateCategoryViewModel(
                 errors.value = emptyList()
                 catId.value = it.id
                 catLabel.value = it.label
-                if (subcategories.value?.isEmpty() == true) {
-                    subcategories.value = it.subCategories.map { cat ->
+                if (subcategories.value.isEmpty() == true) {
+                    subcategories.value = it.subCategories
+                        .map { cat ->
                         categoryRepository.getCategory(cat,
-                        onSuccess = {newCat = CategorySelectItem(label = it.label, id = cat, isChecked = false)},
+                        onSuccess = {newCat = CategorySelectItem(label = it.label, id = cat, isChecked = true)},
                         onFailure = {})
                         newCat
                     }
                 } else {
                     subcategories.value = subcategories.value
-                        ?.filter {
+                        .filter {
                         category ->
                             category.label != it.label
-                        }?.map { category ->
+                        }.map { category ->
                         if (it.subCategories.firstOrNull { cat -> category.id == cat } != null) {
                             CategorySelectItem(
                                 label = category.label,

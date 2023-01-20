@@ -19,7 +19,7 @@ abstract class CategoryViewModel(
     val isFinished = mutableStateOf(false)
 
     val catLabel = mutableStateOf("")
-    val subcategories = mutableStateOf<List<CategorySelectItem>?>(null)
+    val subcategories = mutableStateOf<List<CategorySelectItem>>(listOf())
 
     init {
         categoryRepository.getPage(
@@ -55,7 +55,7 @@ abstract class CategoryViewModel(
     }
 
     fun onCategorySelected(id: UUID) {
-        subcategories.value = subcategories.value?.map {
+        subcategories.value = subcategories.value.map {
             if (it.id == id) {
                 it.copy(isChecked = !it.isChecked)
             } else {
