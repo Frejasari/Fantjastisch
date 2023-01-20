@@ -53,7 +53,7 @@ fun CategoryGraphFragment(
                         value = category.label,
                         onValueChange = {},
                         leadingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)},
-                        trailingIcon = { CategoryContextMenu(navigator = navigator, id = category.id)},
+                        trailingIcon = { CategoryContextMenu(navigator = navigator, id = category.id, label = category.label)},
                         colors = ExposedDropdownMenuDefaults.textFieldColors(containerColor = Color(android.graphics.Color.WHITE)),
                         modifier = Modifier.menuAnchor().fillMaxWidth()
                     )

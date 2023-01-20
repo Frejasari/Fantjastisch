@@ -3,14 +3,11 @@ package org.openapitools.client.apis
 import org.openapitools.client.infrastructure.CollectionFormats.*
 import retrofit2.http.*
 import retrofit2.Call
-import okhttp3.RequestBody
-import com.squareup.moshi.Json
 
 import org.openapitools.client.models.CategoryEntity
 import org.openapitools.client.models.CreateCategoryEntity
-import org.openapitools.client.models.DeleteCategoryEntity
-import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.UpdateCategoryEntity
+import java.util.*
 
 interface CategoryApi {
     /**
@@ -39,7 +36,7 @@ interface CategoryApi {
      * @return [Call]<[Unit]>
      */
     @DELETE("category/delete")
-    fun deleteCategory(@Body deleteCategoryEntity: DeleteCategoryEntity): Call<Unit>
+    fun deleteCategory(@Body deleteCategoryEntity: UUID): Call<Unit>
 
     /**
      * Get specific category

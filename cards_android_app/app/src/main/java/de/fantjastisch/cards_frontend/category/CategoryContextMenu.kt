@@ -17,8 +17,10 @@ import java.util.UUID
 
 
     @Composable
-    fun CategoryContextMenu(navigator: Navigator, id : UUID) {
+    fun CategoryContextMenu(navigator: Navigator, id : UUID, label: String) {
         val isMenuOpen = remember { mutableStateOf(false) }
+        val isDeleteDialogOpen = remember { mutableStateOf(false) }
+
 
         IconButton(onClick = { isMenuOpen.value = !isMenuOpen.value }) {
             Icon(Icons.Outlined.MoreVert, contentDescription = "context actions")
@@ -37,8 +39,14 @@ import java.util.UUID
                     text = { Text(text = stringResource(id = R.string.category_menu_delete)) },
                     onClick = {
                         isMenuOpen.value = false
-                        //navigator.push(DeleteCategoryFragment(id))
-                    })
+                        isDeleteDialogOpen.value = true}
+                        )
+                    }
             }
-        }
+        DeleteCategoryDialog(
+            label = label,
+            categoryId = id,
+            isOpen = isDeleteDialogOpen.value,
+            setIsOpen = { isDeleteDialogOpen.value = it })
+
     }

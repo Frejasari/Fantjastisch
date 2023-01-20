@@ -25,4 +25,5 @@
   <string name="category_menu_update">Bearbeiten</string>
   <string name="category_menu_delete">Löschen</string>
   <string name="update_category_headline">Kategorie bearbeiten</string>
+    <string name="delete_category_dialog_title">Möchtest du die Kategorie wirklich löschen?</string>
 </resources>
