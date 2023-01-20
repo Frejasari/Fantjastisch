@@ -54,17 +54,19 @@ class LearningOverviewModel(
     fun getProgressFromLearningObject(learningObjectId: UUID) :Int {
         learningBoxRepository.getCardsFromLearningBoxInLearningObject(learningObjectId,
                     onSuccess = {
+                        countCards = it.sum()
                         it.forEachIndexed { index, numberOfCards ->
                             if (index == 0) {
                                 progress = 0
-                                countCards += numberOfCards
                             }
                             else {
                                 progress += (numberOfCards * ((index - 1) / (it.size - 1)) * 100)
-                                countCards += numberOfCards
                             }}},
                     onFailure = { error.value = "Fehler" }
         )
+        if (countCards == 0) {
+            return 0
+        }
         return (progress/countCards)
     }
     init {
