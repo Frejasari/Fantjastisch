@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.category.cat_glossary.CategoryGraphViewModel
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)

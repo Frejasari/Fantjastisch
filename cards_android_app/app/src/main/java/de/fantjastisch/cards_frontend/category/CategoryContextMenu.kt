@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.category.update_and_create.UpdateCategoryFragment
 import java.util.UUID
 
 

@@ -1,8 +1,9 @@
-package de.fantjastisch.cards_frontend.category
+package de.fantjastisch.cards_frontend.category.delete
 
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import de.fantjastisch.cards_frontend.category.CategoryRepository
 import java.util.*
 
 

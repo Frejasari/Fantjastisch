@@ -1,7 +1,8 @@
-package de.fantjastisch.cards_frontend.category
+package de.fantjastisch.cards_frontend.category.cat_glossary
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import de.fantjastisch.cards_frontend.category.CategoryRepository
 import org.openapitools.client.models.CategoryEntity
 import java.util.*
 
@@ -11,7 +12,6 @@ class CategoryGraphViewModel(
 
     val categories = mutableStateOf<List<CategoryEntity>>(emptyList())
     var category = mutableStateOf<CategoryEntity?>(null)
-    var cat = ArrayList<CategoryEntity>()
     var name = mutableStateOf<String?>(null)
 
     init {
@@ -26,16 +26,4 @@ class CategoryGraphViewModel(
             onFailure = {}
         )
     }
-
-
-    fun onCategoryLoaded(id: UUID) {
-        cat = ArrayList<CategoryEntity>()
-        categoryRepository.getCategory(id = id,
-            onSuccess = {
-                cat.add(it)
-            },
-            onFailure = { cat })
-    }
-
-
 }
