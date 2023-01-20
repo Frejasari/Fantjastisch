@@ -176,8 +176,7 @@ public class CategoryValidator extends Validator {
         Dafür werden alle Kategorien als Parameter übergeben, sowie die Unterkategorien der zu
         aktualisierenden Kategorie (als Laufparameter), wie auch eine Liste besuchter Kategorien, um den Kreis in der
         Hierarchie feststellen zu können.
-         */
-
+        */
         List<ErrorEntry> errors = new ArrayList<>();
         // Prüfe für alle Unterkategorien der zu aktualisierenden Kategorie:
         for (UUID subCategory : subCategories) {
