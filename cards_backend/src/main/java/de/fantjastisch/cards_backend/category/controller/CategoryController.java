@@ -3,7 +3,6 @@ package de.fantjastisch.cards_backend.category.controller;
 import de.fantjastisch.cards_backend.category.Category;
 import de.fantjastisch.cards_backend.category.aggregate.CategoryAggregate;
 import de.fantjastisch.cards_backend.category.aggregate.CreateCategory;
-import de.fantjastisch.cards_backend.category.aggregate.DeleteCategory;
 import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
 import de.fantjastisch.cards_backend.util.CreatedResponse;
 import de.fantjastisch.cards_backend.util.ErrorResponse;
@@ -96,8 +95,8 @@ public class CategoryController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json")})
     })
-    public void deleteCategory(@RequestBody DeleteCategory command) {
-        categoryAggregate.handle(command);
+    public void deleteCategory(@RequestParam UUID id) {
+        categoryAggregate.handleDelete(id);
     }
 
     /**

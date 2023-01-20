@@ -18,12 +18,14 @@ fun DeleteCategoryDialog(
     isOpen: Boolean,
     setIsOpen: (isOpen: Boolean) -> Unit
 ) {
-    val viewModel = viewModel { DeleteCategoryViewModel(categoryId = categoryId) }
+    val viewModel =
+        viewModel(key = categoryId.toString()) { DeleteCategoryViewModel(categoryId = categoryId) }
     if (isOpen) {
         AlertDialog(
-            onDismissRequest = { setIsOpen(false) }, title = {
-                Text(text = stringResource(R.string.delete_category_dialog_title))
-            },
+            onDismissRequest = { setIsOpen(false) },
+            title = { Text(
+                text = stringResource(R.string.delete_category_dialog_title))
+                    },
             text = {
                 Text(label)
             },

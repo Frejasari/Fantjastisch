@@ -3,7 +3,6 @@ package de.fantjastisch.cards_backend.category.validator;
 import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.category.Category;
 import de.fantjastisch.cards_backend.category.aggregate.CreateCategory;
-import de.fantjastisch.cards_backend.category.aggregate.DeleteCategory;
 import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
 import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository;
 import de.fantjastisch.cards_backend.util.validation.EntityDoesNotExistException;
@@ -101,12 +100,11 @@ public class CategoryValidator extends Validator {
      *
      * @param command Eine {@link DeleteCategory}-Instanz, welche validiert werden soll.
      */
-    public void validate(DeleteCategory command) {
-        throwIfNeeded(validateConstraints(command));
-        throwIfCategoryDoesNotExist(command.getId());
+    public void validateDelete(UUID id) {
+        throwIfCategoryDoesNotExist(id);
 
         List<ErrorEntry> errors = new ArrayList<>();
-        errors.addAll(checkIfCategoryIsInUse(command.getId()));
+        errors.addAll(checkIfCategoryIsInUse(id));
         throwIfNeeded(errors);
     }
 

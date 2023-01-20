@@ -18,7 +18,6 @@ package org.openapitools.client.models
 import org.openapitools.client.models.CategoryOfCardEntity
 
 import com.squareup.moshi.Json
-import de.fantjastisch.cards_frontend.category.CategorySelectItem
 
 /**
  * 

@@ -3,7 +3,6 @@ package de.fantjastisch.cards_backend.category;
 import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.category.aggregate.CategoryAggregate;
 import de.fantjastisch.cards_backend.category.aggregate.CreateCategory;
-import de.fantjastisch.cards_backend.category.aggregate.DeleteCategory;
 import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
 import de.fantjastisch.cards_backend.category.repository.CategoryCommandRepository;
 import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository;
@@ -23,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;

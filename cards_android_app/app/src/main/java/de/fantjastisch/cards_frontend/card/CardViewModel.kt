@@ -7,7 +7,8 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
-abstract class CardViewModel(
+abstract class
+CardViewModel(
     private val id: UUID? = null,
     private val cardRepository: CardRepository,
     private val categoryRepository: CategoryRepository

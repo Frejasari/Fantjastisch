@@ -16,7 +16,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import org.openapitools.client.models.ErrorEntryEntity
-import java.util.*
 
 //TODO Fehler anzeigen.
 @Composable
@@ -34,8 +33,8 @@ fun UpdateOrCreateCategoryView(
     ) {
         OutlinedTextFieldWithErrors(
             maxLines = 1,
-            value = viewModel.catLabel.value,
-            onValueChange = { viewModel.catLabel.value = it },
+            value = viewModel.categoryLabel.value,
+            onValueChange = { viewModel.categoryLabel.value = it },
             placeholder = stringResource(id = R.string.create_category_label_text),
             errors = viewModel.errors.value,
             field = "label"

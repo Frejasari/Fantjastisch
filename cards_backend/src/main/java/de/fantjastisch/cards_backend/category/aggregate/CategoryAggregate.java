@@ -75,9 +75,9 @@ public class CategoryAggregate {
      *
      * @param command Das CRUD-Kommando-Objekt zum Löschen einer Kategorie.
      */
-    public void handle(final DeleteCategory command) {
-        categoryValidator.validate(command);
-        categoryCommandRepository.delete(command.getId());
+    public void handleDelete(final UUID categoryId) {
+        categoryValidator.validateDelete(categoryId);
+        categoryCommandRepository.delete(categoryId);
     }
 
     /**

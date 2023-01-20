@@ -3,11 +3,13 @@ package org.openapitools.client.apis
 import org.openapitools.client.infrastructure.CollectionFormats.*
 import retrofit2.http.*
 import retrofit2.Call
+import okhttp3.RequestBody
+import com.squareup.moshi.Json
 
 import org.openapitools.client.models.CategoryEntity
 import org.openapitools.client.models.CreateCategoryEntity
+import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.UpdateCategoryEntity
-import java.util.*
 
 interface CategoryApi {
     /**
@@ -28,15 +30,15 @@ interface CategoryApi {
      * Delete a category
      * 
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
-     * @param deleteCategoryEntity 
+     * @param id 
      * @return [Call]<[Unit]>
      */
     @DELETE("category/delete")
-    fun deleteCategory(@Body deleteCategoryEntity: UUID): Call<Unit>
+    fun deleteCategory(@Query("id") id: java.util.UUID): Call<Unit>
 
     /**
      * Get specific category
@@ -56,8 +58,8 @@ interface CategoryApi {
      * Get all categories
      * 
      * Responses:
-     *  - 404: Not Found
      *  - 200: OK
+     *  - 404: Not Found
      *  - 422: Unprocessable Entity
      *
      * @return [Call]<[kotlin.collections.List<CategoryEntity>]>
@@ -69,9 +71,9 @@ interface CategoryApi {
      * Update a category
      * 
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param updateCategoryEntity 
      * @return [Call]<[Unit]>

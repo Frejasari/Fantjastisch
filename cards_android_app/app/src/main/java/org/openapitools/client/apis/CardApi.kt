@@ -31,9 +31,9 @@ interface CardApi {
      * 
      * Delete a card
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param deleteCardEntity 
      * @return [Call]<[Unit]>
@@ -59,8 +59,8 @@ interface CardApi {
      * Get all cards
      * 
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *
      * @param categoryFilter  (optional)
@@ -76,9 +76,9 @@ interface CardApi {
      * 
      * Update a card
      * Responses:
-     *  - 200: OK
      *  - 404: Not Found
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param updateCardEntity 
      * @return [Call]<[Unit]>

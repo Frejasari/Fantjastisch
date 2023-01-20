@@ -1,58 +1,50 @@
 package de.fantjastisch.cards_frontend.category
 
-import androidx.compose.runtime.mutableStateOf
-import de.fantjastisch.cards_frontend.category.CategoryRepository
-import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import org.openapitools.client.models.CategoryEntity
-import org.openapitools.client.models.UpdateCardEntity
 import org.openapitools.client.models.UpdateCategoryEntity
 import java.util.*
 
 class UpdateCategoryViewModel(
-    id: UUID,
+    val id: UUID,
     private val categoryRepository: CategoryRepository = CategoryRepository()
-) : CategoryViewModel(
-    id = id,
-   // cardRepository = cardRepository,
-    categoryRepository = categoryRepository
-) {
+) : CategoryViewModel() {
 
-    lateinit var newCat : CategorySelectItem
+
+    private lateinit var subCategoriesOfCategory: List<UUID>
+
     init {
         categoryRepository.getCategory(id = id,
             onSuccess = {
                 errors.value = emptyList()
                 catId.value = it.id
-                catLabel.value = it.label
-                if (subcategories.value.isEmpty() == true) {
-                    subcategories.value = it.subCategories
-                        .map { cat ->
-                        categoryRepository.getCategory(cat,
-                        onSuccess = {newCat = CategorySelectItem(label = it.label, id = cat, isChecked = true)},
-                        onFailure = {})
-                        newCat
-                    }
-                } else {
-                    subcategories.value = subcategories.value
-                        .filter {
-                        category ->
-                            category.label != it.label
-                        }.map { category ->
-                        if (it.subCategories.firstOrNull { cat -> category.id == cat } != null) {
-                            CategorySelectItem(
-                                label = category.label,
-                                id = category.id,
-                                isChecked = true
-                            )
-                        } else {
-                            category
-                        }
-                    }
-                }
+                categoryLabel.value = it.label
+                subCategoriesOfCategory = it.subCategories
+                loadAllCategories()
             },
             onFailure = {
                 error.value = "Check network connection"
             })
+    }
+
+    private fun loadAllCategories() {
+        categoryRepository.getPage(
+            onSuccess = {
+                errors.value = emptyList()
+                val newCategories = it
+                    .filter { category -> id != category.id }
+                    .map { category ->
+                        CategorySelectItem(
+                            id = category.id,
+                            label = category.label,
+                            isChecked = subCategoriesOfCategory.contains(category.id),
+                        )
+                    }
+                subcategories.value = newCategories
+
+            },
+            onFailure = {
+                error.value = "Check network connection"
+            },
+        )
     }
 
     override fun save() {
@@ -60,7 +52,7 @@ class UpdateCategoryViewModel(
         categoryRepository.updateCategory(
             category = UpdateCategoryEntity(
                 id = catId.value!!,
-                label = catLabel.value,
+                label = categoryLabel.value,
                 subCategories = subcategories.value?.filter { it.isChecked }!!.map { it.id }
             ),
             onSuccess = {
@@ -75,7 +67,7 @@ class UpdateCategoryViewModel(
                 error.value = "There is an error"
             }
         )
-        }
     }
+}
 
 
