@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_backend.category;
 
+import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
 import de.fantjastisch.cards_backend.category.repository.CategoryCommandRepository;
 import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository;
 import org.junit.jupiter.api.Assertions;

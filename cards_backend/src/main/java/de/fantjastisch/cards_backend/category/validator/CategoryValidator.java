@@ -83,7 +83,7 @@ public class CategoryValidator extends Validator {
         throwIfCategoryDoesNotExist(command.getId());
 
         final List<Category> allCategories = categoryQueryRepository.getPage();
-        errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
+        errors.addAll(checkIfLabelTakenForUpdate(command, allCategories));
         errors.addAll(checkIfSubcategoryExists(command.getSubCategories(), allCategories));
         errors.addAll(checkIfCycleInSubCategoriesFound(allCategories, command.getSubCategories(),
                 new ArrayList<>(Collections.singletonList(command.getId()))));
@@ -216,6 +216,16 @@ public class CategoryValidator extends Validator {
                             .code(LABEL_TAKEN_VIOLATION)
                             .field("label")
                             .build());
+        }
+        return errors;
+    }
+
+    private List<ErrorEntry> checkIfLabelTakenForUpdate(UpdateCategory toUpdate, List<Category> allCategories) {
+        Category getCat = categoryQueryRepository.get(toUpdate.getId());
+        ArrayList<Category> all = new ArrayList<>(allCategories);
+        List<ErrorEntry> errors = new ArrayList<>();
+        if (all.remove(getCat)) {
+            errors = checkIfLabelTaken(toUpdate.getLabel(), all);
         }
         return errors;
     }

@@ -24,42 +24,20 @@ class UpdateCategoryViewModel(
                 errors.value = emptyList()
                 catId.value = it.id
                 catLabel.value = it.label
-                categoryRepository.getPage(
-                    onSuccess = {
-                        subcategories.value = it.map {
-                            cat -> CategorySelectItem(id = cat.id, label = cat.label, isChecked = false)
-                        }
-                    },
-                    onFailure = {}
-                )
-                if (it.subCategories.isNotEmpty()){
-                    val newSub = subcategories.value
-                    subcategories.value?.map { cat ->
-                        if (cat.id == it.id) {
-                            CategorySelectItem(id = cat.id, label = cat.label, isChecked = true)
-                        } else {
-                            CategorySelectItem(id = cat.id, label = cat.label, isChecked = false)
-                        }
-                    }
-                }
-                        },
-            onFailure = {error.value = "Check network connection"})
-      /*  categoryRepository.getCategory(id = id,
-            onSuccess = {
-                errors.value = emptyList()
-                catId.value = it.id
-                catLabel.value = it.label
-                //subcategories.value = it.subCategories
                 if (subcategories.value?.isEmpty() == true) {
                     subcategories.value = it.subCategories.map { cat ->
                         categoryRepository.getCategory(cat,
-                        onSuccess = {newCat = CategorySelectItem(label = it.label, id = cat, isChecked = true)},
+                        onSuccess = {newCat = CategorySelectItem(label = it.label, id = cat, isChecked = false)},
                         onFailure = {})
                         newCat
                     }
                 } else {
-                    subcategories.value = subcategories.value.map { category ->
-                        if (it.subCategories.firstOrNull { cat -> category.id == id } != null) {
+                    subcategories.value = subcategories.value
+                        ?.filter {
+                        category ->
+                            category.label != it.label
+                        }?.map { category ->
+                        if (it.subCategories.firstOrNull { cat -> category.id == cat } != null) {
                             CategorySelectItem(
                                 label = category.label,
                                 id = category.id,
@@ -73,37 +51,30 @@ class UpdateCategoryViewModel(
             },
             onFailure = {
                 error.value = "Check network connection"
-            })*/
+            })
     }
 
     override fun save() {
         errors.value = emptyList()
-        subcategories.value?.let {
-            UpdateCategoryEntity(
+        categoryRepository.updateCategory(
+            category = UpdateCategoryEntity(
                 id = catId.value!!,
                 label = catLabel.value,
-                subCategories = it.map { cat -> cat.id },
-            )
-        }?.let {
-            categoryRepository.updateCategory(
-                category = it,
-                onSuccess = {
-                    isFinished.value = true
-
-                    // on Success -> dialog schliessen, zur Card  übersicht?
-                },
-                onFailure = {
-                    if (it == null) {
-                        error.value = "Irgendwas ist schief gelaufen"
-                    } else {
-                        errors.value = it.errors
-                    }
-                    // Fehler anzeigen:
-                    error.value = "There is an error"
+                subCategories = subcategories.value?.filter { it.isChecked }!!.map { it.id }
+            ),
+            onSuccess = {
+                isFinished.value = true
+            },
+            onFailure = {
+                if (it == null) {
+                    error.value = "Irgendwas ist schief gelaufen"
+                } else {
+                    errors.value = it.errors
                 }
-            )
+                error.value = "There is an error"
+            }
+        )
         }
     }
 
-}
 

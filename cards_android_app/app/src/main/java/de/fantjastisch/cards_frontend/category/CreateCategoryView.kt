@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
@@ -20,7 +19,6 @@ import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
 //TODO Fehler anzeigen.
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateOrCreateCategoryView(
     modifier: Modifier = Modifier,

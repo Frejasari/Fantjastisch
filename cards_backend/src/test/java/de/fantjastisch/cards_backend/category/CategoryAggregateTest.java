@@ -21,7 +21,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -252,6 +254,43 @@ public class CategoryAggregateTest {
         CommandValidationException exception2 = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(updateNewCat));
 
         assertTrue(exception2.getErrors().contains(nullSubcategoryError));
+
+    }
+
+    @Test
+    public void shouldThrowWhenUpdateLabelExists () {
+        final UUID idOfC = UUID.fromString("6db2d0a7-6733-4678-9c1d-4defbe9b425f");
+        final UUID idOfA = UUID.fromString("8db2d0a7-6733-4678-9c1d-4defbe9b425f");
+        final Category catC = Category
+                .builder()
+                .id(idOfC)
+                .label(category.getLabel())
+                .subCategories(category.getSubCategories())
+                .build();
+        final Category catA = Category
+                .builder()
+                .id(idOfA)
+                .label("egal")
+                .subCategories(category.getSubCategories())
+                .build();
+        categoryCommandRepository.create(catC);
+        categoryCommandRepository.create(catA);
+
+        when(categoryQueryRepository.get(catA.getId())).thenReturn(catA);
+
+        when(categoryQueryRepository.getPage()).thenReturn(List.of(catC, catA));
+
+        UpdateCategory toUpdate = UpdateCategory.builder()
+                        .id(catA.getId())
+                                .label(catC.getLabel())
+                                        .subCategories(catA.getSubCategories())
+                                                .build();
+        CommandValidationException exception = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(toUpdate));
+        ErrorEntry nullSubcategoryError = ErrorEntry.builder()
+                .code(LABEL_TAKEN_VIOLATION)
+                .field("label")
+                .build();
+        assertTrue(exception.getErrors().contains(nullSubcategoryError));
 
     }
     // cant add self
