@@ -9,26 +9,27 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategorySelect
+import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
+import java.util.*
 
 
-//TODO Fehler anzeigen.
 @Composable
-fun UpdateAndCreateCardView(
+fun CardEdit(
     modifier: Modifier = Modifier,
-    viewModel: UpdateAndCreateCardViewModel
+    question: TextFieldState,
+    answer: TextFieldState,
+    tag: TextFieldState,
+    categories: List<CategorySelectItem>,
+    onCategorySelected: (UUID) -> Unit,
+    onUpdateCardClicked: () -> Unit,
 ) {
-
-    // Componente die ihre Kinder untereinander anzeigt.
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
@@ -38,53 +39,38 @@ fun UpdateAndCreateCardView(
     ) {
         OutlinedTextFieldWithErrors(
             maxLines = 3,
-            value = viewModel.cardQuestion.value,
-            errors = viewModel.errors.value,
-            onValueChange = { viewModel.cardQuestion.value = it },
+            value = question.value,
+            errors = question.errors,
+            onValueChange = question.onValueChange,
             placeholder = stringResource(id = R.string.create_card_question_text),
             field = "question"
         )
         OutlinedTextFieldWithErrors(
             maxLines = 5,
-            value = viewModel.cardAnswer.value,
-            errors = viewModel.errors.value,
-            onValueChange = { viewModel.cardAnswer.value = it },
+            value = answer.value,
+            errors = answer.errors,
+            onValueChange = answer.onValueChange,
             placeholder = stringResource(id = R.string.create_card_answer_text),
             field = "answer"
         )
         OutlinedTextFieldWithErrors(
             maxLines = 1,
-            value = viewModel.cardTag.value,
-            errors = viewModel.errors.value,
-            onValueChange = { viewModel.cardTag.value = it },
+            value = tag.value,
+            errors = tag.errors,
+            onValueChange = tag.onValueChange,
             placeholder = stringResource(id = R.string.create_card_tag_text),
             field = "tag"
         )
         CategorySelect(
             modifier = Modifier.weight(1f),
-            categories = viewModel.cardCategories.value,
-            onCategorySelected = viewModel::onCategorySelected
+            categories = categories,
+            onCategorySelected = onCategorySelected
         )
         FilledTonalButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = viewModel::save
+            onClick = onUpdateCardClicked
         ) {
             Text(text = stringResource(R.string.create_card_save_button_text))
         }
     }
-
-    val navigator = LocalNavigator.currentOrThrow
-    // einmaliger Effekt
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = viewModel.isFinished.value,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            if (viewModel.isFinished.value) {
-                navigator.pop()
-            }
-        })
-
 }
-
-

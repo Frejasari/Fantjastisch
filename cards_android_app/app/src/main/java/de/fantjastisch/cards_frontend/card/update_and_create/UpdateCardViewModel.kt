@@ -7,7 +7,6 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.ErrorEntryEntity
-import org.openapitools.client.models.UpdateCardEntity
 import java.util.*
 
 class UpdateCardViewModel(
@@ -43,7 +42,6 @@ class UpdateCardViewModel(
             if (card == null) {
                 error.value = "Something is wrong"
             } else {
-
                 errors.value = emptyList()
                 cardAnswer.value = card.answer
                 cardQuestion.value = card.question

@@ -61,7 +61,7 @@ class UpdateCardModel(
                         CategorySelectItem(
                             id = cat.id,
                             label = cat.label,
-                            isChecked = categories.firstOrNull { categoryOfCard -> categoryOfCard.id == cat.id } != null
+                            isChecked = card.categories.firstOrNull { categoryOfCard -> categoryOfCard.id == cat.id } != null
                         )
                     },
                     tag = card.tag

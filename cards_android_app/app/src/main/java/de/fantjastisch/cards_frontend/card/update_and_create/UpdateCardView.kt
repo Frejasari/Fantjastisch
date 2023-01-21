@@ -75,60 +75,6 @@ data class TextFieldState(
     val onValueChange: (String) -> Unit,
 )
 
-@Composable
-private fun CardEdit(
-    modifier: Modifier = Modifier,
-    question: TextFieldState,
-    answer: TextFieldState,
-    tag: TextFieldState,
-    categories: List<CategorySelectItem>,
-    onCategorySelected: (UUID) -> Unit,
-    onUpdateCardClicked: () -> Unit,
-) {
-    Column(
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        OutlinedTextFieldWithErrors(
-            maxLines = 3,
-            value = question.value,
-            errors = question.errors,
-            onValueChange = question.onValueChange,
-            placeholder = stringResource(id = R.string.create_card_question_text),
-            field = "question"
-        )
-        OutlinedTextFieldWithErrors(
-            maxLines = 5,
-            value = answer.value,
-            errors = answer.errors,
-            onValueChange = answer.onValueChange,
-            placeholder = stringResource(id = R.string.create_card_answer_text),
-            field = "answer"
-        )
-        OutlinedTextFieldWithErrors(
-            maxLines = 1,
-            value = tag.value,
-            errors = tag.errors,
-            onValueChange = tag.onValueChange,
-            placeholder = stringResource(id = R.string.create_card_tag_text),
-            field = "tag"
-        )
-        CategorySelect(
-            modifier = Modifier.weight(1f),
-            categories = categories,
-            onCategorySelected = onCategorySelected
-        )
-        FilledTonalButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = onUpdateCardClicked
-        ) {
-            Text(text = stringResource(R.string.create_card_save_button_text))
-        }
-    }
-}
 
 fun mapError(code: ErrorEntryEntity.Code): String {
     return when (code) {
