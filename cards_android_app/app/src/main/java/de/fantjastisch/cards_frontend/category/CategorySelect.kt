@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import java.util.*
 
-data class CategorySelectItem(val label: String, val id: UUID, val isChecked: Boolean)
+data class CategorySelectItem(val label : String, val id: UUID, val isChecked: Boolean)
 
 @Composable
 fun CategorySelect(

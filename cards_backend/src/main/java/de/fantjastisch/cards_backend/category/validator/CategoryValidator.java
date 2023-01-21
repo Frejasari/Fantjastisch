@@ -3,7 +3,6 @@ package de.fantjastisch.cards_backend.category.validator;
 import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.category.Category;
 import de.fantjastisch.cards_backend.category.aggregate.CreateCategory;
-import de.fantjastisch.cards_backend.category.aggregate.DeleteCategory;
 import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
 import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository;
 import de.fantjastisch.cards_backend.util.validation.EntityDoesNotExistException;
@@ -83,7 +82,7 @@ public class CategoryValidator extends Validator {
         throwIfCategoryDoesNotExist(command.getId());
 
         final List<Category> allCategories = categoryQueryRepository.getPage();
-        errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
+        errors.addAll(checkIfLabelTakenForUpdate(command, allCategories));
         errors.addAll(checkIfSubcategoryExists(command.getSubCategories(), allCategories));
         errors.addAll(checkIfCycleInSubCategoriesFound(allCategories, command.getSubCategories(),
                 new ArrayList<>(Collections.singletonList(command.getId()))));
@@ -99,14 +98,13 @@ public class CategoryValidator extends Validator {
      * Es wird eine {@link de.fantjastisch.cards_backend.util.validation.CommandValidationException} bzw.
      * eine {@link ResponseStatusException} geworfen, sofern einer dieser Fälle gilt.
      *
-     * @param command Eine {@link DeleteCategory}-Instanz, welche validiert werden soll.
+     * @param id eine UUID, welche validiert werden soll.
      */
-    public void validate(DeleteCategory command) {
-        throwIfNeeded(validateConstraints(command));
-        throwIfCategoryDoesNotExist(command.getId());
+    public void validateDelete(UUID id) {
+        throwIfCategoryDoesNotExist(id);
 
         List<ErrorEntry> errors = new ArrayList<>();
-        errors.addAll(checkIfCategoryIsInUse(command.getId()));
+        errors.addAll(checkIfCategoryIsInUse(id));
         throwIfNeeded(errors);
     }
 
@@ -216,6 +214,16 @@ public class CategoryValidator extends Validator {
                             .code(LABEL_TAKEN_VIOLATION)
                             .field("label")
                             .build());
+        }
+        return errors;
+    }
+
+    private List<ErrorEntry> checkIfLabelTakenForUpdate(UpdateCategory toUpdate, List<Category> allCategories) {
+        Category getCat = categoryQueryRepository.get(toUpdate.getId());
+        ArrayList<Category> all = new ArrayList<>(allCategories);
+        List<ErrorEntry> errors = new ArrayList<>();
+        if (all.remove(getCat)) {
+            errors = checkIfLabelTaken(toUpdate.getLabel(), all);
         }
         return errors;
     }

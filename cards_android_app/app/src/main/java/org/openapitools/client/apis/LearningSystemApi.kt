@@ -34,6 +34,7 @@ interface LearningSystemApi {
      *  - 404: Not Found
      *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param deleteLearningSystemEntity 
      * @return [Call]<[Unit]>
@@ -46,6 +47,7 @@ interface LearningSystemApi {
      * 
      * Responses:
      *  - 404: Not Found
+     *  - 200: OK
      *  - 422: Unprocessable Entity
      *  - 200: OK
      *
@@ -75,6 +77,7 @@ interface LearningSystemApi {
      *  - 404: Not Found
      *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param updateLearningSystemEntity 
      * @return [Call]<[Unit]>

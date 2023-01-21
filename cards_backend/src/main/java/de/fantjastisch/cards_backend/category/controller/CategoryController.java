@@ -3,7 +3,6 @@ package de.fantjastisch.cards_backend.category.controller;
 import de.fantjastisch.cards_backend.category.Category;
 import de.fantjastisch.cards_backend.category.aggregate.CategoryAggregate;
 import de.fantjastisch.cards_backend.category.aggregate.CreateCategory;
-import de.fantjastisch.cards_backend.category.aggregate.DeleteCategory;
 import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
 import de.fantjastisch.cards_backend.util.CreatedResponse;
 import de.fantjastisch.cards_backend.util.ErrorResponse;
@@ -87,7 +86,7 @@ public class CategoryController {
     /**
      * Diese Funktion stellt den API-Endpunkt zum Löschen einer Kategorien-Entität bereit.
      *
-     * @param command Eine Instanz der Klasse {@link DeleteCategory}.
+     * @param id Die UUID einer zu löschenden Kategorie.
      */
     @DeleteMapping(path = "delete")
     @Operation(
@@ -96,8 +95,8 @@ public class CategoryController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json")})
     })
-    public void deleteCategory(@RequestBody DeleteCategory command) {
-        categoryAggregate.handle(command);
+    public void deleteCategory(@RequestParam UUID id) {
+        categoryAggregate.handleDelete(id);
     }
 
     /**
