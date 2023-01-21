@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.learning_object_details
+package de.fantjastisch.cards_frontend.learning_object_details.cards_view
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
@@ -10,11 +10,12 @@ import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsInBoxFragment
+import de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_cards_in_box.AddCardsToBoxFragment
 import java.util.*
 
 
 @Composable
-fun LearningDetailsContextMenu(learningBoxId: UUID, navigator: Navigator) {
+fun CardsInBoxContextMenu(learningBoxId: UUID, navigator: Navigator) {
     val isMenuOpen = remember { mutableStateOf(false) }
 
     IconButton(onClick = { isMenuOpen.value = !isMenuOpen.value }) {
@@ -25,13 +26,19 @@ fun LearningDetailsContextMenu(learningBoxId: UUID, navigator: Navigator) {
             onDismissRequest = { isMenuOpen.value = false }
         ) {
             DropdownMenuItem(
-                text = { Text(text=stringResource(R.string.show_cards_in_learning_box)) },
+                text = { Text(text="Karten hinzufügen") },
                 onClick = {
                     isMenuOpen.value = false
-                    navigator.push(CardsInBoxFragment(learningBoxId=learningBoxId, navigator=navigator))
+                    navigator.push(AddCardsToBoxFragment(learningBoxId=learningBoxId, navigator=navigator))
                 })
             DropdownMenuItem(
-                text = { Text(text=stringResource(R.string.study_learning_box)) },
+                text = { Text(text="Karten entfernen") },
+                onClick = {
+                    isMenuOpen.value = false
+                    //navigator.push(LearningModeFragment(learningBoxId))
+                })
+            DropdownMenuItem(
+                text = { Text(text="Karten verschieben") },
                 onClick = {
                     isMenuOpen.value = false
                     //navigator.push(LearningModeFragment(learningBoxId))
