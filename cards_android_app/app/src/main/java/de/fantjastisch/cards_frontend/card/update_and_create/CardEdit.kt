@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors

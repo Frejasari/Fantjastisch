@@ -1,26 +1,12 @@
-package de.fantjastisch.cards_frontend.card.update_and_create
+package de.fantjastisch.cards_frontend.card.update
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.category.CategorySelect
-import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
+import de.fantjastisch.cards_frontend.card.update_and_create.CardEdit
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 

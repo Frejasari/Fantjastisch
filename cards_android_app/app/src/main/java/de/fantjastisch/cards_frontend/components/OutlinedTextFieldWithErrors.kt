@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import de.fantjastisch.cards_frontend.card.update_and_create.mapError
+import de.fantjastisch.cards_frontend.card.update.mapError
 import org.openapitools.client.models.ErrorEntryEntity
 
 @OptIn(ExperimentalMaterial3Api::class)

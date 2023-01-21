@@ -9,7 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.card.update_and_create.CreateCardFragment
+import de.fantjastisch.cards_frontend.card.create.CreateCardFragment
 import de.fantjastisch.cards_frontend.category.update_and_create.CreateCategoryFragment
 import de.fantjastisch.cards_frontend.learning_object.CreateLearningObjectFragment
 import de.fantjastisch.cards_frontend.learning_system.CreateLearningSystemFragment

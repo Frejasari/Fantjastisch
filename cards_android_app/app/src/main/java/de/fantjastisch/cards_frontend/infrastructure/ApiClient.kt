@@ -53,7 +53,7 @@ fun <T> Call<T>.enqueue(onSuccess: (T) -> Unit, onFailure: (errors: ErrorRespons
 
 sealed class RepoResult<T> {
     data class Success<T>(val result: T) : RepoResult<T>()
-    data class Error<T>(val errors: ErrorResponseEntity) : RepoResult<T>()
+    data class Error<T>(val errors: List<ErrorEntryEntity>) : RepoResult<T>()
 
     class ServerError<T> : RepoResult<T>()
 }
@@ -65,7 +65,7 @@ fun <T> RepoResult<T>.fold(
     when (this) {
         is RepoResult.Success -> onSuccess(this.result)
 
-        is RepoResult.Error -> onFailure(this.errors.errors)
+        is RepoResult.Error -> onFailure(this.errors)
         is RepoResult.ServerError -> TODO()
     }
 }
@@ -91,7 +91,7 @@ fun <T> Response<T>.toRepoResponse(): RepoResult<T> {
 
                 val errors: ErrorResponseEntity? = adapter.fromJson(errorBody.string())
                 if (errors != null) {
-                    return RepoResult.Error(errors)
+                    return RepoResult.Error(errors.errors)
                 }
 
             }

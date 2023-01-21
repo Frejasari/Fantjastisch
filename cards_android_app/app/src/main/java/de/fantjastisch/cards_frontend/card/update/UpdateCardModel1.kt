@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card.update_and_create
+package de.fantjastisch.cards_frontend.card.update
 
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.category.CategoryRepository

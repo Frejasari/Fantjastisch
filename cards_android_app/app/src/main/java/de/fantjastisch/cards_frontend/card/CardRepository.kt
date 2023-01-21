@@ -1,11 +1,9 @@
 package de.fantjastisch.cards_frontend.card
 
 import de.fantjastisch.cards_frontend.infrastructure.client
-import de.fantjastisch.cards_frontend.infrastructure.enqueue
 import de.fantjastisch.cards_frontend.infrastructure.toRepoResponse
 import org.openapitools.client.apis.CardApi
 import org.openapitools.client.models.CreateCardEntity
-import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.UpdateCardEntity
 import retrofit2.awaitResponse
 import java.util.*
@@ -34,17 +32,13 @@ class CardRepository {
         search,
         tag,
         sort
-    )
-        .awaitResponse()
+    ).awaitResponse()
         .toRepoResponse()
 
 
-    fun createCard(
+    suspend fun createCard(
         card: CreateCardEntity,
-        onSuccess: (String) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) =
-        service.createCard(card).enqueue(onSuccess, onFailure)
+    ) = service.createCard(card).awaitResponse().toRepoResponse()
 
     suspend fun updateCard(
         card: UpdateCardEntity,

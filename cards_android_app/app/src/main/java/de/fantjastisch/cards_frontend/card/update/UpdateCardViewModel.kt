@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card.update_and_create
+package de.fantjastisch.cards_frontend.card.update
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -64,7 +64,7 @@ class UpdateCardViewModel(
             )
             when (updateResult) {
                 is RepoResult.Success -> isFinished.value = true
-                is RepoResult.Error -> errors.value = updateResult.errors.errors
+                is RepoResult.Error -> errors.value = updateResult.errors
                 is RepoResult.ServerError -> error.value = "Irgendwas ist schief gelaufen"
             }
         }

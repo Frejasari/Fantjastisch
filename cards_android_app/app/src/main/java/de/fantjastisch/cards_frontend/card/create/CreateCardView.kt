@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card.update_and_create
+package de.fantjastisch.cards_frontend.card.create
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -6,6 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import de.fantjastisch.cards_frontend.card.update.TextFieldState
+import de.fantjastisch.cards_frontend.card.update_and_create.CardEdit
 
 
 //TODO Fehler anzeigen.
