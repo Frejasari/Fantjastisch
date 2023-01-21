@@ -27,7 +27,7 @@ fun CardSelect(
             .padding(5.dp)
     ) {
         cards.map { card ->
-            CardSelectComponent(card = card, onCardSelected = onCardSelected)
+            CommonCardComponent(card = card, onCardSelected = onCardSelected, hasCheckBox = true)
         }
     }
 }
