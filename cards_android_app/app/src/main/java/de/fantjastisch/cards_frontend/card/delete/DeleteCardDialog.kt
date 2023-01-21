@@ -16,9 +16,11 @@ fun DeleteCardDialog(
     tag: String,
     cardId: UUID,
     isOpen: Boolean,
-    setIsOpen: (isOpen: Boolean) -> Unit
+    setIsOpen: (isOpen: Boolean) -> Unit,
+    onDeleteSuccessful: () -> Unit
 ) {
-    val viewModel = viewModel { DeleteCardViewModel(cardId = cardId) }
+    val viewModel = viewModel(key = cardId.toString())
+    { DeleteCardViewModel(cardId = cardId) }
     if (isOpen) {
         AlertDialog(
             onDismissRequest = { setIsOpen(false) }, title = {
@@ -38,7 +40,7 @@ fun DeleteCardDialog(
             dismissButton = {
                 Button(
                     onClick = {
-                        viewModel.onDismissClicked()
+                        setIsOpen(false)
                     }) {
                     Text(text = "Abbrechen")
                 }
@@ -52,6 +54,7 @@ fun DeleteCardDialog(
         // dann wird dieses Lambda ausgeführt.
         block = {
             if (viewModel.isFinished.value) {
+                onDeleteSuccessful()
                 setIsOpen(false)
             }
         })

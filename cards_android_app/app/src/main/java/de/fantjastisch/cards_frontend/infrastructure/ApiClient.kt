@@ -11,7 +11,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 val client: ApiClient by lazy { ApiClient() }
 
 // extension Function auf dem Typ Call<T>, welche die callbacks
@@ -25,7 +24,6 @@ fun <T> Call<T>.enqueue(onSuccess: (T) -> Unit, onFailure: (errors: ErrorRespons
             } else {
                 val errorBody = response.errorBody()
                 if (errorBody != null) {
-
                     if (response.code() == 422 || response.code() == 404) {
                         val moshi = Moshi
                             .Builder()
@@ -42,7 +40,7 @@ fun <T> Call<T>.enqueue(onSuccess: (T) -> Unit, onFailure: (errors: ErrorRespons
                         onFailure(errors)
                     }
                 }
-                    onFailure(null)
+                onFailure(null)
             }
         }
 

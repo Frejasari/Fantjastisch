@@ -22,6 +22,10 @@ class GlossaryViewModel(
         )
     }
 
+    fun onDeleteSuccessful() {
+        onPageLoaded()
+    }
+
     init {
         onPageLoaded()
     }

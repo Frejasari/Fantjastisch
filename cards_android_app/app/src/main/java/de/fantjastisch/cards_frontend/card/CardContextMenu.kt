@@ -17,7 +17,11 @@ import java.util.UUID
 
 
 @Composable
-fun CardContextMenu(cardId: UUID, tag: String) {
+fun CardContextMenu(
+    cardId: UUID,
+    tag: String,
+    onDeleteSuccessful: () -> Unit
+) {
     val navigator = LocalNavigator.currentOrThrow.parent!!
     val isMenuOpen = remember { mutableStateOf(false) }
     val isDeleteDialogOpen = remember { mutableStateOf(false) }
@@ -47,5 +51,7 @@ fun CardContextMenu(cardId: UUID, tag: String) {
         tag = tag,
         cardId = cardId,
         isOpen = isDeleteDialogOpen.value,
-        setIsOpen = { isDeleteDialogOpen.value = it })
+        setIsOpen = { isDeleteDialogOpen.value = it },
+        onDeleteSuccessful = onDeleteSuccessful
+    )
 }

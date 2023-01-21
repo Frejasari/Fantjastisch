@@ -29,7 +29,4 @@ class DeleteCardViewModel(
         )
     }
 
-    fun onDismissClicked() {
-        isFinished.value = true
-    }
 }
