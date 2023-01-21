@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.category.UpdateOrCreateCategoryView
 import java.util.*
 
 data class UpdateCategoryFragment(val id: UUID) : AndroidScreen() {

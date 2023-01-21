@@ -15,6 +15,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategorySelect
+import de.fantjastisch.cards_frontend.category.CategoryViewModel
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import org.openapitools.client.models.ErrorEntryEntity
 
