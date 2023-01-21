@@ -10,25 +10,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
-import androidx.compose.material3.ExposedDropdownMenuDefaults.textFieldColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.card.update_and_create.CardContentViewModel
-import de.fantjastisch.cards_frontend.card.update_and_create.UpdateAndCreateCardViewModel
-import de.fantjastisch.cards_frontend.category.CategoryContextMenu
-import de.fantjastisch.cards_frontend.category.CategorySelect
-import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
-import org.openapitools.client.models.ErrorEntryEntity
+import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
 import java.util.*
 
 

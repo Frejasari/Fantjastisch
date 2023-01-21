@@ -15,10 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import de.fantjastisch.cards_frontend.card.CardContentView
 import de.fantjastisch.cards_frontend.card.CardContextMenu
-import de.fantjastisch.cards_frontend.card.update_and_create.CardContentFragment
-import de.fantjastisch.cards_frontend.card.update_and_create.CardContentViewModel
+import de.fantjastisch.cards_frontend.card.content_overview.CardContentFragment
 
 
 @OptIn(ExperimentalMaterial3Api::class)
