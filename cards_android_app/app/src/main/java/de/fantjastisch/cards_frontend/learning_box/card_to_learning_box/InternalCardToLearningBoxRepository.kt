@@ -24,4 +24,6 @@ interface CardToLearningBoxDao {
     @Query("SELECT card_id FROM card_to_learning_box WHERE learning_box_id = :learningBoxId")
     fun getCardIdsForBox(learningBoxId: UUID): List<UUID>
 
+    @Query("SELECT card_id FROM learning_box JOIN card_to_learning_box on id = learning_box_id WHERE learning_object_id = :learningObjectId ")
+    fun getAllCardsForLearningObject(learningObjectId: UUID) : List<UUID>
 }

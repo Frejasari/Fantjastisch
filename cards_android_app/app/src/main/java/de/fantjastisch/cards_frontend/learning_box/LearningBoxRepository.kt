@@ -31,8 +31,14 @@ class LearningBoxRepository(val repository: InternalLearningBoxRepository) {
     }
 
 
-    fun findById(learningBoxId: UUID): LearningBox {
-        return repository.findById(learningBoxId)
+    fun findByBoxId(learningBoxId: UUID,
+                 onSuccess: (LearningBox) -> Unit,
+                 onFailure: (errors: ErrorResponseEntity?) -> Unit) {
+        try {
+            onSuccess(repository.findById(learningBoxId))
+        } catch  (ex: Throwable) {
+            onFailure(null)
+        }
     }
 
     fun insert(

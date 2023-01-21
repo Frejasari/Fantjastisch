@@ -6,16 +6,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.Navigator
-import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsInBoxFragment
-import de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_cards_in_box.AddCardsToBoxFragment
+import de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_cards_in_box.EditCardsInBoxFragment
+import de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box.MoveCardsToBoxFragment
 import java.util.*
 
 
 @Composable
-fun CardsInBoxContextMenu(learningBoxId: UUID, navigator: Navigator) {
+fun CardsInBoxContextMenu(learningBoxId: UUID, navigator: Navigator, learningObjectId: UUID) {
     val isMenuOpen = remember { mutableStateOf(false) }
 
     IconButton(onClick = { isMenuOpen.value = !isMenuOpen.value }) {
@@ -26,22 +24,28 @@ fun CardsInBoxContextMenu(learningBoxId: UUID, navigator: Navigator) {
             onDismissRequest = { isMenuOpen.value = false }
         ) {
             DropdownMenuItem(
-                text = { Text(text="Karten hinzufügen") },
+                text = { Text(text = "Karten auswählen") },
                 onClick = {
                     isMenuOpen.value = false
-                    navigator.push(AddCardsToBoxFragment(learningBoxId=learningBoxId, navigator=navigator))
+                    navigator.push(
+                        EditCardsInBoxFragment(
+                            learningBoxId = learningBoxId,
+                            navigator = navigator,
+                            learningObjectId = learningObjectId
+                        )
+                    )
                 })
             DropdownMenuItem(
-                text = { Text(text="Karten entfernen") },
+                text = { Text(text = "Karten verschieben") },
                 onClick = {
                     isMenuOpen.value = false
-                    //navigator.push(LearningModeFragment(learningBoxId))
-                })
-            DropdownMenuItem(
-                text = { Text(text="Karten verschieben") },
-                onClick = {
-                    isMenuOpen.value = false
-                    //navigator.push(LearningModeFragment(learningBoxId))
+                    navigator.push(
+                        MoveCardsToBoxFragment(
+                            learningBoxId = learningBoxId,
+                            navigator = navigator,
+                            learningObjectId = learningObjectId
+                        )
+                    )
                 })
         }
     }

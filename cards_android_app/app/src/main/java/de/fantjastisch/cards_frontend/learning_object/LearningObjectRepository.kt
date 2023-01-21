@@ -43,7 +43,16 @@ class LearningObjectRepository(val repository: InternalLearningObjectRepository)
         }
     }
 
-    fun delete(id: UUID) {
-        return repository.delete(id)
+    fun delete(
+        id: UUID,
+        onSuccess: () -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    ) {
+        try {
+            repository.delete(id)
+            onSuccess()
+        } catch (ex: Throwable) {
+            onFailure(null)
+        }
     }
 }

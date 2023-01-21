@@ -5,26 +5,25 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.materialIcon
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import de.fantjastisch.cards.R
-import de.fantjastisch.cards.R.drawable
 import de.fantjastisch.cards_frontend.glossary.LearningOverviewModel
 import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsFragment
+import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObjectDialog
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,6 +34,7 @@ fun LearningOverview(
 ) {
     val navigator = LocalNavigator.currentOrThrow.parent!!
     val viewModel = viewModel { LearningOverviewModel() }
+    val isDeleteDialogOpen = remember { mutableStateOf(false) }
     LaunchedEffect(
         // wenn sich diese Variable ändert
         key1 = Unit,
@@ -43,84 +43,111 @@ fun LearningOverview(
             viewModel.onPageLoaded()
         })
     // Ein RecyclerView -> Eine lange liste von Eintraegen
-    LazyColumn(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = PaddingValues(vertical = 16.dp)
-    ) {
-        items(viewModel.learningObjects.value) { learningObject ->
-            Box(Modifier.clickable(onClick = {navigator.push(LearningDetailsFragment(learningObject.id, navigator))})) {
-                Surface(
-                    modifier = Modifier,
-                    shadowElevation = 6.dp,
+    if (viewModel.learningObjects.value.size == 0) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) { Text(text = "Looks empty...", fontSize = 20.sp) }
+    } else {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            contentPadding = PaddingValues(vertical = 16.dp)
+        ) {
+            items(viewModel.learningObjects.value) { learningObject ->
 
-                    ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp, horizontal = 16.dp),
-
-                        ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .weight(weight = 1f, fill = false),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                text = learningObject.label
-                            )
-//                        CardContextMenu(
-//                            cardId = learningObject.id,
-//                            tag = card.tag
-//                        )
-                            // TODO: Allgemeine komponente für alle?
-                        }
-
-                        Divider(
-                            modifier = Modifier
-                                .padding(vertical = 6.dp)
+                Box(Modifier.clickable(onClick = {
+                    navigator.push(
+                        LearningDetailsFragment(
+                            learningObject.id,
+                            navigator
                         )
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                    )
+                })) {
+                    Surface(
+                        modifier = Modifier,
+                        shadowElevation = 6.dp,
+
                         ) {
-                            Text(
-                                modifier = Modifier,
-                                text = viewModel.getLearningSystemLabel(learningObject.learningSystemId)
-                            )
-                            Spacer(
-                                Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight()
-                            )
-                            SuggestionChip(
-                                modifier = Modifier,
-                                onClick = { },
-                                label = {
-                                    Text(
-                                        modifier = Modifier,
-                                        color = if (viewModel.getProgressFromLearningObject(
-                                                learningObject.id
-                                            ) < 33
-                                        ) Color(0xFFC53030)
-                                        else if (viewModel.getProgressFromLearningObject(
-                                                learningObject.id
-                                            ) < 66
-                                        ) Color(0xFFFF8707)
-                                        else Color(0xFF2B990D),
-                                        text = viewModel.getProgressFromLearningObject(
-                                            learningObject.id
-                                        ).toString() + " %"
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp, horizontal = 16.dp),
+
+                            ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .weight(weight = 6f, fill = false),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    text = learningObject.label
+                                )
+                                IconButton(
+                                    modifier = Modifier
+                                        .weight(1f),
+                                    onClick = {
+                                        isDeleteDialogOpen.value = !isDeleteDialogOpen.value
+                                    }) {
+                                    Icon(
+                                        imageVector = Icons.Default.DeleteOutline,
+                                        contentDescription = "delete icon"
                                     )
                                 }
+                                DeleteLearningObjectDialog(
+                                    learningObjectId = learningObject.id,
+                                    isOpen = isDeleteDialogOpen.value,
+                                    setIsOpen = { isDeleteDialogOpen.value = it },
+                                    onDeleteSuccessful = viewModel::onPageLoaded
+                                )
+                            }
+
+                            Divider(
+                                modifier = Modifier
+                                    .padding(vertical = 6.dp)
                             )
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    modifier = Modifier,
+                                    text = viewModel.getLearningSystemLabel(learningObject.learningSystemId)
+                                )
+                                Spacer(
+                                    Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight()
+                                )
+                                SuggestionChip(
+                                    modifier = Modifier,
+                                    onClick = { },
+                                    label = {
+                                        Text(
+                                            modifier = Modifier,
+                                            color = if (viewModel.getProgressFromLearningObject(
+                                                    learningObject.id
+                                                ) < 33
+                                            ) Color(0xFFC53030)
+                                            else if (viewModel.getProgressFromLearningObject(
+                                                    learningObject.id
+                                                ) < 66
+                                            ) Color(0xFFFF8707)
+                                            else Color(0xFF2B990D),
+                                            text = viewModel.getProgressFromLearningObject(
+                                                learningObject.id
+                                            ).toString() + " %"
+                                        )
+                                    }
+                                )
+                            }
                         }
                     }
                 }
