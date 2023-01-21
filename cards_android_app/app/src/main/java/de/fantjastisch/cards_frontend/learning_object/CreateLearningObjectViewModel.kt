@@ -10,7 +10,6 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.InternalLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
@@ -95,11 +94,7 @@ class CreateLearningObjectViewModel(
                     errors.value = null
                     cards.value = result.result.map { card ->
                         CardSelectItem(
-                            id = card.id,
-                            question = card.question,
-                            answer = card.answer,
-                            tag = card.tag,
-                            categories = card.categories.map { categoryOfCard -> categoryOfCard.label },
+                            card = card,
                             isChecked = false
                         )
                     }
@@ -115,7 +110,7 @@ class CreateLearningObjectViewModel(
 
     fun onCardSelected(id: UUID) {
         cards.value = cards.value.map {
-            if (it.id == id) {
+            if (it.card.id == id) {
                 it.copy(isChecked = !it.isChecked)
             } else {
                 it
@@ -205,7 +200,7 @@ class CreateLearningObjectViewModel(
         val cardsFromCategoriesAsIds = cardsFromCategories.map { it.id }
         this.cardIds.value.addAll(cardsFromCategoriesAsIds) // cardIds from categories
         this.cardIds.value.addAll(cards.value.filter { card -> card.isChecked }
-            .map { card -> card.id })
+            .map { card -> card.card.id })
         // cardIds from cardSelectItems
         learningSystem.boxLabels.forEachIndexed { index, label ->
             val learningBox = LearningBox(

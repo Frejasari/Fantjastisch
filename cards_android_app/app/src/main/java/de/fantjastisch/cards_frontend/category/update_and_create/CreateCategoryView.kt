@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -17,15 +19,13 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategoryViewModel
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
-import org.openapitools.client.models.ErrorEntryEntity
 
 //TODO Fehler anzeigen.
 @Composable
 fun UpdateOrCreateCategoryView(
     modifier: Modifier = Modifier,
-    viewModel : CategoryViewModel
+    viewModel: CategoryViewModel
 ) {
-
     // Componente die ihre Kinder untereinander anzeigt.
     Column(
         modifier = modifier

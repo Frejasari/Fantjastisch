@@ -1,16 +1,18 @@
-package de.fantjastisch.cards_frontend.learning_object_details.cards_view
+package de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_cards_in_box
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.navigator.Navigator
+import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsInBoxContextMenu
 import java.util.*
 
 
-data class CardsInBoxFragment(val learningBoxId: UUID, val navigator: Navigator) : AndroidScreen() {
+data class AddCardsToBoxFragment(val learningBoxId: UUID, val navigator: Navigator) :
+    AndroidScreen() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -28,9 +30,9 @@ data class CardsInBoxFragment(val learningBoxId: UUID, val navigator: Navigator)
                 })
         })
         {
-            CardsInBoxView(
+            AddCardsToBoxView(
                 modifier = Modifier.padding(it),
-                viewModel = viewModel { CardsInBoxViewModel(learningBoxId) }
+                viewModel = viewModel { AddCardsToBoxViewModel(learningBoxId) }
             )
         }
     }
