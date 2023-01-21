@@ -1,10 +1,9 @@
 package de.fantjastisch.cards_frontend.card
 
 import de.fantjastisch.cards_frontend.infrastructure.client
-import de.fantjastisch.cards_frontend.infrastructure.toRepoResponse
 import de.fantjastisch.cards_frontend.infrastructure.enqueue
+import de.fantjastisch.cards_frontend.infrastructure.toRepoResponse
 import org.openapitools.client.apis.CardApi
-import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CreateCardEntity
 import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.UpdateCardEntity
@@ -29,9 +28,7 @@ class CardRepository {
         categoryIds: List<UUID>?,
         search: String?,
         tag: String?,
-        sort: Boolean?,
-//        onSuccess: (List<CardEntity>) -> Unit,
-//        onFailure: (errors: ErrorResponseEntity?) -> Unit
+        sort: Boolean?
     ) = service.getCardPage(
         categoryIds,
         search,
@@ -57,11 +54,9 @@ class CardRepository {
             .awaitResponse()
             .toRepoResponse()
 
-    fun deleteCard(
+    suspend fun deleteCard(
         cardId: UUID,
-        onSuccess: (Unit) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) =
-        service.deleteCard(cardId).enqueue(onSuccess, onFailure)
+        service.deleteCard(cardId).awaitResponse().toRepoResponse()
 
 }

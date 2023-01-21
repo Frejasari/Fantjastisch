@@ -32,7 +32,6 @@ class UpdateCardModel(
         )
     )
 
-
     data class UpdateCard(
         val id: UUID,
         val answer: String,

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 
@@ -16,12 +17,12 @@ class GlossaryViewModel(
 
     val error = mutableStateOf<String?>(null)
 
-    val currentDeleteDialog = mutableStateOf<CardEntity?>(null)
+    val currentDeleteDialog = mutableStateOf<DeletionProgress?>(null)
 
     sealed class DeletionProgress {
-        object None: DeletionProgress()
-        data class ConfirmWithUser(val card: CardEntity): DeletionProgress()
-        data class Deleting(val card: CardEntity): DeletionProgress()
+        abstract val card: CardEntity
+        data class ConfirmWithUser(override val card: CardEntity): DeletionProgress()
+        data class Deleting(override val card: CardEntity): DeletionProgress()
     }
 
     fun onPageLoaded() {
@@ -43,13 +44,17 @@ class GlossaryViewModel(
     }
 
     fun onTryDeleteCard(card: CardEntity) {
-        currentDeleteDialog.value = card
+        currentDeleteDialog.value = DeletionProgress.ConfirmWithUser(card)
     }
 
-    fun onDeleteCardClicked(card: CardEntity) {
+    fun onDeleteCardClicked() {
+        val card = currentDeleteDialog.value!!.card
+        currentDeleteDialog.value = DeletionProgress.Deleting(card)
         error.value = null
-        cardRepository.deleteCard(
-            cardId = card.id,
+       cardRepository.deleteCard(
+            cardId = card.id)
+
+        ,
             onSuccess = {
                 onPageLoaded()
                 currentDeleteDialog.value = null

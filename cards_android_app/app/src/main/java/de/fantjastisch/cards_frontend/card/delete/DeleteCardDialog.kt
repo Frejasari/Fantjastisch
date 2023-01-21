@@ -26,6 +26,7 @@ fun DeleteCardDialog(
         },
         confirmButton = {
             Button(
+                enabled = isDeleteButtonEnabled,
                 onClick = onDeleteClicked
             ) {
                 Text(text = "Ja")
@@ -33,7 +34,6 @@ fun DeleteCardDialog(
         },
         dismissButton = {
             Button(
-                enabled = isDeleteButtonEnabled,
                 onClick = onDismissClicked
             ) {
                 Text(text = "Abbrechen")

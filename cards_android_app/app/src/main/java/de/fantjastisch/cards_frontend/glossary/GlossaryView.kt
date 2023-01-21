@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.CardContextMenu
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
+import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
 import org.openapitools.client.models.CardEntity
 
 
@@ -24,13 +25,14 @@ fun GlossaryView(
 
     val viewModel = viewModel { GlossaryViewModel() }
 
-    val cardToDelete = viewModel.currentDeleteDialog.value
-    if (cardToDelete != null) {
+    val deletionProgress = viewModel.currentDeleteDialog.value
+    if (deletionProgress != null) {
         DeleteCardDialog(
-            card = cardToDelete,
+            card = deletionProgress.card,
+            isDeleteButtonEnabled = deletionProgress is DeletionProgress.ConfirmWithUser,
             onDismissClicked = { viewModel.onDeleteCardAborted() },
             onDeleteClicked = {
-                viewModel.onDeleteCardClicked(cardToDelete)
+                viewModel.onDeleteCardClicked()
             }
         )
     }
