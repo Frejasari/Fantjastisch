@@ -2,7 +2,8 @@ package de.fantjastisch.cards_frontend.learning_object
 
 import androidx.room.*
 
-class InternalLearningObjectRepository(private val dao: LearningObjectDao) : LearningObjectDao by dao
+class InternalLearningObjectRepository(private val dao: LearningObjectDao) :
+    LearningObjectDao by dao
 
 @Dao
 interface LearningObjectDao {

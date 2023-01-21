@@ -13,7 +13,7 @@ class LearningSystemRepository {
 
     val service = client.createService(LearningSystemApi::class.java)
 
-    fun getCategory(id: UUID,
+    fun getLearningSystem(id: UUID,
                     onSuccess: (LearningSystemEntity) -> Unit,
                     onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) = service.getLearningSystem(id).enqueue(onSuccess, onFailure)
@@ -27,13 +27,11 @@ class LearningSystemRepository {
             learningSystem: CreateLearningSystemEntity,
             onSuccess: (String) -> Unit,
             onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) =
-            service.createLearningSystem(learningSystem).enqueue(onSuccess, onFailure)
+    ) = service.createLearningSystem(learningSystem).enqueue(onSuccess, onFailure)
 
     fun updateLearningSystem(
             learningSystem: UpdateLearningSystemEntity,
             onSuccess: (Unit) -> Unit,
             onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) =
-            service.updateLearningSystem(learningSystem).enqueue(onSuccess, onFailure)
+    ) = service.updateLearningSystem(learningSystem).enqueue(onSuccess, onFailure)
 }

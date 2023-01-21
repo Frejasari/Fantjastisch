@@ -33,6 +33,7 @@ interface CardApi {
      *  - 404: Not Found
      *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param id 
      * @return [Call]<[Unit]>
@@ -79,6 +80,7 @@ interface CardApi {
      *  - 404: Not Found
      *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param updateCardEntity 
      * @return [Call]<[Unit]>

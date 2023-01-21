@@ -34,6 +34,7 @@ interface LinkApi {
      *  - 404: Not Found
      *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param deleteLinkEntity 
      * @return [Call]<[Unit]>
@@ -76,6 +77,7 @@ interface LinkApi {
      *  - 404: Not Found
      *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *
      * @param updateLinkEntity 
      * @return [Call]<[Unit]>

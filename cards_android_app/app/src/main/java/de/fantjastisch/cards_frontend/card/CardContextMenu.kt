@@ -12,7 +12,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.card.update_and_create.UpdateCardFragment
-import java.util.*
+import java.util.UUID
+
 
 
 @Composable

@@ -129,8 +129,8 @@ public class CardQueryRepository {
     // queryForObject: bei nicht gefundener ID abfangen (Fehlermeldung)
 //    TODO: Db-Test
     public Boolean isCategoryEmpty(UUID categoryId) {
-        final String query = "select CASE WHEN EXISTS (SELECT 1 FROM public.cards where " +
-                "ARRAY_CONTAINS ( categories, :categoryId )) THEN 'FALSE' ELSE 'TRUE' END";
+        final String query = "select CASE WHEN EXISTS (SELECT 1 FROM public.categories_to_cards where " +
+                "category_id = :categoryId ) THEN 'FALSE' ELSE 'TRUE' END";
         return namedParameterJdbcTemplate.queryForObject(query,
                 new MapSqlParameterSource().addValue("categoryId", categoryId), Boolean.class);
     }

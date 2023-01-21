@@ -11,21 +11,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategorySelect
+import de.fantjastisch.cards_frontend.category.CategoryViewModel
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
-import java.util.*
+import org.openapitools.client.models.ErrorEntryEntity
 
 //TODO Fehler anzeigen.
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateCategoryView(
-    modifier: Modifier = Modifier
+fun UpdateOrCreateCategoryView(
+    modifier: Modifier = Modifier,
+    viewModel : CategoryViewModel
 ) {
-    val viewModel = viewModel { CreateCategoryViewModel() }
 
     // Componente die ihre Kinder untereinander anzeigt.
     Column(
@@ -43,15 +42,17 @@ fun CreateCategoryView(
             field = "label"
         )
 
-        CategorySelect(
-            modifier = Modifier.weight(1f),
-            categories = viewModel.categories.value,
-            onCategorySelected = viewModel::onCategorySelected
-        )
+        viewModel.subcategories.value?.let {
+            CategorySelect(
+                modifier = Modifier.weight(1f),
+                categories = it,
+                onCategorySelected = viewModel::onCategorySelected
+            )
+        }
 
         FilledTonalButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = viewModel::onAddCategoryClicked
+            onClick = viewModel::save
         ) {
             Text(text = stringResource(R.string.create_category_save_button_text))
         }
@@ -70,4 +71,5 @@ fun CreateCategoryView(
         })
 
 }
+
 

@@ -38,4 +38,12 @@ class CategoryRepository {
             onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) =
             service.updateCategory(category).enqueue(onSuccess, onFailure)
+
+    fun deleteCategory(
+        categoryId: UUID,
+        onSuccess: (Unit) -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    ) =
+        service.deleteCategory(categoryId).enqueue(onSuccess, onFailure)
+
 }
