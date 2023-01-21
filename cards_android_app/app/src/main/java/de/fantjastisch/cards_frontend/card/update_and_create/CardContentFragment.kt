@@ -7,14 +7,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.card.CardContentView
 import de.fantjastisch.cards_frontend.card.UpdateAndCreateCardView
 import java.util.*
 
-data class UpdateCardFragment(val id: UUID) : AndroidScreen() {
+data class CardContentFragment(val id: UUID) : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
+
         Scaffold(topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -26,8 +30,8 @@ data class UpdateCardFragment(val id: UUID) : AndroidScreen() {
             )
         })
         {
-            UpdateAndCreateCardView(
-                viewModel = viewModel { UpdateCardViewModel(id) },
+            CardContentView(
+                viewModel = viewModel { CardContentViewModel(id) },
                 modifier = Modifier.padding(it)
             )
         }
