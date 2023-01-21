@@ -1,79 +1,86 @@
 package de.fantjastisch.cards_frontend.card.update_and_create
 
-import de.fantjastisch.cards_frontend.card.CardRepository
-import de.fantjastisch.cards_frontend.category.CategoryRepository
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import kotlinx.coroutines.launch
+import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.UpdateCardEntity
 import java.util.*
 
 class UpdateCardViewModel(
     id: UUID,
-    private val cardRepository: CardRepository = CardRepository(),
-    private val categoryRepository: CategoryRepository = CategoryRepository()
-) : UpdateAndCreateCardViewModel(
-    id = id,
-    cardRepository = cardRepository,
-    categoryRepository = categoryRepository
-) {
+    private val cardModel: UpdateCardModel = UpdateCardModel(id = id)
+) : ViewModel() {
 
-    init {
-        cardRepository.getCard(id = id,
-            onSuccess = {
-                errors.value = emptyList()
-                cardId.value = it.id
-                cardAnswer.value = it.answer
-                cardQuestion.value = it.question
-                cardTag.value = it.tag
 
-                if (cardCategories.value.isEmpty()) {
-                    cardCategories.value = it.categories.map { cat ->
-                        CategorySelectItem(label = cat.label, id = cat.id, isChecked = true)
-                    }
-                } else {
-                    cardCategories.value = cardCategories.value.map { category ->
-                        if (it.categories.firstOrNull { cat -> category.id == cat.id } != null) {
-                            CategorySelectItem(
-                                label = category.label,
-                                id = category.id,
-                                isChecked = true
-                            )
-                        } else {
-                            category
-                        }
-                    }
-                }
-            },
-            onFailure = {
-                error.value = "Check network connection"
-            })
+    val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
+    val error = mutableStateOf<String?>(null)
+    val isFinished = mutableStateOf(false)
+
+    val cardQuestion = mutableStateOf("")
+    val cardAnswer = mutableStateOf("")
+    val cardTag = mutableStateOf("")
+    val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
+
+    fun setCardQuestion(value: String) {
+        cardQuestion.value = value
     }
 
-    override fun save() {
+    fun setCardAnswer(value: String) {
+        cardAnswer.value = value
+    }
+
+    fun setCardTag(value: String) {
+        cardTag.value = value
+    }
+
+    init {
+        viewModelScope.launch {
+            val card = cardModel.initializePage()
+            if (card == null) {
+                error.value = "Something is wrong"
+            } else {
+
+                errors.value = emptyList()
+                cardAnswer.value = card.answer
+                cardQuestion.value = card.question
+                cardTag.value = card.tag
+                cardCategories.value = card.categories
+            }
+        }
+    }
+
+
+    fun onUpdateCardClicked() {
         errors.value = emptyList()
-        cardRepository.updateCard(
-            card = UpdateCardEntity(
-                id = cardId.value!!,
+        viewModelScope.launch {
+            val updateResult = cardModel.update(
                 question = cardQuestion.value,
                 answer = cardAnswer.value,
                 tag = cardTag.value,
-                categories = cardCategories.value.filter { it.isChecked }
-                    .map { it.id }//cardCategories.value,
-            ),
-            onSuccess = {
-                isFinished.value = true
-
-                // on Success -> dialog schliessen, zur Card  übersicht?
-            },
-            onFailure = {
-                if (it == null) {
-                    error.value = "Irgendwas ist schief gelaufen"
-                } else {
-                    errors.value = it.errors
-                }
-                // Fehler anzeigen:
-                error.value = "There is an error"
+                categories = cardCategories.value,
+                links = emptyMap()
+            )
+            when (updateResult) {
+                is RepoResult.Success -> isFinished.value = true
+                is RepoResult.Error -> errors.value = updateResult.errors.errors
+                is RepoResult.ServerError -> error.value = "Irgendwas ist schief gelaufen"
             }
-        )
+        }
+    }
+
+
+    fun onCategorySelected(id: UUID) {
+        cardCategories.value = cardCategories.value.map {
+            if (it.id == id) {
+                it.copy(isChecked = !it.isChecked)
+            } else {
+                it
+            }
+        }
     }
 
 }

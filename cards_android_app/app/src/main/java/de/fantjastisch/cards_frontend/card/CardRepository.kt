@@ -1,12 +1,14 @@
 package de.fantjastisch.cards_frontend.card
 
 import de.fantjastisch.cards_frontend.infrastructure.client
+import de.fantjastisch.cards_frontend.infrastructure.toRepoResponse
 import de.fantjastisch.cards_frontend.infrastructure.enqueue
 import org.openapitools.client.apis.CardApi
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CreateCardEntity
 import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.UpdateCardEntity
+import retrofit2.awaitResponse
 import java.util.*
 
 
@@ -14,27 +16,31 @@ class CardRepository {
 
     private val service = client.createService(CardApi::class.java)
 
-    fun getCard(
+    suspend fun getCard(
         id: UUID,
-        onSuccess: (CardEntity) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
+//        onSuccess: (CardEntity) -> Unit,
+//        onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) =
-        service.getCard(id).enqueue(onSuccess, onFailure)
+        service.getCard(id)
+            .awaitResponse()
+            .toRepoResponse()
 
-    fun getPage(
+    suspend fun getPage(
         categoryIds: List<UUID>?,
         search: String?,
         tag: String?,
         sort: Boolean?,
-        onSuccess: (List<CardEntity>) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) =
-        service.getCardPage(
-            categoryIds,
-            search,
-            tag,
-            sort
-        ).enqueue(onSuccess, onFailure)
+//        onSuccess: (List<CardEntity>) -> Unit,
+//        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    ) = service.getCardPage(
+        categoryIds,
+        search,
+        tag,
+        sort
+    )
+        .awaitResponse()
+        .toRepoResponse()
+
 
     fun createCard(
         card: CreateCardEntity,
@@ -43,12 +49,13 @@ class CardRepository {
     ) =
         service.createCard(card).enqueue(onSuccess, onFailure)
 
-    fun updateCard(
+    suspend fun updateCard(
         card: UpdateCardEntity,
-        onSuccess: (Unit) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) =
-        service.updateCard(card).enqueue(onSuccess, onFailure)
+        service
+            .updateCard(card)
+            .awaitResponse()
+            .toRepoResponse()
 
     fun deleteCard(
         cardId: UUID,

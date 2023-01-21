@@ -10,7 +10,6 @@ class CreateCardViewModel(
     private val cardRepository: CardRepository = CardRepository(),
     categoryRepository: CategoryRepository = CategoryRepository()
 ) : UpdateAndCreateCardViewModel(
-    cardRepository = cardRepository,
     categoryRepository = categoryRepository
 ) {
 

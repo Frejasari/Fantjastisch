@@ -5,10 +5,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.card.UpdateAndCreateCardView
 import java.util.*
 
 data class UpdateCardFragment(val id: UUID) : AndroidScreen() {
@@ -26,9 +24,9 @@ data class UpdateCardFragment(val id: UUID) : AndroidScreen() {
             )
         })
         {
-            UpdateAndCreateCardView(
-                viewModel = viewModel { UpdateCardViewModel(id) },
-                modifier = Modifier.padding(it)
+            UpdateCardView(
+                modifier = Modifier.padding(it),
+                id = id
             )
         }
     }

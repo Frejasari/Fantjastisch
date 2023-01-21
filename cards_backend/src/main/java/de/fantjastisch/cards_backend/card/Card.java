@@ -31,6 +31,10 @@ public class Card {
     @Schema(required = true)
     List<Category> categories;
 
+    @Schema(required = true)
+    List<Link> links;
+
+
     @Builder
     @Data
     @NoArgsConstructor
@@ -48,4 +52,14 @@ public class Card {
         @Schema(required = true)
         String label;
     }
+
+
+    @Builder
+    @Data
+    public static class Link {
+        String name;
+        UUID target;
+        UUID source;
+    }
+
 }

@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card
+package de.fantjastisch.cards_frontend.card.update_and_create
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,10 +17,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.card.update_and_create.UpdateAndCreateCardViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
-import org.openapitools.client.models.ErrorEntryEntity
 
 
 //TODO Fehler anzeigen.
@@ -86,24 +84,7 @@ fun UpdateAndCreateCardView(
                 navigator.pop()
             }
         })
-}
 
-fun mapError(code: ErrorEntryEntity.Code): String {
-    return when (code) {
-        ErrorEntryEntity.Code.cONSTRAINTVIOLATION -> "Darf nicht leer sein"
-        ErrorEntryEntity.Code.nOCATEGORIESVIOLATION -> "Darf nicht leer sein"
-        ErrorEntryEntity.Code.nOTNULLVIOLATION -> "Darf nicht leer sein"
-        ErrorEntryEntity.Code.nOTBLANKVIOLATION -> "Darf nicht blank sein"
-        ErrorEntryEntity.Code.lABELTAKENVIOLATION -> "Label schon vergeben"
-        ErrorEntryEntity.Code.cATEGORYDOESNTEXISTVIOLATION -> "Categorie existiert nicht"
-        ErrorEntryEntity.Code.sUBCATEGORYDOESNTEXISTVIOLATION -> "Categorie existiert nicht"
-        ErrorEntryEntity.Code.cATEGORYNOTEMPTYVIOLATION -> "Es muss eine Kategorie ausgewaehlt werden"
-        ErrorEntryEntity.Code.cYCLICSUBCATEGORYRELATIONVIOLATION -> "Zyklen sind nicht erlaubt"
-        ErrorEntryEntity.Code.sUBCATEGORYISNULLVIOLATION -> "Subkategorien dürfen nicht null sein"
-        ErrorEntryEntity.Code.eNTITYDOESNOTEXIST -> "Entität exisitert nicht"
-        ErrorEntryEntity.Code.cARDDUPLICATEVIOLATION -> "Karte existiert schon."
-        ErrorEntryEntity.Code.bOXLABELSISNULLVIOLATION -> "Die Box Labels dürfen nicht leer sein."
-    }
 }
 
 

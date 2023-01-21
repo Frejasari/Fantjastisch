@@ -9,7 +9,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.card.UpdateAndCreateCardView
 
 class CreateCardFragment : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
