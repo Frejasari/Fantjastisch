@@ -30,6 +30,7 @@ fun GlossaryView(
     val navigator = LocalNavigator.currentOrThrow.parent!!
 
     val viewModel = viewModel { GlossaryViewModel() }
+    // Lädt die Cards neu, wenn wir aus einem anderen Tab wieder hier rein kommen.
     LaunchedEffect(
         // wenn sich diese Variable ändert
         key1 = Unit,
@@ -81,7 +82,8 @@ fun GlossaryView(
                         )
                         CardContextMenu(
                             cardId = card.id,
-                            tag = card.tag
+                            tag = card.tag,
+                            onDeleteSuccessful = { viewModel.onDeleteSuccessful() }
                         )
                     }
 

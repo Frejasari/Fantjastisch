@@ -1,33 +1,50 @@
 package de.fantjastisch.cards_frontend.card
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.openapitools.client.models.CardEntity
 import java.util.*
 
 data class CardSelectItem(
-    val id: UUID, val question: String, val answer: String, val tag: String,
-    val categories: List<String>, val isChecked: Boolean
+    val card: CardEntity,
+    val isChecked: Boolean
 )
 
 @Composable
 fun CardSelect(
     modifier: Modifier = Modifier,
     cards: List<CardSelectItem>,
-    onCardSelected: (UUID) -> Unit = {}
+    onCardSelected: (UUID) -> Unit = {},
+
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .padding(5.dp)
+            .padding(5.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         cards.map { card ->
-            CardSelectComponent(card = card, onCardSelected = onCardSelected)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column (Modifier.weight(6.25f)) { CommonCardComponent(card = card.card) }
+                Column (Modifier.weight(0.75f)) {
+                    Checkbox(
+                        checked = card.isChecked,
+                        onCheckedChange = { onCardSelected(card.card.id) }
+                    )
+                }
+            }
+
         }
     }
 }

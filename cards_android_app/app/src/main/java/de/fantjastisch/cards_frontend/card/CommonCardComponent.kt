@@ -8,12 +8,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
+import org.openapitools.client.models.CardEntity
 import java.util.*
 
 @Composable
-fun CardSelectComponent(
-    card: CardSelectItem,
-    onCardSelected: (UUID) -> Unit = {}
+fun CommonCardComponent(
+    card: CardEntity
 ) {
     Card(
         modifier = Modifier,
@@ -43,10 +45,6 @@ fun CardSelectComponent(
                     overflow = TextOverflow.Ellipsis,
                     text = card.question
                 )
-                Checkbox(
-                    checked = card.isChecked,
-                    onCheckedChange = { onCardSelected(card.id) }
-                )
             }
 
             Divider(
@@ -72,7 +70,7 @@ fun CardSelectComponent(
                 )
                 Text(
                     modifier = Modifier,
-                    text = "Categories: " + card.categories.joinToString(separator = ", "),
+                    text = "Categories: " + card.categories.map{category -> category.label}.joinToString(separator = ", "),
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 12.sp
                 )
