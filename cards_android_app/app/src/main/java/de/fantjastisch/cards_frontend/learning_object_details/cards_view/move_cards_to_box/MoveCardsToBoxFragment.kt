@@ -1,20 +1,22 @@
-package de.fantjastisch.cards_frontend.learning_object_details.cards_view
+package de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.navigator.Navigator
+import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsInBoxContextMenu
 import java.util.*
 
 
-data class CardsInBoxFragment(
+data class MoveCardsToBoxFragment(
     val learningBoxId: UUID,
     val navigator: Navigator,
     val learningObjectId: UUID
-) : AndroidScreen() {
+) :
+    AndroidScreen() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -26,7 +28,7 @@ data class CardsInBoxFragment(
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                title = { Text(text = "Karten in dieser Box") },
+                title = { Text(text = "Karten im Lernobjekt verschieben") },
                 actions = {
                     CardsInBoxContextMenu(
                         learningBoxId = learningBoxId,
@@ -36,9 +38,15 @@ data class CardsInBoxFragment(
                 })
         })
         {
-            CardsInBoxView(
+            MoveCardsToBoxView(
                 modifier = Modifier.padding(it),
-                viewModel = viewModel { CardsInBoxViewModel(learningBoxId) }
+                viewModel = viewModel {
+                    MoveCardsToBoxViewModel(
+                        learningBoxId = learningBoxId,
+                        learningObjectId = learningObjectId
+                    )
+                },
+                navigator = navigator
             )
         }
     }

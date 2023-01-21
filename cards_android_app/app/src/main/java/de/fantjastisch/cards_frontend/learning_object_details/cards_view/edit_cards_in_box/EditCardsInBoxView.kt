@@ -1,8 +1,6 @@
 package de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_cards_in_box
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,13 +13,12 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
-import de.fantjastisch.cards_frontend.card.CommonCardComponent
 
 
 @Composable
-fun AddCardsToBoxView(
+fun EditCardsInBoxView(
     modifier: Modifier = Modifier,
-    viewModel: AddCardsToBoxViewModel
+    viewModel: EditCardsInBoxViewModel
 ) {
     LaunchedEffect(
         // wenn sich diese Variable ändert

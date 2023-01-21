@@ -14,9 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsContextMenu
 import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsViewModel
@@ -63,7 +61,8 @@ fun LearningDetailsView(
                         )
                         LearningDetailsContextMenu(
                             learningBoxId = learningBox.id,
-                            navigator = navigator
+                            navigator = navigator,
+                            learningObjectId = viewModel.learningObjectId
                         )
                     }
                     Divider(

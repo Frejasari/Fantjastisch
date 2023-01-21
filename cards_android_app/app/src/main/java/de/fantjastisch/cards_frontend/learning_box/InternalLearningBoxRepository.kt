@@ -8,7 +8,7 @@ class InternalLearningBoxRepository(private val dao: LearningBoxDao) : LearningB
 
 @Dao
 interface LearningBoxDao {
-    @Query("SELECT * FROM learning_box where learning_object_id = :learningObjectId")
+    @Query("SELECT * FROM learning_box where learning_object_id = :learningObjectId ORDER BY box_number ASC")
     fun getAllBoxesForLearningObject(learningObjectId: UUID): List<LearningBox>
 
     @Query("SELECT * FROM learning_box WHERE id = :learningBoxId")
