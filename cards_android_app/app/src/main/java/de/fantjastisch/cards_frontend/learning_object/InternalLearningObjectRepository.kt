@@ -1,6 +1,7 @@
 package de.fantjastisch.cards_frontend.learning_object
 
 import androidx.room.*
+import java.util.*
 
 class InternalLearningObjectRepository(private val dao: LearningObjectDao) :
     LearningObjectDao by dao
@@ -11,11 +12,11 @@ interface LearningObjectDao {
     fun getAll(): List<LearningObject>
 
     @Query("SELECT * FROM learning_object WHERE id = :id")
-    fun findById(id: String): LearningObject
+    fun findById(id: UUID): LearningObject
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(learningObject: LearningObject)
 
     @Query("delete from learning_object where id=:id")
-    fun delete(id: String)
+    fun delete(id: UUID)
 }

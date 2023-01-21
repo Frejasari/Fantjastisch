@@ -20,7 +20,7 @@ interface LearningBoxDao {
     @Query("DELETE FROM learning_box WHERE box_number = :boxNumber and learning_object_id = :learningObjectId")
     fun delete(boxNumber: Int, learningObjectId: UUID)
 
-    @Query("    select count(*) as cnt " +
+    @Query("    select count(*)" +
             "    from learning_box " +
             "    join card_to_learning_box on learning_box_id = id " +
             "    group by learning_box_id, learning_object_id " +

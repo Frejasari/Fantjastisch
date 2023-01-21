@@ -17,9 +17,9 @@ interface LinkApi {
      * Create a new Link
      * 
      * Responses:
-     *  - 404: Not Found
      *  - 201: Created
      *  - 422: Unprocessable Entity
+     *  - 404: Not Found
      *
      * @param createLinkEntity 
      * @return [Call]<[kotlin.String]>
@@ -31,10 +31,9 @@ interface LinkApi {
      * Delete a link
      * 
      * Responses:
-     *  - 404: Not Found
      *  - 200: OK
      *  - 422: Unprocessable Entity
-     *  - 200: OK
+     *  - 404: Not Found
      *
      * @param deleteLinkEntity 
      * @return [Call]<[Unit]>
@@ -46,9 +45,9 @@ interface LinkApi {
      * Get the Link from the given name and source
      * 
      * Responses:
-     *  - 404: Not Found
-     *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 200: OK
+     *  - 404: Not Found
      *
      * @param id 
      * @return [Call]<[LinkEntity]>
@@ -60,9 +59,9 @@ interface LinkApi {
      * Get all links
      * 
      * Responses:
-     *  - 404: Not Found
      *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 404: Not Found
      *
      * @param id 
      * @return [Call]<[kotlin.collections.List<LinkEntity>]>
@@ -74,10 +73,9 @@ interface LinkApi {
      * Update a link
      * 
      * Responses:
-     *  - 404: Not Found
      *  - 200: OK
      *  - 422: Unprocessable Entity
-     *  - 200: OK
+     *  - 404: Not Found
      *
      * @param updateLinkEntity 
      * @return [Call]<[Unit]>

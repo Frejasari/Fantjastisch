@@ -1,6 +1,7 @@
 package de.fantjastisch.cards_frontend.learning_object
 
 import org.openapitools.client.models.ErrorResponseEntity
+import java.util.*
 
 
 class LearningObjectRepository(val repository: InternalLearningObjectRepository) {
@@ -17,8 +18,16 @@ class LearningObjectRepository(val repository: InternalLearningObjectRepository)
         }
     }
 
-    fun findById(id: String): LearningObject {
-        return repository.findById(id)
+    fun findById(
+        id: UUID,
+        onSuccess: (LearningObject) -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    ) {
+        try {
+            onSuccess(repository.findById(id))
+        } catch (ex: Throwable) {
+            onFailure(null)
+        }
     }
 
     fun insert(
@@ -34,7 +43,7 @@ class LearningObjectRepository(val repository: InternalLearningObjectRepository)
         }
     }
 
-    fun delete(id: String) {
+    fun delete(id: UUID) {
         return repository.delete(id)
     }
 }
