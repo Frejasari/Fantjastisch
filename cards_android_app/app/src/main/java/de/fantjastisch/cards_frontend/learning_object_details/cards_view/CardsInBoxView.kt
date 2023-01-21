@@ -1,10 +1,11 @@
 package de.fantjastisch.cards_frontend.learning_object_details.cards_view
 
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -31,10 +32,11 @@ fun CardsInBoxView(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .padding(5.dp)
+            .padding(5.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(viewModel.cardsInBox.value) { card ->
-            CommonCardComponent(card = card, onCardSelected = {}, hasCheckBox = false)
+            CommonCardComponent(card = card)
         }
     }
     val navigator = LocalNavigator.currentOrThrow

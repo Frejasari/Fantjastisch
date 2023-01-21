@@ -86,14 +86,7 @@ class CreateLearningObjectViewModel(
             onSuccess = {
                 errors.value = null
                 cards.value = it.map { card ->
-                    CardSelectItem(
-                        id = card.id,
-                        question = card.question,
-                        answer = card.answer,
-                        tag = card.tag,
-                        categories = card.categories.map { categoryOfCard -> categoryOfCard.label },
-                        isChecked = false
-                    )
+                    CardSelectItem(card = card, isChecked = false)
                 }
             },
             onFailure = {
@@ -103,7 +96,7 @@ class CreateLearningObjectViewModel(
 
     fun onCardSelected(id: UUID) {
         cards.value = cards.value.map {
-            if (it.id == id) {
+            if (it.card.id == id) {
                 it.copy(isChecked = !it.isChecked)
             } else {
                 it
@@ -188,7 +181,7 @@ class CreateLearningObjectViewModel(
         val cardsFromCategoriesAsIds = cardsFromCategories.map { it.id }
         this.cardIds.value.addAll(cardsFromCategoriesAsIds) // cardIds from categories
         this.cardIds.value.addAll(cards.value.filter { card -> card.isChecked }
-            .map { card -> card.id })
+            .map { card -> card.card.id })
         // cardIds from cardSelectItems
         learningSystem.boxLabels.forEachIndexed { index, label ->
             val learningBox = LearningBox(
