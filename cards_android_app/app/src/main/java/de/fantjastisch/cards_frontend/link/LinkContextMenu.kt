@@ -1,4 +1,4 @@
-/* package de.fantjastisch.cards_frontend.link
+ package de.fantjastisch.cards_frontend.link
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
@@ -10,23 +10,21 @@ import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
-import de.fantjastisch.cards_frontend.link.delete.DeleteLinkDialog
-import de.fantjastisch.cards_frontend.link.update_and_create.UpdateLinkFragment
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import de.fantjastisch.cards_frontend.link.update.UpdateLinkFragment
 import java.util.UUID
 
 
 
 @Composable
 fun LinkContextMenu(
-    id: UUID,
+    linkId: UUID,
     cardId: UUID,
     name: String,
-    onDeleteSuccessful: () -> Unit
+    onDeleteClicked: () -> Unit
 ) {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = FantMainNavigator.current
     val isMenuOpen = remember { mutableStateOf(false) }
-    val isDeleteDialogOpen = remember { mutableStateOf(false) }
 
     IconButton(onClick = { isMenuOpen.value = !isMenuOpen.value }) {
         Icon(Icons.Outlined.MoreVert, contentDescription = "context actions")
@@ -39,22 +37,14 @@ fun LinkContextMenu(
                 text = { Text(text = stringResource(R.string.card_menu_update)) },
                 onClick = {
                     isMenuOpen.value = false
-                    navigator.push(UpdateLinkFragment(id, cardId))
+                    navigator.push(UpdateLinkFragment(linkId, cardId))
                 })
             DropdownMenuItem(
                 text = { Text(text = stringResource(id = R.string.card_menu_delete)) },
                 onClick = {
                     isMenuOpen.value = false
-                    isDeleteDialogOpen.value = true
+                    onDeleteClicked()
                 })
         }
     }
-
-    DeleteLinkDialog(
-        name = name,
-        linkId = id,
-        isOpen = isDeleteDialogOpen.value,
-        setIsOpen = { isDeleteDialogOpen.value = it },
-        onDeleteSuccessful = onDeleteSuccessful
-    )
-} */
+}
