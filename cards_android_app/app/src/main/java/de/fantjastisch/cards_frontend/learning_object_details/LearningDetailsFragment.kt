@@ -5,7 +5,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.LearningDetailsView
@@ -29,7 +28,7 @@ data class LearningDetailsFragment(val learningObjectId: UUID) :
 
         {
             LearningDetailsView(
-                viewModel = viewModel { LearningDetailsViewModel(learningObjectId) },
+                learningObjectId =learningObjectId,
                 modifier = Modifier.padding(it)
             )
         }
