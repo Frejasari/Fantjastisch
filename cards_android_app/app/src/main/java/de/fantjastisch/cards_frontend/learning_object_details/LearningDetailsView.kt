@@ -14,17 +14,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.navigator.Navigator
+import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsContextMenu
-import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsViewModel
+import java.util.*
 
 
 @Composable
 fun LearningDetailsView(
     modifier: Modifier = Modifier,
-    viewModel: LearningDetailsViewModel
-) {
+    learningObjectId: UUID,
+
+    ) {
+    val viewModel = viewModel { LearningDetailsViewModel(learningObjectId) }
+
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()

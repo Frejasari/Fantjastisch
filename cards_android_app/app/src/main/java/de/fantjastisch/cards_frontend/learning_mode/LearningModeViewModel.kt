@@ -2,13 +2,16 @@ package de.fantjastisch.cards_frontend.learning_mode
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.config.AppDatabase
+import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.InternalLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.InternalCardToLearningBoxRepository
+import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
 
@@ -69,16 +72,21 @@ class LearningModeViewModel(
     }
 
     fun onPageLoaded() {
-        cardRepository.getPage(
-            categoryIds = null,
-            search = null,
-            tag = null,
-            sort = null,
-            onSuccess = {
-                getContainedCards(it)
-            },
-            onFailure = { error.value = "Couldnt fetch cards." }
-        )
+
+        viewModelScope.launch {
+            cardRepository.getPage(
+                categoryIds = null,
+                search = null,
+                tag = null,
+                sort = null
+            ).fold(
+                onSuccess = {
+                    getContainedCards(it)
+                },
+                onError = { error.value = "Couldnt fetch cards." },
+                onUnexpectedError = { error.value = "Couldnt fetch cards." }
+            )
+        }
         learningBoxRepository.getAllBoxesForLearningObject(learningObjectId = learningObjectId,
             onSuccess = {
                 learningBoxesInObject.value = it

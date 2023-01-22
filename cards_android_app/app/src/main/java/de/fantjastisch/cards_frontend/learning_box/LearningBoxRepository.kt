@@ -3,7 +3,7 @@ package de.fantjastisch.cards_frontend.learning_box
 import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
-class LearningBoxRepository(val repository: InternalLearningBoxRepository) {
+class LearningBoxRepository(private val repository: InternalLearningBoxRepository) {
 
     fun getAllBoxesForLearningObject(
         learningObjectId: UUID,
@@ -11,7 +11,9 @@ class LearningBoxRepository(val repository: InternalLearningBoxRepository) {
         onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) {
         try {
-            onSuccess(repository.getAllBoxesForLearningObject(learningObjectId))
+            val allBoxesForLearningObject =
+                repository.getAllBoxesForLearningObject(learningObjectId)
+            onSuccess(allBoxesForLearningObject)
         } catch (ex: Throwable) {
             onFailure(null)
         }
