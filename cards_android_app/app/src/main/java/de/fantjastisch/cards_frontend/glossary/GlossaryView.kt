@@ -7,14 +7,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.CardContextMenu
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
 import org.openapitools.client.models.CardEntity
+import java.util.*
 
 
 @Composable
@@ -36,7 +39,6 @@ fun GlossaryView(
             }
         )
     }
-
 
     // Lädt die Cards neu, wenn wir aus einem anderen Tab wieder hier rein kommen.
     LaunchedEffect(
@@ -83,13 +85,34 @@ private fun CardView(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
+                Column(
                     modifier = Modifier
-                        .weight(weight = 1f, fill = false),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    text = card.question
-                )
+                        .weight(weight = 1f)
+                ) {
+                    Text(
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        text = card.question
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier,
+                            text = "Tag: ",
+                            fontWeight = FontWeight(500),
+                            fontSize = 12.sp,
+                        )
+                        Text(
+                            modifier = Modifier,
+                            text = card.tag,
+                            fontSize = 12.sp,
+                        )
+                    }
+                }
                 CardContextMenu(
                     cardId = card.id,
                     onDeleteClicked = { viewModel.onTryDeleteCard(card) },
@@ -103,10 +126,6 @@ private fun CardView(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    modifier = Modifier,
-                    text = card.tag
-                )
                 card.categories.forEach {
                     SuggestionChip(
                         modifier = Modifier,
@@ -122,4 +141,3 @@ private fun CardView(
         }
     }
 }
-

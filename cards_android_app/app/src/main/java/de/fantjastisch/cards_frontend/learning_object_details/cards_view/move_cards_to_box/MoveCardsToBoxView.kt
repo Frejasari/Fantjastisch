@@ -1,8 +1,7 @@
 package de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,55 +26,58 @@ fun MoveCardsToBoxView(
             viewModel.onPageLoaded()
         })
 
-    Column(
+    LazyColumn(
         modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .verticalScroll(rememberScrollState())
-            .padding(5.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        contentPadding = PaddingValues(all = 16.dp)
     ) {
         CardSelect(
             cards = viewModel.cards.value,
             onCardSelected = viewModel::onCardSelected
         )
-        if (viewModel.cards.value.size == 0) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) { Text(text = "Looks empty...", fontSize = 20.sp) }
-        } else {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                FilledTonalButton(
-                    onClick = viewModel::onMoveToPreviousBox,
-                    enabled = !viewModel.isFirstBox
-                ) {
-                    Text(
-                        text =
-                        if (viewModel.isFirstBox) {
-                            "                 "
-                        } else {
-                            "Vorherige Box (" + (viewModel.learningBoxNum.value - 1) + ")"
+        item {
+            Column() {
+                if (viewModel.cards.value.size == 0) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) { Text(text = "Looks empty...", fontSize = 20.sp) }
+                } else {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+                        FilledTonalButton(
+                            onClick = viewModel::onMoveToPreviousBox,
+                            enabled = !viewModel.isFirstBox
+                        ) {
+                            Text(
+                                text =
+                                if (viewModel.isFirstBox) {
+                                    "                 "
+                                } else {
+                                    "Vorherige Box (" + (viewModel.learningBoxNum.value - 1) + ")"
+                                }
+                            )
                         }
-                    )
-                }
-                FilledTonalButton(
-                    onClick = viewModel::onMoveToNextBox, //viewModel::onAddCardsClicked
-                    enabled = !viewModel.isLastBox
-                ) {
-                    Text(
-                        text =
-                        if (viewModel.isLastBox) {
-                            "               "
-                        } else {
-                            "Nächste Box (" + (viewModel.learningBoxNum.value + 1) + ")"
+                        FilledTonalButton(
+                            onClick = viewModel::onMoveToNextBox, //viewModel::onAddCardsClicked
+                            enabled = !viewModel.isLastBox
+                        ) {
+                            Text(
+                                text =
+                                if (viewModel.isLastBox) {
+                                    "               "
+                                } else {
+                                    "Nächste Box (" + (viewModel.learningBoxNum.value + 1) + ")"
+                                }
+                            )
                         }
-                    )
+                    }
                 }
             }
+
         }
     }
 
