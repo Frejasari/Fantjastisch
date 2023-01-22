@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.link.update_and_create
+/* package de.fantjastisch.cards_frontend.link.update_and_create
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
@@ -33,4 +33,4 @@ class CreateLinkFragment(val id: UUID) : AndroidScreen() {
             )
         }
     }
-}
+} */

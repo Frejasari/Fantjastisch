@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.link.update_and_create
+/* package de.fantjastisch.cards_frontend.link.update_and_create
 
 import androidx.compose.runtime.mutableStateOf
 import de.fantjastisch.cards_frontend.card.CardRepository
@@ -102,4 +102,4 @@ class CreateLinkViewModel(
                 )
             }
      */
-}
+} */

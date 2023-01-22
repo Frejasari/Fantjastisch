@@ -20,15 +20,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.content_overview.CardContentFragment
 import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
-import de.fantjastisch.cards_frontend.card.update_and_create.UpdateCardFragment
-import de.fantjastisch.cards_frontend.link.LinkContextMenu
+// import de.fantjastisch.cards_frontend.link.LinkContextMenu
 import de.fantjastisch.cards_frontend.link.LinkViewModel
-import de.fantjastisch.cards_frontend.link.update_and_create.CreateLinkFragment
+// import de.fantjastisch.cards_frontend.link.update_and_create.CreateLinkFragment
 import java.util.*
 
 
@@ -37,8 +37,10 @@ import java.util.*
 @Composable
 fun CardContentView(
     modifier: Modifier = Modifier,
-    viewModel: CardContentViewModel,
+    id: UUID
 ) {
+
+    val viewModel = viewModel { CardContentViewModel(id = id) }
     val navigator = LocalNavigator.currentOrThrow
 
     // einmaliger Effekt
@@ -147,7 +149,7 @@ fun CardContentView(
                                     .fillMaxWidth()
                                     .weight(6f)
                                     .padding(start = 16.dp),
-                                text = it
+                                text = it.label
                             )
                         }
                     }
@@ -193,7 +195,7 @@ fun CardContentView(
                             .weight(1f)
                             .rotate(rotateLinks),
                         onClick = {
-                            navigator.push(CreateLinkFragment(viewModel.cardId.value!!))
+                           // navigator.push(CreateLinkFragment(viewModel.cardId.value!!))
                         }) {
                         Icon(
                             imageVector = Icons.Default.Link,
@@ -214,7 +216,7 @@ fun CardContentView(
                     }
                 }
 
-                if (expandedLinks) {
+             /*   if (expandedLinks) {
                     viewModel.cardLinks.value.forEach {
                         SuggestionChip(
                             modifier = Modifier.padding(10.dp),
@@ -231,7 +233,7 @@ fun CardContentView(
                                }
                             })
                     }
-                }
+                } */
             }
 
 

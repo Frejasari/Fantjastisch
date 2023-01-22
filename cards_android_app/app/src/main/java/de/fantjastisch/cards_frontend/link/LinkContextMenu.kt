@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.link
+/* package de.fantjastisch.cards_frontend.link
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
@@ -11,7 +11,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
-import de.fantjastisch.cards_frontend.card.update_and_create.UpdateCardFragment
 import de.fantjastisch.cards_frontend.link.delete.DeleteLinkDialog
 import de.fantjastisch.cards_frontend.link.update_and_create.UpdateLinkFragment
 import java.util.UUID
@@ -58,4 +57,4 @@ fun LinkContextMenu(
         setIsOpen = { isDeleteDialogOpen.value = it },
         onDeleteSuccessful = onDeleteSuccessful
     )
-}
+} */
