@@ -10,6 +10,7 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.InternalLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
@@ -141,7 +142,6 @@ class CreateLearningObjectViewModel(
             learningObject = learningObject,
             onSuccess = {
                 getLearningSystemFromInput(learningObject)
-                isFinished.value = true
             },
             onFailure = {
                 errors.value = "Could not insert learning object into DB"
@@ -171,21 +171,22 @@ class CreateLearningObjectViewModel(
             createLearningBoxesFromCards(emptyList(), learningSystem, learningObject)
         } else {
             viewModelScope.launch {
-                val result = cardRepository.getPage(
+                cardRepository.getPage(
                     categoryIds = checkedCategories,
                     search = null,
                     tag = null,
                     sort = null,
+                ).fold(
+                    onSuccess = {
+                        createLearningBoxesFromCards(it, learningSystem, learningObject)
+                    },
+                    onError = {
+                        errors.value = "Could not get cards."
+                    },
+                    onUnexpectedError = {
+                        errors.value = "Could not get cards."
+                    }
                 )
-                when (result) {
-                    is RepoResult.Success -> createLearningBoxesFromCards(
-                        cardsFromCategories = result.result,
-                        learningSystem = learningSystem,
-                        learningObject = learningObject
-                    )
-                    is RepoResult.Error,
-                    is RepoResult.ServerError -> errors.value = "Could not get cards."
-                }
             }
         }
 
@@ -223,7 +224,10 @@ class CreateLearningObjectViewModel(
                     cardToLearningBoxRepository.insertCardsForBox(
                         cardIds.value,
                         learningBox.id,
-                        onSuccess = { errors.value = null },
+                        onSuccess = {
+                            errors.value = null
+                            isFinished.value = true
+                        },
                         onFailure = {
                             errors.value =
                                 "Could not insert relationship from cards to learning box."
