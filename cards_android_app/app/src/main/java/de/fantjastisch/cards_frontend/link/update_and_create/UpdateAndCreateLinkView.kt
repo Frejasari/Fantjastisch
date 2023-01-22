@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card
+package de.fantjastisch.cards_frontend.link.update_and_create
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,11 +17,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.card.update_and_create.UpdateAndCreateCardViewModel
-import de.fantjastisch.cards_frontend.category.CategorySelect
+import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
-import de.fantjastisch.cards_frontend.link.update_and_create.UpdateAndCreateLinkViewModel
-import org.openapitools.client.models.ErrorEntryEntity
 
 
 //TODO Fehler anzeigen.

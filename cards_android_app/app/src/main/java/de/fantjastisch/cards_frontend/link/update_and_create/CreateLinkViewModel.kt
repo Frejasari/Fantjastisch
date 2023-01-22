@@ -18,16 +18,11 @@ class CreateLinkViewModel(
     private val cardRepository: CardRepository = CardRepository()
 ) : UpdateAndCreateLinkViewModel(
     cardId = card,
-    cardRepository = cardRepository,
-    linkRepository = linkRepository
 ) {
 
     val link = mutableStateOf(listOf<LinkSelectItem>())
 
     init {
-        if(linkId != null) {
-            id.value = linkId
-        }
         cardRepository.getPage(null,null,null,false,
             onSuccess = {
                 errors.value = emptyList()
@@ -57,12 +52,11 @@ class CreateLinkViewModel(
         allCards.value
             .filter { it.isChecked }
             .let {
-                if (it.size == 1) {
-                    target.value = it[0].card.id
-                }
+                target.value = it[0].card.id
+
                 CreateLinkEntity(
                     name = linkName.value,
-                    source = linkSource!!,
+                    source = linkSource.value!!,
                     target = target.value!!
                 )
             }

@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_frontend.link.update_and_create
 
+import androidx.compose.runtime.mutableStateOf
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.card.update_and_create.UpdateAndCreateCardViewModel
@@ -7,10 +8,7 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.category.CategoryViewModel
 import de.fantjastisch.cards_frontend.link.LinkRepository
 import de.fantjastisch.cards_frontend.link.LinkViewModel
-import org.openapitools.client.models.CardEntity
-import org.openapitools.client.models.UpdateCardEntity
-import org.openapitools.client.models.UpdateCategoryEntity
-import org.openapitools.client.models.UpdateLinkEntity
+import org.openapitools.client.models.*
 import java.util.*
 
 class UpdateLinkViewModel(
@@ -21,8 +19,6 @@ class UpdateLinkViewModel(
 ) : UpdateAndCreateLinkViewModel(
     linkId = link,
     cardId = card,
-    cardRepository = cardRepository,
-    linkRepository = linkRepository
 ) {
 
     private lateinit var targetOfLink: UUID
@@ -33,7 +29,7 @@ class UpdateLinkViewModel(
                 errors.value = emptyList()
                 linkId = it.id
                 linkName.value = it.name!!
-                linkSource = cardId
+                linkSource.value = cardId
                 targetOfLink = it.target!!
                 loadAllCards()
             },
@@ -43,36 +39,66 @@ class UpdateLinkViewModel(
     }
 
     private fun loadAllCards() {
-        cardRepository.getPage(null,null,null,false,
-        onSuccess = {
-            errors.value = emptyList()
-            val newCards = it
-                .filter { card -> !id.equals(linkSource) }
-                .map { card ->
-                    CardSelectItem(
-                        card = CardEntity(
-                            id = card.id,
-                            question = card.question,
-                            answer = card.answer,
-                            tag = card.tag,
-                            categories = card.categories
-                        ),
-                    isChecked = targetOfLink == card.id
-                    )
-                }
-            allCards.value = newCards
-        },
-        onFailure = {
-            error.value = "Check network connection"
-        })
+        cardRepository.getPage(null, null, null, false,
+            onSuccess = {
+                errors.value = emptyList()
+                val newCards = it
+                    .filter { card -> card.id != linkSource.value }
+                    .map { card ->
+                        CardSelectItem(
+                            card = CardEntity(
+                                id = card.id,
+                                question = card.question,
+                                answer = card.answer,
+                                tag = card.tag,
+                                categories = card.categories
+                            ),
+                            isChecked = targetOfLink == card.id
+                        )
+                    }
+                allCards.value = newCards
+            },
+            onFailure = {
+                error.value = "Check network connection"
+            })
     }
 
     override fun save() {
+        val target = mutableStateOf<UUID?>(null)
+
+        errors.value = emptyList()
+        val toUpdate: UpdateLinkEntity
+
+        allCards.value
+            .filter { it.isChecked }
+            .let {
+                target.value = it[0].card.id
+                toUpdate = UpdateLinkEntity(
+                    id = link,
+                    name = linkName.value,
+                    source = linkSource.value!!,
+                    target = target.value!!)
+            }
+            .let {
+                linkRepository.updateLink(
+                    link = toUpdate,
+                    onSuccess = { isFinished.value = true },
+                    onFailure = {
+                        if (it == null) {
+                            // Fehler anzeigen:
+                            error.value = "Irgendwas ist schief gelaufen"
+                        } else {
+                            errors.value = it.errors
+                        }
+                    }
+                )
+            }
+        /*
         errors.value = emptyList()
         linkRepository.updateLink(
             link = UpdateLinkEntity(
                 id = link,
-                name = linkName.value,
+                name = "name",//linkName.value,
                 source = linkSource!!,
                 target = allCards.value.filter { it.isChecked }.map { it.card.id }[0],
             ),
@@ -91,6 +117,7 @@ class UpdateLinkViewModel(
                 error.value = "There is an error"
             }
         )
+    } */
     }
 }
 
