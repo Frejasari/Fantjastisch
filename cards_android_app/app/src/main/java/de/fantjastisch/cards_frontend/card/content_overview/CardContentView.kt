@@ -27,7 +27,6 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.content_overview.CardContentFragment
 import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
 // import de.fantjastisch.cards_frontend.link.LinkContextMenu
-import de.fantjastisch.cards_frontend.link.LinkViewModel
 // import de.fantjastisch.cards_frontend.link.update_and_create.CreateLinkFragment
 import java.util.*
 
@@ -41,10 +40,9 @@ fun CardContentView(
 ) {
 
     val viewModel = viewModel { CardContentViewModel(id = id) }
-    val navigator = LocalNavigator.currentOrThrow
 
     // einmaliger Effekt
-    LaunchedEffect(
+   /* LaunchedEffect(
         // wenn sich diese Variable ändert
         key1 = viewModel.isFinished.value,
         // dann wird dieses Lambda ausgeführt.
@@ -52,7 +50,7 @@ fun CardContentView(
             if (viewModel.isFinished.value) {
                 navigator.pop()
             }
-        })
+        }) */
 
     // Componente die ihre Kinder untereinander anzeigt.
     Column(

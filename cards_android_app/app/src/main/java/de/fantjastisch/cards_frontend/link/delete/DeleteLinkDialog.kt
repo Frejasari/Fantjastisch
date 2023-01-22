@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.link.delete
+/* package de.fantjastisch.cards_frontend.link.delete
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -58,4 +58,4 @@ fun DeleteLinkDialog(
                 setIsOpen(false)
             }
         })
-}
+} */

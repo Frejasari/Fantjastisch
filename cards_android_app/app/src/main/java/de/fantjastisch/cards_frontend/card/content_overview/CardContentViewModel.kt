@@ -49,11 +49,11 @@ class CardContentViewModel(
                         cardAnswer.value = card.answer
                         cardQuestion.value = card.question
                         cardTag.value = card.tag
-                        cardCategories.value = card.allCategories.map { cat ->
+                        cardCategories.value = card.categoriesOfCard.map { category ->
                             CategorySelectItem(
-                                id = cat.id,
-                                label = cat.label,
-                                isChecked = card.categoriesOfCard.firstOrNull { categoryOfCard -> categoryOfCard.id == cat.id } != null
+                                label = category.label,
+                                id = category.id,
+                                isChecked = true
                             )
                         }
                     },

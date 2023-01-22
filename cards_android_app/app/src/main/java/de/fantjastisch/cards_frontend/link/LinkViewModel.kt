@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.link
+/* package de.fantjastisch.cards_frontend.link
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -47,4 +47,4 @@ open class LinkViewModel(
             }
         }
     }*/
-}
+} */

@@ -2,9 +2,11 @@ package de.fantjastisch.cards_frontend.link
 
 import de.fantjastisch.cards_frontend.infrastructure.client
 import de.fantjastisch.cards_frontend.infrastructure.enqueue
+import de.fantjastisch.cards_frontend.infrastructure.toRepoResponse
 import org.openapitools.client.apis.CardApi
 import org.openapitools.client.apis.LinkApi
 import org.openapitools.client.models.*
+import retrofit2.awaitResponse
 import java.util.*
 
 
@@ -12,39 +14,39 @@ class LinkRepository {
 
     private val service = client.createService(LinkApi::class.java)
 
-    fun getLink(
+    suspend fun getLink(
         id: UUID,
-        onSuccess: (LinkEntity) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) =
-        service.getLink(id).enqueue(onSuccess, onFailure)
+        service.getLink(id)
+            .awaitResponse()
+            .toRepoResponse()
 
-    fun getLinkPage(
-        id: UUID,
-        onSuccess: (List<LinkEntity>) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    suspend fun getLinkPage(
+        id: UUID
     ) =
-        service.getLinkPage(id).enqueue(onSuccess, onFailure)
+        service.getLinkPage(id)
+            .awaitResponse()
+            .toRepoResponse()
 
-    fun createLink(
-        link: CreateLinkEntity,
-        onSuccess: (String) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    suspend fun createLink(
+        link: CreateLinkEntity
     ) =
-        service.createLink(link).enqueue(onSuccess, onFailure)
+        service.createLink(link)
+            .awaitResponse()
+            .toRepoResponse()
 
-    fun updateLink(
-        link: UpdateLinkEntity,
-        onSuccess: (Unit) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    suspend fun updateLink(
+        link: UpdateLinkEntity
     ) =
-        service.updateLink(link).enqueue(onSuccess, onFailure)
+        service.updateLink(link)
+            .awaitResponse()
+            .toRepoResponse()
 
-    fun deleteLink(
-        id: UUID,
-        onSuccess: (Unit) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    suspend fun deleteLink(
+        id: UUID
     ) =
-        service.deleteLink(id).enqueue(onSuccess, onFailure)
+        service.deleteLink(id)
+            .awaitResponse()
+            .toRepoResponse()
 
 }

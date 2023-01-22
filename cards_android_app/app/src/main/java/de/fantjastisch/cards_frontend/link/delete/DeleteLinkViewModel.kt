@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.link.delete
+/* package de.fantjastisch.cards_frontend.link.delete
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -30,4 +30,4 @@ class DeleteLinkViewModel(
         )
     }
 
-}
+} */

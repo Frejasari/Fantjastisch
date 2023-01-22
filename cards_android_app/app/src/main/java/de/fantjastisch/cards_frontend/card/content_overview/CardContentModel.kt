@@ -34,7 +34,7 @@ class CardContentModel(
 
 
     @Suppress("UNCHECKED_CAST")
-    suspend fun initializePage(): RepoResult<CardContentModel.Card> = coroutineScope {
+    suspend fun initializePage(): RepoResult<Card> = coroutineScope {
         // Runs coroutines in parallel and waits until all of them are done
         val (cardResult, categoryResult) = awaitAll(
             async { cardRepository.getCard(id = id) },
@@ -47,7 +47,7 @@ class CardContentModel(
                 val card = cardResult.result as CardEntity
                 val categories = categoryResult.result as List<CategoryEntity>
                 RepoResult.Success(
-                    CardContentModel.Card(
+                    Card(
                         id = card.id,
                         question = card.question,
                         answer = card.answer,

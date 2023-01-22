@@ -16,7 +16,6 @@ data class LinkSelectItem(val id: UUID,val name : String, val source: UUID, val 
 fun LinkSelect(
     modifier: Modifier = Modifier,
     links: List<LinkSelectItem>,
-    onLinkSelected: (UUID) -> Unit = {}
 ) {
     Column(
         modifier = modifier

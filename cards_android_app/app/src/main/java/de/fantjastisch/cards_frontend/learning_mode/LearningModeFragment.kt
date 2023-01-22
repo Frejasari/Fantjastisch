@@ -9,7 +9,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardContentView
-import de.fantjastisch.cards_frontend.link.LinkViewModel
 
 import de.fantjastisch.cards_frontend.card.LearningModeView
 

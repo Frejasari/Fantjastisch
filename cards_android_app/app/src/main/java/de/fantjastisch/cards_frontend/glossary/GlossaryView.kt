@@ -17,8 +17,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.CardContentView
 import de.fantjastisch.cards_frontend.card.CardContextMenu
+import de.fantjastisch.cards_frontend.card.content_overview.CardContentFragment
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import org.openapitools.client.models.CardEntity
 import java.util.*
 
@@ -73,10 +75,11 @@ private fun CardView(
     card: CardEntity,
     viewModel: GlossaryViewModel
 ) {
-    val showContent = mutableStateOf(false)
+    val navigator = FantMainNavigator.current
+    val showContent = remember {mutableStateOf(false)}
 
     if(showContent.value) {
-        CardContentView(id = card.id)
+        navigator.push(CardContentFragment( id = card.id))
     }
 
     Surface(
