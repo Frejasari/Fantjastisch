@@ -7,6 +7,7 @@ import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.*
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CategoryEntity
+import org.openapitools.client.models.CategoryOfCardEntity
 import org.openapitools.client.models.UpdateCardEntity
 import java.util.*
 
@@ -22,7 +23,7 @@ class UpdateCardModel(
         categories: List<CategorySelectItem>,
         tag: String,
         links: Map<String, UUID>
-    ) = cardRepository.updateCard(
+    ): RepoResult<Unit> = cardRepository.updateCard(
         UpdateCardEntity(
             id = id,
             question = question,
@@ -37,11 +38,12 @@ class UpdateCardModel(
         val answer: String,
         val question: String,
         val tag: String,
-        var categories: List<CategorySelectItem>
+        val allCategories: List<CategoryEntity>,
+        val categoriesOfCard: List<CategoryOfCardEntity>
     )
 
     @Suppress("UNCHECKED_CAST")
-    suspend fun initializePage(): UpdateCard? = coroutineScope {
+    suspend fun initializePage(): RepoResult<UpdateCard> = coroutineScope {
         // Runs coroutines in parallel and waits until all of them are done
         val (cardResult, categoryResult) = awaitAll(
             async { cardRepository.getCard(id = id) },
@@ -53,21 +55,18 @@ class UpdateCardModel(
                     && categoryResult is RepoResult.Success -> {
                 val card = cardResult.result as CardEntity
                 val categories = categoryResult.result as List<CategoryEntity>
-                UpdateCard(
-                    id = card.id,
-                    question = card.question,
-                    answer = card.answer,
-                    categories = categoryResult.result.map { cat ->
-                        CategorySelectItem(
-                            id = cat.id,
-                            label = cat.label,
-                            isChecked = card.categories.firstOrNull { categoryOfCard -> categoryOfCard.id == cat.id } != null
-                        )
-                    },
-                    tag = card.tag
+                RepoResult.Success(
+                    UpdateCard(
+                        id = card.id,
+                        question = card.question,
+                        answer = card.answer,
+                        allCategories = categories,
+                        categoriesOfCard = card.categories,
+                        tag = card.tag
+                    )
                 )
             }
-            else -> null // FEHLER
+            else -> RepoResult.Error(emptyList())
         }
 
     }

@@ -39,7 +39,7 @@ class CardsInBoxViewModel(
                 tag = null,
                 sort = null,
             )
-            when(result) {
+            when (result) {
                 is RepoResult.Success -> {
                     getContainedCards(result.result)
                 }

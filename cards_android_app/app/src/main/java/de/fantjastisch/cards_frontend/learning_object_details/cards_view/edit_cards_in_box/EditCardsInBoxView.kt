@@ -9,10 +9,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
+import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 
 
 @Composable
@@ -46,17 +45,8 @@ fun EditCardsInBoxView(
             Text(text = stringResource(R.string.create_category_save_button_text))
         }
     }
-    val navigator = LocalNavigator.currentOrThrow
-    // einmaliger Effekt
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = viewModel.isFinished.value,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            if (viewModel.isFinished.value) {
-                navigator.pop()
-            }
-        })
+
+    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 
 }
 

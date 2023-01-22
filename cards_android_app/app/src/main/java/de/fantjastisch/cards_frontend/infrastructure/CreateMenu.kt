@@ -16,7 +16,8 @@ import de.fantjastisch.cards_frontend.learning_system.CreateLearningSystemFragme
 
 
 @Composable
-fun TobBarCreateMenu(navigator: Navigator) {
+fun TobBarCreateMenu() {
+    val navigator: Navigator = FantMainNavigator.current
     val isCreateMenuOpen = remember { mutableStateOf(false) }
 
     IconButton(onClick = { isCreateMenuOpen.value = !isCreateMenuOpen.value }) {

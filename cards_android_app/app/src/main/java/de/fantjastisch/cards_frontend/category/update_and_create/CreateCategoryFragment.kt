@@ -23,7 +23,8 @@ class CreateCategoryFragment : AndroidScreen() {
                     title = { Text(text = stringResource(id = R.string.create_category_headline)) },
                 )
             }) {
-            UpdateOrCreateCategoryView(modifier = Modifier.padding(it),
+            CreateCategoryView(
+                modifier = Modifier.padding(it),
                 viewModel = CreateCategoryViewModel()
             )
 

@@ -46,6 +46,7 @@ fun GlossaryView(
         block = {
             viewModel.onPageLoaded()
         })
+
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     LazyColumn(
         modifier = modifier

@@ -94,7 +94,8 @@ class CardToLearningBoxRepository(val repository: InternalCardToLearningBoxRepos
     fun getAllCardsForLearningObject(
         learningObjectId: UUID,
         onSuccess: (List<UUID>) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit) {
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    ) {
         try {
             onSuccess(repository.getAllCardsForLearningObject(learningObjectId = learningObjectId))
         } catch (ex: Throwable) {

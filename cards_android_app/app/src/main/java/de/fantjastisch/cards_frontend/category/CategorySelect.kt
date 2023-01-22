@@ -16,7 +16,7 @@ data class CategorySelectItem(val label: String, val id: UUID, val isChecked: Bo
 fun CategorySelect(
     modifier: Modifier = Modifier,
     categories: List<CategorySelectItem>,
-    onCategorySelected: (UUID) -> Unit = {}
+    onCategorySelected: (UUID) -> Unit
 ) {
     Column(
         modifier = modifier

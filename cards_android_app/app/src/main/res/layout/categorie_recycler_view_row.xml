@@ -6,4 +6,4 @@
   android:id="@+id/category_label"
   android:orientation="vertical"
   tools:text="wichtig"
-  android:padding="16dp"/>
+  android:padding="16dp" />

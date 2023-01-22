@@ -24,7 +24,7 @@ data class UpdateCategoryFragment(val id: UUID) : AndroidScreen() {
             )
         })
         {
-            UpdateOrCreateCategoryView(
+            CreateCategoryView(
                 viewModel = UpdateCategoryViewModel(id),
                 modifier = Modifier.padding(it)
             )

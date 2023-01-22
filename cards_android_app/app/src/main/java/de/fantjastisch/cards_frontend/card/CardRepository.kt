@@ -28,10 +28,10 @@ class CardRepository {
         tag: String?,
         sort: Boolean?
     ) = service.getCardPage(
-        categoryIds,
-        search,
-        tag,
-        sort
+        categoryFilter = categoryIds,
+        search = search,
+        tag = tag,
+        sort = sort
     ).awaitResponse()
         .toRepoResponse()
 

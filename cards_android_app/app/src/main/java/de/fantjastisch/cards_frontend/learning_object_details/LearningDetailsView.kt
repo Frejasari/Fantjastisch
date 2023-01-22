@@ -23,8 +23,7 @@ import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsVie
 @Composable
 fun LearningDetailsView(
     modifier: Modifier = Modifier,
-    viewModel: LearningDetailsViewModel,
-    navigator: Navigator
+    viewModel: LearningDetailsViewModel
 ) {
     LazyColumn(
         modifier = modifier
@@ -61,7 +60,6 @@ fun LearningDetailsView(
                         )
                         LearningDetailsContextMenu(
                             learningBoxId = learningBox.id,
-                            navigator = navigator,
                             learningObjectId = viewModel.learningObjectId
                         )
                     }

@@ -2,9 +2,7 @@ package de.fantjastisch.cards_frontend.card
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,7 +20,7 @@ fun CardSelect(
     cards: List<CardSelectItem>,
     onCardSelected: (UUID) -> Unit = {},
 
-) {
+    ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -35,8 +33,8 @@ fun CardSelect(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column (Modifier.weight(6.25f)) { CommonCardComponent(card = card.card) }
-                Column (Modifier.weight(0.75f)) {
+                Column(Modifier.weight(6.25f)) { CommonCardComponent(card = card.card) }
+                Column(Modifier.weight(0.75f)) {
                     Checkbox(
                         checked = card.isChecked,
                         onCheckedChange = { onCardSelected(card.card.id) }

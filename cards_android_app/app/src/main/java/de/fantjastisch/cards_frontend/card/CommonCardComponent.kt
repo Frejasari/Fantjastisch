@@ -8,10 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import org.openapitools.client.models.CardEntity
-import java.util.*
 
 @Composable
 fun CommonCardComponent(
@@ -70,7 +67,8 @@ fun CommonCardComponent(
                 )
                 Text(
                     modifier = Modifier,
-                    text = "Categories: " + card.categories.map{category -> category.label}.joinToString(separator = ", "),
+                    text = "Categories: " + card.categories.map { category -> category.label }
+                        .joinToString(separator = ", "),
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 12.sp
                 )

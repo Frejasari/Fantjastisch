@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category
+package de.fantjastisch.cards_frontend.category.cat_glossary
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateContentSize
@@ -22,10 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.category.cat_glossary.CategoryGraphViewModel
+import de.fantjastisch.cards_frontend.category.CategoryContextMenu
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,10 +33,8 @@ import java.util.*
 fun CategoryGraphFragment(
     modifier: Modifier = Modifier
 ) {
-    val navigator = LocalNavigator.currentOrThrow.parent!!
+    val navigator = FantMainNavigator.current
     val viewModel = viewModel { CategoryGraphViewModel() }
-
-
 
     LaunchedEffect(key1 = Unit, block = { viewModel.onPageLoaded() })
 
@@ -53,96 +50,112 @@ fun CategoryGraphFragment(
             Surface(
                 modifier = Modifier,
                 shadowElevation = 6.dp,
-            ) { Row(
-                modifier = Modifier
-                    .fillMaxWidth().padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically
             ) {
-                var expanded by remember { mutableStateOf(false) }
-                val rotate by animateFloatAsState(
-                    targetValue = if (expanded) 180f else 0f
-                )
-                Card(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateContentSize(
-                            animationSpec = tween(
-                                durationMillis = 300,
-                                easing = LinearOutSlowInEasing
-                            )
-                        ),
-                    shape = RoundedCornerShape(4.dp),
-                    colors = CardDefaults.cardColors(containerColor =  Color.Transparent),
-                    onClick = { expanded = !expanded },
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(
+                    var expanded by remember { mutableStateOf(false) }
+                    val rotate by animateFloatAsState(
+                        targetValue = if (expanded) 180f else 0f
+                    )
+                    Card(
                         modifier = Modifier
-                            .fillMaxWidth().padding(vertical = 8.dp, horizontal = 16.dp),
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                modifier = Modifier.weight(5f),
-                                text = category.label,
-                                fontWeight = FontWeight.Bold,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            IconButton(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .rotate(rotate),
-                                onClick = {
-                                    expanded = !expanded
-                                }) {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowDropDown,
-                                    contentDescription = "drop-down arrow"
+                            .fillMaxWidth()
+                            .animateContentSize(
+                                animationSpec = tween(
+                                    durationMillis = 300,
+                                    easing = LinearOutSlowInEasing
                                 )
-                            }
-                            CategoryContextMenu(navigator = navigator, id = category.id, label = category.label)
-                        }
-
-                        if (expanded) {
-
-                            if (category.subCategories.isEmpty()) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth().padding(8.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .weight(6f).padding(start = 16.dp),
-                                        text = stringResource(R.string.no_subcategories)
+                            ),
+                        shape = RoundedCornerShape(4.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+                        onClick = { expanded = !expanded },
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp, horizontal = 16.dp),
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    modifier = Modifier.weight(5f),
+                                    text = category.label,
+                                    fontWeight = FontWeight.Bold,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                                IconButton(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .rotate(rotate),
+                                    onClick = {
+                                        expanded = !expanded
+                                    }) {
+                                    Icon(
+                                        imageVector = Icons.Default.ArrowDropDown,
+                                        contentDescription = "drop-down arrow"
                                     )
                                 }
-                            } else {
-                                category.subCategories.forEach {
-                                    val nameOfSubcategory = remember { mutableStateOf("") }
-                                    viewModel.categoryRepository.getCategory(id = it,
-                                        onSuccess = {
-                                            nameOfSubcategory.value = it.label
-                                        },
-                                        onFailure = {})
+                                CategoryContextMenu(
+                                    navigator = navigator,
+                                    id = category.id,
+                                    label = category.label
+                                )
+                            }
+
+                            if (expanded) {
+
+                                if (category.subCategories.isEmpty()) {
                                     Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(8.dp),
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Text(
                                             modifier = Modifier
-                                                .weight(6f).padding(start = 16.dp),
-                                            text = nameOfSubcategory.value)
-                                        CategoryContextMenu(navigator = navigator, id = it, label = nameOfSubcategory.value)
+                                                .fillMaxWidth()
+                                                .weight(6f)
+                                                .padding(start = 16.dp),
+                                            text = stringResource(R.string.no_subcategories)
+                                        )
+                                    }
+                                } else {
+                                    category.subCategories.forEach {
+                                        val nameOfSubcategory = remember { mutableStateOf("") }
+                                        viewModel.categoryRepository.getCategory(id = it,
+                                            onSuccess = {
+                                                nameOfSubcategory.value = it.label
+                                            },
+                                            onFailure = {})
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                modifier = Modifier
+                                                    .weight(6f)
+                                                    .padding(start = 16.dp),
+                                                text = nameOfSubcategory.value
+                                            )
+                                            CategoryContextMenu(
+                                                navigator = navigator,
+                                                id = it,
+                                                label = nameOfSubcategory.value
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
+                    }
                 }
             }
-        }
         }
     }
 }

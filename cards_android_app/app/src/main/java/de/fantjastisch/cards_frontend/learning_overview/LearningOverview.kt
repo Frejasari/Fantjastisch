@@ -19,9 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards_frontend.glossary.LearningOverviewModel
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsFragment
 import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObjectDialog
 
@@ -32,7 +31,7 @@ import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObj
 fun LearningOverview(
     modifier: Modifier = Modifier
 ) {
-    val navigator = LocalNavigator.currentOrThrow.parent!!
+    val navigator = FantMainNavigator.current
     val viewModel = viewModel { LearningOverviewModel() }
     val isDeleteDialogOpen = remember { mutableStateOf(false) }
     LaunchedEffect(
@@ -61,8 +60,7 @@ fun LearningOverview(
                 Box(Modifier.clickable(onClick = {
                     navigator.push(
                         LearningDetailsFragment(
-                            learningObject.id,
-                            navigator
+                            learningObject.id
                         )
                     )
                 })) {

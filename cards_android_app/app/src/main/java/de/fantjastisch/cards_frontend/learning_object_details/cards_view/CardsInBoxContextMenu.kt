@@ -6,14 +6,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import cafe.adriel.voyager.navigator.Navigator
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_cards_in_box.EditCardsInBoxFragment
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box.MoveCardsToBoxFragment
 import java.util.*
 
 
 @Composable
-fun CardsInBoxContextMenu(learningBoxId: UUID, navigator: Navigator, learningObjectId: UUID) {
+fun CardsInBoxContextMenu(learningBoxId: UUID, learningObjectId: UUID) {
+    val navigator = FantMainNavigator.current
     val isMenuOpen = remember { mutableStateOf(false) }
 
     IconButton(onClick = { isMenuOpen.value = !isMenuOpen.value }) {
@@ -42,7 +43,6 @@ fun CardsInBoxContextMenu(learningBoxId: UUID, navigator: Navigator, learningObj
                     navigator.push(
                         MoveCardsToBoxFragment(
                             learningBoxId = learningBoxId,
-                            navigator = navigator,
                             learningObjectId = learningObjectId
                         )
                     )

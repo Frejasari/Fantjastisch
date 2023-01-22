@@ -12,7 +12,6 @@ class CreateCardModel(
     private val categoryRepository: CategoryRepository = CategoryRepository()
 ) : ViewModel() {
 
-
     suspend fun getCategories(): List<CategorySelectItem>? {
         val result = categoryRepository.getPage()
         return when (result) {
@@ -27,7 +26,6 @@ class CreateCardModel(
             is RepoResult.ServerError -> null // TODO
 
         }
-
     }
 
     suspend fun createCard(

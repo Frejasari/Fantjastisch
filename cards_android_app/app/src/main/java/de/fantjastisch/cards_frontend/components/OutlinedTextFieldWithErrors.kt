@@ -14,13 +14,13 @@ import org.openapitools.client.models.ErrorEntryEntity
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OutlinedTextFieldWithErrors(
-        maxLines: Int = 1,
-        value: String,
-        onValueChange: (String) -> Unit,
-        placeholder: String,
-        errors: List<ErrorEntryEntity>,
-        keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-        field: String
+    maxLines: Int = 1,
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    errors: List<ErrorEntryEntity>,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    field: String
 ) {
     val error = errors.find { it.field == field }
     OutlinedTextField(

@@ -7,12 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
-import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.LearningDetailsView
 import java.util.*
 
-data class LearningDetailsFragment(val learningObjectId: UUID, val navigator: Navigator) :
+data class LearningDetailsFragment(val learningObjectId: UUID) :
     AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -31,8 +30,7 @@ data class LearningDetailsFragment(val learningObjectId: UUID, val navigator: Na
         {
             LearningDetailsView(
                 viewModel = viewModel { LearningDetailsViewModel(learningObjectId) },
-                modifier = Modifier.padding(it),
-                navigator = navigator
+                modifier = Modifier.padding(it)
             )
         }
     }

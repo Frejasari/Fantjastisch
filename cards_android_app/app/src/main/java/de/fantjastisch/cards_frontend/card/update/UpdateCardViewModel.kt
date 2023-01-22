@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
@@ -13,7 +13,6 @@ class UpdateCardViewModel(
     id: UUID,
     private val cardModel: UpdateCardModel = UpdateCardModel(id = id)
 ) : ViewModel() {
-
 
     val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
     val error = mutableStateOf<String?>(null)
@@ -38,35 +37,42 @@ class UpdateCardViewModel(
 
     init {
         viewModelScope.launch {
-            val card = cardModel.initializePage()
-            if (card == null) {
-                error.value = "Something is wrong"
-            } else {
-                errors.value = emptyList()
-                cardAnswer.value = card.answer
-                cardQuestion.value = card.question
-                cardTag.value = card.tag
-                cardCategories.value = card.categories
-            }
+            cardModel
+                .initializePage()
+                .fold(
+                    onSuccess = { card ->
+                        errors.value = emptyList()
+                        cardAnswer.value = card.answer
+                        cardQuestion.value = card.question
+                        cardTag.value = card.tag
+                        cardCategories.value = card.allCategories.map { cat ->
+                            CategorySelectItem(
+                                id = cat.id,
+                                label = cat.label,
+                                isChecked = card.categoriesOfCard.firstOrNull { categoryOfCard -> categoryOfCard.id == cat.id } != null
+                            )
+                        }
+                    },
+                    onError = { error.value = "Something is wrong" },
+                    onUnexpectedError = { error.value = "Irgendwas ist schief gelaufen" },
+                )
         }
     }
-
 
     fun onUpdateCardClicked() {
         errors.value = emptyList()
         viewModelScope.launch {
-            val updateResult = cardModel.update(
+            cardModel.update(
                 question = cardQuestion.value,
                 answer = cardAnswer.value,
                 tag = cardTag.value,
                 categories = cardCategories.value,
                 links = emptyMap()
+            ).fold(
+                onSuccess = { isFinished.value = true },
+                onError = { errors.value = it },
+                onUnexpectedError = { error.value = "Irgendwas ist schief gelaufen" }
             )
-            when (updateResult) {
-                is RepoResult.Success -> isFinished.value = true
-                is RepoResult.Error -> errors.value = updateResult.errors
-                is RepoResult.ServerError -> error.value = "Irgendwas ist schief gelaufen"
-            }
         }
     }
 

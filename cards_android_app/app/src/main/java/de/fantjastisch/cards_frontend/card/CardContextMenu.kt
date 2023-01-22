@@ -7,12 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.update.UpdateCardFragment
-import java.util.UUID
-
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import java.util.*
 
 
 @Composable
@@ -20,7 +18,7 @@ fun CardContextMenu(
     cardId: UUID,
     onDeleteClicked: () -> Unit
 ) {
-    val navigator = LocalNavigator.currentOrThrow.parent!!
+    val navigator = FantMainNavigator.current
     val isMenuOpen = remember { mutableStateOf(false) }
 
     IconButton(onClick = { isMenuOpen.value = !isMenuOpen.value }) {

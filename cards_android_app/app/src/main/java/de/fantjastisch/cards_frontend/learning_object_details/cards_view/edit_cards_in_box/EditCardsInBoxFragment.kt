@@ -32,7 +32,6 @@ data class EditCardsInBoxFragment(
                 actions = {
                     CardsInBoxContextMenu(
                         learningBoxId = learningBoxId,
-                        navigator = navigator,
                         learningObjectId = learningObjectId
                     )
                 })

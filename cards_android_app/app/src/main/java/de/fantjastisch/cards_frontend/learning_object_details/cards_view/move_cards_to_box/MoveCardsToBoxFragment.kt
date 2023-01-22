@@ -6,14 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
-import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsInBoxContextMenu
 import java.util.*
 
 
 data class MoveCardsToBoxFragment(
     val learningBoxId: UUID,
-    val navigator: Navigator,
     val learningObjectId: UUID
 ) :
     AndroidScreen() {
@@ -32,7 +30,6 @@ data class MoveCardsToBoxFragment(
                 actions = {
                     CardsInBoxContextMenu(
                         learningBoxId = learningBoxId,
-                        navigator = navigator,
                         learningObjectId = learningObjectId
                     )
                 })
@@ -45,8 +42,7 @@ data class MoveCardsToBoxFragment(
                         learningBoxId = learningBoxId,
                         learningObjectId = learningObjectId
                     )
-                },
-                navigator = navigator
+                }
             )
         }
     }

@@ -8,15 +8,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards_frontend.card.CardSelect
+import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 
 
 @Composable
 fun MoveCardsToBoxView(
     modifier: Modifier = Modifier,
-    viewModel: MoveCardsToBoxViewModel,
-    navigator: Navigator
+    viewModel: MoveCardsToBoxViewModel
 ) {
     LaunchedEffect(
         // wenn sich diese Variable ändert
@@ -76,17 +75,8 @@ fun MoveCardsToBoxView(
             }
         }
     }
-//    val navigator = LocalNavigator.currentOrThrow
-// einmaliger Effekt
-    LaunchedEffect(
-// wenn sich diese Variable ändert
-        key1 = viewModel.isFinished.value,
-// dann wird dieses Lambda ausgeführt.
-        block = {
-            if (viewModel.isFinished.value) {
-                navigator.pop()
-            }
-        })
+
+    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 }
 
 

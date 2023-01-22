@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import org.openapitools.client.models.CategoryEntity
-import java.util.*
 
 class CategoryGraphViewModel(
     val categoryRepository: CategoryRepository = CategoryRepository()

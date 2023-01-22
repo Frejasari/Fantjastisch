@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_frontend.learning_box
 
-import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
@@ -11,11 +10,11 @@ class LearningBoxRepository(val repository: InternalLearningBoxRepository) {
         onSuccess: (List<LearningBox>) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) {
-            try {
-                onSuccess(repository.getAllBoxesForLearningObject(learningObjectId))
-            } catch (ex: Throwable) {
-                onFailure(null)
-            }
+        try {
+            onSuccess(repository.getAllBoxesForLearningObject(learningObjectId))
+        } catch (ex: Throwable) {
+            onFailure(null)
+        }
     }
 
     fun getCardsFromLearningBoxInLearningObject(
@@ -25,18 +24,20 @@ class LearningBoxRepository(val repository: InternalLearningBoxRepository) {
     ) {
         try {
             onSuccess(repository.getCardsFromLearningObject(learningObjectId))
-        } catch  (ex: Throwable) {
+        } catch (ex: Throwable) {
             onFailure(null)
         }
     }
 
 
-    fun findByBoxId(learningBoxId: UUID,
-                 onSuccess: (LearningBox) -> Unit,
-                 onFailure: (errors: ErrorResponseEntity?) -> Unit) {
+    fun findByBoxId(
+        learningBoxId: UUID,
+        onSuccess: (LearningBox) -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    ) {
         try {
             onSuccess(repository.findById(learningBoxId))
-        } catch  (ex: Throwable) {
+        } catch (ex: Throwable) {
             onFailure(null)
         }
     }

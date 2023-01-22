@@ -8,21 +8,19 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategoryViewModel
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
+import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 
 //TODO Fehler anzeigen.
 @Composable
-fun UpdateOrCreateCategoryView(
+fun CreateCategoryView(
     modifier: Modifier = Modifier,
     viewModel: CategoryViewModel
 ) {
@@ -58,17 +56,7 @@ fun UpdateOrCreateCategoryView(
         }
     }
 
-    val navigator = LocalNavigator.currentOrThrow
-    // einmaliger Effekt
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = viewModel.isFinished.value,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            if (viewModel.isFinished.value) {
-                navigator.pop()
-            }
-        })
+    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 
 }
 

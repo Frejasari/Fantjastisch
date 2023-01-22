@@ -1,11 +1,34 @@
 package de.fantjastisch.cards_frontend.glossary
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
+import java.util.*
+
+
+object CardsFilters {
+    val filters = MutableStateFlow(
+        CardFilters(
+            search = "",
+            tag = "",
+            categories = emptyList(),
+            sort = false
+        )
+    )
+}
+
+data class CardFilters(
+    val search: String,
+    val tag: String,
+    val categories: List<UUID>,
+    val sort: Boolean
+)
 
 class GlossaryViewModel(
     private val glossaryModel: GlossaryModel = GlossaryModel()
@@ -17,11 +40,27 @@ class GlossaryViewModel(
 
     val currentDeleteDialog = mutableStateOf<DeletionProgress?>(null)
 
+    init {
+        viewModelScope.launch {
+            CardsFilters.filters.collectLatest {
+                onPageLoaded()
+            }
+        }
+    }
+
     fun onPageLoaded() {
         viewModelScope.launch {
-            val result = glossaryModel.getCards()
+            val result = glossaryModel.getCards(
+                categoryIds = CardsFilters.filters.value.categories,
+                search = CardsFilters.filters.value.search,
+                tag = CardsFilters.filters.value.tag,
+                sort = CardsFilters.filters.value.sort
+            )
             when (result) {
-                is RepoResult.Success -> cards.value = result.result
+                is RepoResult.Success -> {
+                    cards.value = result.result
+                    Log.v("CardsFilter", "Received ${result.result.size} cards")
+                }
                 is RepoResult.Error -> Unit
                 is RepoResult.ServerError -> Unit
 
