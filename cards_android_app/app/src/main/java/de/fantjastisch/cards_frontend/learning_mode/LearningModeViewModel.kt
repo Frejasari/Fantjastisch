@@ -50,7 +50,9 @@ class LearningModeViewModel(
     fun onCardStaysInBoxClicked() {
         isShowingAnswer.value = false
         currentCardIndex++
-        numberOfCardsRemaining--
+        if (numberOfCardsRemaining > 0) {
+            numberOfCardsRemaining--
+        }
         if (currentCardIndex >= cardsInBox.value.size) {
             isFinished.value = true
         } else {
@@ -62,7 +64,9 @@ class LearningModeViewModel(
     fun onCardGoesToNextBoxClicked() {
         isShowingAnswer.value = false
         currentCardIndex++
-        numberOfCardsRemaining--
+        if (numberOfCardsRemaining > 0) {
+            numberOfCardsRemaining--
+        }
         onMoveToNextBox()
         if (currentCardIndex >= cardsInBox.value.size) {
             isFinished.value = true
