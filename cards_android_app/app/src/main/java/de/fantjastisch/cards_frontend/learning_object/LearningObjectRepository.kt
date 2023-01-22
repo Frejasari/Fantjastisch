@@ -1,10 +1,15 @@
 package de.fantjastisch.cards_frontend.learning_object
 
+import de.fantjastisch.cards_frontend.config.AppDatabase
 import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
 
-class LearningObjectRepository(val repository: InternalLearningObjectRepository) {
+class LearningObjectRepository(
+    private val repository: InternalLearningObjectRepository = InternalLearningObjectRepository(
+        AppDatabase.database.learningObjectDao()
+    )
+) {
 
     fun getAll(
         onSuccess: (List<LearningObject>) -> Unit,

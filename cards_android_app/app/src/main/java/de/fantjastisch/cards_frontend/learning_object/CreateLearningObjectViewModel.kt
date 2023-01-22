@@ -8,14 +8,11 @@ import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
-import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.infrastructure.fold
-import de.fantjastisch.cards_frontend.learning_box.InternalLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
-import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.InternalCardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_system.LearningSystemRepository
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
@@ -23,16 +20,10 @@ import org.openapitools.client.models.LearningSystemEntity
 import java.util.*
 
 class CreateLearningObjectViewModel(
-    private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository(
-        InternalLearningObjectRepository(AppDatabase.database.learningObjectDao())
-    ),
+    private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository(),
     private val learningSystemRepository: LearningSystemRepository = LearningSystemRepository(),
-    private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(
-        InternalLearningBoxRepository(AppDatabase.database.learningBoxDao())
-    ),
-    private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(
-        InternalCardToLearningBoxRepository(AppDatabase.database.cardToLearningBoxDao())
-    ),
+    private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(),
+    private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(),
     private val categoryRepository: CategoryRepository = CategoryRepository(),
     private val cardRepository: CardRepository = CardRepository(),
 //= extends ViewModel

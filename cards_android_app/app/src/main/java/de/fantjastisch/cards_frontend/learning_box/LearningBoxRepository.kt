@@ -1,9 +1,14 @@
 package de.fantjastisch.cards_frontend.learning_box
 
+import de.fantjastisch.cards_frontend.config.AppDatabase
 import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
-class LearningBoxRepository(private val repository: InternalLearningBoxRepository) {
+class LearningBoxRepository(
+    private val repository: InternalLearningBoxRepository = InternalLearningBoxRepository(
+        AppDatabase.database.learningBoxDao()
+    )
+) {
 
     fun getAllBoxesForLearningObject(
         learningObjectId: UUID,

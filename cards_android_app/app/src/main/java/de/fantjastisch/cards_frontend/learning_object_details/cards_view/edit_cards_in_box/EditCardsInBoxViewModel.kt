@@ -5,10 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
-import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.InternalCardToLearningBoxRepository
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.ErrorEntryEntity
@@ -18,9 +16,7 @@ class EditCardsInBoxViewModel(
     private val learningBoxId: UUID,
     private val learningObjectId: UUID,
     private val cardRepository: CardRepository = CardRepository(),
-    private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(
-        InternalCardToLearningBoxRepository(AppDatabase.database.cardToLearningBoxDao())
-    )
+    private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository()
 ) : ViewModel() {
 
     val cards = mutableStateOf<List<CardSelectItem>>(mutableListOf())

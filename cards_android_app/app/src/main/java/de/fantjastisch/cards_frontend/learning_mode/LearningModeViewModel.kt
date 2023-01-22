@@ -4,13 +4,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardRepository
-import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.infrastructure.fold
-import de.fantjastisch.cards_frontend.learning_box.InternalLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
-import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.InternalCardToLearningBoxRepository
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
@@ -18,12 +15,8 @@ import java.util.*
 class LearningModeViewModel(
     private val learningObjectId: UUID,
     private val learningBoxId: UUID,
-    private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(
-        InternalCardToLearningBoxRepository(AppDatabase.database.cardToLearningBoxDao())
-    ),
-    private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(
-        InternalLearningBoxRepository(AppDatabase.database.learningBoxDao())
-    ),
+    private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(),
+    private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(),
     private val cardRepository: CardRepository = CardRepository()
 ) : ViewModel() {
 

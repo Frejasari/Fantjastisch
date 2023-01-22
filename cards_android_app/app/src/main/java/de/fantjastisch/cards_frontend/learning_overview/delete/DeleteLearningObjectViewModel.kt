@@ -2,15 +2,11 @@ package de.fantjastisch.cards_frontend.learning_overview.delete
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import de.fantjastisch.cards_frontend.config.AppDatabase
-import de.fantjastisch.cards_frontend.learning_object.InternalLearningObjectRepository
 import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
 import java.util.*
 
 class DeleteLearningObjectViewModel(
-    private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository(
-        InternalLearningObjectRepository(AppDatabase.database.learningObjectDao())
-    ),
+    private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository(),
     private val learningObjectId: UUID
 ) : ViewModel() {
 

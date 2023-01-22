@@ -1,11 +1,15 @@
 package de.fantjastisch.cards_frontend.learning_box.card_to_learning_box
 
 import androidx.room.Transaction
+import de.fantjastisch.cards_frontend.config.AppDatabase
 import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
 
-class CardToLearningBoxRepository(val repository: InternalCardToLearningBoxRepository) {
+class CardToLearningBoxRepository(
+    private val repository: InternalCardToLearningBoxRepository
+    = InternalCardToLearningBoxRepository(AppDatabase.database.cardToLearningBoxDao())
+) {
 
     fun getCardIdsForBox(
         learningBoxId: UUID,
