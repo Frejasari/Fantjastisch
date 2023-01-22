@@ -106,4 +106,3 @@ fun mapError(code: ErrorEntryEntity.Code): String {
     }
 }
 
-

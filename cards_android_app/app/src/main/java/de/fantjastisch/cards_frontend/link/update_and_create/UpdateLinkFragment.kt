@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card.content_overview
+package de.fantjastisch.cards_frontend.link.update_and_create
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
@@ -8,11 +8,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.card.CardContentView
-import de.fantjastisch.cards_frontend.link.LinkViewModel
+import de.fantjastisch.cards_frontend.card.UpdateAndCreateCardView
+import de.fantjastisch.cards_frontend.card.UpdateAndCreateLinkView
 import java.util.*
 
-data class CardContentFragment(val id: UUID) : AndroidScreen() {
+data class UpdateLinkFragment(val id: UUID, val cardId: UUID) : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -23,13 +23,12 @@ data class CardContentFragment(val id: UUID) : AndroidScreen() {
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                title = { Text(text = stringResource(id = R.string.overview)) },
+                title = { Text(text = stringResource(id = R.string.update_link_headline)) },
             )
         })
-
         {
-            CardContentView(
-                viewModel = viewModel { CardContentViewModel(id) },
+            UpdateAndCreateLinkView(
+                viewModel = viewModel { UpdateLinkViewModel(id, cardId) },
                 modifier = Modifier.padding(it)
             )
         }

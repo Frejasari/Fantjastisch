@@ -32,4 +32,8 @@
   <string name="delete_category_dialog_title">Möchtest du die Kategorie wirklich löschen?</string>
   <string name="no_subcategories">Keine Unterkategorien</string>
   <string name="overview">Übersicht</string>
+  <string name="links">Links</string>
+  <string name="create_link_headline">Link erstellen</string>
+  <string name="update_link_headline">Link bearbeiten</string>
+  <string name="create_link_name">zu verlinkendes Wort</string>
 </resources>

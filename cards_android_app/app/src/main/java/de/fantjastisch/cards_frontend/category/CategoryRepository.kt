@@ -14,30 +14,30 @@ class CategoryRepository {
     private val service = client.createService(CategoryApi::class.java)
 
     fun getCategory(
-            id: UUID,
-            onSuccess: (CategoryEntity) -> Unit,
-            onFailure: (errors: ErrorResponseEntity?) -> Unit
+        id: UUID,
+        onSuccess: (CategoryEntity) -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) =
-            service.getCategory(id).enqueue(onSuccess, onFailure)
+        service.getCategory(id).enqueue(onSuccess, onFailure)
 
     fun getPage(
-            onSuccess: (List<CategoryEntity>) -> Unit,
-            onFailure: (errors: ErrorResponseEntity?) -> Unit
+        onSuccess: (List<CategoryEntity>) -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) = service.getCategoryPage().enqueue(onSuccess, onFailure)
 
     fun createCategory(
-            category: CreateCategoryEntity,
-            onSuccess: (String) -> Unit,
-            onFailure: (errors: ErrorResponseEntity?) -> Unit
+        category: CreateCategoryEntity,
+        onSuccess: (String) -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) =
-            service.createCategory(category).enqueue(onSuccess, onFailure)
+        service.createCategory(category).enqueue(onSuccess, onFailure)
 
     fun updateCategory(
-            category: UpdateCategoryEntity,
-            onSuccess: (Unit) -> Unit,
-            onFailure: (errors: ErrorResponseEntity?) -> Unit
+        category: UpdateCategoryEntity,
+        onSuccess: (Unit) -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) =
-            service.updateCategory(category).enqueue(onSuccess, onFailure)
+        service.updateCategory(category).enqueue(onSuccess, onFailure)
 
     fun deleteCategory(
         categoryId: UUID,
