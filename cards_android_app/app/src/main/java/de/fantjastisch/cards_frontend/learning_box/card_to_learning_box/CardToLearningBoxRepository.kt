@@ -11,7 +11,7 @@ class CardToLearningBoxRepository(
     = InternalCardToLearningBoxRepository(AppDatabase.database.cardToLearningBoxDao())
 ) {
 
-    fun getCardIdsForBox(
+    suspend fun getCardIdsForBox(
         learningBoxId: UUID,
         onSuccess: (List<UUID>) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
@@ -23,7 +23,7 @@ class CardToLearningBoxRepository(
         }
     }
 
-    fun insertCardsForBox(
+    suspend fun insertCardsForBox(
         cardIds: List<UUID>,
         learningBoxId: UUID,
         onSuccess: () -> Unit,
@@ -44,7 +44,7 @@ class CardToLearningBoxRepository(
         }
     }
 
-    fun deleteCardsFromBox(
+    suspend fun deleteCardsFromBox(
         cardIds: List<UUID>,
         learningBoxId: UUID,
         onSuccess: () -> Unit,
@@ -61,7 +61,7 @@ class CardToLearningBoxRepository(
     }
 
     @Transaction
-    fun insertAndDeleteInBox(
+    suspend fun insertAndDeleteInBox(
         selected: List<UUID>,
         unselected: List<UUID>,
         learningBoxId: UUID,
@@ -82,7 +82,7 @@ class CardToLearningBoxRepository(
         )
     }
 
-    fun getNumOfCardsFromLearningBoxId(
+    suspend fun getNumOfCardsFromLearningBoxId(
         learningBoxId: UUID,
         onSuccess: (Int) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
@@ -95,7 +95,7 @@ class CardToLearningBoxRepository(
         }
     }
 
-    fun getAllCardsForLearningObject(
+    suspend fun getAllCardsForLearningObject(
         learningObjectId: UUID,
         onSuccess: (List<UUID>) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit

@@ -10,7 +10,7 @@ class LearningBoxRepository(
     )
 ) {
 
-    fun getAllBoxesForLearningObject(
+    suspend fun getAllBoxesForLearningObject(
         learningObjectId: UUID,
         onSuccess: (List<LearningBox>) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
@@ -24,7 +24,7 @@ class LearningBoxRepository(
         }
     }
 
-    fun getCardsFromLearningBoxInLearningObject(
+    suspend  fun getCardsFromLearningBoxInLearningObject(
         learningObjectId: UUID,
         onSuccess: (List<Int>) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
@@ -37,7 +37,7 @@ class LearningBoxRepository(
     }
 
 
-    fun findByBoxId(
+    suspend fun findByBoxId(
         learningBoxId: UUID,
         onSuccess: (LearningBox) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
@@ -49,7 +49,7 @@ class LearningBoxRepository(
         }
     }
 
-    fun insert(
+    suspend fun insert(
         learningBox: LearningBox,
         onSuccess: () -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
@@ -62,7 +62,7 @@ class LearningBoxRepository(
         }
     }
 
-    fun delete(boxNumber: Int, learningObjectId: UUID) {
+    suspend fun delete(boxNumber: Int, learningObjectId: UUID) {
         return repository.delete(boxNumber, learningObjectId)
     }
 }

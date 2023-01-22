@@ -13,24 +13,24 @@ class LearningSystemRepository {
 
     val service = client.createService(LearningSystemApi::class.java)
 
-    fun getLearningSystem(
+    suspend fun getLearningSystem(
         id: UUID,
         onSuccess: (LearningSystemEntity) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) = service.getLearningSystem(id).enqueue(onSuccess, onFailure)
 
-    fun getPage(
+    suspend fun getPage(
         onSuccess: (List<LearningSystemEntity>) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) = service.getLearningSystemList().enqueue(onSuccess, onFailure)
 
-    fun createLearningsystem(
+    suspend fun createLearningsystem(
         learningSystem: CreateLearningSystemEntity,
         onSuccess: (String) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) = service.createLearningSystem(learningSystem).enqueue(onSuccess, onFailure)
 
-    fun updateLearningSystem(
+    suspend fun updateLearningSystem(
         learningSystem: UpdateLearningSystemEntity,
         onSuccess: (Unit) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit

@@ -1,7 +1,6 @@
 package de.fantjastisch.cards_frontend.learning_box
 
 import androidx.room.*
-import org.openapitools.client.models.CardEntity
 import java.util.*
 
 class InternalLearningBoxRepository(private val dao: LearningBoxDao) : LearningBoxDao by dao
@@ -9,22 +8,24 @@ class InternalLearningBoxRepository(private val dao: LearningBoxDao) : LearningB
 @Dao
 interface LearningBoxDao {
     @Query("SELECT * FROM learning_box where learning_object_id = :learningObjectId ORDER BY box_number ASC")
-    fun getAllBoxesForLearningObject(learningObjectId: UUID): List<LearningBox>
+    suspend fun getAllBoxesForLearningObject(learningObjectId: UUID): List<LearningBox>
 
     @Query("SELECT * FROM learning_box WHERE id = :learningBoxId")
-    fun findById(learningBoxId: UUID): LearningBox
+    suspend fun findById(learningBoxId: UUID): LearningBox
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(learningBox: LearningBox)
+    suspend fun insert(learningBox: LearningBox)
 
     @Query("DELETE FROM learning_box WHERE box_number = :boxNumber and learning_object_id = :learningObjectId")
-    fun delete(boxNumber: Int, learningObjectId: UUID)
+    suspend fun delete(boxNumber: Int, learningObjectId: UUID)
 
-    @Query("select count(card_id)" +
-            "from learning_box " +
-            "left join card_to_learning_box on learning_box_id = id " +
-            "where learning_object_id = :learningObjectId " +
-            "group by learning_box_id, learning_object_id " +
-            "order by box_number asc")
-    fun getCardsFromLearningObject(learningObjectId: UUID): List<Int>
+    @Query(
+        "select count(card_id)" +
+                "from learning_box " +
+                "left join card_to_learning_box on learning_box_id = id " +
+                "where learning_object_id = :learningObjectId " +
+                "group by learning_box_id, learning_object_id " +
+                "order by box_number asc"
+    )
+    suspend fun getCardsFromLearningObject(learningObjectId: UUID): List<Int>
 }

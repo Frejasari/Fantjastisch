@@ -9,14 +9,14 @@ class InternalLearningObjectRepository(private val dao: LearningObjectDao) :
 @Dao
 interface LearningObjectDao {
     @Query("SELECT * FROM learning_object")
-    fun getAll(): List<LearningObject>
+    suspend fun getAll(): List<LearningObject>
 
     @Query("SELECT * FROM learning_object WHERE id = :id")
-    fun findById(id: UUID): LearningObject
+    suspend fun findById(id: UUID): LearningObject
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(learningObject: LearningObject)
+    suspend fun insert(learningObject: LearningObject)
 
     @Query("delete from learning_object where id=:id")
-    fun delete(id: UUID)
+    suspend fun delete(id: UUID)
 }

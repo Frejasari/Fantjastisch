@@ -11,7 +11,7 @@ class LearningObjectRepository(
     )
 ) {
 
-    fun getAll(
+    suspend fun getAll(
         onSuccess: (List<LearningObject>) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) {
@@ -23,7 +23,7 @@ class LearningObjectRepository(
         }
     }
 
-    fun findById(
+    suspend fun findById(
         id: UUID,
         onSuccess: (LearningObject) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
@@ -35,7 +35,7 @@ class LearningObjectRepository(
         }
     }
 
-    fun insert(
+    suspend fun insert(
         learningObject: LearningObject,
         onSuccess: () -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
@@ -48,7 +48,7 @@ class LearningObjectRepository(
         }
     }
 
-    fun delete(
+    suspend fun delete(
         id: UUID,
         onSuccess: () -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
