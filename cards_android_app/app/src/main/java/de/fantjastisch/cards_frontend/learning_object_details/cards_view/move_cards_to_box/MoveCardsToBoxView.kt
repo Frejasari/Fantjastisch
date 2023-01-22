@@ -1,6 +1,8 @@
 package de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +31,7 @@ fun MoveCardsToBoxView(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .verticalScroll(rememberScrollState())
             .padding(5.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {

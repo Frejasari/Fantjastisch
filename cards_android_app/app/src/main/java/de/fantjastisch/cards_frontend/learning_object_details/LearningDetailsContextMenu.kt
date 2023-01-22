@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import de.fantjastisch.cards_frontend.learning_mode.LearningModeFragment
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsInBoxFragment
 import java.util.*
 
@@ -44,7 +45,7 @@ fun LearningDetailsContextMenu(
                 text = { Text(text = stringResource(R.string.study_learning_box)) },
                 onClick = {
                     isMenuOpen.value = false
-                    //navigator.push(LearningModeFragment(learningBoxId))
+                    navigator.push(LearningModeFragment(learningBoxId, learningObjectId))
                 })
         }
     }

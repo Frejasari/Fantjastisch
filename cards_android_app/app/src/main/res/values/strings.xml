@@ -31,5 +31,8 @@
   <string name="update_category_headline">Kategorie bearbeiten</string>
   <string name="delete_category_dialog_title">Möchtest du die Kategorie wirklich löschen?</string>
   <string name="no_subcategories">Keine Unterkategorien</string>
+  <string name="learning_mode_title">Lernmodus</string>
   <string name="overview">Übersicht</string>
+    <string name="show_question_from_card_button">Zeige Frage</string>
+  <string name="show_answer_from_card_button">Zeige Antwort</string>
 </resources>
