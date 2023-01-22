@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_frontend.learning_box.card_to_learning_box
 
+import androidx.room.Transaction
 import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
@@ -17,6 +18,7 @@ class CardToLearningBoxRepository(val repository: InternalCardToLearningBoxRepos
             onFailure(null)
         }
     }
+
     fun insertCardsForBox(
         cardIds: List<UUID>,
         learningBoxId: UUID,
@@ -38,20 +40,42 @@ class CardToLearningBoxRepository(val repository: InternalCardToLearningBoxRepos
         }
     }
 
-    fun deleteCardFromBox(
-        cardToLearningBox: CardToLearningBox,
+    fun deleteCardsFromBox(
+        cardIds: List<UUID>,
+        learningBoxId: UUID,
         onSuccess: () -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) {
         try {
-            repository.deleteCardFromBox(
-                cardId = cardToLearningBox.cardId,
-                learningBoxId = cardToLearningBox.learningBoxId
-            )
+            cardIds.forEach { cardId ->
+                repository.deleteCardFromBox(cardId = cardId, learningBoxId = learningBoxId)
+            }
             onSuccess()
         } catch (ex: Throwable) {
             onFailure(null)
         }
+    }
+
+    @Transaction
+    fun insertAndDeleteInBox(
+        selected: List<UUID>,
+        unselected: List<UUID>,
+        learningBoxId: UUID,
+        onSuccess: () -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit
+    ) {
+        insertCardsForBox(
+            cardIds = selected,
+            learningBoxId = learningBoxId,
+            onSuccess = onSuccess,
+            onFailure = onFailure
+        )
+        deleteCardsFromBox(
+            cardIds = unselected,
+            learningBoxId = learningBoxId,
+            onSuccess = onSuccess,
+            onFailure = onFailure
+        )
     }
 
     fun getNumOfCardsFromLearningBoxId(
@@ -65,5 +89,17 @@ class CardToLearningBoxRepository(val repository: InternalCardToLearningBoxRepos
         } catch (ex: Throwable) {
             onFailure(null)
         }
+    }
+
+    fun getAllCardsForLearningObject(
+        learningObjectId: UUID,
+        onSuccess: (List<UUID>) -> Unit,
+        onFailure: (errors: ErrorResponseEntity?) -> Unit) {
+        try {
+            onSuccess(repository.getAllCardsForLearningObject(learningObjectId = learningObjectId))
+        } catch (ex: Throwable) {
+            onFailure(null)
+        }
+
     }
 }

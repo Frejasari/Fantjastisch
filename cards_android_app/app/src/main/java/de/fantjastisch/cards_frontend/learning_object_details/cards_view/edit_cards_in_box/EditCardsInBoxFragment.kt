@@ -11,7 +11,11 @@ import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsIn
 import java.util.*
 
 
-data class AddCardsToBoxFragment(val learningBoxId: UUID, val navigator: Navigator) :
+data class EditCardsInBoxFragment(
+    val learningBoxId: UUID,
+    val navigator: Navigator,
+    val learningObjectId: UUID
+) :
     AndroidScreen() {
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -26,13 +30,22 @@ data class AddCardsToBoxFragment(val learningBoxId: UUID, val navigator: Navigat
                 ),
                 title = { Text(text = "Karten in dieser Box") },
                 actions = {
-                    CardsInBoxContextMenu(learningBoxId = learningBoxId, navigator = navigator)
+                    CardsInBoxContextMenu(
+                        learningBoxId = learningBoxId,
+                        navigator = navigator,
+                        learningObjectId = learningObjectId
+                    )
                 })
         })
         {
-            AddCardsToBoxView(
+            EditCardsInBoxView(
                 modifier = Modifier.padding(it),
-                viewModel = viewModel { AddCardsToBoxViewModel(learningBoxId) }
+                viewModel = viewModel {
+                    EditCardsInBoxViewModel(
+                        learningBoxId = learningBoxId,
+                        learningObjectId = learningObjectId
+                    )
+                },
             )
         }
     }

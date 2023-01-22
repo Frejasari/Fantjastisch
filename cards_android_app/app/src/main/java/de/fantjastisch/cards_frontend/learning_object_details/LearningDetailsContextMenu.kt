@@ -14,7 +14,7 @@ import java.util.*
 
 
 @Composable
-fun LearningDetailsContextMenu(learningBoxId: UUID, navigator: Navigator) {
+fun LearningDetailsContextMenu(learningBoxId: UUID, navigator: Navigator, learningObjectId: UUID) {
     val isMenuOpen = remember { mutableStateOf(false) }
 
     IconButton(onClick = { isMenuOpen.value = !isMenuOpen.value }) {
@@ -25,13 +25,19 @@ fun LearningDetailsContextMenu(learningBoxId: UUID, navigator: Navigator) {
             onDismissRequest = { isMenuOpen.value = false }
         ) {
             DropdownMenuItem(
-                text = { Text(text=stringResource(R.string.show_cards_in_learning_box)) },
+                text = { Text(text = stringResource(R.string.show_cards_in_learning_box)) },
                 onClick = {
                     isMenuOpen.value = false
-                    navigator.push(CardsInBoxFragment(learningBoxId=learningBoxId, navigator=navigator))
+                    navigator.push(
+                        CardsInBoxFragment(
+                            learningBoxId = learningBoxId,
+                            navigator = navigator,
+                            learningObjectId = learningObjectId
+                        )
+                    )
                 })
             DropdownMenuItem(
-                text = { Text(text=stringResource(R.string.study_learning_box)) },
+                text = { Text(text = stringResource(R.string.study_learning_box)) },
                 onClick = {
                     isMenuOpen.value = false
                     //navigator.push(LearningModeFragment(learningBoxId))

@@ -13,7 +13,7 @@ import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
 import java.util.*
 
 class LearningDetailsViewModel(
-    learningObjectId: UUID,
+    val learningObjectId: UUID,
     private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(
         InternalCardToLearningBoxRepository(AppDatabase.database.cardToLearningBoxDao())
     ),
@@ -36,15 +36,15 @@ class LearningDetailsViewModel(
         )
         learningObjectRepository.findById(learningObjectId,
             onSuccess = { learningObjectLabel = it.label },
-            onFailure = {error.value = "Konnte Lernobjekt nicht einholen"}
+            onFailure = { error.value = "Konnte Lernobjekt nicht einholen" }
         )
     }
 
-    fun getNumOfCardsFromLearningBox(learningBoxId: UUID) : Int {
+    fun getNumOfCardsFromLearningBox(learningBoxId: UUID): Int {
         var anzahl = 0;
         cardToLearningBoxRepository.getNumOfCardsFromLearningBoxId(learningBoxId,
-        onSuccess = { anzahl = it},
-        onFailure = {error.value = "Konnte Anzahl Karten von Lernbox nicht einholen"})
+            onSuccess = { anzahl = it },
+            onFailure = { error.value = "Konnte Anzahl Karten von Lernbox nicht einholen" })
         return anzahl
     }
 }

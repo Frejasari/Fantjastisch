@@ -14,8 +14,9 @@ import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
-class AddCardsToBoxViewModel(
+class EditCardsInBoxViewModel(
     private val learningBoxId: UUID,
+    private val learningObjectId: UUID,
     private val cardRepository: CardRepository = CardRepository(),
     private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(
         InternalCardToLearningBoxRepository(AppDatabase.database.cardToLearningBoxDao())
@@ -50,13 +51,24 @@ class AddCardsToBoxViewModel(
 
     private fun getContainedCards(allCards: List<CardEntity>) {
         cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId,
-            onSuccess = {
-                cards.value = allCards.map { card ->
-                    CardSelectItem(
-                        card = card,
-                        isChecked = it.contains(card.id)
-                    )
-                }
+            onSuccess = { listOfCardIdsInBox ->
+                cardToLearningBoxRepository.getAllCardsForLearningObject(learningObjectId = learningObjectId,
+                    onSuccess = { listOfCardIdsInObject ->
+                        val cardsPresentInOtherBoxes =
+                            listOfCardIdsInObject.filter { id -> !listOfCardIdsInBox.contains(id) }
+
+                        cards.value = allCards.filter { card ->
+                            listOfCardIdsInBox.contains(card.id) || !cardsPresentInOtherBoxes.contains(
+                                card.id
+                            )
+                        }.map { card ->
+                            CardSelectItem(
+                                card = card,
+                                isChecked = listOfCardIdsInBox.contains(card.id)
+                            )
+                        }
+                    },
+                    onFailure = {})
             },
             onFailure = {
                 error.value = "Couldnt get card ids for box."
@@ -76,10 +88,14 @@ class AddCardsToBoxViewModel(
     fun onAddCardsClicked() {
         val selectedCardsIds =
             cards.value.filter { card -> card.isChecked }.map { card -> card.card.id }
-
-        cardToLearningBoxRepository.insertCardsForBox(cardIds = selectedCardsIds,
+        val unSelectedCardIds =
+            cards.value.filter { card -> !card.isChecked }.map { card -> card.card.id }
+        cardToLearningBoxRepository.insertAndDeleteInBox(
+            selected = selectedCardsIds,
+            unselected = unSelectedCardIds,
             learningBoxId = learningBoxId,
             onSuccess = { isFinished.value = true },
-            onFailure = { error.value = "Whoops" })
+            onFailure = { error.value = "Whoops" }
+        )
     }
 }

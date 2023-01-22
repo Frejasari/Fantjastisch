@@ -12,7 +12,8 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.LearningDetailsView
 import java.util.*
 
-data class LearningDetailsFragment(val id: UUID, val navigator: Navigator) : AndroidScreen() {
+data class LearningDetailsFragment(val learningObjectId: UUID, val navigator: Navigator) :
+    AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -29,7 +30,7 @@ data class LearningDetailsFragment(val id: UUID, val navigator: Navigator) : And
 
         {
             LearningDetailsView(
-                viewModel = viewModel { LearningDetailsViewModel(id) },
+                viewModel = viewModel { LearningDetailsViewModel(learningObjectId) },
                 modifier = Modifier.padding(it),
                 navigator = navigator
             )
