@@ -53,7 +53,7 @@ class UpdateCardViewModel(
                             )
                         }
                     },
-                    onError = { error.value = "Something is wrong" },
+                    onValidationError = { error.value = "Something is wrong" },
                     onUnexpectedError = { error.value = "Irgendwas ist schief gelaufen" },
                 )
         }
@@ -70,7 +70,7 @@ class UpdateCardViewModel(
                 links = emptyMap()
             ).fold(
                 onSuccess = { isFinished.value = true },
-                onError = { errors.value = it },
+                onValidationError = { errors.value = it },
                 onUnexpectedError = { error.value = "Irgendwas ist schief gelaufen" }
             )
         }

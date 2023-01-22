@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,19 +40,22 @@ class EditCardsInBoxViewModel(
                 sort = null
             )
             when (result) {
-                is RepoResult.Success -> getContainedCards(result.result)
+                is RepoResult.Success -> loadContainedCards(result.result)
                 is RepoResult.Error,
                 is RepoResult.ServerError -> error.value = "Couldnt fetch cards."
             }
         }
     }
 
-    private fun getContainedCards(allCards: List<CardEntity>) {
+    private fun loadContainedCards(allCards: List<CardEntity>) {
         viewModelScope.launch(Dispatchers.IO) {
-            cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId,
-                onSuccess = { listOfCardIdsInBox ->
-                    viewModelScope.launch(Dispatchers.IO) {
-                        cardToLearningBoxRepository.getAllCardsForLearningObject(learningObjectId = learningObjectId,
+            val result = cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId)
+
+            when (result) {
+                is RepoResult.Success -> {
+                    val listOfCardIdsInBox = result.result
+                    cardToLearningBoxRepository.getAllCardsForLearningObject(learningObjectId = learningObjectId)
+                        .fold(
                             onSuccess = { listOfCardIdsInObject ->
                                 val cardsPresentInOtherBoxes =
                                     listOfCardIdsInObject.filter { id ->
@@ -71,12 +75,14 @@ class EditCardsInBoxViewModel(
                                     )
                                 }
                             },
-                            onFailure = {})
-                    }
-                },
-                onFailure = {
+                            onValidationError = {},
+                            onUnexpectedError = {})
+                }
+                is RepoResult.Error,
+                is RepoResult.ServerError -> {
                     error.value = "Couldnt get card ids for box."
-                })
+                }
+            }
         }
     }
 
@@ -92,16 +98,18 @@ class EditCardsInBoxViewModel(
 
     fun onAddCardsClicked() {
         val selectedCardsIds =
-            cards.value.filter { card -> card.isChecked }.map { card -> card.card.id }
-        val unSelectedCardIds =
-            cards.value.filter { card -> !card.isChecked }.map { card -> card.card.id }
+            cards.value
+                .filter { card -> card.isChecked }
+                .map { card -> card.card.id }
+
         viewModelScope.launch(Dispatchers.IO) {
-            cardToLearningBoxRepository.insertAndDeleteInBox(
+            cardToLearningBoxRepository.updateBoxCards(
                 selected = selectedCardsIds,
-                unselected = unSelectedCardIds,
                 learningBoxId = learningBoxId,
+            ).fold(
                 onSuccess = { isFinished.value = true },
-                onFailure = { error.value = "Whoops" }
+                onUnexpectedError = { error.value = "Whoops" },
+                onValidationError = { error.value = "Whoops" }
             )
         }
     }

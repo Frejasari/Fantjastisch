@@ -24,3 +24,12 @@ data class LearningBox(
     @ColumnInfo(name = "box_number") val boxNumber: Int,
     @ColumnInfo(name = "label") val label: String
 )
+
+
+data class LearningBoxWitNrOfCards(
+    @ColumnInfo val id: UUID = generateId(),
+    @ColumnInfo(name = "learning_object_id") val learningObjectId: UUID,
+    @ColumnInfo(name = "box_number") val boxNumber: Int,
+    @ColumnInfo(name = "label") val label: String,
+    @ColumnInfo(name = "nr_of_cards") val nrOfCards: String
+)

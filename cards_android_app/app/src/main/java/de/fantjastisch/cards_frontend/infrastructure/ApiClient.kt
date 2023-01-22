@@ -60,12 +60,12 @@ sealed class RepoResult<T> {
 
 fun <T> RepoResult<T>.fold(
     onSuccess: (T) -> Unit,
-    onError: (errors: List<ErrorEntryEntity>) -> Unit,
+    onValidationError: (errors: List<ErrorEntryEntity>) -> Unit,
     onUnexpectedError: () -> Unit
 ) {
     when (this) {
         is RepoResult.Success -> onSuccess(this.result)
-        is RepoResult.Error -> onError(this.errors)
+        is RepoResult.Error -> onValidationError(this.errors)
         is RepoResult.ServerError -> onUnexpectedError()
     }
 }

@@ -25,7 +25,8 @@ fun LearningDetailsView(
     learningObjectId: UUID,
 
     ) {
-    val viewModel = viewModel { LearningDetailsViewModel(learningObjectId) }
+    val viewModel =
+        viewModel(key = learningObjectId.toString()) { LearningDetailsViewModel(learningObjectId) }
 
     LazyColumn(
         modifier = modifier
@@ -75,9 +76,7 @@ fun LearningDetailsView(
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = "Anzahl Karten: " + viewModel.getNumOfCardsFromLearningBox(
-                                learningBox.id
-                            )
+                            text = "Anzahl Karten: " + learningBox.nrOfCards
                         )
                         Spacer(
                             Modifier

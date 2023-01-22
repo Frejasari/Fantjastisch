@@ -178,7 +178,7 @@ class CreateLearningObjectViewModel(
                     onSuccess = {
                         createLearningBoxesFromCards(it, learningSystem, learningObject)
                     },
-                    onError = {
+                    onValidationError = {
                         errors.value = "Could not get cards."
                     },
                     onUnexpectedError = {
@@ -221,14 +221,19 @@ class CreateLearningObjectViewModel(
                 onSuccess = {
                     if (index == 0) {
                         viewModelScope.launch(Dispatchers.IO) {
-                            cardToLearningBoxRepository.insertCardsForBox(
+                            cardToLearningBoxRepository.insertCards(
                                 cardIds.value,
-                                learningBox.id,
+                                learningBox.id
+                            ).fold(
                                 onSuccess = {
                                     errors.value = null
                                     isFinished.value = true
                                 },
-                                onFailure = {
+                                onUnexpectedError = {
+                                    errors.value =
+                                        "Could not insert relationship from cards to learning box."
+                                },
+                                onValidationError = {
                                     errors.value =
                                         "Could not insert relationship from cards to learning box."
                                 })

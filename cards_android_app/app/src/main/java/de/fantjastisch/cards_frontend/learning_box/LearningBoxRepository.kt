@@ -1,6 +1,7 @@
 package de.fantjastisch.cards_frontend.learning_box
 
 import de.fantjastisch.cards_frontend.config.AppDatabase
+import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
@@ -11,20 +12,18 @@ class LearningBoxRepository(
 ) {
 
     suspend fun getAllBoxesForLearningObject(
-        learningObjectId: UUID,
-        onSuccess: (List<LearningBox>) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) {
-        try {
+        learningObjectId: UUID
+    ): RepoResult<List<LearningBoxWitNrOfCards>> {
+        return try {
             val allBoxesForLearningObject =
-                repository.getAllBoxesForLearningObject(learningObjectId)
-            onSuccess(allBoxesForLearningObject)
+                repository.getAllBoxesForLearningObjectWithNrOfCards(learningObjectId)
+             RepoResult.Success(allBoxesForLearningObject)
         } catch (ex: Throwable) {
-            onFailure(null)
+             RepoResult.ServerError()
         }
     }
 
-    suspend  fun getCardsFromLearningBoxInLearningObject(
+    suspend fun getCardsFromLearningBoxInLearningObject(
         learningObjectId: UUID,
         onSuccess: (List<Int>) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit

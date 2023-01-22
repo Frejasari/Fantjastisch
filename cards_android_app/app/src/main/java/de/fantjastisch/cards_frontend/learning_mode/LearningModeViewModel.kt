@@ -7,6 +7,7 @@ import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
+import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class LearningModeViewModel(
     val cardsInBox = mutableStateOf<List<CardEntity>>(mutableListOf())
     val currentCard = mutableStateOf<CardEntity?>(null)
     val learningBox = mutableStateOf<LearningBox?>(null)
-    val learningBoxesInObject = mutableStateOf<List<LearningBox>>(mutableListOf())
+    val learningBoxesInObject = mutableStateOf<List<LearningBoxWitNrOfCards>>(mutableListOf())
     var currentCardIndex = 0
     var numberOfCardsRemaining = 0
     var isLastBox = false
@@ -77,29 +78,34 @@ class LearningModeViewModel(
                 onSuccess = {
                     getContainedCards(it)
                 },
-                onError = { error.value = "Couldnt fetch cards." },
+                onValidationError = { error.value = "Couldnt fetch cards." },
                 onUnexpectedError = { error.value = "Couldnt fetch cards." }
             )
         }
         viewModelScope.launch(Dispatchers.IO) {
             learningBoxRepository.getAllBoxesForLearningObject(
-                learningObjectId = learningObjectId,
-                onSuccess = {
-                    learningBoxesInObject.value = it
-                    viewModelScope.launch(Dispatchers.IO) {
-                        learningBoxRepository.findByBoxId(learningBoxId,
-                            onSuccess = {
-                                learningBox.value = it
-                                isFirstBox = learningBox.value!!.boxNumber == 0
-                                isLastBox =
-                                    learningBox.value!!.boxNumber == learningBoxesInObject.value.size - 1
-                            },
-                            onFailure = { error.value = "Lernbox konnte nicht eingeholt werden." }
-                        )
-                    }
-                },
-                onFailure = { error.value = "Fehler" }
+                learningObjectId = learningObjectId
             )
+                .fold(
+                    onSuccess = {
+                        learningBoxesInObject.value = it
+                        viewModelScope.launch(Dispatchers.IO) {
+                            learningBoxRepository.findByBoxId(learningBoxId,
+                                onSuccess = {
+                                    learningBox.value = it
+                                    isFirstBox = learningBox.value!!.boxNumber == 0
+                                    isLastBox =
+                                        learningBox.value!!.boxNumber == learningBoxesInObject.value.size - 1
+                                },
+                                onFailure = {
+                                    error.value = "Lernbox konnte nicht eingeholt werden."
+                                }
+                            )
+                        }
+                    },
+                    onValidationError = { error.value = "Fehler" },
+                    onUnexpectedError = { error.value = "Fehler" }
+                )
         }
     }
 
@@ -107,40 +113,42 @@ class LearningModeViewModel(
         val nextBoxNum = learningBox.value!!.boxNumber + 1
         if (nextBoxNum < learningBoxesInObject.value.size) {
             val nextBoxId = learningBoxesInObject.value[nextBoxNum].id
+
             viewModelScope.launch(Dispatchers.IO) {
-                cardToLearningBoxRepository.deleteCardsFromBox(
-                    listOf(currentCard.value!!.id),
-                    learningBoxId = learningBoxId,
-                    onSuccess = {
-                        viewModelScope.launch(Dispatchers.IO) {
-                            cardToLearningBoxRepository.insertCardsForBox(
-                                listOf(currentCard.value!!.id),
-                                learningBoxId = nextBoxId,
-                                onSuccess = { onPageLoaded() },
-                                onFailure = { error.value = "Whoops" })
-                        }
-                    },
-                    onFailure = { error.value = "Whoops" })
+                cardToLearningBoxRepository.moveCards(
+                    from = learningBoxId,
+                    to = nextBoxId,
+                    cardIds = listOf(currentCard.value!!.id)
+                )
+                    .fold(
+                        onSuccess = { onPageLoaded() },
+                        onUnexpectedError = { error.value = "Whoops" },
+                        onValidationError = { error.value = "Whoops" })
             }
         }
     }
 
     private fun getContainedCards(allCards: List<CardEntity>) {
         viewModelScope.launch(Dispatchers.IO) {
-            cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId,
-                onSuccess = {
-                    cardsInBox.value = allCards.filter { card -> it.contains(card.id) }
-                    currentCard.value = getCurrentCard(currentCardIndex)
-                    numberOfCardsRemaining =
-                        if (currentCardIndex == 0) {
-                            cardsInBox.value.size - 1
-                        } else {
-                            numberOfCardsRemaining
-                        }
-                },
-                onFailure = {
-                    error.value = "Couldnt get card ids for box."
-                })
+            cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId)
+                .fold(
+                    onSuccess = {
+                        cardsInBox.value = allCards.filter { card -> it.contains(card.id) }
+                        currentCard.value = getCurrentCard(currentCardIndex)
+                        numberOfCardsRemaining =
+                            if (currentCardIndex == 0) {
+                                cardsInBox.value.size - 1
+                            } else {
+                                numberOfCardsRemaining
+                            }
+                    },
+                    onValidationError = {
+                        error.value = "Couldnt get card ids for box."
+                    },
+                    onUnexpectedError = {
+                        error.value = "Couldnt get card ids for box."
+                    },
+                )
         }
     }
 

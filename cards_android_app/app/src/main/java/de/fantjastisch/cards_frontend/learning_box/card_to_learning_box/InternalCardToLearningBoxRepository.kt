@@ -8,11 +8,14 @@ class InternalCardToLearningBoxRepository(private val dao: CardToLearningBoxDao)
 
 @Dao
 interface CardToLearningBoxDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCardIntoBox(cardToLearningBox: CardToLearningBox)
+    @Insert
+    suspend fun insertCards(cardToLearningBoxes: List<CardToLearningBox>)
 
-    @Query("DELETE FROM card_to_learning_box WHERE card_id = :cardId and learning_box_id = :learningBoxId")
-    suspend fun deleteCardFromBox(cardId: UUID, learningBoxId: UUID)
+    @Query("DELETE FROM card_to_learning_box WHERE learning_box_id = :learningBoxId")
+    suspend fun deleteAllCardsFromLearningBox(learningBoxId: UUID)
+
+    @Query("DELETE FROM card_to_learning_box WHERE learning_box_id = :learningBoxId and card_id in (:cardIds)")
+    suspend fun deleteCardsFromBox(cardIds: List<UUID>, learningBoxId: UUID)
 
     @Query(
         "SELECT COUNT(*) from learning_box " +

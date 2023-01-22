@@ -102,7 +102,7 @@ class GlossaryFilterViewModel(
                             }
                         }
                 },
-                onError = {},
+                onValidationError = {},
                 onUnexpectedError = {
                     // TODO TOAST
                 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,13 +50,18 @@ class CardsInBoxViewModel(
 
     private fun getContainedCards(allCards: List<CardEntity>) {
         viewModelScope.launch(Dispatchers.IO) {
-            cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId,
-                onSuccess = {
-                    cardsInBox.value = allCards.filter { card -> it.contains(card.id) }
-                },
-                onFailure = {
-                    error.value = "Couldnt get card ids for box."
-                })
+            cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId)
+                .fold(
+                    onSuccess = {
+                        cardsInBox.value = allCards.filter { card -> it.contains(card.id) }
+                    },
+                    onUnexpectedError = {
+                        error.value = "Couldnt get card ids for box."
+                    },
+                    onValidationError = {
+                        error.value = "Couldnt get card ids for box."
+                    }
+                )
         }
     }
 }

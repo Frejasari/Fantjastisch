@@ -6,8 +6,9 @@ import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.learning_box.LearningBox
+import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
+import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class MoveCardsToBoxViewModel(
     val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
     val error = mutableStateOf<String?>(null)
     val isFinished = mutableStateOf(false)
-    val learningBoxesInObject = mutableStateOf<List<LearningBox>>(mutableListOf())
+    val learningBoxesInObject = mutableStateOf<List<LearningBoxWitNrOfCards>>(mutableListOf())
     val learningBoxNum = mutableStateOf<Int>(-1)
     var isLastBox = false
     var isFirstBox = false
@@ -43,36 +44,42 @@ class MoveCardsToBoxViewModel(
     fun onPageLoaded() {
         viewModelScope.launch(Dispatchers.IO) {
             learningBoxRepository.getAllBoxesForLearningObject(
-                learningObjectId = learningObjectId,
-                onSuccess = {
-                    learningBoxesInObject.value = it
-                    learningBoxNum.value = getLearningBoxNum()
-                    isFirstBox = learningBoxNum.value == 0
-                    isLastBox = learningBoxNum.value == learningBoxesInObject.value.size - 1
-                    viewModelScope.launch {
-                        val result = cardRepository.getPage(
-                            categoryIds = null,
-                            search = null,
-                            tag = null,
-                            sort = null
-                        )
-                        when (result) {
-                            is RepoResult.Success -> getContainedCards(result.result)
-                            is RepoResult.Error,
-                            is RepoResult.ServerError -> error.value = "Couldnt fetch cards."
+                learningObjectId = learningObjectId
+            )
+                .fold(
+                    onSuccess = {
+                        learningBoxesInObject.value = it
+                        learningBoxNum.value = getLearningBoxNum()
+                        isFirstBox = learningBoxNum.value == 0
+                        isLastBox = learningBoxNum.value == learningBoxesInObject.value.size - 1
+                        viewModelScope.launch {
+                            val result = cardRepository.getPage(
+                                categoryIds = null,
+                                search = null,
+                                tag = null,
+                                sort = null
+                            )
+                            when (result) {
+                                is RepoResult.Success -> getContainedCards(result.result)
+                                is RepoResult.Error,
+                                is RepoResult.ServerError -> error.value = "Couldnt fetch cards."
+                            }
                         }
-                    }
-                },
-                onFailure = { error.value = "whoops" })
+                    },
+                    onUnexpectedError = { error.value = "whoops" },
+                    onValidationError = { error.value = "whoops" }
+                )
         }
     }
 
     private fun getContainedCards(allCards: List<CardEntity>) {
         viewModelScope.launch(Dispatchers.IO) {
             cardToLearningBoxRepository.getCardIdsForBox(
-                learningBoxId = learningBoxId,
+                learningBoxId = learningBoxId
+            ).fold(
                 onSuccess = {
-                    cards.value = allCards.filter { card -> it.contains(card.id) }
+                    cards.value = allCards
+                        .filter { card -> it.contains(card.id) }
                         .map { card ->
                             CardSelectItem(
                                 card = card,
@@ -80,7 +87,10 @@ class MoveCardsToBoxViewModel(
                             )
                         }
                 },
-                onFailure = {
+                onUnexpectedError = {
+                    error.value = "Couldnt get card ids for box."
+                },
+                onValidationError = {
                     error.value = "Couldnt get card ids for box."
                 })
         }
@@ -98,45 +108,33 @@ class MoveCardsToBoxViewModel(
 
     // todo try and move stuff like this into the repo layer. It should be done in one transaction, I guess you can even write one query for that.
     fun onMoveToPreviousBox() {
+        val previousBoxId = learningBoxesInObject.value[learningBoxNum.value - 1].id
+
         viewModelScope.launch(Dispatchers.IO) {
-            cardToLearningBoxRepository.deleteCardsFromBox(
+            cardToLearningBoxRepository.moveCards(
+                from = learningBoxId,
+                to = previousBoxId,
                 cardIds = cards.value.filter { card -> card.isChecked }
-                    .map { card -> card.card.id },
-                learningBoxId = learningBoxId,
-                onSuccess = {
-                    val previousBoxId = learningBoxesInObject.value[learningBoxNum.value - 1].id
-                    viewModelScope.launch(Dispatchers.IO) {
-                        cardToLearningBoxRepository.insertCardsForBox(
-                            cardIds = cards.value.filter { card -> card.isChecked }
-                                .map { card -> card.card.id },
-                            learningBoxId = previousBoxId,
-                            onSuccess = { onPageLoaded() },
-                            onFailure = { error.value = "Whoops" })
-                    }
-                },
-                onFailure = { error.value = "Whoops" })
+                    .map { card -> card.card.id })
+                .fold(
+                    onSuccess = { onPageLoaded() },
+                    onUnexpectedError = { error.value = "Whoops" },
+                    onValidationError = { error.value = "Whoops" })
         }
     }
 
-    // todo try and move stuff like this into the repo layer. It should be done in one transaction, I guess you can even write one query for that.
     fun onMoveToNextBox() {
         viewModelScope.launch(Dispatchers.IO) {
-            cardToLearningBoxRepository.deleteCardsFromBox(
+            val nextBoxId = learningBoxesInObject.value[learningBoxNum.value + 1].id
+            cardToLearningBoxRepository.moveCards(
+                from = learningBoxId,
+                to = nextBoxId,
                 cardIds = cards.value.filter { card -> card.isChecked }
-                    .map { card -> card.card.id },
-                learningBoxId = learningBoxId,
-                onSuccess = {
-                    val nextBoxId = learningBoxesInObject.value[learningBoxNum.value + 1].id
-                    viewModelScope.launch(Dispatchers.IO) {
-                        cardToLearningBoxRepository.insertCardsForBox(
-                            cardIds = cards.value.filter { card -> card.isChecked }
-                                .map { card -> card.card.id },
-                            learningBoxId = nextBoxId,
-                            onSuccess = { onPageLoaded() },
-                            onFailure = { error.value = "Whoops" })
-                    }
-                },
-                onFailure = { error.value = "Whoops" })
+                    .map { card -> card.card.id })
+                .fold(
+                    onSuccess = { onPageLoaded() },
+                    onUnexpectedError = { error.value = "Whoops" },
+                    onValidationError = { error.value = "Whoops" })
         }
     }
 

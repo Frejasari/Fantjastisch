@@ -7,6 +7,16 @@ class InternalLearningBoxRepository(private val dao: LearningBoxDao) : LearningB
 
 @Dao
 interface LearningBoxDao {
+
+    @Query(
+        "SELECT lb.id, lb.box_number, lb.label, lb.learning_object_id, count(*) as nr_of_cards FROM learning_box lb " +
+                "left join card_to_learning_box clb on lb.id = clb.learning_box_id " +
+                "where lb.learning_object_id = :learningObjectId " +
+                "group by (lb.id) " +
+                "ORDER BY box_number ASC"
+    )
+    suspend fun getAllBoxesForLearningObjectWithNrOfCards(learningObjectId: UUID): List<LearningBoxWitNrOfCards>
+
     @Query("SELECT * FROM learning_box where learning_object_id = :learningObjectId ORDER BY box_number ASC")
     suspend fun getAllBoxesForLearningObject(learningObjectId: UUID): List<LearningBox>
 
