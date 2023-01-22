@@ -60,7 +60,7 @@ fun CreateLearningSystemView(
             isError = viewModel.numBoxes.value == 0
         )
 
-        viewModel.learningSystemBoxLabels.value.forEachIndexed { index, element ->
+        viewModel.learningSystemBoxLabels.value.forEachIndexed { index, _ ->
             OutlinedTextFieldWithErrors(
                 value = viewModel.learningSystemBoxLabels.value[index],
                 onValueChange = { viewModel.onBoxLabelChanged(index, it) },

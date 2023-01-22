@@ -14,6 +14,7 @@ import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_system.LearningSystemRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.LearningSystemEntity
@@ -59,20 +60,22 @@ class CreateLearningObjectViewModel(
                 errors.value = "Konnte keine Kategorien einholen."
             },
         )
-        learningSystemRepository.getPage(
-            onSuccess = {
-                errors.value = null
-                learningSystems.value = it.map { learningSystem ->
-                    SingleSelectItem(
-                        id = learningSystem.id,
-                        label = learningSystem.label,
-                    )
-                }
-            },
-            onFailure = {
-                errors.value = "Konnte keine Lernsysteme einholen."
-            },
-        )
+        viewModelScope.launch(Dispatchers.IO) {
+            learningSystemRepository.getPage(
+                onSuccess = {
+                    errors.value = null
+                    learningSystems.value = it.map { learningSystem ->
+                        SingleSelectItem(
+                            id = learningSystem.id,
+                            label = learningSystem.label,
+                        )
+                    }
+                },
+                onFailure = {
+                    errors.value = "Konnte keine Lernsysteme einholen."
+                },
+            )
+        }
 
         viewModelScope.launch {
             val result = cardRepository.getPage(
@@ -129,27 +132,31 @@ class CreateLearningObjectViewModel(
         val learningSystemId = selectedSystem.value!!.id
         val learningObject =
             LearningObject(label = learningObjectLabel.value, learningSystemId = learningSystemId)
-        learningObjectRepository.insert(
-            learningObject = learningObject,
-            onSuccess = {
-                getLearningSystemFromInput(learningObject)
-            },
-            onFailure = {
-                errors.value = "Could not insert learning object into DB"
-            }
-        )
+        viewModelScope.launch(Dispatchers.IO) {
+            learningObjectRepository.insert(
+                learningObject = learningObject,
+                onSuccess = {
+                    getLearningSystemFromInput(learningObject)
+                },
+                onFailure = {
+                    errors.value = "Could not insert learning object into DB"
+                }
+            )
+        }
     }
 
     private fun getLearningSystemFromInput(learningObject: LearningObject) {
-        learningSystemRepository.getLearningSystem(selectedSystem.value!!.id,
-            onSuccess = {
-                errors.value = null
-                val learningSystem = it
-                getCardsFromCategories(learningSystem, learningObject)
-            },
-            onFailure = {
-                errors.value = "Could not get learning system."
-            })
+        viewModelScope.launch(Dispatchers.IO) {
+            learningSystemRepository.getLearningSystem(selectedSystem.value!!.id,
+                onSuccess = {
+                    errors.value = null
+                    val learningSystem = it
+                    getCardsFromCategories(learningSystem, learningObject)
+                },
+                onFailure = {
+                    errors.value = "Could not get learning system."
+                })
+        }
     }
 
     private fun getCardsFromCategories(
@@ -208,26 +215,30 @@ class CreateLearningObjectViewModel(
         learningBox: LearningBox,
         index: Int
     ) {
-        learningBoxRepository.insert(
-            learningBox = learningBox,
-            onSuccess = {
-                if (index == 0) {
-                    cardToLearningBoxRepository.insertCardsForBox(
-                        cardIds.value,
-                        learningBox.id,
-                        onSuccess = {
-                            errors.value = null
-                            isFinished.value = true
-                        },
-                        onFailure = {
-                            errors.value =
-                                "Could not insert relationship from cards to learning box."
-                        })
+        viewModelScope.launch(Dispatchers.IO) {
+            learningBoxRepository.insert(
+                learningBox = learningBox,
+                onSuccess = {
+                    if (index == 0) {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            cardToLearningBoxRepository.insertCardsForBox(
+                                cardIds.value,
+                                learningBox.id,
+                                onSuccess = {
+                                    errors.value = null
+                                    isFinished.value = true
+                                },
+                                onFailure = {
+                                    errors.value =
+                                        "Could not insert relationship from cards to learning box."
+                                })
+                        }
+                    }
+                },
+                onFailure = {
+                    errors.value = "Could not insert learning box."
                 }
-            },
-            onFailure = {
-                errors.value = "Could not insert learning box."
-            }
-        )
+            )
+        }
     }
 }

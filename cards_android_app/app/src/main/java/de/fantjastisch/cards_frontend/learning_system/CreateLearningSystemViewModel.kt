@@ -2,7 +2,10 @@ package de.fantjastisch.cards_frontend.learning_system
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.openapitools.client.models.CreateLearningSystemEntity
 import org.openapitools.client.models.ErrorEntryEntity
 
@@ -19,32 +22,31 @@ class CreateLearningSystemViewModel(
     val isFinished = mutableStateOf(false)
 
     val learningSystemLabel = mutableStateOf("")
-    val learningSystemBoxLabels = mutableStateOf(mutableListOf<String>())
+    val learningSystemBoxLabels = mutableStateOf<List<String>>(listOf())
     val numBoxes = mutableStateOf(0)
-
-    // constructor (wird ganz am Anfang aufgerufen)
-    init {
-    }
 
     fun onAddLearningSystemClicked() {
         errors.value = emptyList()
-        learningSystemRepository.createLearningsystem(
-            learningSystem = CreateLearningSystemEntity(
-                label = learningSystemLabel.value,
-                boxLabels = learningSystemBoxLabels.value,
-            ),
-            onSuccess = {
-                isFinished.value = true
-                // on Success -> dialog schliessen, zur Category  übersicht?
-            },
-            onFailure = {
-                if (it == null) {
-                    // Fehler anzeigen:
-                    error.value = "Irgendwas ist schief gelaufen"
-                } else {
-                    errors.value = it.errors
-                }
-            })
+        viewModelScope.launch(Dispatchers.IO) {
+
+            learningSystemRepository.createLearningsystem(
+                learningSystem = CreateLearningSystemEntity(
+                    label = learningSystemLabel.value,
+                    boxLabels = learningSystemBoxLabels.value,
+                ),
+                onSuccess = {
+                    isFinished.value = true
+                    // on Success -> dialog schliessen, zur Category  übersicht?
+                },
+                onFailure = {
+                    if (it == null) {
+                        // Fehler anzeigen:
+                        error.value = "Irgendwas ist schief gelaufen"
+                    } else {
+                        errors.value = it.errors
+                    }
+                })
+        }
     }
 
     fun onBoxesSelected(numString: String) {
@@ -58,7 +60,7 @@ class CreateLearningSystemViewModel(
             }
 
         }
-        learningSystemBoxLabels.value = MutableList(numBoxes.value) { "" }
+        learningSystemBoxLabels.value = List(numBoxes.value) { "" }
     }
 
     fun onBoxLabelChanged(index: Int, element: String) {
