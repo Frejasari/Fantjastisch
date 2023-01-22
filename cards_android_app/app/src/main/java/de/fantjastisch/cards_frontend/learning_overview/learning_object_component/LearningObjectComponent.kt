@@ -28,7 +28,12 @@ fun LearningObjectComponent(
 ) {
     val navigator = LocalNavigator.current!!
     val viewModel =
-        viewModel { LearningObjectComponentViewModel(learningSystemId = learningObject.learningSystemId) }
+        viewModel {
+            LearningObjectComponentViewModel(
+                learningSystemId = learningObject.learningSystemId,
+                learningObjectId = learningObject.id
+            )
+        }
     val isDeleteDialogOpen = remember { mutableStateOf(false) }
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     Box(Modifier.clickable(onClick = {
@@ -91,18 +96,13 @@ fun LearningObjectComponent(
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = viewModel.initLearningSystemLabel(learningObject.learningSystemId)
+                        text = viewModel.learningSystemLabel.value
                     )
                     Spacer(
                         Modifier
                             .weight(1f)
                             .fillMaxHeight()
                     )
-                    val progress = remember {
-                        mutableStateOf<Int>(
-                            viewModel.getProgressFromLearningObject(learningObjectId = learningObject.id)
-                        )
-                    }
 
                     SuggestionChip(
                         modifier = Modifier,
@@ -110,16 +110,16 @@ fun LearningObjectComponent(
                         label = {
                             Text(
                                 modifier = Modifier,
-                                color = if (progress.value < 33) Color(
+                                color = if (viewModel.progress.value < 33) Color(
                                     0xFFC53030
                                 )
-                                else if (progress.value < 66)
+                                else if (viewModel.progress.value < 66)
                                     Color(0xFFFF8707)
                                 else Color(0xFF2B990D),
-                                text = if (progress.value == -1) {
+                                text = if (viewModel.progress.value == -1) {
                                     "Fetching..."
                                 } else {
-                                    progress.value.toString() + " %"
+                                    viewModel.progress.value.toString() + " %"
                                 }
                             )
                         }
