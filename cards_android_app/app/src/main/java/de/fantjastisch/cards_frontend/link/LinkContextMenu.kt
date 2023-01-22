@@ -12,6 +12,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.card.update_and_create.UpdateCardFragment
+import de.fantjastisch.cards_frontend.link.delete.DeleteLinkDialog
 import de.fantjastisch.cards_frontend.link.update_and_create.UpdateLinkFragment
 import java.util.UUID
 
@@ -45,16 +46,16 @@ fun LinkContextMenu(
                 text = { Text(text = stringResource(id = R.string.card_menu_delete)) },
                 onClick = {
                     isMenuOpen.value = false
-                   // isDeleteDialogOpen.value = true
+                    isDeleteDialogOpen.value = true
                 })
         }
     }
-    /*
+
     DeleteLinkDialog(
-        tag = tag,
-        cardId = cardId,
+        name = name,
+        linkId = id,
         isOpen = isDeleteDialogOpen.value,
         setIsOpen = { isDeleteDialogOpen.value = it },
         onDeleteSuccessful = onDeleteSuccessful
-    )*/
+    )
 }

@@ -58,12 +58,11 @@ public class LinkAggregate {
     /**
      * Diese Funktion validiert und vermittelt eine Anfrage zum Löschen eines Links.
      *
-     * @param command Das CRUD-Kommando-Objekt zum Löschen eines Links.
+     * @param linkID Das CRUD-Kommando-Objekt zum Löschen eines Links.
      */
-    public void handle(final DeleteLink command) {
-        linkValidator.validateLink(command.getId());
-        Link link = linkQueryRepository.get(command.getId());
-        linkCommandRepository.delete(link);
+    public void handleDelete(final UUID linkID) {
+        linkValidator.validateLink(linkID);
+        linkCommandRepository.delete(linkID);
     }
 
     /**

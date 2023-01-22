@@ -134,7 +134,7 @@ public class LinkCommandRepositoryTest {
                 .target(UUID.fromString("12557dce-4dbf-4531-869a-fd9e20533b7e"))
                 .build();
         linkCommandRepository.save(link);
-        linkCommandRepository.delete(link);
+        linkCommandRepository.delete(link.id);
         Assertions.assertNull(linkQueryRepository.get(link.getId()));
     }
 

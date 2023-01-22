@@ -36,4 +36,5 @@
   <string name="create_link_headline">Link erstellen</string>
   <string name="update_link_headline">Link bearbeiten</string>
   <string name="create_link_name">zu verlinkendes Wort</string>
+  <string name="delete_link_dialog_title">Möchtest du das Link wirklich löschen?</string>
 </resources>
