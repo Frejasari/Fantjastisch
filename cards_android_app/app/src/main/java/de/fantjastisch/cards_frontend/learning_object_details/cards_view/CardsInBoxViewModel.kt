@@ -49,7 +49,7 @@ class CardsInBoxViewModel(
     }
 
     private fun getContainedCards(allCards: List<CardEntity>) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId)
                 .fold(
                     onSuccess = {

@@ -60,7 +60,7 @@ class CreateLearningObjectViewModel(
                 errors.value = "Konnte keine Kategorien einholen."
             },
         )
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             learningSystemRepository.getPage(
                 onSuccess = {
                     errors.value = null
@@ -132,7 +132,7 @@ class CreateLearningObjectViewModel(
         val learningSystemId = selectedSystem.value!!.id
         val learningObject =
             LearningObject(label = learningObjectLabel.value, learningSystemId = learningSystemId)
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             learningObjectRepository.insert(
                 learningObject = learningObject,
                 onSuccess = {
@@ -146,7 +146,7 @@ class CreateLearningObjectViewModel(
     }
 
     private fun getLearningSystemFromInput(learningObject: LearningObject) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             learningSystemRepository.getLearningSystem(selectedSystem.value!!.id,
                 onSuccess = {
                     errors.value = null
@@ -215,12 +215,12 @@ class CreateLearningObjectViewModel(
         learningBox: LearningBox,
         index: Int
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             learningBoxRepository.insert(
                 learningBox = learningBox,
                 onSuccess = {
                     if (index == 0) {
-                        viewModelScope.launch(Dispatchers.IO) {
+                        viewModelScope.launch {
                             cardToLearningBoxRepository.insertCards(
                                 cardIds.value,
                                 learningBox.id

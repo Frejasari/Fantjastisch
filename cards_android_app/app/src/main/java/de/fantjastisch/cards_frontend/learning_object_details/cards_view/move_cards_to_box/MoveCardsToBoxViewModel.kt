@@ -42,7 +42,7 @@ class MoveCardsToBoxViewModel(
     }
 
     fun onPageLoaded() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             learningBoxRepository.getAllBoxesForLearningObject(
                 learningObjectId = learningObjectId
             )
@@ -73,7 +73,7 @@ class MoveCardsToBoxViewModel(
     }
 
     private fun getContainedCards(allCards: List<CardEntity>) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             cardToLearningBoxRepository.getCardIdsForBox(
                 learningBoxId = learningBoxId
             ).fold(
@@ -110,7 +110,7 @@ class MoveCardsToBoxViewModel(
     fun onMoveToPreviousBox() {
         val previousBoxId = learningBoxesInObject.value[learningBoxNum.value - 1].id
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             cardToLearningBoxRepository.moveCards(
                 from = learningBoxId,
                 to = previousBoxId,
@@ -124,7 +124,7 @@ class MoveCardsToBoxViewModel(
     }
 
     fun onMoveToNextBox() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val nextBoxId = learningBoxesInObject.value[learningBoxNum.value + 1].id
             cardToLearningBoxRepository.moveCards(
                 from = learningBoxId,

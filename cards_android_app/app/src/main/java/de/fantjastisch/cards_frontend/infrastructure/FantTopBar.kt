@@ -28,7 +28,7 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
+fun FantTopBar(
 ) {
     val tabNavigator = FantTabNavigator.current
     // remember -> state nicht neu erzeugen, wenn Funktion neu aufgerufen wird.

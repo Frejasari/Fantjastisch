@@ -6,7 +6,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -16,8 +15,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsFragment
 import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObjectDialog
@@ -26,13 +23,12 @@ import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObj
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LearningObjectComponent(
-    modifier: Modifier = Modifier,
     learningObject: LearningObject,
     onDeleteSuccessful: () -> Unit
 ) {
-    val navigator = FantMainNavigator.current
+    val navigator = LocalNavigator.current!!
     val viewModel =
-        viewModel { LearningObjectComponentViewModel(learningSystemId=learningObject.learningSystemId) }
+        viewModel { LearningObjectComponentViewModel(learningSystemId = learningObject.learningSystemId) }
     val isDeleteDialogOpen = remember { mutableStateOf(false) }
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     Box(Modifier.clickable(onClick = {
@@ -102,7 +98,11 @@ fun LearningObjectComponent(
                             .weight(1f)
                             .fillMaxHeight()
                     )
-                    val progress = remember { mutableStateOf<Int>( viewModel.getProgressFromLearningObject(learningObjectId=learningObject.id) ) }
+                    val progress = remember {
+                        mutableStateOf<Int>(
+                            viewModel.getProgressFromLearningObject(learningObjectId = learningObject.id)
+                        )
+                    }
 
                     SuggestionChip(
                         modifier = Modifier,

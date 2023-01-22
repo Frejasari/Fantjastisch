@@ -9,7 +9,6 @@ import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
@@ -82,14 +81,14 @@ class LearningModeViewModel(
                 onUnexpectedError = { error.value = "Couldnt fetch cards." }
             )
         }
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             learningBoxRepository.getAllBoxesForLearningObject(
                 learningObjectId = learningObjectId
             )
                 .fold(
                     onSuccess = {
                         learningBoxesInObject.value = it
-                        viewModelScope.launch(Dispatchers.IO) {
+                        viewModelScope.launch {
                             learningBoxRepository.findByBoxId(learningBoxId,
                                 onSuccess = {
                                     learningBox.value = it
@@ -114,7 +113,7 @@ class LearningModeViewModel(
         if (nextBoxNum < learningBoxesInObject.value.size) {
             val nextBoxId = learningBoxesInObject.value[nextBoxNum].id
 
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 cardToLearningBoxRepository.moveCards(
                     from = learningBoxId,
                     to = nextBoxId,
@@ -129,7 +128,7 @@ class LearningModeViewModel(
     }
 
     private fun getContainedCards(allCards: List<CardEntity>) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId)
                 .fold(
                     onSuccess = {

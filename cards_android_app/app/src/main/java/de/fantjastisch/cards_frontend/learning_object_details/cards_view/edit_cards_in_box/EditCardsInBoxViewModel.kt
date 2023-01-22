@@ -48,7 +48,7 @@ class EditCardsInBoxViewModel(
     }
 
     private fun loadContainedCards(allCards: List<CardEntity>) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val result = cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId)
 
             when (result) {
@@ -102,7 +102,7 @@ class EditCardsInBoxViewModel(
                 .filter { card -> card.isChecked }
                 .map { card -> card.card.id }
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             cardToLearningBoxRepository.updateBoxCards(
                 selected = selectedCardsIds,
                 learningBoxId = learningBoxId,

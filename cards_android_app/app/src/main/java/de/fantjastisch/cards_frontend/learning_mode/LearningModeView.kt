@@ -2,17 +2,16 @@ package de.fantjastisch.cards_frontend.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.ui.Alignment
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.learning_mode.LearningModeCardComponent
 import de.fantjastisch.cards_frontend.learning_mode.LearningModeViewModel
@@ -39,11 +38,17 @@ fun LearningModeView(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
-        Text(
-            text = "Lernbox Nr. " + (viewModel.learningBox.value!!.boxNumber + 1).toString()
-                    + " - " + viewModel.learningBox.value!!.label,
-            style = MaterialTheme.typography.titleMedium
-        )
+        val learningBox = viewModel.learningBox.value
+        if (learningBox != null) {
+            Text(
+                text = "Lernbox Nr. " + (learningBox.boxNumber.plus(1)).toString()
+                        + " - " + learningBox.label,
+                style = MaterialTheme.typography.titleMedium
+            )
+        } else {
+            CircularProgressIndicator()
+        }
+
         Text(
             text = "Anzahl Karten verbleibend: " + viewModel.numberOfCardsRemaining.toString(),
             style = MaterialTheme.typography.titleMedium,
@@ -111,7 +116,7 @@ fun LearningModeView(
             }
         }
     }
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current!!
     // einmaliger Effekt
     LaunchedEffect(
         // wenn sich diese Variable ändert

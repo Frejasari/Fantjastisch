@@ -4,29 +4,34 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.TipsAndUpdates
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabNavigator
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.FadeTransition
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.cat_glossary.CategoryGraphFragment
 import de.fantjastisch.cards_frontend.glossary.GlossaryView
-import de.fantjastisch.cards_frontend.learning_overview.LearningOverview
+import de.fantjastisch.cards_frontend.learning_overview.LearningOverviewScreen
 import java.util.*
 
 @Composable
 fun CardsAppTheme(content: @Composable () -> Unit) {
     Mdc3Theme(content = content)
 }
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,12 +40,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CardsAppTheme {
-                // Der app Navigator, laesst sich ueberall in
-                // Compose mit LocalNavigator.currentOrThrow ansprechen
-                Navigator(screen = MainScreen()) { navigator ->
-                    CompositionLocalProvider(FantMainNavigator provides navigator) {
-                        // Rendert den derzeitigen Screen und die Uebergaenge
-                        FadeTransition(navigator = navigator)
+                TabNavigator(tab = mainScreenTabs.first()) { tabNavigator ->
+                    BottomSheetNavigator { bottomSheetNavigator ->
+                        // Der app Navigator, laesst sich ueberall in
+                        // Compose mit LocalNavigator.currentOrThrow ansprechen
+                        Navigator(screen = MainScreen()) { navigator ->
+                            CompositionLocalProvider(
+                                FantMainNavigator provides navigator,
+                                FantTabNavigator provides tabNavigator,
+                                FantBottomSheetNavigator provides bottomSheetNavigator
+                            ) {
+                                // Rendert den derzeitigen Screen und die Uebergaenge
+                                FadeTransition(navigator = navigator)
+                            }
+                        }
                     }
                 }
             }
@@ -48,11 +61,13 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-
+@OptIn(ExperimentalAnimationApi::class)
 object LearningTab : Tab {
     @Composable
     override fun Content() {
-        LearningOverview()
+        Navigator(LearningOverviewScreen()) {
+            FadeTransition(navigator = it)
+        }
     }
 
     override val options: TabOptions
@@ -65,10 +80,15 @@ object LearningTab : Tab {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 object GlossaryTab : Tab {
     @Composable
     override fun Content() {
-        GlossaryView()
+        Scaffold(topBar = { FantTopBar() }) {
+            GlossaryView(
+                modifier = Modifier.padding(it)
+            )
+        }
     }
 
     override val options: TabOptions
@@ -80,11 +100,16 @@ object GlossaryTab : Tab {
         )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 
 object CategoriesTab : Tab {
     @Composable
     override fun Content() {
-        CategoryGraphFragment()
+        Scaffold(topBar = { FantTopBar() }) {
+            CategoryGraphFragment(
+                modifier = Modifier.padding(it)
+            )
+        }
     }
 
     override val options: TabOptions

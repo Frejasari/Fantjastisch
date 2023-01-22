@@ -12,6 +12,6 @@ class MyApp : Application() {
         AppDatabase.database = Room.databaseBuilder(
             this,
             Repository::class.java, "database-name"
-        ).allowMainThreadQueries().build()
+        ).build()
     }
 }

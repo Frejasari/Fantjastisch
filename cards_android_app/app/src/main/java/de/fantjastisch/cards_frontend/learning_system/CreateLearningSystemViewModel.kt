@@ -27,7 +27,7 @@ class CreateLearningSystemViewModel(
 
     fun onAddLearningSystemClicked() {
         errors.value = emptyList()
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
 
             learningSystemRepository.createLearningsystem(
                 learningSystem = CreateLearningSystemEntity(

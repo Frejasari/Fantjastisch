@@ -18,7 +18,7 @@ class DeleteLearningObjectViewModel(
 
     fun onDeleteClicked() {
         error.value = null
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             learningObjectRepository.delete(
                 id = learningObjectId,
                 onSuccess = {

@@ -31,7 +31,7 @@ class LearningObjectComponentViewModel(
 
     // TODO antipattern! AND it wont necessarily work like this! -> cannot just return after an asynchronous call. Set a state insetad
     fun initLearningSystemLabel(learningSystemId: UUID): String {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
 
             learningSystemRepository.getLearningSystem(learningSystemId,
                 onSuccess = {
@@ -46,7 +46,7 @@ class LearningObjectComponentViewModel(
     // TODO antipattern! AND it wont necessarily work like this! -> cannot just return after an asynchronous call. Set a state insetad
     fun getProgressFromLearningObject(learningObjectId: UUID): Int {
         var progress = 0
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             learningBoxRepository.getCardsFromLearningBoxInLearningObject(learningObjectId,
                 onSuccess = {
                     countOfCards = it.sum()

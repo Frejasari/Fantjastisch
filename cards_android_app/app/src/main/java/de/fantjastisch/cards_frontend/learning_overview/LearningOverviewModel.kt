@@ -16,7 +16,7 @@ class LearningOverviewModel(
     val error = mutableStateOf("")
 
     fun onPageLoaded() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
 
             learningObjectRepository.getAll(
                 onSuccess = { learningObjects.value = it },
