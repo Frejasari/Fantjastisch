@@ -1,22 +1,30 @@
 package de.fantjastisch.cards_frontend.card
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import org.openapitools.client.models.CardEntity
-import java.util.*
+
+val singleLine = 1
+val maximumMultiLines = 10
 
 @Composable
 fun CommonCardComponent(
     card: CardEntity
 ) {
+    val maxLines = remember { mutableStateOf(singleLine) }
+
     Card(
         modifier = Modifier,
         shape = CardDefaults.elevatedShape,
@@ -32,21 +40,41 @@ fun CommonCardComponent(
                 .padding(vertical = 8.dp, horizontal = 16.dp),
 
             ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
+            Column() {
+                Row(
                     modifier = Modifier
-                        .weight(weight = 1f, fill = false),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    text = card.question
-                )
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .weight(weight = 1f, fill = false),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        text = card.question,
+                        fontWeight = FontWeight(600)
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = "Tag: ",
+                        fontWeight = FontWeight(500),
+                        fontSize = 12.sp,
+                    )
+                    Text(
+                        modifier = Modifier,
+                        text = card.tag,
+                        fontSize = 12.sp,
+                    )
+                }
             }
-
             Divider(
                 modifier = Modifier
                     .padding(vertical = 6.dp)
@@ -57,30 +85,51 @@ fun CommonCardComponent(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    modifier = Modifier,
-                    text = "Tag: " + card.tag,
-                    fontSize = 12.sp,
-                )
-                Divider(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(0.5.dp),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    modifier = Modifier,
-                    text = "Categories: " + card.categories.map{category -> category.label}.joinToString(separator = ", "),
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 12.sp
-                )
+                var expanded by remember { mutableStateOf(false) }
+                Box(Modifier.clickable(onClick = {
+                    switchBetweenSingleLineAndMultiLineCategories(
+                        maxLines
+                    )
+                    expanded = !expanded
+                })) {
+                    Row(
+                        verticalAlignment = Alignment.Top
+                    ) {
+                        Text(
+                            modifier = Modifier.weight(1.5f),
+                            text = "Kategorien: ",
+                            fontWeight = FontWeight(500),
+                            fontSize = 12.sp
+                        )
+                        Text(
+                            modifier = Modifier.weight(4.5f),
+                            text = card.categories.map { category -> category.label }
+                                .joinToString(separator = ", "),
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = maxLines.value,
+                            fontSize = 12.sp
+                        )
+
+                        val rotate by animateFloatAsState(
+                            targetValue = if (expanded) 180f else 0f
+                        )
+                        Icon(
+                            modifier = Modifier
+                                .weight(1f)
+                                .rotate(rotate),
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "drop-down arrow"
+                        )
+                    }
+
+                }
+
             }
-            Row(
-                modifier = Modifier.height(4.dp)
-            ) {}
         }
     }
-    Row(
-        modifier = Modifier.height(4.dp)
-    ) {}
+}
+
+fun switchBetweenSingleLineAndMultiLineCategories(maxLines: MutableState<Int>) {
+    if (maxLines.value == singleLine) maxLines.value = maximumMultiLines else maxLines.value =
+        singleLine
 }
