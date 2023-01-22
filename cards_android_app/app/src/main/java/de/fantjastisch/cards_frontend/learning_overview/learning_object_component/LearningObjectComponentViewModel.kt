@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_system.LearningSystemRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import java.lang.Integer.max
 import java.lang.Integer.min
 import java.util.*
 import kotlin.math.roundToInt
@@ -46,22 +45,23 @@ class LearningObjectComponentViewModel(
     // TODO antipattern! AND it wont necessarily work like this! -> cannot just return after an asynchronous call. Set a state insetad
     fun getProgressFromLearningObject(learningObjectId: UUID): Int {
         var progress = 0
-        viewModelScope.launch {
-            learningBoxRepository.getCardsFromLearningBoxInLearningObject(learningObjectId,
-                onSuccess = {
-                    countOfCards = it.sum()
-                    val numBoxes = it.size
-                    if (numBoxes == 1) {
-                        progress = 100
-                    } else if (countOfCards > 0) {
-                        it.forEachIndexed { boxIndex, numberOfCardsInBox ->
-                            progress += ((1.0 / countOfCards) * (100 * (boxIndex / (numBoxes - 1)))).roundToInt()
-                        }
+        learningBoxRepository.getCardsFromLearningBoxInLearningObject(learningObjectId)
+            .fold(,
+            onSuccess = { listOfCardAmountsInBoxes ->
+                countOfCards = listOfCardAmountsInBoxes.sum()
+                val numBoxes = listOfCardAmountsInBoxes.size
+                if (numBoxes == 1) {
+                    progress = 100
+                } else if (countOfCards > 0 ) {
+                    listOfCardAmountsInBoxes.forEachIndexed { boxIndex, numberOfCardsInBox ->
+                        val ratioOfBoxCardsToTotalCards = (numberOfCardsInBox * 1.0 / countOfCards)
+                        val progressPercentageForBox = (boxIndex * 1.0 / (numBoxes - 1))
+                        progress += (ratioOfBoxCardsToTotalCards * progressPercentageForBox * 100).roundToInt()
                     }
-                },
-                onFailure = { error.value = "Fehler" }
-            )
-        }
-        return min(progress, 100)
+                }
+            },
+            onFailure = { error.value = "Fehler" }
+        )
+        return progress
     }
 }

@@ -30,11 +30,11 @@ interface LearningBoxDao {
     suspend fun delete(boxNumber: Int, learningObjectId: UUID)
 
     @Query(
-        "select count(card_id)" +
+        "select count(card_id) " +
                 "from learning_box " +
                 "left join card_to_learning_box on learning_box_id = id " +
                 "where learning_object_id = :learningObjectId " +
-                "group by learning_box_id, learning_object_id " +
+                "group by id, learning_object_id " +
                 "order by box_number asc"
     )
     suspend fun getCardsFromLearningObject(learningObjectId: UUID): List<Int>
