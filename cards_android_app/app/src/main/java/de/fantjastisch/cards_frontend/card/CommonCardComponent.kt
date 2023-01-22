@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -96,15 +97,19 @@ fun CommonCardComponent(
                         verticalAlignment = Alignment.Top
                     ) {
                         Text(
-                            modifier = Modifier.weight(1.5f),
+                            modifier = Modifier.weight(1.75f),
                             text = "Kategorien: ",
                             fontWeight = FontWeight(500),
                             fontSize = 12.sp
                         )
+                        var hasMultipleLines by remember { mutableStateOf(false) }
                         Text(
-                            modifier = Modifier.weight(4.5f),
+                            modifier = Modifier.weight(4.25f),
                             text = card.categories.map { category -> category.label }
                                 .joinToString(separator = ", "),
+                            onTextLayout = {textLayoutResult: TextLayoutResult ->
+                                    hasMultipleLines = textLayoutResult.hasVisualOverflow
+                                },
                             overflow = TextOverflow.Ellipsis,
                             maxLines = maxLines.value,
                             fontSize = 12.sp
@@ -113,13 +118,15 @@ fun CommonCardComponent(
                         val rotate by animateFloatAsState(
                             targetValue = if (expanded) 180f else 0f
                         )
-                        Icon(
-                            modifier = Modifier
-                                .weight(1f)
-                                .rotate(rotate),
-                            imageVector = Icons.Default.ArrowDropDown,
-                            contentDescription = "drop-down arrow"
-                        )
+                        if (hasMultipleLines || maxLines.value == 10) {
+                            Icon(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .rotate(rotate),
+                                imageVector = Icons.Default.ArrowDropDown,
+                                contentDescription = "drop-down arrow"
+                            )
+                        }
                     }
 
                 }
