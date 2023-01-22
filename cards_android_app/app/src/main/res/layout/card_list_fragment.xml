@@ -19,8 +19,8 @@
     android:layout_height="wrap_content"
     android:text="Kategorie erzeugen" />
   <Button
-      android:id="@+id/create_card_button"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Karte erzeugen" />
+    android:id="@+id/create_card_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Karte erzeugen" />
 </LinearLayout>

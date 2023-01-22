@@ -50,3 +50,52 @@ fun <T> Call<T>.enqueue(onSuccess: (T) -> Unit, onFailure: (errors: ErrorRespons
         }
     })
 }
+
+sealed class RepoResult<T> {
+    data class Success<T>(val result: T) : RepoResult<T>()
+    data class Error<T>(val errors: List<ErrorEntryEntity>) : RepoResult<T>()
+
+    class ServerError<T> : RepoResult<T>()
+}
+
+fun <T> RepoResult<T>.fold(
+    onSuccess: (T) -> Unit,
+    onError: (errors: List<ErrorEntryEntity>) -> Unit,
+    onUnexpectedError: () -> Unit
+) {
+    when (this) {
+        is RepoResult.Success -> onSuccess(this.result)
+        is RepoResult.Error -> onError(this.errors)
+        is RepoResult.ServerError -> onUnexpectedError()
+    }
+}
+
+fun <T> Response<T>.toRepoResponse(): RepoResult<T> {
+    val body = body()
+    if (body != null) {
+        return RepoResult.Success(body)
+    } else {
+        val errorBody = errorBody()
+        if (errorBody != null) {
+            if (code() == 422 || code() == 404) {
+                val moshi = Moshi
+                    .Builder()
+                    .addLast(KotlinJsonAdapterFactory())
+                    .build()
+                val type =
+                    Types.newParameterizedType(
+                        ErrorResponseEntity::class.java,
+                        ErrorEntryEntity::class.java
+                    )
+                val adapter: JsonAdapter<ErrorResponseEntity> = moshi.adapter(type)
+
+                val errors: ErrorResponseEntity? = adapter.fromJson(errorBody.string())
+                if (errors != null) {
+                    return RepoResult.Error(errors.errors)
+                }
+
+            }
+        }
+    }
+    return RepoResult.ServerError()
+}

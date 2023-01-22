@@ -24,9 +24,11 @@ fun DeleteCategoryDialog(
     if (isOpen) {
         AlertDialog(
             onDismissRequest = { setIsOpen(false) },
-            title = { Text(
-                text = stringResource(R.string.delete_category_dialog_title))
-                    },
+            title = {
+                Text(
+                    text = stringResource(R.string.delete_category_dialog_title)
+                )
+            },
             text = {
                 Text(label)
             },

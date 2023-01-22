@@ -2,18 +2,22 @@ package de.fantjastisch.cards_frontend.learning_object
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
 import de.fantjastisch.cards_frontend.config.AppDatabase
+import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.InternalLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.InternalCardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_system.LearningSystemRepository
+import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.LearningSystemEntity
 import java.util.*
@@ -78,20 +82,31 @@ class CreateLearningObjectViewModel(
                 errors.value = "Konnte keine Lernsysteme einholen."
             },
         )
-        cardRepository.getPage(
-            categoryIds = null,
-            search = null,
-            tag = null,
-            sort = null,
-            onSuccess = {
-                errors.value = null
-                cards.value = it.map { card ->
-                    CardSelectItem(card = card, isChecked = false)
+
+        viewModelScope.launch {
+            val result = cardRepository.getPage(
+                categoryIds = null,
+                search = null,
+                tag = null,
+                sort = null
+            )
+            when (result) {
+                is RepoResult.Success -> {
+                    errors.value = null
+                    cards.value = result.result.map { card ->
+                        CardSelectItem(
+                            card = card,
+                            isChecked = false
+                        )
+                    }
                 }
-            },
-            onFailure = {
-                errors.value = "Konnte keine Karten einholen."
-            })
+
+                is RepoResult.Error,
+                is RepoResult.ServerError -> {
+                    errors.value = "Konnte keine Karten einholen."
+                }
+            }
+        }
     }
 
     fun onCardSelected(id: UUID) {
@@ -127,7 +142,6 @@ class CreateLearningObjectViewModel(
             learningObject = learningObject,
             onSuccess = {
                 getLearningSystemFromInput(learningObject)
-                isFinished.value = true
             },
             onFailure = {
                 errors.value = "Could not insert learning object into DB"
@@ -154,20 +168,26 @@ class CreateLearningObjectViewModel(
         val checkedCategories =
             categories.value.filter { category -> category.isChecked }.map { it.id }
         if (checkedCategories == emptyList<UUID>()) {
-            createLearningBoxesFromCards(emptyList<CardEntity>(), learningSystem, learningObject)
+            createLearningBoxesFromCards(emptyList(), learningSystem, learningObject)
         } else {
-            cardRepository.getPage(
-                categoryIds = checkedCategories,
-                search = null,
-                tag = null,
-                sort = null,
-                onSuccess = {
-                    createLearningBoxesFromCards(it, learningSystem, learningObject)
-                },
-                onFailure = {
-                    errors.value = "Could not get cards."
-                }
-            )
+            viewModelScope.launch {
+                cardRepository.getPage(
+                    categoryIds = checkedCategories,
+                    search = null,
+                    tag = null,
+                    sort = null,
+                ).fold(
+                    onSuccess = {
+                        createLearningBoxesFromCards(it, learningSystem, learningObject)
+                    },
+                    onError = {
+                        errors.value = "Could not get cards."
+                    },
+                    onUnexpectedError = {
+                        errors.value = "Could not get cards."
+                    }
+                )
+            }
         }
 
     }
@@ -204,7 +224,10 @@ class CreateLearningObjectViewModel(
                     cardToLearningBoxRepository.insertCardsForBox(
                         cardIds.value,
                         learningBox.id,
-                        onSuccess = { errors.value = null },
+                        onSuccess = {
+                            errors.value = null
+                            isFinished.value = true
+                        },
                         onFailure = {
                             errors.value =
                                 "Could not insert relationship from cards to learning box."

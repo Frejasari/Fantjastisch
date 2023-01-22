@@ -1,17 +1,15 @@
-package de.fantjastisch.cards_frontend.card.update_and_create
+package de.fantjastisch.cards_frontend.card.update
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
-
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.card.UpdateAndCreateCardView
+import java.util.*
 
-class CreateCardFragment : AndroidScreen() {
+data class UpdateCardFragment(val id: UUID) : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -22,12 +20,13 @@ class CreateCardFragment : AndroidScreen() {
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                title = { Text(text = stringResource(id = R.string.create_card_headline)) },
+                title = { Text(text = stringResource(id = R.string.update_card_headline)) },
             )
         })
         {
-            UpdateAndCreateCardView(modifier = Modifier.padding(it),
-                viewModel = viewModel { CreateCardViewModel() }
+            UpdateCardView(
+                modifier = Modifier.padding(it),
+                id = id
             )
         }
     }

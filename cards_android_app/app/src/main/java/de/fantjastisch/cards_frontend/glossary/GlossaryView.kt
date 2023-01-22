@@ -1,7 +1,5 @@
 package de.fantjastisch.cards_frontend.glossary
 
-//import de.fantjastisch.cards_frontend.category.CategoryGraphFragment
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,25 +7,39 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards_frontend.card.CardContextMenu
-import de.fantjastisch.cards_frontend.card.content_overview.CardContentFragment
+import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
+import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
+import org.openapitools.client.models.CardEntity
+import java.util.*
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 fun GlossaryView(
     modifier: Modifier = Modifier
 ) {
-    val navigator = LocalNavigator.currentOrThrow.parent!!
 
     val viewModel = viewModel { GlossaryViewModel() }
+
+    val deletionProgress = viewModel.currentDeleteDialog.value
+    if (deletionProgress != null) {
+        DeleteCardDialog(
+            card = deletionProgress.card,
+            isDeleteButtonEnabled = deletionProgress is DeletionProgress.ConfirmWithUser,
+            onDismissClicked = { viewModel.onDeleteCardAborted() },
+            onDeleteClicked = {
+                viewModel.onDeleteCardClicked()
+            }
+        )
+    }
+
     // Lädt die Cards neu, wenn wir aus einem anderen Tab wieder hier rein kommen.
     LaunchedEffect(
         // wenn sich diese Variable ändert
@@ -36,6 +48,7 @@ fun GlossaryView(
         block = {
             viewModel.onPageLoaded()
         })
+
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     LazyColumn(
         modifier = modifier
@@ -45,74 +58,86 @@ fun GlossaryView(
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         items(viewModel.cards.value) { card ->
-            var showContent by remember { mutableStateOf(false) }
-            Modifier.clickable {
-                showContent = true
-            }
+            CardView(card, viewModel)
+        }
+    }
+}
 
-            if(showContent) {
-                navigator.push(CardContentFragment(id = card.id))
-            }
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun CardView(
+    card: CardEntity,
+    viewModel: GlossaryViewModel
+) {
+    Surface(
+        modifier = Modifier,
+        shadowElevation = 6.dp,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 16.dp),
 
-            Surface(
-                modifier = Modifier,
-                shadowElevation = 6.dp,
-                onClick = { showContent = true}
+            ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp, horizontal = 16.dp),
-
-                    ) {
+                        .weight(weight = 1f)
+                ) {
+                    Text(
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        text = card.question
+                    )
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .weight(weight = 1f, fill = false),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            text = card.question
-                        )
-                        CardContextMenu(
-                            cardId = card.id,
-                            tag = card.tag,
-                            onDeleteSuccessful = { viewModel.onDeleteSuccessful() }
-                        )
-                    }
-
-                    Divider(
-                        modifier = Modifier
-                            .padding(vertical = 6.dp)
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = card.tag
+                            text = "Tag: ",
+                            fontWeight = FontWeight(500),
+                            fontSize = 12.sp,
                         )
-                        card.categories.forEach {
-                            SuggestionChip(
-                                modifier = Modifier,
-                                onClick = { },
-                                label = {
-                                    Text(
-                                        modifier = Modifier,
-                                        text = it.label
-                                    )
-                                })
-                        }
+                        Text(
+                            modifier = Modifier,
+                            text = card.tag,
+                            fontSize = 12.sp,
+                        )
                     }
+                }
+                CardContextMenu(
+                    cardId = card.id,
+                    onDeleteClicked = { viewModel.onTryDeleteCard(card) },
+                )
+            }
+            Divider(
+                modifier = Modifier
+                    .padding(vertical = 6.dp)
+            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                card.categories.forEach {
+                    SuggestionChip(
+                        modifier = Modifier,
+                        onClick = { },
+                        label = {
+                            Text(
+                                modifier = Modifier,
+                                text = it.label
+                            )
+                        })
                 }
             }
         }
     }
 }
-
-

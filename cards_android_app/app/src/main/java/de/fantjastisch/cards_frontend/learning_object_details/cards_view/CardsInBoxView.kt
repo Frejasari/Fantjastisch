@@ -10,9 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards_frontend.card.CommonCardComponent
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 
 
 @Composable
@@ -39,7 +38,8 @@ fun CardsInBoxView(
             CommonCardComponent(card = card)
         }
     }
-    val navigator = LocalNavigator.currentOrThrow
+
+    val navigator = FantMainNavigator.current
     // einmaliger Effekt
     LaunchedEffect(
         // wenn sich diese Variable ändert
@@ -50,7 +50,4 @@ fun CardsInBoxView(
                 navigator.pop()
             }
         })
-
 }
-
-

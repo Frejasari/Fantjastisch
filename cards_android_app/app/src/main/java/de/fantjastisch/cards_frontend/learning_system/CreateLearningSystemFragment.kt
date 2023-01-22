@@ -13,16 +13,16 @@ class CreateLearningSystemFragment : AndroidScreen() {
     @Composable
     override fun Content() {
         Scaffold(
-                topBar = {
-                    TopAppBar(
-                            colors = TopAppBarDefaults.smallTopAppBarColors(
-                                    containerColor = MaterialTheme.colorScheme.primary,
-                                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
-                            title = { Text(text = stringResource(R.string.create_learningSystem_headline)) },
-                    )
-                }) {
+            topBar = {
+                TopAppBar(
+                    colors = TopAppBarDefaults.smallTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
+                    title = { Text(text = stringResource(R.string.create_learningSystem_headline)) },
+                )
+            }) {
             CreateLearningSystemView(modifier = Modifier.padding(it))
         }
     }

@@ -4,58 +4,40 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
-import java.util.*
+import org.openapitools.client.models.CardEntity
 
 
 @Composable
 fun DeleteCardDialog(
-    tag: String,
-    cardId: UUID,
-    isOpen: Boolean,
-    setIsOpen: (isOpen: Boolean) -> Unit,
-    onDeleteSuccessful: () -> Unit
+    card: CardEntity,
+    isDeleteButtonEnabled: Boolean = true,
+    onDismissClicked: () -> Unit,
+    onDeleteClicked: () -> Unit
 ) {
-    val viewModel = viewModel(key = cardId.toString())
-    { DeleteCardViewModel(cardId = cardId) }
-    if (isOpen) {
-        AlertDialog(
-            onDismissRequest = { setIsOpen(false) }, title = {
-                Text(text = stringResource(R.string.delete_card_dialog_title))
-            },
-            text = {
-                Text(tag)
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        viewModel.onDeleteClicked()
-                    }) {
-                    Text(text = "Ja")
-                }
-            },
-            dismissButton = {
-                Button(
-                    onClick = {
-                        setIsOpen(false)
-                    }) {
-                    Text(text = "Abbrechen")
-                }
+    AlertDialog(
+        onDismissRequest = onDismissClicked,
+        title = {
+            Text(text = stringResource(R.string.delete_card_dialog_title))
+        },
+        text = {
+            Text(card.question)
+        },
+        confirmButton = {
+            Button(
+                enabled = isDeleteButtonEnabled,
+                onClick = onDeleteClicked
+            ) {
+                Text(text = "Ja")
             }
-        )
-    }
-    // einmaliger Effekt
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = viewModel.isFinished.value,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            if (viewModel.isFinished.value) {
-                onDeleteSuccessful()
-                setIsOpen(false)
+        },
+        dismissButton = {
+            Button(
+                onClick = onDismissClicked
+            ) {
+                Text(text = "Abbrechen")
             }
-        })
+        }
+    )
 }

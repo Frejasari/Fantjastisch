@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.room.Room
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.config.Repository
-import java.util.*
 
 class MyApp : Application() {
     override fun onCreate() {

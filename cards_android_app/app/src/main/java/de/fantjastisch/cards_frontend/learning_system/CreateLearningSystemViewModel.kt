@@ -7,7 +7,7 @@ import org.openapitools.client.models.CreateLearningSystemEntity
 import org.openapitools.client.models.ErrorEntryEntity
 
 class CreateLearningSystemViewModel(
-        private val learningSystemRepository: LearningSystemRepository = LearningSystemRepository()
+    private val learningSystemRepository: LearningSystemRepository = LearningSystemRepository()
 //= extends ViewModel
 ) : ViewModel() {
 
@@ -29,22 +29,22 @@ class CreateLearningSystemViewModel(
     fun onAddLearningSystemClicked() {
         errors.value = emptyList()
         learningSystemRepository.createLearningsystem(
-                learningSystem = CreateLearningSystemEntity(
-                        label = learningSystemLabel.value,
-                        boxLabels = learningSystemBoxLabels.value,
-                ),
-                onSuccess = {
-                    isFinished.value = true
-                    // on Success -> dialog schliessen, zur Category  übersicht?
-                },
-                onFailure = {
-                    if (it == null) {
-                        // Fehler anzeigen:
-                        error.value = "Irgendwas ist schief gelaufen"
-                    } else {
-                        errors.value = it.errors
-                    }
-                })
+            learningSystem = CreateLearningSystemEntity(
+                label = learningSystemLabel.value,
+                boxLabels = learningSystemBoxLabels.value,
+            ),
+            onSuccess = {
+                isFinished.value = true
+                // on Success -> dialog schliessen, zur Category  übersicht?
+            },
+            onFailure = {
+                if (it == null) {
+                    // Fehler anzeigen:
+                    error.value = "Irgendwas ist schief gelaufen"
+                } else {
+                    errors.value = it.errors
+                }
+            })
     }
 
     fun onBoxesSelected(numString: String) {

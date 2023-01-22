@@ -2,11 +2,13 @@ package de.fantjastisch.cards_frontend.category
 
 import de.fantjastisch.cards_frontend.infrastructure.client
 import de.fantjastisch.cards_frontend.infrastructure.enqueue
+import de.fantjastisch.cards_frontend.infrastructure.toRepoResponse
 import org.openapitools.client.apis.CategoryApi
 import org.openapitools.client.models.CategoryEntity
 import org.openapitools.client.models.CreateCategoryEntity
 import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.UpdateCategoryEntity
+import retrofit2.awaitResponse
 import java.util.*
 
 class CategoryRepository {
@@ -19,6 +21,10 @@ class CategoryRepository {
         onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) =
         service.getCategory(id).enqueue(onSuccess, onFailure)
+
+    suspend fun getPage(
+    ) = service.getCategoryPage().awaitResponse().toRepoResponse()
+
 
     fun getPage(
         onSuccess: (List<CategoryEntity>) -> Unit,

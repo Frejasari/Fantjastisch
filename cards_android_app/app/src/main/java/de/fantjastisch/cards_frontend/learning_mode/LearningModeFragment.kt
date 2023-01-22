@@ -1,6 +1,6 @@
-package de.fantjastisch.cards_frontend.card.content_overview
+package de.fantjastisch.cards_frontend.learning_mode
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,9 +10,13 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardContentView
 import de.fantjastisch.cards_frontend.link.LinkViewModel
+
+import de.fantjastisch.cards_frontend.card.LearningModeView
+
 import java.util.*
 
-data class CardContentFragment(val id: UUID) : AndroidScreen() {
+data class LearningModeFragment(val learningBoxId: UUID, val learningObjectId: UUID) :
+    AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -23,14 +27,19 @@ data class CardContentFragment(val id: UUID) : AndroidScreen() {
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                title = { Text(text = stringResource(id = R.string.overview)) },
+                title = { Text(stringResource(R.string.learning_mode_title)) },
             )
         })
 
         {
-            CardContentView(
-                viewModel = viewModel { CardContentViewModel(id) },
-                modifier = Modifier.padding(it)
+            LearningModeView(
+                modifier = Modifier.padding(it),
+                viewModel = viewModel {
+                    LearningModeViewModel(
+                        learningBoxId = learningBoxId,
+                        learningObjectId = learningObjectId
+                    )
+                }
             )
         }
     }

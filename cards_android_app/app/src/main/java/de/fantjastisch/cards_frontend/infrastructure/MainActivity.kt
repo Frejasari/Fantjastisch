@@ -4,24 +4,22 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.TipsAndUpdates
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.FadeTransition
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.category.cat_glossary.CategoryGraphFragment
 import de.fantjastisch.cards_frontend.glossary.GlossaryView
-import de.fantjastisch.cards_frontend.category.CategoryGraphFragment
 import de.fantjastisch.cards_frontend.learning_overview.LearningOverview
 import java.util.*
 
@@ -39,9 +37,11 @@ class MainActivity : AppCompatActivity() {
             CardsAppTheme {
                 // Der app Navigator, laesst sich ueberall in
                 // Compose mit LocalNavigator.currentOrThrow ansprechen
-                Navigator(screen = MainScreen()) {
-                    // Rendert den derzeitigen Screen und die Uebergaenge
-                    FadeTransition(navigator = it)
+                Navigator(screen = MainScreen()) { navigator ->
+                    CompositionLocalProvider(FantMainNavigator provides navigator) {
+                        // Rendert den derzeitigen Screen und die Uebergaenge
+                        FadeTransition(navigator = navigator)
+                    }
                 }
             }
         }

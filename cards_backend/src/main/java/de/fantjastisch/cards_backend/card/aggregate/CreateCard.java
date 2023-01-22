@@ -4,10 +4,7 @@ import de.fantjastisch.cards_backend.util.validation.Commandable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -50,4 +47,13 @@ public class CreateCard implements Commandable {
             required = true,
             example = "[3b1824120d6d4857843aedfc1973d323, 40ac4fcc97024a87b0bdbffe1f7f49f8]")
     private List<UUID> categories;
+
+
+    @Builder
+    @Data
+    public static class Link {
+        String name;
+        UUID target;
+        UUID source;
+    }
 }
