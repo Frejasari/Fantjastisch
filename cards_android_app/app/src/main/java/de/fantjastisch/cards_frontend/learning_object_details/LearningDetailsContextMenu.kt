@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.learning_mode.LearningModeFragment
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsInBoxFragment
 import java.util.*
 
@@ -40,7 +41,7 @@ fun LearningDetailsContextMenu(learningBoxId: UUID, navigator: Navigator, learni
                 text = { Text(text = stringResource(R.string.study_learning_box)) },
                 onClick = {
                     isMenuOpen.value = false
-                    //navigator.push(LearningModeFragment(learningBoxId))
+                    navigator.push(LearningModeFragment(learningBoxId, learningObjectId))
                 })
         }
     }

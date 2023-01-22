@@ -39,8 +39,6 @@ class CardsInBoxViewModel(
             },
             onFailure = { error.value = "Couldnt fetch cards." }
         )
-
-
     }
 
     private fun getContainedCards(allCards: List<CardEntity>) {
