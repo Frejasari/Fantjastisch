@@ -21,7 +21,7 @@ class MainScreen : AndroidScreen() {
 
         val navigator = FantMainNavigator.current
         TabNavigator(tab = mainScreenTabs.first()) { tabNavigator ->
-            BottomSheetNavigator { bottomSheetNavigator ->
+            BottomSheetNavigator (sheetShape = MaterialTheme.shapes.medium) { bottomSheetNavigator ->
                 CompositionLocalProvider(
                     FantTabNavigator provides tabNavigator,
                     FantBottomSheetNavigator provides bottomSheetNavigator
