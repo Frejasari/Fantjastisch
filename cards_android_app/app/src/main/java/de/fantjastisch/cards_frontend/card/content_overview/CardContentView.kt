@@ -26,6 +26,9 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.content_overview.CardContentFragment
 import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import de.fantjastisch.cards_frontend.link.LinkContextMenu
+import de.fantjastisch.cards_frontend.link.create.CreateLinkFragment
 // import de.fantjastisch.cards_frontend.link.LinkContextMenu
 // import de.fantjastisch.cards_frontend.link.update_and_create.CreateLinkFragment
 import java.util.*
@@ -41,6 +44,7 @@ fun CardContentView(
 
     val viewModel = viewModel { CardContentViewModel(id = id) }
 
+    val navigator = LocalNavigator.currentOrThrow
     // einmaliger Effekt
    /* LaunchedEffect(
         // wenn sich diese Variable ändert
@@ -193,7 +197,7 @@ fun CardContentView(
                             .weight(1f)
                             .rotate(rotateLinks),
                         onClick = {
-                           // navigator.push(CreateLinkFragment(viewModel.cardId.value!!))
+                           navigator.push(CreateLinkFragment(viewModel.cardId.value!!))
                         }) {
                         Icon(
                             imageVector = Icons.Default.Link,
@@ -214,7 +218,7 @@ fun CardContentView(
                     }
                 }
 
-             /*   if (expandedLinks) {
+                if (expandedLinks) {
                     viewModel.cardLinks.value.forEach {
                         SuggestionChip(
                             modifier = Modifier.padding(10.dp),
@@ -226,12 +230,13 @@ fun CardContentView(
                                 )
                             },
                             icon = {
-                               LinkContextMenu(id = it.id!!, cardId = viewModel.cardId.value!!,  name = it.name!!) {
+                              // LinkContextMenu(linkId = it.id!!, cardId = viewModel.cardId.value!!,  name = it.name!!)
+                            {
 
                                }
                             })
                     }
-                } */
+                }
             }
 
 

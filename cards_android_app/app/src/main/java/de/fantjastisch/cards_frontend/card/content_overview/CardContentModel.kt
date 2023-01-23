@@ -4,17 +4,21 @@ import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.update.UpdateCardModel
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.link.LinkRepository
+import de.fantjastisch.cards_frontend.link.update.UpdateLinkModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CategoryEntity
 import org.openapitools.client.models.CategoryOfCardEntity
+import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 class CardContentModel(
     private val cardRepository: CardRepository = CardRepository(),
     private val categoryRepository: CategoryRepository = CategoryRepository(),
+    private val linkRepository: LinkRepository = LinkRepository(),
     private val id: UUID
 ) {
 
@@ -29,23 +33,27 @@ class CardContentModel(
         val question: String,
         val tag: String,
         val allCategories: List<CategoryEntity>,
-        val categoriesOfCard: List<CategoryOfCardEntity>
+        val categoriesOfCard: List<CategoryOfCardEntity>,
+        val links: List<LinkEntity>
     )
 
 
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(): RepoResult<Card> = coroutineScope {
         // Runs coroutines in parallel and waits until all of them are done
-        val (cardResult, categoryResult) = awaitAll(
+        val (cardResult, categoryResult, linkResult) = awaitAll(
             async { cardRepository.getCard(id = id) },
-            async { categoryRepository.getPage() }
+            async { categoryRepository.getPage() },
+            async { linkRepository.getLinkPage(id = id)}
         )
 
         when {
             cardResult is RepoResult.Success
-                    && categoryResult is RepoResult.Success -> {
+                    && categoryResult is RepoResult.Success
+                    && linkResult is RepoResult.Success-> {
                 val card = cardResult.result as CardEntity
                 val categories = categoryResult.result as List<CategoryEntity>
+                val links = linkResult.result as List<LinkEntity>
                 RepoResult.Success(
                     Card(
                         id = card.id,
@@ -53,7 +61,8 @@ class CardContentModel(
                         answer = card.answer,
                         allCategories = categories,
                         categoriesOfCard = card.categories,
-                        tag = card.tag
+                        tag = card.tag,
+                        links = links
                     )
                 )
             }

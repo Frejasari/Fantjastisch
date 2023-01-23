@@ -56,6 +56,7 @@ class CardContentViewModel(
                                 isChecked = true
                             )
                         }
+                        cardLinks.value = card.links
                     },
                     onError = { error.value = "Something is wrong" },
                     onUnexpectedError = { error.value = "Irgendwas ist schief gelaufen" },
