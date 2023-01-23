@@ -31,7 +31,7 @@ class LearningModeViewModel(
     val currentCard = mutableStateOf<CardEntity?>(null)
     val learningBox = mutableStateOf<LearningBoxWitNrOfCards?>(null)
 
-    var isLooading = mutableStateOf(true)
+    var isLoading = mutableStateOf(true)
 
     var numberOfCardsRemaining = mutableStateOf(0)
     var isLastBox = false
@@ -138,9 +138,9 @@ class LearningModeViewModel(
                         })
                         nextCard()
                     }
-                    isLooading.value = false
+                    isLoading.value = false
                 }
-                else -> error.value = "Couldnt fetch cards or learning  boxes"
+                else -> error.value = "Couldnt fetch cards or learning boxes"
             }
         }
     }
