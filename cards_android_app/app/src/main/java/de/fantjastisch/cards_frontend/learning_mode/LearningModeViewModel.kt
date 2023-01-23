@@ -147,8 +147,10 @@ class LearningModeViewModel(
 
     private fun nextCard() {
         if (nextCards.size > 0) {
+            isShowingAnswer.value = false
             currentCard.value = nextCards.remove()
             numberOfCardsRemaining.value = nextCards.size + 1
+
         } else {
             isFinished.value = true
         }
