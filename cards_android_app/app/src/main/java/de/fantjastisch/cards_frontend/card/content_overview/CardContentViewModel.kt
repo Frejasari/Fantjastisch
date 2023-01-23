@@ -1,16 +1,11 @@
 package de.fantjastisch.cards_frontend.card.content_overview
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.glossary.CardsFilters
-import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.infrastructure.fold
-import de.fantjastisch.cards_frontend.link.LinkRepository
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.ErrorEntryEntity
@@ -56,7 +51,7 @@ class CardContentViewModel(
                         }
                         cardLinks.value = card.links
                     },
-                    onError = { error.value = "Something is wrong" },
+                    onValidationError = { error.value = "Something is wrong" },
                     onUnexpectedError = { error.value = "Irgendwas ist schief gelaufen" },
                 )
         }
