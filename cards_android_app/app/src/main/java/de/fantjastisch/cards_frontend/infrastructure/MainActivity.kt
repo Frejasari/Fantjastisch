@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             CardsAppTheme {
                 TabNavigator(tab = mainScreenTabs.first()) { tabNavigator ->
-                    BottomSheetNavigator { bottomSheetNavigator ->
+                    BottomSheetNavigator (sheetShape = MaterialTheme.shapes.medium) { bottomSheetNavigator ->
                         // Der app Navigator, laesst sich ueberall in
                         // Compose mit LocalNavigator.currentOrThrow ansprechen
                         Navigator(screen = MainScreen()) { navigator ->
