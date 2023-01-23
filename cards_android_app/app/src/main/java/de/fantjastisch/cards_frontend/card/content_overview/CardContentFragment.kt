@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card.create
+package de.fantjastisch.cards_frontend.card.content_overview
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
@@ -7,8 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.card.CardContentView
+import de.fantjastisch.cards_frontend.card.update.UpdateCardView
+import java.util.*
 
-class CreateCardFragment : AndroidScreen() {
+data class CardContentFragment(val id: UUID) : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -19,12 +22,13 @@ class CreateCardFragment : AndroidScreen() {
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                title = { Text(text = stringResource(id = R.string.create_card_headline)) },
+                title = { Text(text = stringResource(id = R.string.update_card_headline)) },
             )
         })
         {
-            CreateCardView(
-                modifier = Modifier.padding(it)
+            CardContentView(
+                modifier = Modifier.padding(it),
+                id = id
             )
         }
     }

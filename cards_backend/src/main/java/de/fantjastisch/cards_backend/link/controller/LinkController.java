@@ -2,7 +2,6 @@ package de.fantjastisch.cards_backend.link.controller;
 
 import de.fantjastisch.cards_backend.link.Link;
 import de.fantjastisch.cards_backend.link.aggregate.CreateLink;
-import de.fantjastisch.cards_backend.link.aggregate.DeleteLink;
 import de.fantjastisch.cards_backend.link.aggregate.LinkAggregate;
 import de.fantjastisch.cards_backend.link.aggregate.UpdateLink;
 import de.fantjastisch.cards_backend.util.CreatedResponse;
@@ -89,7 +88,7 @@ public class LinkController {
     /**
      * Diese Funktion stellt den API-Endpunkt zum Löschen einer Link-Entität bereit.
      *
-     * @param command Eine Instanz der Klasse {@link DeleteLink}.
+     * @param id Eine Instanz der Klasse {@link DeleteLink}.
      */
     @DeleteMapping(path = "delete")
     @Operation(summary = "Delete a link",
@@ -97,8 +96,8 @@ public class LinkController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json")})
     })
-    public void delete(@RequestBody DeleteLink command) {
-        linkAggregate.handle(command);
+    public void delete(@RequestParam UUID id) {
+        linkAggregate.handleDelete(id);
     }
 
     /**

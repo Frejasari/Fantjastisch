@@ -56,7 +56,7 @@ class UpdateCategoryViewModel(
             category = UpdateCategoryEntity(
                 id = catId.value!!,
                 label = categoryLabel.value,
-                subCategories = subcategories.value?.filter { it.isChecked }!!.map { it.id }
+                subCategories = subcategories.value.filter { it.isChecked }!!.map { it.id }
             ),
             onSuccess = {
                 isFinished.value = true

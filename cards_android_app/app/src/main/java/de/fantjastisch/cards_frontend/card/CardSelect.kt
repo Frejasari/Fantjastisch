@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Checkbox
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.openapitools.client.models.CardEntity
@@ -14,6 +15,7 @@ data class CardSelectItem(
     val card: CardEntity,
     val isChecked: Boolean
 )
+
 
 fun LazyListScope.CardSelect(
     cards: List<CardSelectItem>,

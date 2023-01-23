@@ -25,6 +25,7 @@ class CategoryRepository {
     suspend fun getPage(
     ) = service.getCategoryPage().awaitResponse().toRepoResponse()
 
+
     fun getPage(
         onSuccess: (List<CategoryEntity>) -> Unit,
         onFailure: (errors: ErrorResponseEntity?) -> Unit

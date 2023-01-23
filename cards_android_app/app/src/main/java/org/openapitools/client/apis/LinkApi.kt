@@ -39,7 +39,7 @@ interface LinkApi {
      * @return [Call]<[Unit]>
      */
     @DELETE("link/delete")
-    fun deleteLink(@Body deleteLinkEntity: DeleteLinkEntity): Call<Unit>
+    fun deleteLink(@Query("id") id: java.util.UUID): Call<Unit>
 
     /**
      * Get the Link from the given name and source
@@ -67,7 +67,7 @@ interface LinkApi {
      * @return [Call]<[kotlin.collections.List<LinkEntity>]>
      */
     @GET("link/getPage")
-    fun getPage(@Query("id") id: java.util.UUID): Call<kotlin.collections.List<LinkEntity>>
+    fun getLinkPage(@Query("id") id: java.util.UUID): Call<kotlin.collections.List<LinkEntity>>
 
     /**
      * Update a link

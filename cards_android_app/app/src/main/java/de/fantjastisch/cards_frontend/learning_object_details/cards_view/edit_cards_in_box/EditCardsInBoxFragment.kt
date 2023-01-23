@@ -38,7 +38,7 @@ data class EditCardsInBoxFragment(
                         learningBoxId = learningBoxId,
                         learningObjectId = learningObjectId
                     )
-                },
+                }
             )
         }
     }

@@ -2,7 +2,6 @@ package de.fantjastisch.cards_backend.link;
 
 import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.link.aggregate.CreateLink;
-import de.fantjastisch.cards_backend.link.aggregate.DeleteLink;
 import de.fantjastisch.cards_backend.link.aggregate.LinkAggregate;
 import de.fantjastisch.cards_backend.link.aggregate.UpdateLink;
 import de.fantjastisch.cards_backend.link.repository.LinkCommandRepository;
@@ -57,10 +56,8 @@ public class LinkAggregateTest {
                 .build();
         assertThrows(ResponseStatusException.class, () -> linkAggregate.handle(toUpdate));
 
-        DeleteLink toDelete = DeleteLink.builder()
-                .id(UUID.fromString("9819d380-ea12-48f0-a21f-2cb91b1ca238"))
-                .build();
-        assertThrows(ResponseStatusException.class, () -> linkAggregate.handle(toDelete));
+        UUID id = UUID.randomUUID();
+        assertThrows(ResponseStatusException.class, () -> linkAggregate.handleDelete(id));
     }
 
     @Test

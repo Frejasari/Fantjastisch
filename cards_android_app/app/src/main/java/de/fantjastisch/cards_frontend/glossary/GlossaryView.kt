@@ -1,5 +1,7 @@
 package de.fantjastisch.cards_frontend.glossary
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,9 +15,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import de.fantjastisch.cards_frontend.card.CardContentView
 import de.fantjastisch.cards_frontend.card.CardContextMenu
+import de.fantjastisch.cards_frontend.card.content_overview.CardContentFragment
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import org.openapitools.client.models.CardEntity
 import java.util.*
 
@@ -63,14 +68,26 @@ fun GlossaryView(
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun CardView(
     card: CardEntity,
     viewModel: GlossaryViewModel
 ) {
+    val navigator = FantMainNavigator.current
+    val showContent = remember {mutableStateOf(false)}
+
+    if(showContent.value) {
+        navigator.push(CardContentFragment( id = card.id))
+    }
+
     Surface(
-        modifier = Modifier,
+        modifier = Modifier.clickable(
+            onClick = {
+                showContent.value = true
+            }
+        ),
         shadowElevation = 6.dp,
     ) {
         Column(

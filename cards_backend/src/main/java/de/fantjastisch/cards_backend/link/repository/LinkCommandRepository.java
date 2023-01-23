@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 /**
  * Diese Klasse stellt den Teil des Persistence-Layers bereit, welcher sich mit dem Erstellen, Aktualisieren und Löschen
  * von Link-Entitäten beschäftigt.
@@ -49,11 +51,11 @@ public class LinkCommandRepository {
     /**
      * Diese Funktion löscht einen übergebenen Link aus der Datenbank.
      *
-     * @param link Der Link, welcher aus der Datenbank gelöscht werden soll.
+     * @param linkID Der Link, welcher aus der Datenbank gelöscht werden soll.
      */
-    public void delete(final Link link) {
+    public void delete(final UUID linkID) {
         String command = "DELETE FROM public.links WHERE id = :id;";
-        namedParameterJdbcTemplate.update(command, toParameterSource(link));
+        namedParameterJdbcTemplate.update(command, new MapSqlParameterSource().addValue("id", linkID));
     }
 
     private SqlParameterSource toParameterSource(Link link) {
