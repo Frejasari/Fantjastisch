@@ -33,8 +33,7 @@ fun EditCardsInBoxView(
 
     Column() {
         LazyColumn(
-            modifier = modifier
-                .fillMaxSize(),
+            modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(10.dp),
             contentPadding = PaddingValues(all = 16.dp)
         ) {
