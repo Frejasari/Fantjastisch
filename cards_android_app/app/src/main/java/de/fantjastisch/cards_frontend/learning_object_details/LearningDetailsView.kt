@@ -62,6 +62,7 @@ fun LearningDetailsView(
                             fontSize = 18.sp
                         )
                         LearningDetailsContextMenu(
+                            hasCards = learningBox.nrOfCards!= 0,
                             learningBoxId = learningBox.id,
                             learningObjectId = viewModel.learningObjectId
                         )

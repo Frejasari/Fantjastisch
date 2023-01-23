@@ -12,10 +12,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LearningModeCardComponent(
     content: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -29,6 +31,7 @@ fun LearningModeCardComponent(
             contentColor = MaterialTheme.colorScheme.onBackground,
             containerColor = MaterialTheme.colorScheme.background
         ),
+        onClick = onClick
     ) {
         Column(
             verticalArrangement = Arrangement.Center,

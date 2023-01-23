@@ -17,6 +17,7 @@ import java.util.*
         onDelete = ForeignKey.CASCADE
     )]
 )
+
 data class LearningBox(
     @PrimaryKey
     val id: UUID = generateId(),
@@ -25,11 +26,10 @@ data class LearningBox(
     @ColumnInfo(name = "label") val label: String
 )
 
-
 data class LearningBoxWitNrOfCards(
     @ColumnInfo val id: UUID = generateId(),
     @ColumnInfo(name = "learning_object_id") val learningObjectId: UUID,
     @ColumnInfo(name = "box_number") val boxNumber: Int,
     @ColumnInfo(name = "label") val label: String,
-    @ColumnInfo(name = "nr_of_cards") val nrOfCards: String
+    @ColumnInfo(name = "nr_of_cards") val nrOfCards: Int
 )

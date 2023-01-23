@@ -8,9 +8,11 @@ class InternalLearningBoxRepository(private val dao: LearningBoxDao) : LearningB
 @Dao
 interface LearningBoxDao {
 
+    // TODO left join will never give 0 -> fix it!
     @Query(
-        "SELECT lb.id, lb.box_number, lb.label, lb.learning_object_id, count(*) as nr_of_cards FROM learning_box lb " +
-                "left join card_to_learning_box clb on lb.id = clb.learning_box_id " +
+        "SELECT lb.id, lb.box_number, lb.label, lb.learning_object_id, " +
+                "(select count(*) from card_to_learning_box clb where clb.learning_box_id = lb.id) as nr_of_cards " +
+                "FROM learning_box lb " +
                 "where lb.learning_object_id = :learningObjectId " +
                 "group by (lb.id) " +
                 "ORDER BY box_number ASC"

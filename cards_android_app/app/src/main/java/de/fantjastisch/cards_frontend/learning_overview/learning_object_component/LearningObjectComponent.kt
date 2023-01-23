@@ -19,7 +19,6 @@ import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsFragment
 import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObjectDialog
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LearningObjectComponent(

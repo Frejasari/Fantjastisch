@@ -68,8 +68,5 @@ class UpdateCardModel(
             }
             else -> RepoResult.Error(emptyList())
         }
-
     }
-
 }
-

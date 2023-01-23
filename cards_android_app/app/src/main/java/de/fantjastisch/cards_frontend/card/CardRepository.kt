@@ -1,8 +1,10 @@
 package de.fantjastisch.cards_frontend.card
 
+import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.infrastructure.client
 import de.fantjastisch.cards_frontend.infrastructure.toRepoResponse
 import org.openapitools.client.apis.CardApi
+import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CreateCardEntity
 import org.openapitools.client.models.UpdateCardEntity
 import retrofit2.awaitResponse
@@ -27,7 +29,7 @@ class CardRepository {
         search: String?,
         tag: String?,
         sort: Boolean?
-    ) = service.getCardPage(
+    ): RepoResult<List<CardEntity>> = service.getCardPage(
         categoryFilter = categoryIds,
         search = search,
         tag = tag,

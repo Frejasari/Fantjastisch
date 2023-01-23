@@ -4,11 +4,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardRepository
+import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.infrastructure.fold
-import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
@@ -24,12 +26,14 @@ class LearningModeViewModel(
     val error = mutableStateOf("")
     val isFinished = mutableStateOf<Boolean>(false)
     val isShowingAnswer = mutableStateOf<Boolean>(false)
-    val cardsInBox = mutableStateOf<List<CardEntity>>(mutableListOf())
+    private var nextCards: Queue<CardEntity> = LinkedList()
+    private var learningBoxesInObject: List<LearningBoxWitNrOfCards> = listOf()
     val currentCard = mutableStateOf<CardEntity?>(null)
-    val learningBox = mutableStateOf<LearningBox?>(null)
-    val learningBoxesInObject = mutableStateOf<List<LearningBoxWitNrOfCards>>(mutableListOf())
-    var currentCardIndex = 0
-    var numberOfCardsRemaining = 0
+    val learningBox = mutableStateOf<LearningBoxWitNrOfCards?>(null)
+
+    var isLooading = mutableStateOf(true)
+
+    var numberOfCardsRemaining = mutableStateOf(0)
     var isLastBox = false
     var isFirstBox = false
 
@@ -42,80 +46,34 @@ class LearningModeViewModel(
     }
 
     fun onCardStaysInBoxClicked() {
-        isShowingAnswer.value = false
-        currentCardIndex++
-        if (numberOfCardsRemaining > 0) {
-            numberOfCardsRemaining--
-        }
-        if (currentCardIndex >= cardsInBox.value.size) {
-            isFinished.value = true
-        } else {
-            currentCard.value = getCurrentCard(currentCardIndex)
-        }
+        nextCard()
     }
 
 
     fun onCardGoesToNextBoxClicked() {
         isShowingAnswer.value = false
-        currentCardIndex++
-        if (numberOfCardsRemaining > 0) {
-            numberOfCardsRemaining--
-        }
-        onMoveToNextBox()
-        if (currentCardIndex >= cardsInBox.value.size) {
-            isFinished.value = true
-        } else {
-            currentCard.value = getCurrentCard(currentCardIndex)
-        }
-    }
-
-    fun onPageLoaded() {
-
-        viewModelScope.launch {
-            cardRepository.getPage(
-                categoryIds = null,
-                search = null,
-                tag = null,
-                sort = null
-            ).fold(
-                onSuccess = {
-                    getContainedCards(it)
-                },
-                onValidationError = { error.value = "Couldnt fetch cards." },
-                onUnexpectedError = { error.value = "Couldnt fetch cards." }
-            )
-        }
-        viewModelScope.launch {
-            learningBoxRepository.getAllBoxesForLearningObject(
-                learningObjectId = learningObjectId
-            )
-                .fold(
-                    onSuccess = {
-                        learningBoxesInObject.value = it
-                        viewModelScope.launch {
-                            learningBoxRepository.findByBoxId(learningBoxId,
-                                onSuccess = {
-                                    learningBox.value = it
-                                    isFirstBox = learningBox.value!!.boxNumber == 0
-                                    isLastBox =
-                                        learningBox.value!!.boxNumber == learningBoxesInObject.value.size - 1
-                                },
-                                onFailure = {
-                                    error.value = "Lernbox konnte nicht eingeholt werden."
-                                }
-                            )
-                        }
-                    },
-                    onValidationError = { error.value = "Fehler" },
-                    onUnexpectedError = { error.value = "Fehler" }
-                )
-        }
-    }
-
-    private fun onMoveToNextBox() {
         val nextBoxNum = learningBox.value!!.boxNumber + 1
-        if (nextBoxNum < learningBoxesInObject.value.size) {
-            val nextBoxId = learningBoxesInObject.value[nextBoxNum].id
+        if (nextBoxNum < learningBoxesInObject.size) {
+            val nextBoxId = learningBoxesInObject[nextBoxNum].id
+
+            viewModelScope.launch {
+                cardToLearningBoxRepository.moveCards(
+                    from = learningBoxId,
+                    to = nextBoxId,
+                    cardIds = listOf(currentCard.value!!.id)
+                ).fold(
+                    onSuccess = { nextCard() },
+                    onUnexpectedError = { error.value = "Whoops" },
+                    onValidationError = { error.value = "Whoops" })
+            }
+        }
+    }
+
+    fun onCardGoesToPreviousBoxClicked() {
+        isShowingAnswer.value = false
+        val previousBoxNr = learningBox.value!!.boxNumber - 1
+        if (previousBoxNr >= 0) {
+            val nextBoxId = learningBoxesInObject[previousBoxNr].id
 
             viewModelScope.launch {
                 cardToLearningBoxRepository.moveCards(
@@ -124,38 +82,75 @@ class LearningModeViewModel(
                     cardIds = listOf(currentCard.value!!.id)
                 )
                     .fold(
-                        onSuccess = { onPageLoaded() },
+                        onSuccess = { nextCard() },
                         onUnexpectedError = { error.value = "Whoops" },
                         onValidationError = { error.value = "Whoops" })
             }
         }
     }
 
-    private fun getContainedCards(allCards: List<CardEntity>) {
+    private fun onPageLoaded() {
+
         viewModelScope.launch {
-            cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId)
-                .fold(
-                    onSuccess = {
-                        cardsInBox.value = allCards.filter { card -> it.contains(card.id) }
-                        currentCard.value = getCurrentCard(currentCardIndex)
-                        numberOfCardsRemaining =
-                            if (currentCardIndex == 0) {
-                                cardsInBox.value.size - 1
-                            } else {
-                                numberOfCardsRemaining
-                            }
-                    },
-                    onValidationError = {
-                        error.value = "Couldnt get card ids for box."
-                    },
-                    onUnexpectedError = {
-                        error.value = "Couldnt get card ids for box."
-                    },
-                )
+            val (cardResult, learningBoxResult, cardsInLearningBoxResult) = awaitAll(
+                async {
+                    cardRepository.getPage(
+                        categoryIds = null,
+                        search = null,
+                        tag = null,
+                        sort = null
+                    )
+                },
+                async {
+                    learningBoxRepository.getAllBoxesForLearningObject(
+                        learningObjectId = learningObjectId
+                    )
+                },
+                async {
+                    cardToLearningBoxRepository
+                        .getCardIdsForBox(learningBoxId = learningBoxId)
+                }
+            )
+
+            @Suppress("UNCHECKED_CAST")
+            when {
+                cardResult is RepoResult.Success
+                        && learningBoxResult is RepoResult.Success
+                        && cardsInLearningBoxResult is RepoResult.Success -> {
+                    val allCards = cardResult.result as List<CardEntity>
+                    val learningBoxes = learningBoxResult.result as List<LearningBoxWitNrOfCards>
+                    val cardsInLearningBox = cardsInLearningBoxResult.result as List<UUID>
+
+                    learningBoxesInObject = learningBoxes
+
+                    val box = learningBoxes.firstOrNull { it.id == learningBoxId }
+
+                    if (box == null) {
+                        error.value = "Lernbox konnte nicht eingeholt werden."
+                    } else {
+                        learningBox.value = box
+                        isFirstBox = box.boxNumber == 0
+                        isLastBox = box.boxNumber == learningBoxes.size - 1
+                        nextCards = LinkedList(allCards.filter { card ->
+                            cardsInLearningBox.contains(
+                                card.id
+                            )
+                        })
+                        nextCard()
+                    }
+                    isLooading.value = false
+                }
+                else -> error.value = "Couldnt fetch cards or learning  boxes"
+            }
         }
     }
 
-    private fun getCurrentCard(index: Int): CardEntity {
-        return cardsInBox.value[index]
+    private fun nextCard() {
+        if (nextCards.size > 0) {
+            currentCard.value = nextCards.remove()
+            numberOfCardsRemaining.value = nextCards.size + 1
+        } else {
+            isFinished.value = true
+        }
     }
 }

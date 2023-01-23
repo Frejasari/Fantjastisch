@@ -7,12 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_mode.LearningModeCardComponent
 import de.fantjastisch.cards_frontend.learning_mode.LearningModeViewModel
 
@@ -22,13 +20,13 @@ fun LearningModeView(
     modifier: Modifier = Modifier,
     viewModel: LearningModeViewModel
 ) {
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = viewModel.currentCard.value,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            viewModel.onPageLoaded()
-        })
+//    LaunchedEffect(
+//        // wenn sich diese Variable ändert
+//        key1 = viewModel.currentCard.value,
+//        // dann wird dieses Lambda ausgeführt.
+//        block = {
+//            viewModel.onPageLoaded()
+//        })
 
     Column(
         modifier = modifier
@@ -50,7 +48,7 @@ fun LearningModeView(
         }
 
         Text(
-            text = "Anzahl Karten verbleibend: " + viewModel.numberOfCardsRemaining.toString(),
+            text = "Anzahl Karten verbleibend: " + viewModel.numberOfCardsRemaining.value.toString(),
             style = MaterialTheme.typography.titleMedium,
             fontSize = 14.sp,
             fontWeight = FontWeight(350)
@@ -68,41 +66,38 @@ fun LearningModeView(
                 }
             } else {
                 "Lernbox leer"
-            }
+            },
+            onClick = viewModel::onFlipCardClicked,
         )
         Divider(
             Modifier.padding(horizontal = 10.dp, vertical = 10.dp)
         )
-        FilledTonalButton(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally),
-            onClick = viewModel::onFlipCardClicked,
-            enabled = viewModel.cardsInBox.value.isNotEmpty()
-        ) {
-            Text(
-                text = if (viewModel.isShowingAnswer.value) {
-                    stringResource(R.string.show_question_from_card_button)
-                } else {
-                    stringResource(R.string.show_answer_from_card_button)
-                }
-            )
-        }
+
         Spacer(
             modifier = modifier
                 .weight(1f)
         )
+        if (!viewModel.isFirstBox) {
+            FilledTonalButton(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = viewModel::onCardGoesToPreviousBoxClicked,
+                enabled = true
+            ) {
+                Text(text = "Karte in vorherige Lernbox schieben")
+            }
+        }
         if (!viewModel.isLastBox) {
             FilledTonalButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = viewModel::onCardGoesToNextBoxClicked,
-                enabled = viewModel.cardsInBox.value.isNotEmpty()
+                enabled = true
             ) {
                 Text(text = "Karte in nächste Lernbox schieben")
             }
             FilledTonalButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = viewModel::onCardStaysInBoxClicked,
-                enabled = viewModel.cardsInBox.value.isNotEmpty()
+                enabled = true
             ) {
                 Text(text = "Karte nicht weiterschieben")
             }
@@ -110,13 +105,13 @@ fun LearningModeView(
             FilledTonalButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = viewModel::onCardStaysInBoxClicked,
-                enabled = viewModel.cardsInBox.value.isNotEmpty()
+                enabled = true
             ) {
                 Text(text = "Nächste Karte")
             }
         }
     }
-    val navigator = LocalNavigator.current!!
+    val navigator = FantMainNavigator.current
     // einmaliger Effekt
     LaunchedEffect(
         // wenn sich diese Variable ändert
