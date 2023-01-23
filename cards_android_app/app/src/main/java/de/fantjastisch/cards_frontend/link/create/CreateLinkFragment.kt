@@ -52,11 +52,9 @@ class CreateLinkFragment(val id: UUID) : AndroidScreen() {
         ),
         cards = viewModel.linkCards.value,
         onCardSelected = viewModel::onCardSelected,
-        onUpdateCardClicked = viewModel::onCreateLinkClicked,
+        onUpdateLinkClicked = viewModel::onCreateLinkClicked,
     )
-
-    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
-
+        CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
     }
 
 }

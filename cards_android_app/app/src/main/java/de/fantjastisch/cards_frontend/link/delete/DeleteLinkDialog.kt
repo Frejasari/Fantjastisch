@@ -11,7 +11,7 @@ import org.openapitools.client.models.LinkEntity
 
 
 @Composable
-fun DeleteCardDialog(
+fun DeleteLinkDialog(
     link: LinkEntity,
     isDeleteButtonEnabled: Boolean = true,
     onDismissClicked: () -> Unit,

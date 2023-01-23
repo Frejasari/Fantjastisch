@@ -1,11 +1,9 @@
 package de.fantjastisch.cards_frontend.card.content_overview
 
 import de.fantjastisch.cards_frontend.card.CardRepository
-import de.fantjastisch.cards_frontend.card.update.UpdateCardModel
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.link.LinkRepository
-import de.fantjastisch.cards_frontend.link.update.UpdateLinkModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -70,4 +68,8 @@ class CardContentModel(
         }
 
     }
+
+    suspend fun deleteLink(linkId: UUID) = linkRepository.deleteLink(
+        id = linkId
+    )
 }

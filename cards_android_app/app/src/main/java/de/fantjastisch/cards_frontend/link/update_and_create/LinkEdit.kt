@@ -28,7 +28,7 @@ fun LinkEdit(
     name: TextFieldState,
     cards: List<CardSelectItem>,
     onCardSelected: (UUID) -> Unit,
-    onUpdateCardClicked: () -> Unit,
+    onUpdateLinkClicked: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -59,13 +59,14 @@ fun LinkEdit(
                     onCardSelected = onCardSelected,
                 )
             }
+            FilledTonalButton(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = onUpdateLinkClicked
+            ) {
+                Text(text = stringResource(R.string.create_card_save_button_text))
+            }
         }
-        FilledTonalButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = onUpdateCardClicked
-        ) {
-            Text(text = stringResource(R.string.create_card_save_button_text))
-        }
+
     }
 }
 

@@ -18,19 +18,14 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.content_overview.CardContentFragment
 import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
-import de.fantjastisch.cards_frontend.link.LinkContextMenu
 import de.fantjastisch.cards_frontend.link.create.CreateLinkFragment
-// import de.fantjastisch.cards_frontend.link.LinkContextMenu
-// import de.fantjastisch.cards_frontend.link.update_and_create.CreateLinkFragment
+import de.fantjastisch.cards_frontend.link.delete.DeleteLinkDialog
 import java.util.*
 
 
@@ -39,24 +34,27 @@ import java.util.*
 @Composable
 fun CardContentView(
     modifier: Modifier = Modifier,
-    id: UUID
+    id: UUID,
 ) {
 
     val viewModel = viewModel { CardContentViewModel(id = id) }
 
-    val navigator = FantMainNavigator.current
-    // einmaliger Effekt
-   /* LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = viewModel.isFinished.value,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            if (viewModel.isFinished.value) {
-                navigator.pop()
+    val deletionProgress = viewModel.currentDeleteDialog.value
+    if (deletionProgress != null) {
+        DeleteLinkDialog(
+            link = deletionProgress.link,
+            isDeleteButtonEnabled = deletionProgress is CardContentViewModel.DeletionProgress.ConfirmWithUser,
+            onDismissClicked = { viewModel.onDeleteCardAborted() },
+            onDeleteClicked = {
+                viewModel.onDeleteCardClicked()
             }
-        }) */
+        )
+    }
 
-    // Componente die ihre Kinder untereinander anzeigt.
+
+
+    val navigator = FantMainNavigator.current
+
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
@@ -230,12 +228,15 @@ fun CardContentView(
                                 )
                             },
                             icon = {
-                               LinkContextMenu(linkId = it.id!!, cardId = viewModel.cardId.value!!,  name = it.name!!)
-                            {
+                                LinkContextMenu(
+                                    linkId = it.id!!,
+                                    onDeleteClicked = { viewModel.onTryDeleteLink(it) },
+                                )
 
-                               }
                             })
+
                     }
+
                 }
             }
 

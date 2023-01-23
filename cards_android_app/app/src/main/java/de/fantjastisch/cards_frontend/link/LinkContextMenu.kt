@@ -1,4 +1,4 @@
- package de.fantjastisch.cards_frontend.link
+package de.fantjastisch.cards_frontend.card
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
@@ -7,20 +7,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.card.update.UpdateCardFragment
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
-import de.fantjastisch.cards_frontend.link.update.UpdateLinkFragment
-import java.util.UUID
-
+import java.util.*
 
 
 @Composable
 fun LinkContextMenu(
     linkId: UUID,
-    cardId: UUID,
-    name: String,
     onDeleteClicked: () -> Unit
 ) {
     val navigator = FantMainNavigator.current
@@ -37,7 +32,7 @@ fun LinkContextMenu(
                 text = { Text(text = stringResource(R.string.card_menu_update)) },
                 onClick = {
                     isMenuOpen.value = false
-                    navigator.push(UpdateLinkFragment(linkId, cardId))
+                   // navigator.push(UpdateCardFragment(cardId))
                 })
             DropdownMenuItem(
                 text = { Text(text = stringResource(id = R.string.card_menu_delete)) },
