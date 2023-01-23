@@ -1,12 +1,12 @@
 package de.fantjastisch.cards_frontend.glossary
 
 import android.annotation.SuppressLint
-import android.graphics.fonts.FontStyle
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
@@ -14,21 +14,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import de.fantjastisch.cards_frontend.card.CardContentView
 import de.fantjastisch.cards_frontend.card.CardContextMenu
-import de.fantjastisch.cards_frontend.card.content_overview.CardContentFragment
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
-import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
-import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 
@@ -60,6 +56,8 @@ fun GlossaryView(
         block = {
             viewModel.onPageLoaded()
         })
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     LazyColumn(
@@ -67,10 +65,16 @@ fun GlossaryView(
             .fillMaxWidth()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = PaddingValues(vertical = 16.dp)
+        contentPadding = PaddingValues(vertical = 16.dp),
+        state = listState
     ) {
-        items(viewModel.cards.value) { card ->
-            CardView(card, viewModel)
+        itemsIndexed(viewModel.cards.value) { index, card ->
+            CardView(card, viewModel) {
+                coroutineScope.launch {
+                    // Animate scroll to the 10th item
+                    listState.animateScrollToItem(index = index)
+                }
+            }
         }
     }
 }
@@ -80,7 +84,8 @@ fun GlossaryView(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun CardView(
     card: CardEntity,
-    viewModel: GlossaryViewModel
+    viewModel: GlossaryViewModel,
+    onItemExpanded: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     val rotate by animateFloatAsState(
@@ -91,6 +96,7 @@ private fun CardView(
         modifier = Modifier.clickable(
             onClick = {
                 expanded = !expanded
+                onItemExpanded()
             }
         ),
         shadowElevation = 6.dp,
@@ -167,6 +173,7 @@ private fun CardView(
                             .rotate(rotate),
                         onClick = {
                             expanded = !expanded
+                            onItemExpanded()
                         }) {
                         Icon(
                             imageVector = Icons.Default.ArrowDropDown,
