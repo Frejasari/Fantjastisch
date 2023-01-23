@@ -1,14 +1,20 @@
 package de.fantjastisch.cards_frontend.glossary
 
 import android.annotation.SuppressLint
+import android.graphics.fonts.FontStyle
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +28,7 @@ import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import org.openapitools.client.models.CardEntity
+import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 
@@ -75,17 +82,15 @@ private fun CardView(
     card: CardEntity,
     viewModel: GlossaryViewModel
 ) {
-    val navigator = FantMainNavigator.current
-    val showContent = remember {mutableStateOf(false)}
-
-    if(showContent.value) {
-        navigator.push(CardContentFragment( id = card.id))
-    }
+    var expanded by remember { mutableStateOf(false) }
+    val rotate by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f
+    )
 
     Surface(
         modifier = Modifier.clickable(
             onClick = {
-                showContent.value = true
+                expanded = !expanded
             }
         ),
         shadowElevation = 6.dp,
@@ -96,65 +101,205 @@ private fun CardView(
                 .padding(vertical = 8.dp, horizontal = 16.dp),
 
             ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
+            if (!expanded) {
+                Row(
                     modifier = Modifier
-                        .weight(weight = 1f)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        text = card.question
-                    )
-                    Row(
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically
+                            .weight(weight = 1f)
                     ) {
                         Text(
-                            modifier = Modifier,
-                            text = "Tag: ",
-                            fontWeight = FontWeight(500),
-                            fontSize = 12.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            text = card.question
                         )
-                        Text(
-                            modifier = Modifier,
-                            text = card.tag,
-                            fontSize = 12.sp,
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = Modifier,
+                                text = "Tag: ",
+                                fontWeight = FontWeight(500),
+                                fontSize = 12.sp,
+                            )
+                            Text(
+                                modifier = Modifier,
+                                text = card.tag,
+                                fontSize = 12.sp,
+                            )
+                        }
+                    }
+                    CardContextMenu(
+                        cardId = card.id,
+                        onDeleteClicked = { viewModel.onTryDeleteCard(card) },
+                    )
+                }
+                Divider(
+                    modifier = Modifier
+                        .padding(vertical = 6.dp)
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Kategorien: ",
+                        fontSize = 14.sp
+                    )
+                    Text(
+                        modifier = Modifier.weight(4.25f),
+                        text = card.categories.map { category -> category.label }
+                            .joinToString(separator = ", "),
+                        fontSize = 14.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    IconButton(
+                        modifier = Modifier
+                            .rotate(rotate),
+                        onClick = {
+                            expanded = !expanded
+                        }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "drop-down arrow"
                         )
                     }
                 }
-                CardContextMenu(
-                    cardId = card.id,
-                    onDeleteClicked = { viewModel.onTryDeleteCard(card) },
+            } else {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .weight(weight = 1f)
+                    ) {
+                        Text(
+                            text = card.question
+                        )
+                    }
+                    CardContextMenu(
+                        cardId = card.id,
+                        onDeleteClicked = { viewModel.onTryDeleteCard(card) },
+                    )
+                }
+                Divider(
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
                 )
-            }
-            Divider(
-                modifier = Modifier
-                    .padding(vertical = 6.dp)
-            )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                card.categories.forEach {
-                    SuggestionChip(
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Antwort",
+                        fontWeight = FontWeight(300),
+                        fontSize = 12.sp
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = card.answer
+                    )
+                }
+                Divider(
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Tag",
+                        fontWeight = FontWeight(300),
+                        fontSize = 12.sp
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
                         modifier = Modifier,
-                        onClick = { },
-                        label = {
-                            Text(
-                                modifier = Modifier,
-                                text = it.label
-                            )
-                        })
+                        text = card.tag,
+                    )
+                }
+                Divider(
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Kategorien",
+                        fontWeight = FontWeight(300),
+                        fontSize = 12.sp
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier.weight(4.25f),
+                        text = card.categories.map { category -> category.label }
+                            .joinToString(separator = ", "),
+                    )
+                }
+                Divider(
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Links",
+                        fontWeight = FontWeight(300),
+                        fontSize = 12.sp
+                    )
+                    IconButton(
+                        modifier = Modifier
+                            .rotate(rotate),
+                        onClick = {
+                            expanded = !expanded
+                        }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "drop-down arrow"
+                        )
+                    }
                 }
             }
         }
     }
 }
+
