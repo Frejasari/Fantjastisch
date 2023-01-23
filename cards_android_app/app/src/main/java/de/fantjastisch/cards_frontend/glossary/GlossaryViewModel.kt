@@ -5,10 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
+import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 
@@ -35,16 +37,24 @@ class GlossaryViewModel(
 ) : ViewModel() {
 
     val cards = mutableStateOf<List<CardEntity>>(emptyList())
-
     val error = mutableStateOf<String?>(null)
-
     val currentDeleteDialog = mutableStateOf<DeletionProgress?>(null)
+//    val cardLinks = mutableStateOf<List<LinkEntity>>(emptyList())
 
     init {
         viewModelScope.launch {
             CardsFilters.filters.collectLatest {
                 onPageLoaded()
             }
+            /*glossaryModel
+                .initializePage()
+                .fold(
+                    onSuccess = { card ->
+                        cardLinks.value = card.links
+                    },
+                    onError = { error.value = "Something is wrong" },
+                    onUnexpectedError = { error.value = "Irgendwas ist schief gelaufen" }
+                )*/
         }
     }
 
@@ -105,6 +115,7 @@ class GlossaryViewModel(
         data class ConfirmWithUser(override val card: CardEntity) : DeletionProgress()
         data class Deleting(override val card: CardEntity) : DeletionProgress()
     }
+
 
 
 }
