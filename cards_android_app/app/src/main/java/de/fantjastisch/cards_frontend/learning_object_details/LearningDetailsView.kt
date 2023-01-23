@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_frontend.learning_object_details
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import de.fantjastisch.cards_frontend.learning_mode.LearningModeFragment
 import java.util.*
 
 
@@ -27,6 +30,7 @@ fun LearningDetailsView(
     ) {
     val viewModel =
         viewModel(key = learningObjectId.toString()) { LearningDetailsViewModel(learningObjectId) }
+    val navigator = FantMainNavigator.current
 
     LazyColumn(
         modifier = modifier
@@ -36,64 +40,77 @@ fun LearningDetailsView(
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         items(viewModel.learningBoxes.value) { learningBox ->
-            Surface(
-                modifier = Modifier,
-                shadowElevation = 6.dp,
+            Box(
+                Modifier
+                    .clickable(
+                        onClick = {
+                            navigator.push(
+                                LearningModeFragment(
+                                    learningBoxId = learningBox.id,
+                                    learningObjectId = learningObjectId
+                                )
+                            )
+                        })
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp, horizontal = 16.dp),
-
-                    ) {
-                    Row(
+                Surface(
+                    modifier = Modifier,
+                    shadowElevation = 6.dp,
+                ) {
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp, horizontal = 16.dp),
+
+                        ) {
+                        Row(
                             modifier = Modifier
-                                .weight(weight = 1f, fill = false)
-                                .padding(vertical = 8.dp),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            text = learningBox.label,
-                            fontSize = 18.sp
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .weight(weight = 1f, fill = false)
+                                    .padding(vertical = 8.dp),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                text = learningBox.label,
+                                fontSize = 18.sp
+                            )
+                            if (learningBox.nrOfCards != 0) {
+                                LearningDetailsContextMenu(
+                                    learningBoxId = learningBox.id,
+                                    learningObjectId = viewModel.learningObjectId
+                                )
+                            }
+                        }
+                        Divider(
+                            modifier = Modifier
+                                .padding(vertical = 3.dp)
                         )
-                        if (learningBox.nrOfCards != 0) {
-                            LearningDetailsContextMenu(
-                                learningBoxId = learningBox.id,
-                                learningObjectId = viewModel.learningObjectId
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = Modifier,
+                                text = "Anzahl Karten: " + learningBox.nrOfCards
+                            )
+                            Spacer(
+                                Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight()
+                            )
+                            Text(
+                                modifier = Modifier,
+                                text = "Box-Nr. " + (learningBox.boxNumber + 1).toString()
+                            )
+                            Icon(
+                                painter = painterResource(id = R.drawable.inventory_2),
+                                contentDescription = "Box",
+                                // decorative element
                             )
                         }
-                    }
-                    Divider(
-                        modifier = Modifier
-                            .padding(vertical = 3.dp)
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            modifier = Modifier,
-                            text = "Anzahl Karten: " + learningBox.nrOfCards
-                        )
-                        Spacer(
-                            Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-                        )
-                        Text(
-                            modifier = Modifier,
-                            text = "Box-Nr. " + (learningBox.boxNumber + 1).toString()
-                        )
-                        Icon(
-                            painter = painterResource(id = R.drawable.inventory_2),
-                            contentDescription = "Box",
-                            // decorative element
-                        )
                     }
                 }
             }

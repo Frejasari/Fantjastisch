@@ -34,18 +34,17 @@ fun LearningObjectComponent(
     }
     val isDeleteDialogOpen = remember { mutableStateOf(false) }
     // Ein RecyclerView -> Eine lange liste von Eintraegen
-    Box(Modifier.clickable(onClick = {
-        navigator.push(
-            LearningDetailsFragment(
-                learningObject.id
-            )
-        )
-    })) {
+    Box(
+        Modifier
+            .clickable(
+                onClick = {
+                    navigator.push(LearningDetailsFragment(learningObject.id))
+                })
+    ) {
         Surface(
             modifier = Modifier,
             shadowElevation = 6.dp,
-
-            ) {
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

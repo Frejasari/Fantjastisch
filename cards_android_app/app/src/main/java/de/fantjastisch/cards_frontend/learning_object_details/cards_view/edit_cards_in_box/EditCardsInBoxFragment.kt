@@ -6,14 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
-import cafe.adriel.voyager.navigator.Navigator
-import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsInBoxContextMenu
+import de.fantjastisch.cards_frontend.infrastructure.TobBarCreateMenu
 import java.util.*
 
 
 data class EditCardsInBoxFragment(
     val learningBoxId: UUID,
-    val navigator: Navigator,
     val learningObjectId: UUID
 ) :
     AndroidScreen() {
@@ -28,13 +26,9 @@ data class EditCardsInBoxFragment(
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                title = { Text(text = "Karten in dieser Box") },
-                actions = {
-                    CardsInBoxContextMenu(
-                        learningBoxId = learningBoxId,
-                        learningObjectId = learningObjectId
-                    )
-                })
+                title = { Text(text = "Karten in dieser Box") }
+            )
+            TobBarCreateMenu()
         })
         {
             EditCardsInBoxView(

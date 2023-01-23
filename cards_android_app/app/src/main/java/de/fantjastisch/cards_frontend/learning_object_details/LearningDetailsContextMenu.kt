@@ -9,8 +9,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
-import de.fantjastisch.cards_frontend.learning_mode.LearningModeFragment
-import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsInBoxFragment
+import de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_cards_in_box.EditCardsInBoxFragment
+import de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box.MoveCardsToBoxFragment
 import java.util.*
 
 
@@ -34,18 +34,22 @@ fun LearningDetailsContextMenu(
                 onClick = {
                     isMenuOpen.value = false
                     navigator.push(
-                        CardsInBoxFragment(
+                        EditCardsInBoxFragment(
                             learningBoxId = learningBoxId,
-                            navigator = navigator,
                             learningObjectId = learningObjectId
                         )
                     )
                 })
             DropdownMenuItem(
-                text = { Text(text = stringResource(R.string.study_learning_box)) },
+                text = { Text(text = "Karten verschieben") },
                 onClick = {
                     isMenuOpen.value = false
-                    navigator.push(LearningModeFragment(learningBoxId, learningObjectId))
+                    navigator.push(
+                        MoveCardsToBoxFragment(
+                            learningBoxId = learningBoxId,
+                            learningObjectId = learningObjectId
+                        )
+                    )
                 })
         }
     }

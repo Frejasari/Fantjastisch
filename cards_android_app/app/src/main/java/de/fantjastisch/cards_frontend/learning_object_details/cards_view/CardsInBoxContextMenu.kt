@@ -11,7 +11,6 @@ import de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_ca
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box.MoveCardsToBoxFragment
 import java.util.*
 
-
 @Composable
 fun CardsInBoxContextMenu(learningBoxId: UUID, learningObjectId: UUID) {
     val navigator = FantMainNavigator.current
@@ -31,7 +30,6 @@ fun CardsInBoxContextMenu(learningBoxId: UUID, learningObjectId: UUID) {
                     navigator.push(
                         EditCardsInBoxFragment(
                             learningBoxId = learningBoxId,
-                            navigator = navigator,
                             learningObjectId = learningObjectId
                         )
                     )
