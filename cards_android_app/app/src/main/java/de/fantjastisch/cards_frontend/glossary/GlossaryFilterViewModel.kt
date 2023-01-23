@@ -17,7 +17,6 @@ class GlossaryFilterViewModel(
     val search = mutableStateOf(CardsFilters.filters.value.search)
     val tag = mutableStateOf(CardsFilters.filters.value.tag)
     val categories = mutableStateOf<List<CategorySelectItem>>(emptyList())
-
     val sort = mutableStateOf(CardsFilters.filters.value.sort)
 
     init {

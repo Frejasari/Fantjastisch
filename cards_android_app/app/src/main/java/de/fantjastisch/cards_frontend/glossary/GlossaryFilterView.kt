@@ -1,9 +1,6 @@
 package de.fantjastisch.cards_frontend.glossary
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,7 +15,6 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategorySelect
-import de.fantjastisch.cards_frontend.glossary.GlossaryFilterViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : AndroidScreen() {
@@ -34,12 +30,24 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Sortieren",
+                    fontWeight = FontWeight(500),
+                    fontSize = 20.sp
+                )
+                Switch(checked = viewModel.sort.value, onCheckedChange = viewModel::onSortClicked)
+            }
+            Divider()
             Text(
                 text = "Filter",
                 fontWeight = FontWeight(500),
                 fontSize = 20.sp
             )
-            Divider()
             OutlinedTextField(
                 maxLines = 2,
                 modifier = Modifier.fillMaxWidth(),
@@ -54,10 +62,10 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
                 onValueChange = viewModel::onTagInput,
                 placeholder = { Text(text = "Nach Tag suchen") },
             )
-            Divider()
             Text(
                 text = "Kategorien auswählen",
-                style = MaterialTheme.typography.titleMedium
+                fontWeight = FontWeight(500),
+                fontSize = 17.sp
             )
             CategorySelect(
                 categories = viewModel.categories.value,

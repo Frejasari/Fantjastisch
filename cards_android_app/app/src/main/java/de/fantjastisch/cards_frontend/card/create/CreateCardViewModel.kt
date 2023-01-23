@@ -71,7 +71,7 @@ class CreateCardViewModel(
             val result = createCardModel.createCard(
                 question = cardQuestion.value,
                 answer = cardAnswer.value,
-                tag = cardTag.value,
+                tag = cardTag.value.replaceFirstChar { letter -> letter.uppercaseChar() },
                 categories = cardCategories.value
             )
 
