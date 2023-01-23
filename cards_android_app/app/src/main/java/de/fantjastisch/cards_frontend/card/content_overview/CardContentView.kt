@@ -44,7 +44,7 @@ fun CardContentView(
 
     val viewModel = viewModel { CardContentViewModel(id = id) }
 
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = FantMainNavigator.current
     // einmaliger Effekt
    /* LaunchedEffect(
         // wenn sich diese Variable ändert
@@ -197,7 +197,7 @@ fun CardContentView(
                             .weight(1f)
                             .rotate(rotateLinks),
                         onClick = {
-                           navigator.push(CreateLinkFragment(viewModel.cardId.value!!))
+                           navigator.push(CreateLinkFragment(id = viewModel.cardId.value!!))
                         }) {
                         Icon(
                             imageVector = Icons.Default.Link,
@@ -230,7 +230,7 @@ fun CardContentView(
                                 )
                             },
                             icon = {
-                              // LinkContextMenu(linkId = it.id!!, cardId = viewModel.cardId.value!!,  name = it.name!!)
+                               LinkContextMenu(linkId = it.id!!, cardId = viewModel.cardId.value!!,  name = it.name!!)
                             {
 
                                }

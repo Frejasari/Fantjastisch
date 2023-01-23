@@ -12,7 +12,6 @@ import org.openapitools.client.models.CreateLinkEntity
 import java.util.*
 
 class CreateLinkModel(
-    private val sourceId: UUID,
     private val cardRepository: CardRepository = CardRepository(),
     private val linkRepository: LinkRepository = LinkRepository()
 ) : ViewModel() {

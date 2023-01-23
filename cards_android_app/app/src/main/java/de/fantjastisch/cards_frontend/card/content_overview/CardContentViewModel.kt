@@ -27,18 +27,6 @@ class CardContentViewModel(
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
     val cardLinks = mutableStateOf(listOf<LinkEntity>())
 
-    fun setCardQuestion(value: String) {
-        cardQuestion.value = value
-    }
-
-    fun setCardAnswer(value: String) {
-        cardAnswer.value = value
-    }
-
-    fun setCardTag(value: String) {
-        cardTag.value = value
-    }
-
     init {
         viewModelScope.launch {
             cardContentModel
@@ -46,6 +34,7 @@ class CardContentViewModel(
                 .fold(
                     onSuccess = { card ->
                         errors.value = emptyList()
+                        cardId.value = card.id
                         cardAnswer.value = card.answer
                         cardQuestion.value = card.question
                         cardTag.value = card.tag

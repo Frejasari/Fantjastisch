@@ -1,26 +1,19 @@
- package de.fantjastisch.cards_frontend.link.update_and_create
+ package de.fantjastisch.cards_frontend.link.create
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.link.LinkRepository
 import de.fantjastisch.cards_frontend.link.LinkSelectItem
-import de.fantjastisch.cards_frontend.link.create.CreateLinkModel
 import kotlinx.coroutines.launch
-import org.openapitools.client.models.CreateCardEntity
-import org.openapitools.client.models.CreateCategoryEntity
-import org.openapitools.client.models.CreateLinkEntity
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
 
  class CreateLinkViewModel(
      private val sourceId: UUID,
-     private val createLinkModel: CreateLinkModel = CreateLinkModel(sourceId = sourceId)
+     private val createLinkModel: CreateLinkModel = CreateLinkModel()
  ) :ViewModel() {
 
 
