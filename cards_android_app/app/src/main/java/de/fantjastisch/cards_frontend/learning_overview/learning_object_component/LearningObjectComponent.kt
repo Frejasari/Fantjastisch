@@ -26,13 +26,12 @@ fun LearningObjectComponent(
     onDeleteSuccessful: () -> Unit
 ) {
     val navigator = LocalNavigator.current!!
-    val viewModel =
-        viewModel {
-            LearningObjectComponentViewModel(
-                learningSystemId = learningObject.learningSystemId,
-                learningObjectId = learningObject.id
-            )
-        }
+    val viewModel = viewModel(key = learningObject.id.toString()) {
+        LearningObjectComponentViewModel(
+            learningSystemId = learningObject.learningSystemId,
+            learningObjectId = learningObject.id
+        )
+    }
     val isDeleteDialogOpen = remember { mutableStateOf(false) }
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     Box(Modifier.clickable(onClick = {

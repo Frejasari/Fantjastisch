@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card
+package de.fantjastisch.cards_frontend.learning_mode
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,22 +11,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
-import de.fantjastisch.cards_frontend.learning_mode.LearningModeCardComponent
-import de.fantjastisch.cards_frontend.learning_mode.LearningModeViewModel
-
 
 @Composable
 fun LearningModeView(
     modifier: Modifier = Modifier,
     viewModel: LearningModeViewModel
 ) {
-//    LaunchedEffect(
-//        // wenn sich diese Variable ändert
-//        key1 = viewModel.currentCard.value,
-//        // dann wird dieses Lambda ausgeführt.
-//        block = {
-//            viewModel.onPageLoaded()
-//        })
+    val navigator = FantMainNavigator.current
+    // einmaliger Effekt
+    LaunchedEffect(
+        // wenn sich diese Variable ändert
+        key1 = viewModel.isFinished.value,
+        // dann wird dieses Lambda ausgeführt.
+        block = {
+            if (viewModel.isFinished.value) {
+                navigator.pop()
+            }
+        })
 
     Column(
         modifier = modifier
@@ -111,17 +112,6 @@ fun LearningModeView(
             }
         }
     }
-    val navigator = FantMainNavigator.current
-    // einmaliger Effekt
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = viewModel.isFinished.value,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            if (viewModel.isFinished.value) {
-                navigator.pop()
-            }
-        })
 }
 
 

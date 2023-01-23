@@ -61,11 +61,12 @@ fun LearningDetailsView(
                             text = learningBox.label,
                             fontSize = 18.sp
                         )
-                        LearningDetailsContextMenu(
-                            hasCards = learningBox.nrOfCards!= 0,
-                            learningBoxId = learningBox.id,
-                            learningObjectId = viewModel.learningObjectId
-                        )
+                        if (learningBox.nrOfCards != 0) {
+                            LearningDetailsContextMenu(
+                                learningBoxId = learningBox.id,
+                                learningObjectId = viewModel.learningObjectId
+                            )
+                        }
                     }
                     Divider(
                         modifier = Modifier

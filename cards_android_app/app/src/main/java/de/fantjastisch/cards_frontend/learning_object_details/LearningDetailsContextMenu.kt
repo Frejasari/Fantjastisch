@@ -17,8 +17,7 @@ import java.util.*
 @Composable
 fun LearningDetailsContextMenu(
     learningBoxId: UUID,
-    learningObjectId: UUID,
-    hasCards: Boolean
+    learningObjectId: UUID
 ) {
     val navigator = FantMainNavigator.current
     val isMenuOpen = remember { mutableStateOf(false) }
@@ -42,14 +41,12 @@ fun LearningDetailsContextMenu(
                         )
                     )
                 })
-            if (hasCards) {
-                DropdownMenuItem(
-                    text = { Text(text = stringResource(R.string.study_learning_box)) },
-                    onClick = {
-                        isMenuOpen.value = false
-                        navigator.push(LearningModeFragment(learningBoxId, learningObjectId))
-                    })
-            }
+            DropdownMenuItem(
+                text = { Text(text = stringResource(R.string.study_learning_box)) },
+                onClick = {
+                    isMenuOpen.value = false
+                    navigator.push(LearningModeFragment(learningBoxId, learningObjectId))
+                })
         }
     }
 }

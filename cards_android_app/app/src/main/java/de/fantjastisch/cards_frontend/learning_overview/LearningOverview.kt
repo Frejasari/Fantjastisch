@@ -44,7 +44,7 @@ fun LearningOverview(
             viewModel.onPageLoaded()
         })
     // Ein RecyclerView -> Eine lange liste von Eintraegen
-    if (viewModel.learningObjects.value.size == 0) {
+    if (viewModel.learningObjects.value.isEmpty()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
