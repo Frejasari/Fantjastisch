@@ -68,7 +68,7 @@ fun List<CategoryEntity>.toCategorySelectItems() = map { cat ->
 
 
 class GlossaryFilterModel(
-    val categoryRepository: CategoryRepository = CategoryRepository()
+    private val categoryRepository: CategoryRepository = CategoryRepository()
 ) {
     suspend fun getCategories(): RepoResult<List<CategoryEntity>> {
         return categoryRepository.getPage()
@@ -178,6 +178,5 @@ class GlossaryFilterView : AndroidScreen() {
         }
 
     }
-
 }
 

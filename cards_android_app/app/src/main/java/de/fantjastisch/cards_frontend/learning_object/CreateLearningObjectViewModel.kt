@@ -14,7 +14,6 @@ import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_system.LearningSystemRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.LearningSystemEntity
@@ -147,15 +146,19 @@ class CreateLearningObjectViewModel(
 
     private fun getLearningSystemFromInput(learningObject: LearningObject) {
         viewModelScope.launch {
-            learningSystemRepository.getLearningSystem(selectedSystem.value!!.id,
-                onSuccess = {
-                    errors.value = null
-                    val learningSystem = it
-                    getCardsFromCategories(learningSystem, learningObject)
-                },
-                onFailure = {
-                    errors.value = "Could not get learning system."
-                })
+            learningSystemRepository.getLearningSystem(selectedSystem.value!!.id)
+                .fold(
+                    onSuccess = {
+                        errors.value = null
+                        val learningSystem = it
+                        getCardsFromCategories(learningSystem, learningObject)
+                    },
+                    onUnexpectedError = {
+                        errors.value = "Could not get learning system."
+                    },
+                    onValidationError = {
+                        errors.value = "Could not get learning system."
+                    })
         }
     }
 
@@ -189,7 +192,6 @@ class CreateLearningObjectViewModel(
         }
 
     }
-
 
     private fun createLearningBoxesFromCards(
         cardsFromCategories: List<CardEntity>,

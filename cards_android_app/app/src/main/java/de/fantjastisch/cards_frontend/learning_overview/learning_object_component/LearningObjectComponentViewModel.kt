@@ -1,11 +1,16 @@
 package de.fantjastisch.cards_frontend.learning_overview.learning_object_component
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_system.LearningSystemRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import org.openapitools.client.models.LearningSystemEntity
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -16,42 +21,36 @@ class LearningObjectComponentViewModel(
     private val learningObjectId: UUID
 ) : ViewModel() {
 
-    var countOfCards = 0;
-    var learningSystemlabel = ""
+    private var countOfCards = 0;
     val error = mutableStateOf("")
-
     val progress = mutableStateOf<Int>(0)
-    val learningSystemLabel = mutableStateOf("")
+    val learningSystemLabel = mutableStateOf("Loading")
 
     init {
         onPageLoaded()
     }
 
-    fun onPageLoaded() {
-        initLearningSystemLabel()
-        loadProgressFromLearningObject()
-    }
-
-    // TODO antipattern! AND it wont necessarily work like this! -> cannot just return after an asynchronous call. Set a state insetad
-    private fun initLearningSystemLabel(): String {
+    private fun onPageLoaded() {
         viewModelScope.launch {
 
-            learningSystemRepository.getLearningSystem(learningSystemId,
-                onSuccess = {
-                    learningSystemlabel = it.label
-                },
-                onFailure = { error.value = "Konnte kein Lernsystemlabel einholen." }
+            val (learningSystemResult, progressResult) = awaitAll(
+                async { learningSystemRepository.getLearningSystem(learningSystemId) },
+                async {
+                    learningBoxRepository.getCardsFromLearningBoxInLearningObject(
+                        learningObjectId
+                    )
+                }
             )
-        }
-        return learningSystemlabel
-    }
 
-    // TODO antipattern! AND it wont necessarily work like this! -> cannot just return after an asynchronous call. Set a state insetad
-    private fun loadProgressFromLearningObject() {
+            @Suppress("UNCHECKED_CAST")
+            when {
+                learningSystemResult is RepoResult.Success<*>
+                        && progressResult is RepoResult.Success<*> -> {
 
-        viewModelScope.launch {
-            learningBoxRepository.getCardsFromLearningBoxInLearningObject(learningObjectId,
-                onSuccess = { listOfCardAmountsInBoxes ->
+                    val learningSystem = learningSystemResult.result as LearningSystemEntity
+                    val listOfCardAmountsInBoxes = progressResult.result as List<Int>
+                    Log.v("LearningSystem", "label: " + learningSystem.label)
+                    learningSystemLabel.value = learningSystem.label
                     var progressInternal = 0
                     countOfCards = listOfCardAmountsInBoxes.sum()
                     val numBoxes = listOfCardAmountsInBoxes.size
@@ -67,9 +66,12 @@ class LearningObjectComponentViewModel(
                         }
                     }
                     progress.value = progressInternal
-                },
-                onFailure = { error.value = "Fehler" }
-            )
+                }
+                else -> {
+                    error.value = "Fehler"
+                }
+            }
         }
     }
+
 }

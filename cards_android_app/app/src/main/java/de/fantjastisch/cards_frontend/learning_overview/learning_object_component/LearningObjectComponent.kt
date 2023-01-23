@@ -89,19 +89,14 @@ fun LearningObjectComponent(
                         .padding(vertical = 6.dp)
                 )
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        modifier = Modifier,
                         text = viewModel.learningSystemLabel.value
                     )
-                    Spacer(
-                        Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                    )
-
                     SuggestionChip(
                         modifier = Modifier,
                         onClick = { },

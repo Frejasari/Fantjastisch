@@ -17,8 +17,6 @@ class CardRepository {
 
     suspend fun getCard(
         id: UUID,
-//        onSuccess: (CardEntity) -> Unit,
-//        onFailure: (errors: ErrorResponseEntity?) -> Unit
     ) =
         service.getCard(id)
             .awaitResponse()

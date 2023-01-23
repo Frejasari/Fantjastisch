@@ -17,21 +17,20 @@ class LearningBoxRepository(
         return try {
             val allBoxesForLearningObject =
                 repository.getAllBoxesForLearningObjectWithNrOfCards(learningObjectId)
-             RepoResult.Success(allBoxesForLearningObject)
+            RepoResult.Success(allBoxesForLearningObject)
         } catch (ex: Throwable) {
-             RepoResult.ServerError()
+            RepoResult.ServerError()
         }
     }
 
     suspend fun getCardsFromLearningBoxInLearningObject(
-        learningObjectId: UUID,
-        onSuccess: (List<Int>) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) {
-        try {
-            onSuccess(repository.getCardsFromLearningObject(learningObjectId))
+        learningObjectId: UUID
+    ): RepoResult<List<Int>> {
+        return try {
+            val cardsFromLearningObject = repository.getCardsFromLearningObject(learningObjectId)
+            RepoResult.Success(cardsFromLearningObject)
         } catch (ex: Throwable) {
-            onFailure(null)
+            RepoResult.ServerError()
         }
     }
 
