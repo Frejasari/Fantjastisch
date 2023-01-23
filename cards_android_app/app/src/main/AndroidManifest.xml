@@ -22,7 +22,7 @@
     <activity
       android:exported="true"
       android:name="de.fantjastisch.cards_frontend.infrastructure.MainActivity"
-      android:windowSoftInputMode="adjustResize">
+      android:windowSoftInputMode="stateAlwaysHidden|adjustPan" >
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
