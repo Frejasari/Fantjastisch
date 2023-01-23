@@ -20,7 +20,7 @@ fun DeleteLinkDialog(
     AlertDialog(
         onDismissRequest = onDismissClicked,
         title = {
-            Text(text = stringResource(R.string.delete_card_dialog_title))
+            Text(text = stringResource(R.string.delete_link_dialog_title))
         },
         text = {
             Text(link.name!!)

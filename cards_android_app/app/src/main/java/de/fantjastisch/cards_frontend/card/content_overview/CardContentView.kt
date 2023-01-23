@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -228,10 +229,17 @@ fun CardContentView(
                                 )
                             },
                             icon = {
-                                LinkContextMenu(
-                                    linkId = it.id!!,
-                                    onDeleteClicked = { viewModel.onTryDeleteLink(it) },
-                                )
+                                IconButton(
+                                    modifier = Modifier
+                                        .weight(1f),
+                                    onClick = {
+                                        viewModel.onTryDeleteLink(it)
+                                    }) {
+                                    Icon(
+                                        imageVector = Icons.Default.DeleteOutline,
+                                        contentDescription = "delete"
+                                    )
+                                }
 
                             })
 
