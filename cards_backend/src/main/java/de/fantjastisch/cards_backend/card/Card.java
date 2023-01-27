@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -29,10 +29,10 @@ public class Card {
     @Schema(required = true)
     String tag;
     @Schema(required = true)
-    List<Category> categories;
+    Set<Category> categories;
 
     @Schema(required = true)
-    List<Link> links;
+    Set<Link> links;
 
 
     @Builder
@@ -52,14 +52,4 @@ public class Card {
         @Schema(required = true)
         String label;
     }
-
-
-    @Builder
-    @Data
-    public static class Link {
-        String name;
-        UUID target;
-        UUID source;
-    }
-
 }

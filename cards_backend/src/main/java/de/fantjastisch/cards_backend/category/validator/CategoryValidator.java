@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
 
@@ -138,7 +135,7 @@ public class CategoryValidator extends Validator {
         );
     }
 
-    private List<ErrorEntry> checkIfSubcategoryExists(List<UUID> subCategories, List<Category> allCategories) {
+    private List<ErrorEntry> checkIfSubcategoryExists(Set<UUID> subCategories, List<Category> allCategories) {
         for (UUID subCategoryId : subCategories) {
 
             if (allCategories.stream().noneMatch(category -> category.getId().equals(subCategoryId))) {
@@ -152,7 +149,7 @@ public class CategoryValidator extends Validator {
         return Collections.emptyList();
     }
 
-    private List<ErrorEntry> checkIfSubcategoriesContainNull(List<UUID> uuids) {
+    private List<ErrorEntry> checkIfSubcategoriesContainNull(Set<UUID> uuids) {
         List<ErrorEntry> errors = new ArrayList<>();
         if (uuids.contains(null)) {
             errors.add(
@@ -166,7 +163,7 @@ public class CategoryValidator extends Validator {
     }
 
     private List<ErrorEntry> checkIfCycleInSubCategoriesFound
-            (List<Category> allCategories, List<UUID> subCategories, ArrayList<UUID> visited) {
+            (List<Category> allCategories, Set<UUID> subCategories, ArrayList<UUID> visited) {
         /*
         Prüfe rekursiv, ob beim Aktualisieren der Unterkategorien einer
         vorhandenen Kategorie Zyklen in der Kategorien-Hierarchie entstehen.
@@ -195,7 +192,7 @@ public class CategoryValidator extends Validator {
                     .get(0);
 
             // Betrachte ihre Unterkategorien rekursiv und vermerke aktuelle Kategorie als besucht
-            ArrayList<UUID> subSubCategories = new ArrayList<>(categoryFromUUID.getSubCategories());
+            Set<UUID> subSubCategories = new HashSet<>(categoryFromUUID.getSubCategories());
             visited.add(subCategory);
             errors.addAll(checkIfCycleInSubCategoriesFound(allCategories, subSubCategories, visited));
         }

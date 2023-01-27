@@ -18,10 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -52,7 +49,7 @@ public class CategoryAggregateTest {
             .builder()
             .id(UUID.fromString("b7913a6f-6152-436e-b3ef-e38eb54d4725"))
             .label("Mathematik")
-            .subCategories(Collections.emptyList())
+            .subCategories(Collections.emptySet())
             .build();
 
     @BeforeEach
@@ -62,8 +59,8 @@ public class CategoryAggregateTest {
     }
 
     @Test
-    public void jackson(){
-        
+    public void jackson() {
+
     }
 
     @Test
@@ -72,7 +69,7 @@ public class CategoryAggregateTest {
 
         CreateCategory toCreate = CreateCategory.builder()
                 .label(category.getLabel())
-                .subCategories(Collections.emptyList())
+                .subCategories(Collections.emptySet())
                 .build();
 
         ErrorEntry labelTakenError = ErrorEntry.builder()
@@ -84,7 +81,6 @@ public class CategoryAggregateTest {
                 () -> categoryAggregate.handle(toCreate));
         assertTrue(exception.getErrors().contains(labelTakenError));
     }
-
 
     @Test
     public void shouldThrowWhenCategoryNotEmpty() {
@@ -103,7 +99,7 @@ public class CategoryAggregateTest {
     public void shouldThrowWhenCategoryNotFound() {
         UpdateCategory toUpdate = UpdateCategory.builder()
                 .id(category.getId())
-                .label("NOT FOUND").subCategories(Collections.emptyList())
+                .label("NOT FOUND").subCategories(Collections.emptySet())
                 .build();
         assertThrows(EntityDoesNotExistException.class, () -> categoryAggregate.handle(toUpdate));
 
@@ -116,7 +112,7 @@ public class CategoryAggregateTest {
         CreateCategory toCreate = CreateCategory
                 .builder()
                 .label("")
-                .subCategories(Collections.emptyList())
+                .subCategories(Collections.emptySet())
                 .build();
 
         CommandValidationException exception = Assertions.assertThrows(CommandValidationException.class,
@@ -165,7 +161,7 @@ public class CategoryAggregateTest {
         CreateCategory toCreate = CreateCategory
                 .builder()
                 .label(null)
-                .subCategories(Collections.emptyList())
+                .subCategories(Collections.emptySet())
                 .build();
 
         CommandValidationException exception = Assertions.assertThrows(CommandValidationException.class,
@@ -187,25 +183,25 @@ public class CategoryAggregateTest {
                 .builder()
                 .id(idOfC)
                 .label("c")
-                .subCategories(Collections.emptyList())
+                .subCategories(Collections.emptySet())
                 .build();
         final Category catB = Category
                 .builder()
                 .id(idOfB)
                 .label("b")
-                .subCategories(Collections.singletonList(idOfC))
+                .subCategories(Set.of(idOfC))
                 .build();
         final Category catA = Category
                 .builder()
                 .id(idOfA)
                 .label("a")
-                .subCategories(Collections.singletonList(idOfB))
+                .subCategories(Set.of(idOfB))
                 .build();
         final UpdateCategory newC = UpdateCategory
                 .builder()
                 .id(idOfC)
                 .label("c")
-                .subCategories(Collections.singletonList(idOfA))
+                .subCategories(Set.of(idOfA))
                 .build();
 
         when(categoryQueryRepository.getPage()).thenReturn(Arrays.asList(catC, catB, catA));
@@ -225,7 +221,7 @@ public class CategoryAggregateTest {
         CreateCategory cat = CreateCategory
                 .builder()
                 .label("cat")
-                .subCategories(Collections.singletonList(null))
+                .subCategories(Collections.emptySet())
                 .build();
         CommandValidationException exception = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(cat));
         ErrorEntry nullSubcategoryError = ErrorEntry.builder()
@@ -236,17 +232,11 @@ public class CategoryAggregateTest {
 
         // update
         final UUID id = UUID.fromString("9db2d0a7-6733-4678-9c1d-4defbe9b425f");
-        final Category newCat = Category
-                .builder()
-                .id(id)
-                .label("cat")
-                .subCategories(Collections.emptyList())
-                .build();
 
         UpdateCategory updateNewCat = UpdateCategory.builder()
                 .id(id)
                 .label("cat")
-                .subCategories(Collections.singletonList(null))
+                .subCategories(Collections.emptySet())
                 .build();
 
         CommandValidationException exception2 = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(updateNewCat));
@@ -256,7 +246,7 @@ public class CategoryAggregateTest {
     }
 
     @Test
-    public void shouldThrowWhenUpdateLabelExists () {
+    public void shouldThrowWhenUpdateLabelExists() {
         final UUID idOfC = UUID.fromString("6db2d0a7-6733-4678-9c1d-4defbe9b425f");
         final UUID idOfA = UUID.fromString("8db2d0a7-6733-4678-9c1d-4defbe9b425f");
         final Category catC = Category
@@ -279,10 +269,10 @@ public class CategoryAggregateTest {
         when(categoryQueryRepository.getPage()).thenReturn(List.of(catC, catA));
 
         UpdateCategory toUpdate = UpdateCategory.builder()
-                        .id(catA.getId())
-                                .label(catC.getLabel())
-                                        .subCategories(catA.getSubCategories())
-                                                .build();
+                .id(catA.getId())
+                .label(catC.getLabel())
+                .subCategories(catA.getSubCategories())
+                .build();
         CommandValidationException exception = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(toUpdate));
         ErrorEntry nullSubcategoryError = ErrorEntry.builder()
                 .code(LABEL_TAKEN_VIOLATION)

@@ -1,9 +1,12 @@
 package de.fantjastisch.cards_backend.card.repository;
 
+import de.fantjastisch.cards_backend.card.Link;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -13,10 +16,16 @@ import java.util.UUID;
  */
 @Builder
 @Data // getter, setter, toString
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Card {
     UUID id;
     String question;
     String answer;
     String tag;
-    List<UUID> categories;
+    // use Set to avoid duplicates
+    Set<UUID> categories;
+    // use Set to avoid duplicates
+    private Set<Link> links;
+
+
 }

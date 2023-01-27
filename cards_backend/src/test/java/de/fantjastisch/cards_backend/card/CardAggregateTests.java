@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
@@ -53,7 +53,7 @@ public class CardAggregateTests {
     private final Category category = Category.builder()
             .id(UUID.randomUUID())
             .label("SWP")
-            .subCategories(Collections.emptyList())
+            .subCategories(Collections.emptySet())
             .build();
     private final de.fantjastisch.cards_backend.card.repository.Card cardForSave = de.fantjastisch.cards_backend.card.repository.Card
             .builder()
@@ -61,7 +61,7 @@ public class CardAggregateTests {
             .question("I am the question")
             .answer("I am the answer")
             .tag("I am a tag")
-            .categories(List.of(category.getId()))
+            .categories(Set.of(category.getId()))
             .build();
 
     private final Card card = Card
@@ -70,7 +70,7 @@ public class CardAggregateTests {
             .question(cardForSave.getQuestion())
             .answer(cardForSave.getAnswer())
             .tag(cardForSave.getTag())
-            .categories(List.of(Card.Category
+            .categories(Set.of(Card.Category
                     .builder()
                     .id(category.getId())
                     .label(category.getLabel())
@@ -188,7 +188,7 @@ public class CardAggregateTests {
                 .question(cardForSave.getQuestion())
                 .answer(cardForSave.getAnswer())
                 .tag(cardForSave.getTag())
-                .categories(List.of())
+                .categories(Set.of())
                 .build();
 
         UpdateCard toUpdate = UpdateCard.builder()
@@ -196,7 +196,7 @@ public class CardAggregateTests {
                 .question(cardForSave.getQuestion())
                 .answer(cardForSave.getAnswer())
                 .tag(cardForSave.getTag())
-                .categories(List.of())
+                .categories(Set.of())
                 .build();
 
         ErrorEntry constraintError = ErrorEntry.builder()
@@ -242,7 +242,7 @@ public class CardAggregateTests {
                 .question(cardForSave.getQuestion())
                 .answer(cardForSave.getAnswer())
                 .tag(cardForSave.getTag())
-                .categories(Collections.singletonList(category.getId()))
+                .categories(Set.of(category.getId()))
                 .build();
 
         assertThrows(EntityDoesNotExistException.class, () -> cardAggregate.handle(toDelete));
@@ -255,7 +255,7 @@ public class CardAggregateTests {
                 .question(cardForSave.getQuestion())
                 .answer(cardForSave.getAnswer())
                 .tag(cardForSave.getTag())
-                .categories(List.of(UUID.randomUUID()))
+                .categories(Set.of(UUID.randomUUID()))
                 .build();
 
         ErrorEntry categoryError = ErrorEntry.builder()
@@ -272,7 +272,7 @@ public class CardAggregateTests {
                 .question(cardForSave.getQuestion())
                 .answer(cardForSave.getAnswer())
                 .tag(cardForSave.getTag())
-                .categories(List.of(UUID.randomUUID()))
+                .categories(Set.of(UUID.randomUUID()))
                 .build();
 
         ErrorEntry categoryError1 = ErrorEntry.builder()
@@ -333,7 +333,7 @@ public class CardAggregateTests {
                 .question(null)
                 .answer(cardForSave.getAnswer())
                 .tag(cardForSave.getTag())
-                .categories(List.of())
+                .categories(Set.of())
                 .build();
 
         exception = assertThrows(CommandValidationException.class,
@@ -365,7 +365,7 @@ public class CardAggregateTests {
                 .question(cardForSave.getQuestion())
                 .answer(null)
                 .tag(cardForSave.getTag())
-                .categories(List.of())
+                .categories(Set.of())
                 .build();
 
         exception = assertThrows(CommandValidationException.class,
@@ -397,7 +397,7 @@ public class CardAggregateTests {
                 .question(cardForSave.getQuestion())
                 .answer(cardForSave.getAnswer())
                 .tag(null)
-                .categories(List.of())
+                .categories(Set.of())
                 .build();
 
         exception = assertThrows(CommandValidationException.class,

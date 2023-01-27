@@ -1,18 +1,16 @@
 package de.fantjastisch.cards_backend.card.aggregate;
 
-import de.fantjastisch.cards_backend.card.Card;
+import de.fantjastisch.cards_backend.card.Link;
 import de.fantjastisch.cards_backend.util.validation.Commandable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -27,6 +25,7 @@ import java.util.UUID;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdateCard implements Commandable {
 
     @NotNull
@@ -64,5 +63,12 @@ public class UpdateCard implements Commandable {
             description = "Zugehörige Kategorien",
             required = true,
             example = "[3b1824120d6d4857843aedfc1973d323, 40ac4fcc97024a87b0bdbffe1f7f49f8]")
-    private List<UUID> categories;
+    private Set<UUID> categories;
+
+    @NotEmpty
+    @Schema(
+        required = true,
+        example = "[3b1824120d6d4857843aedfc1973d323, 40ac4fcc97024a87b0bdbffe1f7f49f8]")
+    private Set<Link> links;
+
 }

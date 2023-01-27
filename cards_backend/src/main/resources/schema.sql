@@ -10,11 +10,10 @@ CREATE TABLE IF NOT EXISTS public.cards
 
 CREATE TABLE IF NOT EXISTS public.links
 (
-    id      UUID,
     name    TEXT,
     source  UUID,
     target  UUID,
-    PRIMARY KEY (id)
+    PRIMARY KEY (name, source, target)
     );
 
 CREATE TABLE IF NOT EXISTS public.categories

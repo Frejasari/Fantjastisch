@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -29,10 +30,10 @@ public class CardQueryRepository {
     private final RowMapper<Card> CARD_ROW_MAPPER = (rs, rowNum) -> {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        List<Card.Category> categoryList;
+        Set<Card.Category> categoryList;
         try {
             categoryList = objectMapper.readValue(rs.getString("categories"),
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, Card.Category.class));
+                    objectMapper.getTypeFactory().constructCollectionType(Set.class, Card.Category.class));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

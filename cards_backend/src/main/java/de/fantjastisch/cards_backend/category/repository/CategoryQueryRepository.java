@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Diese Klasse stellt den Teil des Persistence-Layers bereit, welcher sich mit dem Lesen von Kategorien-Entitäten beschäftigt.
@@ -28,21 +29,21 @@ public class CategoryQueryRepository {
     }
 
     private final RowMapper<Category> CATEGORY_ROW_MAPPER = (rs, rowNum) -> {
-        List<UUID> resultSetArr = parseSQLArrayToUUIDArray(rs.getString("sub_category_ids"));
+        Set<UUID> resultSetArr = parseSQLArrayToUUIDSet(rs.getString("sub_category_ids"));
         return Category.builder()
                 .id(UUID.fromString(rs.getString("id")))
                 .label(rs.getString("label"))
                 .subCategories(resultSetArr).build();
     };
 
-    private List<UUID> parseSQLArrayToUUIDArray(String arr) {
+    private Set<UUID> parseSQLArrayToUUIDSet(String arr) {
         if (arr == null) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
         String[] res = arr.replaceAll("\\[|\\]", "").split(", ");
         return Arrays.stream(res).map(str -> !str.isEmpty() ? UUID.fromString(str) : null)
                 .filter(Objects::nonNull)
-                .toList();
+                .collect(Collectors.toSet());
     }
 
     /**

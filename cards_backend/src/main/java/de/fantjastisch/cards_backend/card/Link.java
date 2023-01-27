@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_backend.link;
+package de.fantjastisch.cards_backend.card;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,8 +8,6 @@ import java.util.UUID;
 @Builder
 @Data
 public class Link {
-    UUID id;
     String name;
-    UUID source;
     UUID target;
 }

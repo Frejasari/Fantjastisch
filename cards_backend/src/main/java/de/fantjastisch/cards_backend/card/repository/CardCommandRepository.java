@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_backend.card.repository;
 
+import de.fantjastisch.cards_backend.card.Link;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -31,14 +32,11 @@ public class CardCommandRepository {
      *
      * @param card Die Karteikarte, welche in die Datenbank eingefügt werden soll.
      */
+    @Transactional
     public void create(Card card) {
-        for (int i = 0; i < card.getCategories().size(); i++) {
-            UUID categoryId = card.getCategories().get(i);
-            String commandCat = "INSERT INTO public.categories_to_cards (category_ID, card_ID) VALUES (:category_id, :card_id)";
-            namedParameterJdbcTemplate.update(commandCat, new MapSqlParameterSource()
-                    .addValue("card_id", card.getId())
-                    .addValue("category_id", categoryId));
-        }
+        updateCategoriesOfCard(card);
+        updateLinksOfCard(card);
+
         String command = "INSERT INTO public.cards (id, question, answer, tag) VALUES (:id, :question, :answer, :tag);";
 
         namedParameterJdbcTemplate.update(command, toParameterSource(card));
@@ -52,16 +50,8 @@ public class CardCommandRepository {
      */
     @Transactional
     public void update(final Card card) {
-        namedParameterJdbcTemplate.update("delete from public.categories_to_cards cc where cc.card_id = :card_id",
-                new MapSqlParameterSource()
-                        .addValue("card_id", card.getId()));
-        for (int i = 0; i < card.getCategories().size(); i++) {
-            UUID categoryId = card.getCategories().get(i);
-            String commandCat = "INSERT INTO public.categories_to_cards (category_ID, card_ID) VALUES (:category_id, :card_id)";
-            namedParameterJdbcTemplate.update(commandCat, new MapSqlParameterSource()
-                    .addValue("card_id", card.getId())
-                    .addValue("category_id", categoryId));
-        }
+        updateCategoriesOfCard(card);
+        updateLinksOfCard(card);
         String command = "UPDATE public.cards SET question = :question, answer = :answer, tag = :tag WHERE id = :id";
         namedParameterJdbcTemplate.update(command, toParameterSource(card));
     }
@@ -84,4 +74,32 @@ public class CardCommandRepository {
                 .addValue("tag", card.getTag().trim())
                 .addValue("categories", card.getCategories().toArray());
     }
+
+    @Transactional
+    private void updateLinksOfCard(Card card) {
+        String command = "DELETE FROM public.links WHERE source=:source;";
+        namedParameterJdbcTemplate.update(command, new MapSqlParameterSource().addValue("source", card.getId()));
+        for (Link link : card.getLinks()) {
+            String commandCat = "INSERT INTO public.links (name, source, target) VALUES (:name, :source, :target);";
+            namedParameterJdbcTemplate.update(commandCat, new MapSqlParameterSource()
+                    .addValue("name", link.getName())
+                    .addValue("source", card.getId())
+                    .addValue("target", link.getTarget()));
+        }
+    }
+
+    @Transactional
+    private void updateCategoriesOfCard(Card card) {
+        namedParameterJdbcTemplate.update("delete from public.categories_to_cards cc where cc.card_id = :card_id",
+                new MapSqlParameterSource()
+                        .addValue("card_id", card.getId()));
+
+        for (UUID categoryId : card.getCategories()) {
+            String commandCat = "INSERT INTO public.categories_to_cards (category_ID, card_ID) VALUES (:category_id, :card_id)";
+            namedParameterJdbcTemplate.update(commandCat, new MapSqlParameterSource()
+                    .addValue("card_id", card.getId())
+                    .addValue("category_id", categoryId));
+        }
+    }
+
 }
