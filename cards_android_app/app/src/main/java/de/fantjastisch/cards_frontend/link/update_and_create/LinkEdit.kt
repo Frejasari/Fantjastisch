@@ -63,7 +63,7 @@ fun LinkEdit(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = onUpdateLinkClicked
             ) {
-                Text(text = stringResource(R.string.create_card_save_button_text))
+                Text(text = stringResource(R.string.save_button_text))
             }
         }
 
