@@ -37,7 +37,7 @@ fun DeleteCategoryDialog(
                     onClick = {
                         viewModel.onDeleteClicked()
                     }) {
-                    Text(text = "Ja")
+                    Text(text = stringResource(R.string.confirm))
                 }
             },
             dismissButton = {
@@ -45,7 +45,7 @@ fun DeleteCategoryDialog(
                     onClick = {
                         viewModel.onDismissClicked()
                     }) {
-                    Text(text = "Abbrechen")
+                    Text(text = stringResource(R.string.cancel))
                 }
             }
         )

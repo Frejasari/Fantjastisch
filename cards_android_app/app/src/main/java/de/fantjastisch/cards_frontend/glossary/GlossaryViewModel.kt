@@ -53,7 +53,7 @@ class GlossaryViewModel(
                         cardLinks.value = card.links
                     },
                     onError = { error.value = "Something is wrong" },
-                    onUnexpectedError = { error.value = "Irgendwas ist schief gelaufen" }
+                    onUnexpectedError = { error.value = "Ein Netzwerkfehler ist aufgetreten." }
                 )*/
         }
     }
@@ -98,7 +98,7 @@ class GlossaryViewModel(
                 is RepoResult.Error,
                 is RepoResult.ServerError -> {
                     // Fehler anzeigen:
-                    error.value = "Irgendwas ist schief gelaufen"
+                    error.value = "Ein Netzwerkfehler ist aufgetreten."
                 }
 
             }

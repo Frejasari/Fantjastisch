@@ -6,6 +6,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
+import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_cards_in_box.EditCardsInBoxFragment
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box.MoveCardsToBoxFragment
@@ -24,7 +26,7 @@ fun CardsInBoxContextMenu(learningBoxId: UUID, learningObjectId: UUID) {
             onDismissRequest = { isMenuOpen.value = false }
         ) {
             DropdownMenuItem(
-                text = { Text(text = "Karten auswählen") },
+                text = { Text(text = stringResource(R.string.choose_card_text)) },
                 onClick = {
                     isMenuOpen.value = false
                     navigator.push(
@@ -35,7 +37,7 @@ fun CardsInBoxContextMenu(learningBoxId: UUID, learningObjectId: UUID) {
                     )
                 })
             DropdownMenuItem(
-                text = { Text(text = "Karten verschieben") },
+                text = { Text(text = stringResource(R.string.move_cards_text)) },
                 onClick = {
                     isMenuOpen.value = false
                     navigator.push(

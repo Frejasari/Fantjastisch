@@ -29,14 +29,14 @@ fun DeleteCardDialog(
                 enabled = isDeleteButtonEnabled,
                 onClick = onDeleteClicked
             ) {
-                Text(text = "Ja")
+                Text(text = stringResource(R.string.confirm))
             }
         },
         dismissButton = {
             Button(
                 onClick = onDismissClicked
             ) {
-                Text(text = "Abbrechen")
+                Text(text = stringResource(R.string.cancel))
             }
         }
     )

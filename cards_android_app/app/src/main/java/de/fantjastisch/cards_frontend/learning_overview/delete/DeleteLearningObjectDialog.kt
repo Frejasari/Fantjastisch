@@ -5,7 +5,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import de.fantjastisch.cards.R
 import java.util.*
 
 
@@ -21,14 +23,14 @@ fun DeleteLearningObjectDialog(
     if (isOpen) {
         AlertDialog(
             onDismissRequest = { setIsOpen(false) }, title = {
-                Text(text = "Möchtest du dieses Lernobjekt wirklich löschen?")
+                Text(text = stringResource(R.string.delete_learningobject_dialog_title))
             },
             confirmButton = {
                 Button(
                     onClick = {
                         viewModel.onDeleteClicked()
                     }) {
-                    Text(text = "Ja")
+                    Text(text = stringResource(id = R.string.confirm))
                 }
             },
             dismissButton = {
@@ -36,7 +38,7 @@ fun DeleteLearningObjectDialog(
                     onClick = {
                         setIsOpen(false)
                     }) {
-                    Text(text = "Abbrechen")
+                    Text(text = stringResource(id = R.string.cancel))
                 }
             }
         )

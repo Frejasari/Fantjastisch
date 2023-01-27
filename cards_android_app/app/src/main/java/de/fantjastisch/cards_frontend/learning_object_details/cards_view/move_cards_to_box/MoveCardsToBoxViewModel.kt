@@ -62,12 +62,14 @@ class MoveCardsToBoxViewModel(
                             when (result) {
                                 is RepoResult.Success -> getContainedCards(result.result)
                                 is RepoResult.Error,
-                                is RepoResult.ServerError -> error.value = "Couldnt fetch cards."
+                                is RepoResult.ServerError -> error.value = "Ein Netzwerkfehler ist aufgetreten."
                             }
                         }
                     },
-                    onUnexpectedError = { error.value = "whoops" },
-                    onValidationError = { error.value = "whoops" }
+                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                    onUnexpectedError = {
+                        error.value = "Ein unbekannter Fehler ist aufgetreten."
+                    }
                 )
         }
     }
@@ -87,11 +89,9 @@ class MoveCardsToBoxViewModel(
                             )
                         }
                 },
+                onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
                 onUnexpectedError = {
-                    error.value = "Couldnt get card ids for box."
-                },
-                onValidationError = {
-                    error.value = "Couldnt get card ids for box."
+                    error.value = "Ein unbekannter Fehler ist aufgetreten."
                 })
         }
     }
@@ -118,8 +118,10 @@ class MoveCardsToBoxViewModel(
                     .map { card -> card.card.id })
                 .fold(
                     onSuccess = { onPageLoaded() },
-                    onUnexpectedError = { error.value = "Whoops" },
-                    onValidationError = { error.value = "Whoops" })
+                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                    onUnexpectedError = {
+                        error.value = "Ein unbekannter Fehler ist aufgetreten."
+                    })
         }
     }
 
@@ -133,8 +135,10 @@ class MoveCardsToBoxViewModel(
                     .map { card -> card.card.id })
                 .fold(
                     onSuccess = { onPageLoaded() },
-                    onUnexpectedError = { error.value = "Whoops" },
-                    onValidationError = { error.value = "Whoops" })
+                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                    onUnexpectedError = {
+                        error.value = "Ein unbekannter Fehler ist aufgetreten."
+                    })
         }
     }
 

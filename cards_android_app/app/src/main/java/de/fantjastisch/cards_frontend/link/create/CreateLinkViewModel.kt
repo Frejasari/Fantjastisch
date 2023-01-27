@@ -34,7 +34,7 @@ import java.util.*
              val result = createLinkModel.getCards()
 
              if (result == null) {
-                 error.value = "Check network connection"
+                 error.value = "Ein Netzwerkfehler ist aufgetreten."
              } else {
                  errors.value = emptyList()
                  linkCards.value = result
@@ -70,7 +70,7 @@ import java.util.*
              when (result) {
                  is RepoResult.Success -> isFinished.value = true
                  is RepoResult.Error -> errors.value = result.errors
-                 is RepoResult.ServerError -> error.value = "Irgendwas ist schief gelaufen"
+                 is RepoResult.ServerError -> error.value = "Ein Netzwerkfehler ist aufgetreten."
              }
          }
      }

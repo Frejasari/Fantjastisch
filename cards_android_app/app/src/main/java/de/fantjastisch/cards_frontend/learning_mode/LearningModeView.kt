@@ -7,9 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 
 @Composable
@@ -62,8 +64,7 @@ fun LearningModeView(
             val learningBox = viewModel.learningBox.value
             if (learningBox != null) {
                 Text(
-                    text = "Lernbox Nr. " + (learningBox.boxNumber.plus(1)).toString()
-                            + " - " + learningBox.label,
+                    text = String.format("%s Nr. %d - %s", stringResource(R.string.learningbox_label), learningBox.boxNumber.plus(1), learningBox.label),
                     style = MaterialTheme.typography.titleMedium
                 )
             } else {
@@ -71,7 +72,7 @@ fun LearningModeView(
             }
 
             Text(
-                text = "Anzahl Karten verbleibend: " + viewModel.numberOfCardsRemaining.value.toString(),
+                text = stringResource(R.string.remaining_cards_in_box_label) + viewModel.numberOfCardsRemaining.value.toString(),
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 14.sp,
                 fontWeight = FontWeight(350)
@@ -105,7 +106,7 @@ fun LearningModeView(
                     onClick = viewModel::onCardGoesToPreviousBoxClicked,
                     enabled = true
                 ) {
-                    Text(text = "Karte in vorherige Lernbox schieben")
+                    Text(text = stringResource(R.string.move_card_to_previous_box_label))
                 }
             }
             if (!viewModel.isLastBox) {
@@ -114,14 +115,14 @@ fun LearningModeView(
                     onClick = viewModel::onCardGoesToNextBoxClicked,
                     enabled = true
                 ) {
-                    Text(text = "Karte in nächste Lernbox schieben")
+                    Text(text = stringResource(R.string.move_card_to_next_box_label))
                 }
                 FilledTonalButton(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     onClick = viewModel::onCardStaysInBoxClicked,
                     enabled = true
                 ) {
-                    Text(text = "Karte nicht weiterschieben")
+                    Text(text = stringResource(R.string.dont_move_card_text))
                 }
             } else {
                 FilledTonalButton(
@@ -129,7 +130,7 @@ fun LearningModeView(
                     onClick = viewModel::onCardStaysInBoxClicked,
                     enabled = true
                 ) {
-                    Text(text = "Nächste Karte")
+                    Text(text = stringResource(R.string.next_card_text))
                 }
             }
         }

@@ -30,14 +30,14 @@ fun DeleteLinkDialog(
                 enabled = isDeleteButtonEnabled,
                 onClick = onDeleteClicked
             ) {
-                Text(text = "Ja")
+                Text(text = stringResource(id = R.string.confirm))
             }
         },
         dismissButton = {
             Button(
                 onClick = onDismissClicked
             ) {
-                Text(text = "Abbrechen")
+                Text(text = stringResource(id = R.string.cancel))
             }
         }
     )

@@ -53,8 +53,8 @@ class UpdateCardViewModel(
                             )
                         }
                     },
-                    onValidationError = { error.value = "Something is wrong" },
-                    onUnexpectedError = { error.value = "Irgendwas ist schief gelaufen" },
+                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                    onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." },
                 )
         }
     }
@@ -71,7 +71,7 @@ class UpdateCardViewModel(
             ).fold(
                 onSuccess = { isFinished.value = true },
                 onValidationError = { errors.value = it },
-                onUnexpectedError = { error.value = "Irgendwas ist schief gelaufen" }
+                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
             )
         }
     }

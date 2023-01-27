@@ -63,8 +63,8 @@ class LearningModeViewModel(
                     cardIds = listOf(currentCard.value!!.id)
                 ).fold(
                     onSuccess = { nextCard() },
-                    onUnexpectedError = { error.value = "Whoops" },
-                    onValidationError = { error.value = "Whoops" })
+                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                    onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." })
             }
         }
     }
@@ -83,8 +83,8 @@ class LearningModeViewModel(
                 )
                     .fold(
                         onSuccess = { nextCard() },
-                        onUnexpectedError = { error.value = "Whoops" },
-                        onValidationError = { error.value = "Whoops" })
+                        onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                        onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." })
             }
         }
     }
@@ -126,7 +126,7 @@ class LearningModeViewModel(
                     val box = learningBoxes.firstOrNull { it.id == learningBoxId }
 
                     if (box == null) {
-                        error.value = "Lernbox konnte nicht eingeholt werden."
+                        error.value = "Ein Netzwerkfehler ist aufgetreten."
                     } else {
                         learningBox.value = box
                         isFirstBox = box.boxNumber == 0
@@ -140,7 +140,7 @@ class LearningModeViewModel(
                     }
                     isLoading.value = false
                 }
-                else -> error.value = "Couldnt fetch cards or learning boxes"
+                else -> error.value = "Ein Netzwerkfehler ist aufgetreten."
             }
         }
     }

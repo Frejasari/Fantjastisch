@@ -7,8 +7,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 
@@ -42,7 +44,7 @@ fun MoveCardsToBoxView(
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
-                    ) { Text(text = "Looks empty...", fontSize = 20.sp) }
+                    ) { Text(text = stringResource(R.string.no_content_text), fontSize = 20.sp) }
                 } else {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -57,7 +59,7 @@ fun MoveCardsToBoxView(
                                 if (viewModel.isFirstBox) {
                                     "                 "
                                 } else {
-                                    "Vorherige Box (" + (viewModel.learningBoxNum.value - 1) + ")"
+                                    String.format("%s (%d)", stringResource(R.string.previous_box_text), (viewModel.learningBoxNum.value - 1))
                                 }
                             )
                         }
@@ -70,7 +72,7 @@ fun MoveCardsToBoxView(
                                 if (viewModel.isLastBox) {
                                     "               "
                                 } else {
-                                    "Nächste Box (" + (viewModel.learningBoxNum.value + 1) + ")"
+                                    String.format("%s (%d)", stringResource(R.string.next_box_text), (viewModel.learningBoxNum.value + 1))
                                 }
                             )
                         }

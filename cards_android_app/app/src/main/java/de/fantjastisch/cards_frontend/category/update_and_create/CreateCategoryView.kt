@@ -35,7 +35,7 @@ fun CreateCategoryView(
             maxLines = 1,
             value = viewModel.categoryLabel.value,
             onValueChange = { viewModel.categoryLabel.value = it },
-            placeholder = stringResource(id = R.string.create_category_label_text),
+            placeholder = stringResource(id = R.string.label_label),
             errors = viewModel.errors.value,
             field = "label"
         )
@@ -52,7 +52,7 @@ fun CreateCategoryView(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = viewModel::save
         ) {
-            Text(text = stringResource(R.string.create_category_save_button_text))
+            Text(text = stringResource(R.string.save_button_text))
         }
     }
 

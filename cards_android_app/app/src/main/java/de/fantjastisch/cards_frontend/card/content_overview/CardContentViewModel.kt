@@ -51,8 +51,8 @@ class CardContentViewModel(
                         }
                         cardLinks.value = card.links
                     },
-                    onValidationError = { error.value = "Something is wrong" },
-                    onUnexpectedError = { error.value = "Irgendwas ist schief gelaufen" },
+                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                    onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." },
                 )
         }
     }
@@ -91,7 +91,7 @@ class CardContentViewModel(
                 is RepoResult.Error,
                 is RepoResult.ServerError -> {
                     // Fehler anzeigen:
-                    error.value = "Irgendwas ist schief gelaufen"
+                    error.value = "Ein Netzwerkfehler ist aufgetreten."
                 }
 
             }

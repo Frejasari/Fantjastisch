@@ -68,7 +68,7 @@ class LearningObjectComponentViewModel(
                     progress.value = progressInternal
                 }
                 else -> {
-                    error.value = "Fehler"
+                    error.value = "Ein Netzwerkfehler ist aufgetreten."
                 }
             }
         }

@@ -3,7 +3,6 @@ package de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_c
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
@@ -47,7 +46,7 @@ fun EditCardsInBoxView(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = viewModel::onAddCardsClicked
         ) {
-            Text(text = stringResource(R.string.create_category_save_button_text))
+            Text(text = stringResource(R.string.save_button_text))
         }
     }
 

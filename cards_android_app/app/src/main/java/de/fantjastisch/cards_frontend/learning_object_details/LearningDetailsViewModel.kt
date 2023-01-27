@@ -25,12 +25,12 @@ class LearningDetailsViewModel(
             learningBoxRepository.getAllBoxesForLearningObject(learningObjectId)
                 .fold(
                     onSuccess = { learningBoxes.value = it },
-                    onUnexpectedError = { error.value = "whoops" },
-                    onValidationError = { error.value = "whoops" }
+                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                    onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
                 )
             learningObjectRepository.findById(learningObjectId,
                 onSuccess = { learningObjectLabel = it.label },
-                onFailure = { error.value = "Konnte Lernobjekt nicht einholen" }
+                onFailure = { error.value = "Ein Netzwerkfehler ist aufgetreten." }
             )
         }
     }
