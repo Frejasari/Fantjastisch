@@ -28,13 +28,13 @@ fun CategoryContextMenu(navigator: Navigator, id: UUID, label: String) {
             onDismissRequest = { isMenuOpen.value = false }
         ) {
             DropdownMenuItem(
-                text = { Text(text = stringResource(id = R.string.category_menu_update)) },
+                text = { Text(text = stringResource(id = R.string.update_button_text)) },
                 onClick = {
                     isMenuOpen.value = false
                     navigator.push(UpdateCategoryFragment(id))
                 })
             DropdownMenuItem(
-                text = { Text(text = stringResource(id = R.string.category_menu_delete)) },
+                text = { Text(text = stringResource(id = R.string.delete_button_text)) },
                 onClick = {
                     isMenuOpen.value = false
                     isDeleteDialogOpen.value = true
