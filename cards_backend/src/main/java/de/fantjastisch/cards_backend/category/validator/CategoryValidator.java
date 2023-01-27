@@ -25,12 +25,10 @@ import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
 @Component
 public class CategoryValidator extends Validator {
 
-    private final CardQueryRepository cardQueryRepository;
     private final CategoryQueryRepository categoryQueryRepository;
 
     @Autowired
-    public CategoryValidator(CardQueryRepository cardQueryRepository, CategoryQueryRepository categoryQueryRepository) {
-        this.cardQueryRepository = cardQueryRepository;
+    public CategoryValidator(CategoryQueryRepository categoryQueryRepository) {
         this.categoryQueryRepository = categoryQueryRepository;
     }
 
@@ -125,7 +123,7 @@ public class CategoryValidator extends Validator {
     }
 
     private List<ErrorEntry> checkIfCategoryIsInUse(final UUID categoryId) {
-        if (cardQueryRepository.isCategoryEmpty(categoryId)) {
+        if (categoryQueryRepository.isCategoryEmpty(categoryId)) {
             return Collections.emptyList();
         }
         return Collections.singletonList(ErrorEntry.builder()

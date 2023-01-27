@@ -55,12 +55,14 @@ public class CardAggregateTests {
             .label("SWP")
             .subCategories(Collections.emptySet())
             .build();
+
     private final de.fantjastisch.cards_backend.card.repository.Card cardForSave = de.fantjastisch.cards_backend.card.repository.Card
             .builder()
             .id(UUID.fromString("b7913a6f-6152-436e-b3ef-e38eb54d4725"))
             .question("I am the question")
             .answer("I am the answer")
             .tag("I am a tag")
+            .links(Collections.emptySet())
             .categories(Set.of(category.getId()))
             .build();
 
@@ -70,6 +72,7 @@ public class CardAggregateTests {
             .question(cardForSave.getQuestion())
             .answer(cardForSave.getAnswer())
             .tag(cardForSave.getTag())
+            .links(cardForSave.getLinks())
             .categories(Set.of(Card.Category
                     .builder()
                     .id(category.getId())
@@ -242,6 +245,7 @@ public class CardAggregateTests {
                 .question(cardForSave.getQuestion())
                 .answer(cardForSave.getAnswer())
                 .tag(cardForSave.getTag())
+                .links(Collections.emptySet())
                 .categories(Set.of(category.getId()))
                 .build();
 
@@ -255,6 +259,7 @@ public class CardAggregateTests {
                 .question(cardForSave.getQuestion())
                 .answer(cardForSave.getAnswer())
                 .tag(cardForSave.getTag())
+                .links(Collections.emptySet())
                 .categories(Set.of(UUID.randomUUID()))
                 .build();
 
@@ -272,6 +277,7 @@ public class CardAggregateTests {
                 .question(cardForSave.getQuestion())
                 .answer(cardForSave.getAnswer())
                 .tag(cardForSave.getTag())
+                .links(Collections.emptySet())
                 .categories(Set.of(UUID.randomUUID()))
                 .build();
 
@@ -289,13 +295,16 @@ public class CardAggregateTests {
 
     @Test
     public void shouldThrowWhenDuplicateCard() {
-        when(cardQueryRepository.getPage(null, null, card.getTag(), false)).thenReturn(Collections.singletonList(card));
+        when(cardQueryRepository.getPage(null, null, card.getTag(), false))
+                .thenReturn(Collections.singletonList(card));
+
         when(categoryQueryRepository.get(category.getId())).thenReturn(category);
 
         CreateCard toCreate = CreateCard.builder()
                 .question(cardForSave.getQuestion())
                 .answer(cardForSave.getAnswer())
                 .tag(cardForSave.getTag())
+                .links(cardForSave.getLinks())
                 .categories(cardForSave.getCategories())
                 .build();
 

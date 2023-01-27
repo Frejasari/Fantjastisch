@@ -49,12 +49,32 @@ public class CardAggregate {
                 .question(command.getQuestion())
                 .answer(command.getAnswer())
                 .tag(command.getTag())
+                .links(command.getLinks())
                 .categories(command.getCategories())
                 .build();
         cardCommandRepository.create(newCard);
         return newCard.getId();
     }
 
+    /**
+     * Diese Funktion validiert und vermittelt eine Anfrage zum Aktualisieren einer Karteikarte.
+     *
+     * @param command Das CRUD-Kommando-Objekt zum Aktualisieren einer Karteikarte.
+     */
+    public void handle(final UpdateCard command) {
+
+        cardValidator.validate(command);
+        final de.fantjastisch.cards_backend.card.repository.Card card = de.fantjastisch.cards_backend.card.repository.Card.builder()
+                .tag(command.getTag())
+                .answer(command.getAnswer())
+                .id(command.getId())
+                .categories(command.getCategories())
+                .links(command.getLinks())
+                .question(command.getQuestion())
+                .build();
+        cardCommandRepository.update(card);
+    }
+    
     /**
      * Diese Funktion validiert und vermittelt eine Anfrage zum Lesen einer Karteikarte.
      *
@@ -91,21 +111,4 @@ public class CardAggregate {
         cardCommandRepository.delete(cardId);
     }
 
-    /**
-     * Diese Funktion validiert und vermittelt eine Anfrage zum Aktualisieren einer Karteikarte.
-     *
-     * @param command Das CRUD-Kommando-Objekt zum Aktualisieren einer Karteikarte.
-     */
-    public void handle(final UpdateCard command) {
-
-        cardValidator.validate(command);
-        final de.fantjastisch.cards_backend.card.repository.Card card = de.fantjastisch.cards_backend.card.repository.Card.builder()
-                .tag(command.getTag())
-                .answer(command.getAnswer())
-                .id(command.getId())
-                .categories(command.getCategories())
-                .question(command.getQuestion())
-                .build();
-        cardCommandRepository.update(card);
-    }
 }

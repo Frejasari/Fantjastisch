@@ -52,7 +52,7 @@ public class CategoryQueryRepository {
      * @return Eine Liste aller Kategorien-Entitäten, gekapselt in {@link Category}-Instanzen.
      */
     public List<Category> getPage() {
-        final String query = "select * from public.categories;";
+        final String query = "select id, label, sub_category_ids from public.categories;";
         return namedParameterJdbcTemplate.query(query, CATEGORY_ROW_MAPPER);
     }
 
@@ -65,7 +65,7 @@ public class CategoryQueryRepository {
      * @throws EmptyResultDataAccessException Die Entität konnte nicht gefunden werden.
      */
     public Category get(UUID id) {
-        final String query = "select * from public.categories where id = :id;";
+        final String query = "select id, label, sub_category_ids from public.categories where id = :id;";
         try {
             return namedParameterJdbcTemplate.queryForObject(query,
                     new MapSqlParameterSource().addValue("id", id),
@@ -74,4 +74,18 @@ public class CategoryQueryRepository {
             return null;
         }
     }
+
+    /**
+     * Diese Funktion überprüft, ob eine Kategorie keine Karten enthält.
+     *
+     * @param categoryId Die Id der Kategorie die überprüft werden soll
+     * @return Einen Boolean, ob die Kategorie leer ist oder nicht
+     */
+    public Boolean isCategoryEmpty(UUID categoryId) {
+        final String query = "select CASE WHEN EXISTS (SELECT 1 FROM public.categories_to_cards where " +
+                "category_id = :categoryId ) THEN 'FALSE' ELSE 'TRUE' END";
+        return namedParameterJdbcTemplate.queryForObject(query,
+                new MapSqlParameterSource().addValue("categoryId", categoryId), Boolean.class);
+    }
+
 }

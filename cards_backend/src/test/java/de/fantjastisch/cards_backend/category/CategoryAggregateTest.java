@@ -42,8 +42,6 @@ public class CategoryAggregateTest {
     private CategoryCommandRepository categoryCommandRepository;
     @Mock
     private CategoryQueryRepository categoryQueryRepository;
-    @Mock
-    CardQueryRepository cardQueryRepository;
 
     private final Category category = Category
             .builder()
@@ -54,7 +52,7 @@ public class CategoryAggregateTest {
 
     @BeforeEach
     public void setUp() {
-        CategoryValidator categoryValidator = new CategoryValidator(cardQueryRepository, categoryQueryRepository);
+        CategoryValidator categoryValidator = new CategoryValidator(categoryQueryRepository);
         categoryAggregate = new CategoryAggregate(categoryCommandRepository, categoryValidator, categoryQueryRepository, uuidGenerator);
     }
 
@@ -84,7 +82,7 @@ public class CategoryAggregateTest {
 
     @Test
     public void shouldThrowWhenCategoryNotEmpty() {
-        when(cardQueryRepository.isCategoryEmpty(category.getId())).thenReturn(false);
+        when(categoryQueryRepository.isCategoryEmpty(category.getId())).thenReturn(false);
         when(categoryQueryRepository.get(category.getId())).thenReturn(category);
         CommandValidationException exception = assertThrows(CommandValidationException.class,
                 () -> categoryAggregate.handleDelete(category.getId()));

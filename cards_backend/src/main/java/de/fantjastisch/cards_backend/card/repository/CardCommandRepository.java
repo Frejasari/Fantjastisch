@@ -78,11 +78,13 @@ public class CardCommandRepository {
     @Transactional
     private void updateLinksOfCard(Card card) {
         String command = "DELETE FROM public.links WHERE source=:source;";
-        namedParameterJdbcTemplate.update(command, new MapSqlParameterSource().addValue("source", card.getId()));
+        namedParameterJdbcTemplate.update(command, new MapSqlParameterSource()
+                .addValue("source", card.getId())
+        );
         for (Link link : card.getLinks()) {
-            String commandCat = "INSERT INTO public.links (name, source, target) VALUES (:name, :source, :target);";
+            String commandCat = "INSERT INTO public.links (label, source, target) VALUES (:label, :source, :target);";
             namedParameterJdbcTemplate.update(commandCat, new MapSqlParameterSource()
-                    .addValue("name", link.getName())
+                    .addValue("label", link.getLabel())
                     .addValue("source", card.getId())
                     .addValue("target", link.getTarget()));
         }
@@ -92,7 +94,8 @@ public class CardCommandRepository {
     private void updateCategoriesOfCard(Card card) {
         namedParameterJdbcTemplate.update("delete from public.categories_to_cards cc where cc.card_id = :card_id",
                 new MapSqlParameterSource()
-                        .addValue("card_id", card.getId()));
+                        .addValue("card_id", card.getId())
+        );
 
         for (UUID categoryId : card.getCategories()) {
             String commandCat = "INSERT INTO public.categories_to_cards (category_ID, card_ID) VALUES (:category_id, :card_id)";
@@ -101,5 +104,4 @@ public class CardCommandRepository {
                     .addValue("category_id", categoryId));
         }
     }
-
 }

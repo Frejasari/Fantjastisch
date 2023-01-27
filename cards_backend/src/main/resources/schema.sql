@@ -10,10 +10,10 @@ CREATE TABLE IF NOT EXISTS public.cards
 
 CREATE TABLE IF NOT EXISTS public.links
 (
-    name    TEXT,
+    label    TEXT,
     source  UUID,
     target  UUID,
-    PRIMARY KEY (name, source, target)
+    PRIMARY KEY (label, source, target)
     );
 
 CREATE TABLE IF NOT EXISTS public.categories
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS public.categories_to_cards
 (
     category_id UUID,
     card_id UUID,
-    PRIMARY KEY (category_ID, card_ID)
+    PRIMARY KEY (category_id, card_id)
 --     foreign key (category_id) references public.categories(id),
 --     foreign key (card_id) references public.cards(id)
     );

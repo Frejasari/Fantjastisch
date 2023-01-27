@@ -3,6 +3,7 @@ package de.fantjastisch.cards_backend.card.repository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fantjastisch.cards_backend.card.Card;
+import de.fantjastisch.cards_backend.card.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,10 +11,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Diese Klasse stellt den Teil des Persistence-Layers bereit, welcher sich mit dem Lesen von Karteikarte-Entitäten beschäftigt.
@@ -30,10 +29,14 @@ public class CardQueryRepository {
     private final RowMapper<Card> CARD_ROW_MAPPER = (rs, rowNum) -> {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        Set<Card.Category> categoryList;
+        Set<Card.Category> categories;
+        Set<Link> links;
         try {
-            categoryList = objectMapper.readValue(rs.getString("categories"),
+            categories = objectMapper.readValue(rs.getString("categories"),
                     objectMapper.getTypeFactory().constructCollectionType(Set.class, Card.Category.class));
+            links = objectMapper.readValue(rs.getString("links"),
+                    objectMapper.getTypeFactory().constructCollectionType(Set.class, Link.class));
+
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -43,7 +46,8 @@ public class CardQueryRepository {
                 .answer(rs.getString("answer"))
                 .question(rs.getString("question"))
                 .tag(rs.getString("tag"))
-                .categories(categoryList)
+                .categories(categories)
+                .links(links.stream().filter(Objects::nonNull).collect(Collectors.toSet()))
                 .build();
     };
 
@@ -61,9 +65,13 @@ public class CardQueryRepository {
      * @throws EmptyResultDataAccessException Die Entität konnte nicht gefunden werden.
      */
     public Card get(UUID id) {
-        final String query = "select c.id, c.answer, c.question, c.tag, array_agg('{\"id\":\"'||cc.category_id||'\", \"label\" : \"'||cat.label||'\"}') as categories from public.cards c " +
-                "join  categories_to_cards cc on c.id = cc.card_id " +
+        final String query = "select c.id, c.answer, c.question, c.tag, " +
+                "array_agg('{\"id\":\"'||cc.category_id||'\", \"label\" : \"'||cat.label||'\"}') as categories, " +
+                "array_agg('{\"target\":\"'|| l.target ||'\", \"label\" : \"'||l.label||'\"}') as links " +
+                "from public.cards c " +
+                "join categories_to_cards cc on c.id = cc.card_id " +
                 "join categories cat on cc.category_id = cat.id " +
+                "left join links l on c.id = l.source " +
                 "where c.id=:cardId " +
                 "group by c.id";
         try {
@@ -86,8 +94,12 @@ public class CardQueryRepository {
      * @return Eine Liste aller Karteikarte-Entitäten, gekapselt in {@link Card}-Instanzen.
      */
     public List<Card> getPage(final List<UUID> categoryFilter, final String search, final String tag, final boolean sort) {
-        String query = "select c.id, c.answer, c.question, c.tag, array_agg('{\"id\":\"'||cc.category_id||'\", \"label\" : \"'||cat.label||'\"}') as categories from public.cards c " +
+        String query = "select c.id, c.answer, c.question, c.tag, " +
+                "array_agg('{\"id\":\"'||cc.category_id||'\", \"label\" : \"'||cat.label||'\"}') as categories, " +
+                "array_agg('{\"target\":\"'|| l.target ||'\", \"label\" : \"'||l.label||'\"}') as links " +
+                "from public.cards c " +
                 "join public.categories_to_cards cc on c.id = cc.card_id " +
+                "left join links l on c.id = l.source " +
                 "join categories cat on cc.category_id = cat.id ";
 
         final MapSqlParameterSource paramSource = new MapSqlParameterSource().addValue("tag", tag)
@@ -126,15 +138,4 @@ public class CardQueryRepository {
         return namedParameterJdbcTemplate.query(query,
                 paramSource, CARD_ROW_MAPPER);
     }
-
-    // queryForObject: bei nicht gefundener ID abfangen (Fehlermeldung)
-//    TODO: Db-Test
-    public Boolean isCategoryEmpty(UUID categoryId) {
-        final String query = "select CASE WHEN EXISTS (SELECT 1 FROM public.categories_to_cards where " +
-                "category_id = :categoryId ) THEN 'FALSE' ELSE 'TRUE' END";
-        return namedParameterJdbcTemplate.queryForObject(query,
-                new MapSqlParameterSource().addValue("categoryId", categoryId), Boolean.class);
-    }
-
-
 }

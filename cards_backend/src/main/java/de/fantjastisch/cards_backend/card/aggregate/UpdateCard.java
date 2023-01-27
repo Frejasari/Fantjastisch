@@ -65,10 +65,11 @@ public class UpdateCard implements Commandable {
             example = "[3b1824120d6d4857843aedfc1973d323, 40ac4fcc97024a87b0bdbffe1f7f49f8]")
     private Set<UUID> categories;
 
-    @NotEmpty
+
+    @NotNull
     @Schema(
-        required = true,
-        example = "[3b1824120d6d4857843aedfc1973d323, 40ac4fcc97024a87b0bdbffe1f7f49f8]")
+            required = true,
+            example = "[3b1824120d6d4857843aedfc1973d323, 40ac4fcc97024a87b0bdbffe1f7f49f8]")
     private Set<Link> links;
 
 }

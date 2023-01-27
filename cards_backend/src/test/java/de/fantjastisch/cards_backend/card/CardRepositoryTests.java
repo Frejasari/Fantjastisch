@@ -113,7 +113,7 @@ public class CardRepositoryTests {
             .tag("sehr wichtig")
             .links(Set.of(
                     Link.builder()
-                            .name("link to card 1")
+                            .label("link to card 1")
                             .target(card1.getId())
                             .build()))
             .categories(Set.of(Card.Category.builder()
@@ -129,11 +129,11 @@ public class CardRepositoryTests {
             .tag("wichtig")
             .links(Set.of(
                     Link.builder()
-                            .name("link to card 1")
+                            .label("link to card 1")
                             .target(card1.getId())
                             .build(),
                     Link.builder()
-                            .name("link to card 2")
+                            .label("link to card 2")
                             .target(card2.getId())
                             .build()))
             .categories(Set.of(Card.Category.builder()
@@ -169,6 +169,7 @@ public class CardRepositoryTests {
                 .answer("Rudolf Bayer")
                 .question("?")
                 .categories(card1.getCategories().stream().map(category -> category.id).collect(Collectors.toSet()))
+                .links(card1.getLinks())
                 .tag("wichtig")
                 .build();
 
@@ -179,6 +180,7 @@ public class CardRepositoryTests {
                 .answer(updated.getAnswer())
                 .question(updated.getQuestion())
                 .categories(card1.getCategories())
+                .links(Collections.emptySet())
                 .tag(updated.getTag())
                 .build(), cardQueryRepository.get(card1.getId()));
     }
@@ -208,6 +210,7 @@ public class CardRepositoryTests {
                 .question("Welche Verdrängungsstrategien gibt es?")
                 .answer("FIFO, LRU, LFU")
                 .tag("Wichtig")
+                .links(Collections.emptySet())
                 .categories(Set.of(Card.Category
                         .builder()
                         .id(cat.getId())
@@ -222,6 +225,7 @@ public class CardRepositoryTests {
                 .question(expected.getQuestion())
                 .answer(expected.getAnswer())
                 .tag(expected.getTag())
+                .links(Collections.emptySet())
                 .categories(expected.getCategories().stream().map(Card.Category::getId).collect(Collectors.toSet()))
                 .build());
 
@@ -251,7 +255,7 @@ public class CardRepositoryTests {
     public void shouldNotFindCardWithNonExistentTag() {
         createCards();
 
-        assertEquals(Collections.emptySet(),
+        assertEquals(Collections.emptyList(),
                 cardQueryRepository.getPage(Collections.emptyList(), null, "bye", false));
     }
 
@@ -259,7 +263,7 @@ public class CardRepositoryTests {
     public void shouldNotFindCardWithNonExistentSubstring() {
         createCards();
 
-        assertEquals(Collections.emptySet(),
+        assertEquals(Collections.emptyList(),
                 cardQueryRepository.getPage(Collections.emptyList(), "bye", null, false));
     }
 
@@ -302,6 +306,7 @@ public class CardRepositoryTests {
                 .question("Finde mich nicht.")
                 .answer("Ok.")
                 .tag("wichtig")
+                .links(Collections.emptySet())
                 .categories(Collections.emptySet())
                 .build();
         cardCommandRepository.create(card4);
@@ -316,7 +321,6 @@ public class CardRepositoryTests {
     @Test
     public void filterCardsAndSort() {
         createCards();
-
         List<UUID> categoryFilter = List.of(cat0.getId());
         List<Card> actual = cardQueryRepository.getPage(categoryFilter, null, null, true);
 
@@ -358,6 +362,7 @@ public class CardRepositoryTests {
                 .question("Was ist negativ Davio?")
                 .answer("Ein Zerlegungstyp")
                 .tag("sehr wichtig")
+                .links(Collections.emptySet())
                 .categories(Set.of(cat0.getId()))
                 .build();
         cardCommandRepository.create(card4);
@@ -370,6 +375,7 @@ public class CardRepositoryTests {
                 .question(card4.getQuestion())
                 .answer(card4.getAnswer())
                 .tag(card4.getTag())
+                .links(Collections.emptySet())
                 .categories(Set.of(Card.Category
                         .builder()
                         .id(cat0.getId())
