@@ -14,12 +14,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardContextMenu
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
@@ -131,7 +133,7 @@ private fun CardView(
                         ) {
                             Text(
                                 modifier = Modifier,
-                                text = "Tag: ",
+                                text = stringResource(R.string.inline_tag_label),
                                 fontWeight = FontWeight(500),
                                 fontSize = 12.sp,
                             )
@@ -156,7 +158,7 @@ private fun CardView(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Kategorien: ",
+                        text = stringResource(R.string.inline_categories_label),
                         fontSize = 14.sp
                     )
                     Text(
@@ -212,7 +214,7 @@ private fun CardView(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Antwort",
+                        text = stringResource(R.string.answer_label),
                         fontWeight = FontWeight(300),
                         fontSize = 12.sp
                     )
@@ -238,7 +240,7 @@ private fun CardView(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Tag",
+                        text = stringResource(R.string.tag_label),
                         fontWeight = FontWeight(300),
                         fontSize = 12.sp
                     )
@@ -263,7 +265,7 @@ private fun CardView(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Kategorien",
+                        text = stringResource(R.string.categories_label),
                         fontWeight = FontWeight(300),
                         fontSize = 12.sp
                     )
@@ -289,7 +291,7 @@ private fun CardView(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Links",
+                        text = stringResource(R.string.links_label),
                         fontWeight = FontWeight(300),
                         fontSize = 12.sp
                     )

@@ -56,7 +56,7 @@ class CreateLearningObjectViewModel(
                 }
             },
             onFailure = {
-                errors.value = "Konnte keine Kategorien einholen."
+                errors.value = "Ein Netzwerkfehler ist aufgetreten."
             },
         )
         viewModelScope.launch {
@@ -71,7 +71,7 @@ class CreateLearningObjectViewModel(
                     }
                 },
                 onFailure = {
-                    errors.value = "Konnte keine Lernsysteme einholen."
+                    errors.value = "Ein Netzwerkfehler ist aufgetreten."
                 },
             )
         }
@@ -96,7 +96,7 @@ class CreateLearningObjectViewModel(
 
                 is RepoResult.Error,
                 is RepoResult.ServerError -> {
-                    errors.value = "Konnte keine Karten einholen."
+                    errors.value = "Ein Netzwerkfehler ist aufgetreten."
                 }
             }
         }
@@ -138,7 +138,7 @@ class CreateLearningObjectViewModel(
                     getLearningSystemFromInput(learningObject)
                 },
                 onFailure = {
-                    errors.value = "Could not insert learning object into DB"
+                    errors.value = "Ein Netzwerkfehler ist aufgetreten."
                 }
             )
         }
@@ -153,11 +153,9 @@ class CreateLearningObjectViewModel(
                         val learningSystem = it
                         getCardsFromCategories(learningSystem, learningObject)
                     },
+                    onValidationError = { errors.value = "Fehler bei der Eingabevalidierung." },
                     onUnexpectedError = {
-                        errors.value = "Could not get learning system."
-                    },
-                    onValidationError = {
-                        errors.value = "Could not get learning system."
+                        errors.value = "Ein unbekannter Fehler ist aufgetreten."
                     })
         }
     }
@@ -181,12 +179,8 @@ class CreateLearningObjectViewModel(
                     onSuccess = {
                         createLearningBoxesFromCards(it, learningSystem, learningObject)
                     },
-                    onValidationError = {
-                        errors.value = "Could not get cards."
-                    },
-                    onUnexpectedError = {
-                        errors.value = "Could not get cards."
-                    }
+                    onValidationError = { errors.value = "Fehler bei der Eingabevalidierung." },
+                    onUnexpectedError = { errors.value = "Ein unbekannter Fehler ist aufgetreten." }
                 )
             }
         }
@@ -231,19 +225,17 @@ class CreateLearningObjectViewModel(
                                     errors.value = null
                                     isFinished.value = true
                                 },
-                                onUnexpectedError = {
-                                    errors.value =
-                                        "Could not insert relationship from cards to learning box."
-                                },
                                 onValidationError = {
-                                    errors.value =
-                                        "Could not insert relationship from cards to learning box."
+                                    errors.value = "Fehler bei der Eingabevalidierung."
+                                },
+                                onUnexpectedError = {
+                                    errors.value = "Ein unbekannter Fehler ist aufgetreten."
                                 })
                         }
                     }
                 },
                 onFailure = {
-                    errors.value = "Could not insert learning box."
+                    errors.value = "Ein Netzwerkfehler ist aufgetreten."
                 }
             )
         }

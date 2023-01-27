@@ -41,7 +41,7 @@ fun LearningDetailsContextMenu(
                     )
                 })
             DropdownMenuItem(
-                text = { Text(text = "Karten verschieben") },
+                text = { Text(text = stringResource(R.string.move_cards_text)) },
                 onClick = {
                     isMenuOpen.value = false
                     navigator.push(

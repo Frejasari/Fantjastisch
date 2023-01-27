@@ -41,7 +41,7 @@ class CreateLearningSystemViewModel(
                 onFailure = {
                     if (it == null) {
                         // Fehler anzeigen:
-                        error.value = "Irgendwas ist schief gelaufen"
+                        error.value = "Ein Netzwerkfehler ist aufgetreten."
                     } else {
                         errors.value = it.errors
                     }

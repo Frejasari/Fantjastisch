@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -94,7 +95,7 @@ fun LearningDetailsView(
                         ) {
                             Text(
                                 modifier = Modifier,
-                                text = "Anzahl Karten: " + learningBox.nrOfCards
+                                text = String.format("%s: %d", stringResource(R.string.number_of_cards_text), learningBox.nrOfCards)
                             )
                             Spacer(
                                 Modifier
@@ -103,7 +104,7 @@ fun LearningDetailsView(
                             )
                             Text(
                                 modifier = Modifier,
-                                text = "Box-Nr. " + (learningBox.boxNumber + 1).toString()
+                                text = String.format("Box-Nr. %d", (learningBox.boxNumber + 1))
                             )
                             Icon(
                                 painter = painterResource(id = R.drawable.inventory_2),

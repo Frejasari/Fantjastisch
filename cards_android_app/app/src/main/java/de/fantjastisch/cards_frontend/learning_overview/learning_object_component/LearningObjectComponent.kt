@@ -11,10 +11,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsFragment
 import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObjectDialog
@@ -109,9 +111,9 @@ fun LearningObjectComponent(
                                     Color(0xFFFF8707)
                                 else Color(0xFF2B990D),
                                 text = if (viewModel.progress.value == -1) {
-                                    "Fetching..."
+                                    stringResource(R.string.fetching_data_text)
                                 } else {
-                                    viewModel.progress.value.toString() + " %"
+                                    String.format("%s %%", viewModel.progress.value.toString())
                                 }
                             )
                         }

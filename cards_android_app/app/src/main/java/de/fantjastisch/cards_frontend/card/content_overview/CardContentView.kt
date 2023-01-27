@@ -68,7 +68,7 @@ fun CardContentView(
             onValueChange = { viewModel.cardQuestion.value = it },
             modifier = Modifier.fillMaxWidth(),
             readOnly = true,
-            label = { Text(stringResource(id = R.string.create_card_question_text)) },
+            label = { Text(stringResource(id = R.string.question_label)) },
             maxLines = 5,
             colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
         )
@@ -77,7 +77,7 @@ fun CardContentView(
             onValueChange = { viewModel.cardAnswer.value = it },
             modifier = Modifier.fillMaxWidth(),
             readOnly = true,
-            label = { Text(stringResource(id = R.string.create_card_answer_text)) },
+            label = { Text(stringResource(id = R.string.answer_label)) },
             maxLines = 5,
             colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
         )
@@ -86,7 +86,7 @@ fun CardContentView(
             onValueChange = { viewModel.cardTag.value = it },
             modifier = Modifier.fillMaxWidth(),
             readOnly = true,
-            label = { Text(stringResource(id = R.string.create_card_tag_text)) },
+            label = { Text(stringResource(id = R.string.tag_label)) },
             maxLines = 5,
             colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
         )
@@ -119,7 +119,7 @@ fun CardContentView(
                 ) {
                     Text(
                         modifier = Modifier.weight(5f),
-                        text = stringResource(id = R.string.create_card_categories_text),
+                        text = stringResource(id = R.string.categories_label),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -187,7 +187,7 @@ fun CardContentView(
                 ) {
                     Text(
                         modifier = Modifier.weight(5f),
-                        text = stringResource(id = R.string.links),
+                        text = stringResource(id = R.string.links_label),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )

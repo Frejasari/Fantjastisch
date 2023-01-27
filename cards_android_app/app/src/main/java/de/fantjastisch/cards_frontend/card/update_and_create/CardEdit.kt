@@ -43,7 +43,7 @@ fun CardEdit(
             value = question.value,
             errors = question.errors,
             onValueChange = question.onValueChange,
-            placeholder = stringResource(id = R.string.create_card_question_text),
+            placeholder = stringResource(id = R.string.question_label),
             field = "question"
         )
         OutlinedTextFieldWithErrors(
@@ -51,7 +51,7 @@ fun CardEdit(
             value = answer.value,
             errors = answer.errors,
             onValueChange = answer.onValueChange,
-            placeholder = stringResource(id = R.string.create_card_answer_text),
+            placeholder = stringResource(id = R.string.answer_label),
             field = "answer"
         )
         OutlinedTextFieldWithErrors(
@@ -59,7 +59,7 @@ fun CardEdit(
             value = tag.value,
             errors = tag.errors,
             onValueChange = tag.onValueChange,
-            placeholder = stringResource(id = R.string.create_card_tag_text),
+            placeholder = stringResource(id = R.string.tag_label),
             field = "tag"
         )
         CategorySelect(

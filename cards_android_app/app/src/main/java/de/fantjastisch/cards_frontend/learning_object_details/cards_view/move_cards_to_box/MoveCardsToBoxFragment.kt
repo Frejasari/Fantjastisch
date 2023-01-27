@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
+import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsInBoxContextMenu
 import java.util.*
 
@@ -26,7 +28,7 @@ data class MoveCardsToBoxFragment(
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                title = { Text(text = "Karten im Lernobjekt verschieben") },
+                title = { Text(text = stringResource(R.string.move_cards_in_learningobject_text)) },
                 actions = {
                     CardsInBoxContextMenu(
                         learningBoxId = learningBoxId,

@@ -45,8 +45,8 @@ fun CreateLearningObjectView(
                         modifier = Modifier.fillMaxWidth(),
                         value = viewModel.learningObjectLabel.value,
                         onValueChange = { viewModel.learningObjectLabel.value = it },
-                        placeholder = { Text(text = stringResource(id = R.string.create_category_label_text)) },
-                        label = { Text(text = "Bezeichnung") },
+                        placeholder = { Text(text = stringResource(id = R.string.label_label)) },
+                        label = { Text(text = stringResource(R.string.label_label)) },
                         isError = viewModel.learningObjectLabel.value.isBlank()
                     )
                     Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
@@ -54,11 +54,11 @@ fun CreateLearningObjectView(
                         items = viewModel.learningSystems.value,
                         selectedItem = viewModel.selectedSystem.value,
                         onItemSelected = viewModel::onLearningSystemSelected,
-                        placeholder = { Text(text = "Lernsystem") }
+                        placeholder = { Text(text = stringResource(R.string.learning_system_label)) }
                     )
                     Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
                     Text(
-                        text = "Kategorien hinzufügen",
+                        text = stringResource(R.string.add_categories_label),
                         style = MaterialTheme.typography.titleMedium
                     )
                     CategorySelect(
@@ -67,7 +67,7 @@ fun CreateLearningObjectView(
                     )
                     Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
                     Text(
-                        text = "Einzelne Karten hinzufügen",
+                        text = stringResource(R.string.select_cards_label),
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
@@ -81,7 +81,7 @@ fun CreateLearningObjectView(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = viewModel::onAddLearningObjectClicked
         ) {
-            Text(text = stringResource(R.string.create_category_save_button_text))
+            Text(text = stringResource(R.string.save_button_text))
         }
     }
 

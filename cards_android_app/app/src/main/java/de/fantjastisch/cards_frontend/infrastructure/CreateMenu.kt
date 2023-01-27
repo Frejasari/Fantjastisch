@@ -40,13 +40,13 @@ fun TobBarCreateMenu() {
                     navigator.push(CreateCategoryFragment())
                 })
             DropdownMenuItem(
-                text = { Text("Neues Lernsystem") },
+                text = { Text(stringResource(R.string.menu_create_learningsystem)) },
                 onClick = {
                     isCreateMenuOpen.value = false
                     navigator.push(CreateLearningSystemFragment())
                 })
             DropdownMenuItem(
-                text = { Text("Neues Lernobjekt") },
+                text = { Text(stringResource(R.string.menu_create_learningobject)) },
                 onClick = {
                     isCreateMenuOpen.value = false
                     navigator.push(CreateLearningObjectFragment())

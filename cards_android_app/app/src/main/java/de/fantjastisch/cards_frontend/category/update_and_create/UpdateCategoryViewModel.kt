@@ -24,7 +24,7 @@ class UpdateCategoryViewModel(
                 loadAllCategories()
             },
             onFailure = {
-                error.value = "Check network connection"
+                error.value = "Ein Netzwerkfehler ist aufgetreten."
             })
     }
 
@@ -45,7 +45,7 @@ class UpdateCategoryViewModel(
 
             },
             onFailure = {
-                error.value = "Check network connection"
+                error.value = "Ein Netzwerkfehler ist aufgetreten."
             },
         )
     }
@@ -63,11 +63,11 @@ class UpdateCategoryViewModel(
             },
             onFailure = {
                 if (it == null) {
-                    error.value = "Irgendwas ist schief gelaufen"
+                    error.value = "Ein Netzwerkfehler ist aufgetreten."
                 } else {
                     errors.value = it.errors
                 }
-                error.value = "There is an error"
+                error.value = "Ein Netzwerkfehler ist aufgetreten."
             }
         )
     }

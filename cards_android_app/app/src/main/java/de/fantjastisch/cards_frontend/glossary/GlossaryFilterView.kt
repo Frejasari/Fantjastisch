@@ -36,7 +36,7 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Sortieren",
+                    text = stringResource(R.string.sort_label),
                     fontWeight = FontWeight(500),
                     fontSize = 20.sp
                 )
@@ -44,7 +44,7 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
             }
             Divider()
             Text(
-                text = "Filter",
+                text = stringResource(R.string.filter_label),
                 fontWeight = FontWeight(500),
                 fontSize = 20.sp
             )
@@ -53,17 +53,17 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
                 modifier = Modifier.fillMaxWidth(),
                 value = viewModel.search.value,
                 onValueChange = viewModel::onSearchInput,
-                placeholder = { Text(text = "Nach Karten suchen") },
+                placeholder = { Text(text = stringResource(R.string.search_card_placeholder)) },
             )
             OutlinedTextField(
                 maxLines = 2,
                 modifier = Modifier.fillMaxWidth(),
                 value = viewModel.tag.value,
                 onValueChange = viewModel::onTagInput,
-                placeholder = { Text(text = "Nach Tag suchen") },
+                placeholder = { Text(text = stringResource(R.string.search_tag_placeholder)) },
             )
             Text(
-                text = "Kategorien auswählen",
+                text = stringResource(R.string.select_category_label),
                 fontWeight = FontWeight(500),
                 fontSize = 17.sp
             )
@@ -75,7 +75,7 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = viewModel::onLoadPageClicked
             ) {
-                Text(text = stringResource(R.string.create_card_save_button_text))
+                Text(text = stringResource(R.string.save_button_text))
             }
 
         }

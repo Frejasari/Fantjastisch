@@ -10,11 +10,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.fantjastisch.cards.R
 import org.openapitools.client.models.CardEntity
 
 val singleLine = 1
@@ -65,7 +67,7 @@ fun CommonCardComponent(
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = "Tag: ",
+                        text = stringResource(R.string.inline_tag_label),
                         fontWeight = FontWeight(500),
                         fontSize = 12.sp,
                     )
@@ -98,7 +100,7 @@ fun CommonCardComponent(
                     ) {
                         Text(
                             modifier = Modifier.weight(1.75f),
-                            text = "Kategorien: ",
+                            text = stringResource(R.string.inline_categories_label),
                             fontWeight = FontWeight(500),
                             fontSize = 12.sp
                         )

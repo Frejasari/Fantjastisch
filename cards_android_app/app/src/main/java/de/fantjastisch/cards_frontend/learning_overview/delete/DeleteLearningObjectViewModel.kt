@@ -26,7 +26,7 @@ class DeleteLearningObjectViewModel(
                 },
                 onFailure = {
                     // Fehler anzeigen:
-                    error.value = "Irgendwas ist schief gelaufen"
+                    error.value = "Ein Netzwerkfehler ist aufgetreten."
 
                 }
             )

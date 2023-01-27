@@ -42,7 +42,7 @@ class EditCardsInBoxViewModel(
             when (result) {
                 is RepoResult.Success -> loadContainedCards(result.result)
                 is RepoResult.Error,
-                is RepoResult.ServerError -> error.value = "Couldnt fetch cards."
+                is RepoResult.ServerError -> error.value = "Ein Netzwerkfehler ist aufgetreten."
             }
         }
     }
@@ -80,7 +80,7 @@ class EditCardsInBoxViewModel(
                 }
                 is RepoResult.Error,
                 is RepoResult.ServerError -> {
-                    error.value = "Couldnt get card ids for box."
+                    error.value = "Ein Netzwerkfehler ist aufgetreten."
                 }
             }
         }
@@ -108,8 +108,8 @@ class EditCardsInBoxViewModel(
                 learningBoxId = learningBoxId,
             ).fold(
                 onSuccess = { isFinished.value = true },
-                onUnexpectedError = { error.value = "Whoops" },
-                onValidationError = { error.value = "Whoops" }
+                onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
             )
         }
     }

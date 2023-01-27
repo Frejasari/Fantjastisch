@@ -20,7 +20,7 @@ class LearningOverviewModel(
 
             learningObjectRepository.getAll(
                 onSuccess = { learningObjects.value = it },
-                onFailure = { error.value = "whoops" }
+                onFailure = { error.value = "Ein Netzwerkfehler ist aufgetreten." }
             )
         }
     }

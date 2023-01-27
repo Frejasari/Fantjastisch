@@ -41,7 +41,7 @@ fun CreateLearningSystemView(
         OutlinedTextFieldWithErrors(
             value = viewModel.learningSystemLabel.value,
             onValueChange = { viewModel.learningSystemLabel.value = it },
-            placeholder = stringResource(id = R.string.create_category_label_text),
+            placeholder = stringResource(id = R.string.label_label),
             errors = viewModel.errors.value,
             field = "label",
         )
@@ -56,7 +56,7 @@ fun CreateLearningSystemView(
             value = if (viewModel.numBoxes.value == 0) "" else viewModel.numBoxes.value.toString(),
             onValueChange = { viewModel.onBoxesSelected(it) },
             placeholder = { Text(text = stringResource(id = R.string.select_num_of_boxes_label)) },
-            label = { Text(text = "Anzahl der Lernkästen") },
+            label = { Text(text = stringResource(R.string.number_of_learningboxes_text)) },
             isError = viewModel.numBoxes.value == 0
         )
 
@@ -64,7 +64,7 @@ fun CreateLearningSystemView(
             OutlinedTextFieldWithErrors(
                 value = viewModel.learningSystemBoxLabels.value[index],
                 onValueChange = { viewModel.onBoxLabelChanged(index, it) },
-                placeholder = stringResource(id = R.string.create_category_label_text),
+                placeholder = stringResource(id = R.string.label_label),
                 errors = viewModel.errors.value,
                 field = "boxLabels",
             )
@@ -73,7 +73,7 @@ fun CreateLearningSystemView(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = viewModel::onAddLearningSystemClicked
         ) {
-            Text(text = stringResource(R.string.create_category_save_button_text))
+            Text(text = stringResource(R.string.save_button_text))
         }
     }
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
