@@ -5,10 +5,7 @@ import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.*
-import org.openapitools.client.models.CardEntity
-import org.openapitools.client.models.CategoryEntity
-import org.openapitools.client.models.CategoryOfCardEntity
-import org.openapitools.client.models.UpdateCardEntity
+import org.openapitools.client.models.*
 import java.util.*
 
 class UpdateCardModel(
@@ -22,13 +19,14 @@ class UpdateCardModel(
         answer: String,
         categories: List<CategorySelectItem>,
         tag: String,
-        links: Map<String, UUID>
+        links: List<LinkEntity>
     ): RepoResult<Unit> = cardRepository.updateCard(
         UpdateCardEntity(
             id = id,
             question = question,
             answer = answer,
             tag = tag,
+            links = links,
             categories = categories.filter { cat -> cat.isChecked }.map { cat -> cat.id }
         )
     )

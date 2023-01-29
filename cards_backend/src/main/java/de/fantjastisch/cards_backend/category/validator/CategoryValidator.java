@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_backend.category.validator;
 
-import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.category.Category;
 import de.fantjastisch.cards_backend.category.aggregate.CreateCategory;
 import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
@@ -46,7 +45,6 @@ public class CategoryValidator extends Validator {
     public void validate(CreateCategory command) {
         throwIfNeeded(validateConstraints(command));
         throwIfNeeded(checkIfSubcategoriesContainNull(command.getSubCategories()));
-
         List<ErrorEntry> errors = new ArrayList<>();
         final List<Category> allCategories = categoryQueryRepository.getPage();
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));

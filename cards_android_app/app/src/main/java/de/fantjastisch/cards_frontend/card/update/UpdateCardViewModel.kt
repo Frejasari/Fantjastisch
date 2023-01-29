@@ -67,7 +67,7 @@ class UpdateCardViewModel(
                 answer = cardAnswer.value,
                 tag = cardTag.value,
                 categories = cardCategories.value,
-                links = emptyMap()
+                links = emptyList()
             ).fold(
                 onSuccess = { isFinished.value = true },
                 onValidationError = { errors.value = it },

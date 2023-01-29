@@ -44,6 +44,7 @@ public class CardRepositoryTests {
         categoryCommandRepository.create(cat0);
         categoryCommandRepository.create(cat1);
 
+
         cardCommandRepository.create(de.fantjastisch.cards_backend.card.repository.Card
                 .builder()
                 .id(card1.getId())

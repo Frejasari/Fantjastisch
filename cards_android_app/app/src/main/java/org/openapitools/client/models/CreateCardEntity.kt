@@ -15,6 +15,7 @@
 
 package org.openapitools.client.models
 
+import org.openapitools.client.models.LinkEntity
 
 import com.squareup.moshi.Json
 
@@ -25,6 +26,7 @@ import com.squareup.moshi.Json
  * @param answer 
  * @param tag 
  * @param categories 
+ * @param links 
  */
 
 
@@ -40,7 +42,10 @@ data class CreateCardEntity (
     val tag: kotlin.String,
 
     @Json(name = "categories")
-    val categories: kotlin.collections.List<java.util.UUID>
+    val categories: kotlin.collections.List<java.util.UUID>,
+
+    @Json(name = "links")
+    val links: kotlin.collections.List<LinkEntity>
 
 )
 

@@ -6,6 +6,7 @@ import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import org.openapitools.client.models.CreateCardEntity
+import org.openapitools.client.models.LinkEntity
 
 class CreateCardModel(
     private val cardRepository: CardRepository = CardRepository(),
@@ -32,12 +33,14 @@ class CreateCardModel(
         answer: String,
         question: String,
         tag: String,
-        categories: List<CategorySelectItem>
+        categories: List<CategorySelectItem>,
+        links: List<LinkEntity>
     ) = cardRepository.createCard(
         card = CreateCardEntity(
             question = question,
             answer = answer,
             tag = tag,
+            links = links,
             categories = categories
                 .filter { it.isChecked }
                 .map { it.id }

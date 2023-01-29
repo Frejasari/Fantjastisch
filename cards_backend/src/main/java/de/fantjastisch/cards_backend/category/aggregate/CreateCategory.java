@@ -32,12 +32,12 @@ public class CreateCategory implements Commandable {
             description = "The category label",
             required = true,
             example = "Category #1")
-    private String label;
+    String label;
 
     @NotNull
     @Schema(
             description = "An array of child-category UUIDs.",
             required = true,
             example = "[fa9d9f26-8e58-4653-809c-c3b5d8e7d97f]")
-    private Set<UUID> subCategories;
+    Set<UUID> subCategories;
 }

@@ -73,5 +73,19 @@ fun CardEdit(
         ) {
             Text(text = stringResource(R.string.create_card_save_button_text))
         }
+//        LinkEdit(
+//            modifier = modifier,
+//            name = TextFieldState(
+//                value = viewModel.linkName.value,
+//                errors = viewModel.errors.value,
+//                onValueChange = viewModel::setLinkName,
+//            ),
+//            cards = viewModel.linkCards.value,
+//            onCardSelected = viewModel::onCardSelected,
+//            onUpdateLinkClicked = viewModel::onCreateLinkClicked,
+//        )
+//        CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
+//    }
+
     }
 }

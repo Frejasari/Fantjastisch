@@ -72,6 +72,7 @@ class CreateCardViewModel(
                 question = cardQuestion.value,
                 answer = cardAnswer.value,
                 tag = cardTag.value.replaceFirstChar { letter -> letter.uppercaseChar() },
+                links = emptyList(),
                 categories = cardCategories.value
             )
 

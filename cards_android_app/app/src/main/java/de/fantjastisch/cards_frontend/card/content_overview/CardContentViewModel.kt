@@ -79,23 +79,6 @@ class CardContentViewModel(
         val link = currentDeleteDialog.value!!.link
         currentDeleteDialog.value = DeletionProgress.Deleting(link)
         error.value = null
-        viewModelScope.launch {
-            val result = cardContentModel.deleteLink(
-                linkId = link.id!!
-            )
-            when (result) {
-                is RepoResult.Success -> {
-                    onPageLoaded()
-                    currentDeleteDialog.value = null
-                }
-                is RepoResult.Error,
-                is RepoResult.ServerError -> {
-                    // Fehler anzeigen:
-                    error.value = "Ein Netzwerkfehler ist aufgetreten."
-                }
-
-            }
-        }
     }
 
     fun onDeleteCardAborted() {

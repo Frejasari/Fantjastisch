@@ -25,7 +25,6 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.content_overview.CardContentFragment
 import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
-import de.fantjastisch.cards_frontend.link.create.CreateLinkFragment
 import de.fantjastisch.cards_frontend.link.delete.DeleteLinkDialog
 import java.util.*
 
@@ -191,18 +190,18 @@ fun CardContentView(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    IconButton(
-                        modifier = Modifier
-                            .weight(1f)
-                            .rotate(rotateLinks),
-                        onClick = {
-                           navigator.push(CreateLinkFragment(id = viewModel.cardId.value!!))
-                        }) {
-                        Icon(
-                            imageVector = Icons.Default.Link,
-                            contentDescription = "drop-down arrow"
-                        )
-                    }
+//                    IconButton(
+//                        modifier = Modifier
+//                            .weight(1f)
+//                            .rotate(rotateLinks),
+//                        onClick = {
+//                           navigator.push(CreateLinkFragment(id = viewModel.cardId.value!!))
+//                        }) {
+//                        Icon(
+//                            imageVector = Icons.Default.Link,
+//                            contentDescription = "drop-down arrow"
+//                        )
+//                    }
                     IconButton(
                         modifier = Modifier
                             .weight(1f)
@@ -225,7 +224,7 @@ fun CardContentView(
                             label = {
                                 Text(
                                     modifier = Modifier,
-                                    text = it.name!!
+                                    text = it.label!!
                                 )
                             },
                             icon = {

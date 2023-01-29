@@ -44,8 +44,8 @@ interface CardApi {
      * 
      * Get the Card from the given Id
      * Responses:
-     *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *  - 404: Not Found
      *
      * @param id 

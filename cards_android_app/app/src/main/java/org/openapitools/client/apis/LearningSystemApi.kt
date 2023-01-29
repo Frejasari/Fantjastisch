@@ -45,8 +45,8 @@ interface LearningSystemApi {
      * Get specific learning system
      * 
      * Responses:
-     *  - 422: Unprocessable Entity
      *  - 200: OK
+     *  - 422: Unprocessable Entity
      *  - 404: Not Found
      *
      * @param id 
@@ -59,9 +59,9 @@ interface LearningSystemApi {
      * Get all learning systems
      * 
      * Responses:
-     *  - 200: OK
      *  - 422: Unprocessable Entity
      *  - 404: Not Found
+     *  - 200: OK
      *
      * @return [Call]<[kotlin.collections.List<LearningSystemEntity>]>
      */

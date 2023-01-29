@@ -23,7 +23,7 @@ fun DeleteLinkDialog(
             Text(text = stringResource(R.string.delete_link_dialog_title))
         },
         text = {
-            Text(link.name!!)
+            Text(link.label!!)
         },
         confirmButton = {
             Button(

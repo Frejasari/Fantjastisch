@@ -21,23 +21,15 @@ import com.squareup.moshi.Json
 /**
  * 
  *
- * @param id 
- * @param name 
- * @param source 
+ * @param label 
  * @param target 
  */
 
 
 data class LinkEntity (
 
-    @Json(name = "id")
-    val id: java.util.UUID? = null,
-
-    @Json(name = "name")
-    val name: kotlin.String? = null,
-
-    @Json(name = "source")
-    val source: java.util.UUID? = null,
+    @Json(name = "label")
+    val label: kotlin.String? = null,
 
     @Json(name = "target")
     val target: java.util.UUID? = null

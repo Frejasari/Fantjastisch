@@ -44,8 +44,8 @@ interface CategoryApi {
      * Get specific category
      * 
      * Responses:
-     *  - 422: Unprocessable Entity
      *  - 200: OK
+     *  - 422: Unprocessable Entity
      *  - 404: Not Found
      *
      * @param id 
@@ -59,7 +59,6 @@ interface CategoryApi {
      * 
      * Responses:
      *  - 200: OK
-     *  - 404: Not Found
      *  - 422: Unprocessable Entity
      *  - 404: Not Found
      *

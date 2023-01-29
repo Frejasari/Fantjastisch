@@ -40,7 +40,7 @@ fun CreateCategoryView(
             field = "label"
         )
 
-        viewModel.subcategories.value?.let {
+        viewModel.subcategories.value.let {
             CategorySelect(
                 modifier = Modifier.weight(1f),
                 categories = it,

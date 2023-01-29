@@ -1,12 +1,6 @@
 package de.fantjastisch.cards_frontend.glossary
 
 import de.fantjastisch.cards_frontend.card.CardRepository
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.link.LinkRepository
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
-import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 class GlossaryModel(

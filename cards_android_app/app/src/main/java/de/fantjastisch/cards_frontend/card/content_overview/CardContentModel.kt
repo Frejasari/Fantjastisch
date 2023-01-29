@@ -3,7 +3,6 @@ package de.fantjastisch.cards_frontend.card.content_overview
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.link.LinkRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -16,7 +15,6 @@ import java.util.*
 class CardContentModel(
     private val cardRepository: CardRepository = CardRepository(),
     private val categoryRepository: CategoryRepository = CategoryRepository(),
-    private val linkRepository: LinkRepository = LinkRepository(),
     private val id: UUID
 ) {
 
@@ -41,8 +39,7 @@ class CardContentModel(
         // Runs coroutines in parallel and waits until all of them are done
         val (cardResult, categoryResult, linkResult) = awaitAll(
             async { cardRepository.getCard(id = id) },
-            async { categoryRepository.getPage() },
-            async { linkRepository.getLinkPage(id = id)}
+            async { categoryRepository.getPage() }
         )
 
         when {
@@ -68,8 +65,4 @@ class CardContentModel(
         }
 
     }
-
-    suspend fun deleteLink(linkId: UUID) = linkRepository.deleteLink(
-        id = linkId
-    )
 }
