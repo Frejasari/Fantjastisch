@@ -24,6 +24,7 @@ fun OutlinedTextFieldWithErrors(
 ) {
     val error = errors.find { it.field == field }
     OutlinedTextField(
+        singleLine = maxLines == 1,
         maxLines = maxLines,
         modifier = Modifier.fillMaxWidth(),
         value = value,
