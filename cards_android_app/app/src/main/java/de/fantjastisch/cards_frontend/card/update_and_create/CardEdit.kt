@@ -5,10 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Divider
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DeleteOutline
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,9 +20,13 @@ import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
+import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.link.update_and_create.LinkEdit
+import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardEdit(
     modifier: Modifier = Modifier,
@@ -33,9 +36,11 @@ fun CardEdit(
     categories: List<CategorySelectItem>,
     linkName: TextFieldState,
     cards: List<CardSelectItem>,
+    links: List<LinkEntity>,
     onCategorySelected: (UUID) -> Unit,
     onUpdateCardClicked: () -> Unit,
     onCardSelected: (UUID) -> Unit,
+    onCreateLinkClicked: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -70,82 +75,87 @@ fun CardEdit(
             placeholder = stringResource(id = R.string.tag_label),
             field = "tag"
         )
-       /* OutlinedTextFieldWithErrors(
-            maxLines = 1,
-            value = linkName.value,
-            errors = linkName.errors,
-            onValueChange = linkName.onValueChange,
-            placeholder = stringResource(id = R.string.link_name),
-            field = "linkName"
-        )
-        LazyColumn(
-            modifier
-                .background(MaterialTheme.colorScheme.background)
-                .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(10.dp))
-        {
-            CardSelect(
-                cards = cards,
-                onCardSelected = onCardSelected
-            )
-        } */
-        CategorySelect(
-            modifier = Modifier.weight(1f),
-            categories = categories,
-            onCategorySelected = onCategorySelected
-        )
-
-
         Divider()
         Row(
-            modifier = Modifier.clickable( onClick = {expanded = !expanded}) ,
+            modifier = Modifier.clickable(onClick = { expanded = !expanded }),
             verticalAlignment = Alignment.CenterVertically
+
         ) {
             Text(text = "Karte verlinken")
-
         }
-        if(expanded) {
-            OutlinedTextFieldWithErrors(
-                maxLines = 1,
-                value = linkName.value,
-                errors = linkName.errors,
-                onValueChange = linkName.onValueChange,
-                placeholder = stringResource(id = R.string.create_link_name),
-                field = "linkName"
-            )
+        links.forEach {
+            AssistChip(
+                modifier = Modifier.padding(10.dp),
+                onClick = { },
+                label = {
+                    Text(
+                        modifier = Modifier,
+                        text = it.label!!
+                    )
+                },
+                trailingIcon = {
+                    IconButton(
+                        modifier = Modifier,
+                        onClick = {
+                            // viewModel.onTryDeleteLink(it)
+                        }) {
+                        Icon(
+                            imageVector = Icons.Default.DeleteOutline,
+                            contentDescription = "delete",
+                            Modifier.size(AssistChipDefaults.IconSize)
+                        )
+                    }
+                })
+        }
+
+        if (expanded) {
+
             LazyColumn(
-                modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(10.dp))
-            {
+                modifier = modifier
+                    .background(MaterialTheme.colorScheme.background),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                item {
+                    OutlinedTextFieldWithErrors(
+                        maxLines = 1,
+                        value = linkName.value,
+                        errors = linkName.errors,
+                        onValueChange = linkName.onValueChange,
+                        placeholder = stringResource(id = R.string.create_link_name),
+                        field = "name"
+                    )
+                }
                 CardSelect(
                     cards = cards,
-                    onCardSelected = onCardSelected
+                    onCardSelected = onCardSelected,
                 )
+            }
+
+            FilledTonalButton(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = onCreateLinkClicked
+            ) {
+                Text(text = stringResource(R.string.save_button_text))
+            }
+
+            // Componente die ihre Kinder untereinander anzeigt.
+
+        } else {
+            Divider()
+            CategorySelect(
+                modifier = Modifier.weight(1f),
+                categories = categories,
+                onCategorySelected = onCategorySelected
+            )
+            FilledTonalButton(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = onUpdateCardClicked
+            ) {
+                Text(text = stringResource(R.string.save_button_text))
             }
         }
 
-
-        FilledTonalButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = onUpdateCardClicked
-        ) {
-            Text(text = stringResource(R.string.save_button_text))
-        }
-//        LinkEdit(
-//            modifier = modifier,
-//            name = TextFieldState(
-//                value = viewModel.linkName.value,
-//                errors = viewModel.errors.value,
-//                onValueChange = viewModel::setLinkName,
-//            ),
-//            cards = viewModel.linkCards.value,
-//            onCardSelected = viewModel::onCardSelected,
-//            onUpdateLinkClicked = viewModel::onCreateLinkClicked,
-//        )
-//        CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
-//    }
-
     }
 }
+
+

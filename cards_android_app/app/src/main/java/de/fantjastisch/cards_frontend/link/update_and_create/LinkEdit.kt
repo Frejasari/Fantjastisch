@@ -34,8 +34,8 @@ fun LinkEdit(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+            .fillMaxWidth().height(500.dp),
+        verticalArrangement = Arrangement.Top,
     ) {
         OutlinedTextFieldWithErrors(
             maxLines = 3,
@@ -45,13 +45,13 @@ fun LinkEdit(
             placeholder = stringResource(id = R.string.create_link_name),
             field = "name"
         )
-        Column(modifier = Modifier.fillMaxSize()) {
+
             // Componente die ihre Kinder untereinander anzeigt.
             LazyColumn(
                 modifier = modifier
                     .background(MaterialTheme.colorScheme.background)
                     .weight(1f),
-                contentPadding = PaddingValues(all = 16.dp),
+                //contentPadding = PaddingValues(all = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                CardSelect(
@@ -67,6 +67,6 @@ fun LinkEdit(
             }
         }
 
-    }
+
 }
 
