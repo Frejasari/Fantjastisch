@@ -13,7 +13,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-//@JsonPropertyOrder({"target", "label"})
 public class Link {
 
     String label;

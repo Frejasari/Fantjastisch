@@ -29,13 +29,13 @@ fun CardContextMenu(
             onDismissRequest = { isMenuOpen.value = false }
         ) {
             DropdownMenuItem(
-                text = { Text(text = stringResource(R.string.card_menu_update)) },
+                text = { Text(text = stringResource(R.string.update_button_text)) },
                 onClick = {
                     isMenuOpen.value = false
                     navigator.push(UpdateCardFragment(cardId))
                 })
             DropdownMenuItem(
-                text = { Text(text = stringResource(id = R.string.card_menu_delete)) },
+                text = { Text(text = stringResource(id = R.string.delete_button_text)) },
                 onClick = {
                     isMenuOpen.value = false
                     onDeleteClicked()
