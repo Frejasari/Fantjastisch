@@ -1,9 +1,13 @@
 package de.fantjastisch.cards_frontend.card.content_overview
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
@@ -29,7 +33,7 @@ class CardContentViewModel(
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
     val cardLinks = mutableStateOf(listOf<LinkEntity>())
 
-    val currentDeleteDialog = mutableStateOf<CardContentViewModel.DeletionProgress?>(null)
+    var linkClicked =  mutableStateOf(false)
 
     init {
         viewModelScope.launch {
@@ -71,25 +75,12 @@ class CardContentViewModel(
         }
     }
 
-    fun onTryDeleteLink(link: LinkEntity) {
-        currentDeleteDialog.value = DeletionProgress.ConfirmWithUser(link)
+    fun onLinkClicked() {
+        linkClicked.value = true
     }
 
-    fun onDeleteCardClicked() {
-        val link = currentDeleteDialog.value!!.link
-        currentDeleteDialog.value = DeletionProgress.Deleting(link)
-        error.value = null
-    }
-
-    fun onDeleteCardAborted() {
-        currentDeleteDialog.value = null
-    }
-
-    sealed class DeletionProgress {
-        abstract val link: LinkEntity
-
-        data class ConfirmWithUser(override val link: LinkEntity) : DeletionProgress()
-        data class Deleting(override val link: LinkEntity) : DeletionProgress()
+    fun onQuitLinkClicked() {
+        linkClicked.value = false
     }
 }
 

@@ -36,7 +36,6 @@ class CreateCardViewModel(
     val linkName = mutableStateOf("")
     val linkTarget = mutableStateOf<UUID?>(null)
     val link = mutableStateOf<LinkEntity?>(null)
-    @SuppressLint("MutableCollectionMutableState")
     val cardLinks = mutableStateOf(ArrayList<LinkEntity>())
 
     init {

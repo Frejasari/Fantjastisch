@@ -16,13 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.card.CardSelectItem
+import de.fantjastisch.cards_frontend.card.content_overview.CardContentDialog
+import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
+import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 import kotlin.reflect.KFunction1
@@ -53,6 +57,8 @@ fun CardEdit(
     val rotateForCat by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f
     )
+
+
 
     Column(
         modifier = modifier
@@ -160,9 +166,15 @@ fun CardEdit(
         ) {
             item {
                 links.forEach {
+                    val viewModel = viewModel { CardContentViewModel(it.target!!) }
+
+                    if (viewModel.linkClicked.value) {
+                        CardContentDialog(id = it.target!!)
+                    }
+
                     AssistChip(
                         modifier = Modifier.padding(10.dp),
-                        onClick = { },
+                        onClick = viewModel::onLinkClicked,
                         label = {
                             Text(
                                 modifier = Modifier,

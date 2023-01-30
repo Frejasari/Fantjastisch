@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
+import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
@@ -31,6 +33,7 @@ class UpdateCardViewModel(
     val link = mutableStateOf<LinkEntity?>(null)
     @SuppressLint("MutableCollectionMutableState")
     val cardLinks = mutableStateOf(ArrayList<LinkEntity>())
+    var linkClicked =  mutableStateOf(false)
 
     fun setCardQuestion(value: String) {
         cardQuestion.value = value
@@ -151,6 +154,8 @@ class UpdateCardViewModel(
             }
         }
     }
+
+
 
 }
 

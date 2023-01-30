@@ -37,18 +37,16 @@ class CardContentModel(
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(): RepoResult<Card> = coroutineScope {
         // Runs coroutines in parallel and waits until all of them are done
-        val (cardResult, categoryResult, linkResult) = awaitAll(
+        val (cardResult, categoryResult) = awaitAll(
             async { cardRepository.getCard(id = id) },
             async { categoryRepository.getPage() }
         )
 
         when {
             cardResult is RepoResult.Success
-                    && categoryResult is RepoResult.Success
-                    && linkResult is RepoResult.Success-> {
+                    && categoryResult is RepoResult.Success -> {
                 val card = cardResult.result as CardEntity
                 val categories = categoryResult.result as List<CategoryEntity>
-                val links = linkResult.result as List<LinkEntity>
                 RepoResult.Success(
                     Card(
                         id = card.id,
@@ -57,7 +55,7 @@ class CardContentModel(
                         allCategories = categories,
                         categoriesOfCard = card.categories,
                         tag = card.tag,
-                        links = links
+                        links = card.links
                     )
                 )
             }
