@@ -10,7 +10,11 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 import java.util.*
 
-data class LearningModeFragment(val learningBoxId: UUID, val learningObjectId: UUID) :
+data class LearningModeFragment(
+    val learningBoxId: UUID,
+    val learningObjectId: UUID,
+    val sort: Boolean
+) :
     AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -32,7 +36,8 @@ data class LearningModeFragment(val learningBoxId: UUID, val learningObjectId: U
                 viewModel = viewModel {
                     LearningModeViewModel(
                         learningBoxId = learningBoxId,
-                        learningObjectId = learningObjectId
+                        learningObjectId = learningObjectId,
+                        sort = sort
                     )
                 }
             )

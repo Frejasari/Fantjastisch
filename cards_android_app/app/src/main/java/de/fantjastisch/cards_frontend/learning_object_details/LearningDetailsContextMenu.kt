@@ -7,7 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.glossary.CardsFilters
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_cards_in_box.EditCardsInBoxFragment
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box.MoveCardsToBoxFragment
@@ -21,7 +23,6 @@ fun LearningDetailsContextMenu(
 ) {
     val navigator = FantMainNavigator.current
     val isMenuOpen = remember { mutableStateOf(false) }
-
     IconButton(onClick = { isMenuOpen.value = !isMenuOpen.value }) {
         Icon(Icons.Outlined.MoreVert, contentDescription = "context actions")
 
@@ -36,7 +37,7 @@ fun LearningDetailsContextMenu(
                     navigator.push(
                         EditCardsInBoxFragment(
                             learningBoxId = learningBoxId,
-                            learningObjectId = learningObjectId
+                            learningObjectId = learningObjectId,
                         )
                     )
                 })
