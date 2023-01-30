@@ -57,30 +57,10 @@ fun CreateCardView(
         cards = viewModel.cards.value,
         onCardSelected = viewModel::onCardSelected,
         onUpdateCardClicked = viewModel::onCreateCardClicked,
-        onCreateLinkClicked = viewModel::onCreateLinkClicked
+        onCreateLinkClicked = viewModel::onCreateLinkClicked,
+        links = viewModel.cardLinks.value
     )
-Column(
-    verticalArrangement = Arrangement.Top
-) {
-    Row(
-        modifier = Modifier.clickable { expanded = !expanded },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = "Karte verlinken")
 
-    }
-    if(expanded) {
-        LinkEdit(
-            name = TextFieldState(
-                value = viewModel.linkName.value,
-                errors = viewModel.errors.value,
-                onValueChange = viewModel::setLinkName,
-            ),
-            cards = viewModel.cards.value,
-            onCardSelected = viewModel::onCardSelected) {
-        }
-    }
-}
     FilledTonalButton(
         onClick = viewModel::onCreateCardClicked
     ) {

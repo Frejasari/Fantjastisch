@@ -69,10 +69,7 @@ class CreateCardViewModel(
         linkName.value = value
     }
 
-    fun setLinks(value: LinkEntity) {
-        link.value = value
-    }
-
+    //TODO -> nur ein checkbox erlauben
     fun onCardSelected(id: UUID) {
         cards.value = cards.value.map {
             if (it.card.id == id) {
@@ -81,6 +78,14 @@ class CreateCardViewModel(
                 it
             }
         }
+
+        linkTarget.value = cards.value.map {
+            if (it.card.id == id) {
+                it.copy(isChecked = !it.isChecked)
+            } else {
+                it
+            }
+        }.get(0).card.id
     }
 
     fun onCategorySelected(id: UUID) {
@@ -104,7 +109,9 @@ class CreateCardViewModel(
         cardLinks.value.add(link.value!!)
 
         linkName.value = ""
-        linkTarget.value = null
+        cards.value = cards.value.map {
+                it.copy(isChecked = false)
+        }
 
     }
 
