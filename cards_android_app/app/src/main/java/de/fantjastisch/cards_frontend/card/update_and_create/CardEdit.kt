@@ -110,7 +110,7 @@ fun CardEdit(
                 value = linkName.value,
                 errors = linkName.errors,
                 onValueChange = linkName.onValueChange,
-                placeholder = stringResource(id = R.string.link_name),
+                placeholder = stringResource(id = R.string.create_link_name),
                 field = "linkName"
             )
             LazyColumn(
