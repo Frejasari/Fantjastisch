@@ -46,7 +46,9 @@ fun UpdateCardView(
         cards = viewModel.cards.value,
         onCardSelected = viewModel::onCardSelected,
         onCreateLinkClicked = viewModel::onCreateLinkClicked,
-        links = viewModel.cardLinks.value
+        links = viewModel.cardLinks.value,
+        onDeleteLinkClicked = viewModel::onDeleteLinkClicked
+
     )
 
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)

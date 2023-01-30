@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
@@ -115,6 +116,11 @@ class CreateCardViewModel(
 
     }
 
+    fun onDeleteLinkClicked(link: LinkEntity) {
+        cardLinks.value = cardLinks.value.filter {
+                l -> link != l} as ArrayList<LinkEntity>
+    }
+
     fun onCreateCardClicked() {
         error.value = null
         errors.value = emptyList()
@@ -135,4 +141,6 @@ class CreateCardViewModel(
             }
         }
     }
+
+
 }

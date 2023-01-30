@@ -1,9 +1,7 @@
 package de.fantjastisch.cards_frontend.card.update_and_create
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.expandIn
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -25,10 +23,9 @@ import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
-import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
-import de.fantjastisch.cards_frontend.link.update_and_create.LinkEdit
 import org.openapitools.client.models.LinkEntity
 import java.util.*
+import kotlin.reflect.KFunction1
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +42,8 @@ fun CardEdit(
     onCategorySelected: (UUID) -> Unit,
     onUpdateCardClicked: () -> Unit,
     onCardSelected: (UUID) -> Unit,
-    onCreateLinkClicked: () -> Unit
+    onCreateLinkClicked: () -> Unit,
+    onDeleteLinkClicked: (LinkEntity) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var expandedForCat by remember { mutableStateOf(true) }
@@ -175,9 +173,7 @@ fun CardEdit(
                         trailingIcon = {
                             IconButton(
                                 modifier = Modifier,
-                                onClick = {
-                                    // viewModel.onTryDeleteLink(it)
-                                }) {
+                                onClick = { onDeleteLinkClicked(it) }) {
                                 Icon(
                                     imageVector = Icons.Default.DeleteOutline,
                                     contentDescription = "delete",
