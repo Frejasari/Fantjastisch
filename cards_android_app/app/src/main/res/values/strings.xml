@@ -34,6 +34,7 @@
     <string name="learning_mode_title">Lernmodus</string>
     <string name="overview">Übersicht</string>
     <string name="links_label">Links</string>
+    <string name="link_name">zu verlinkendes Wort</string>
     <string name="create_link_headline">Link erstellen</string>
     <string name="update_link_headline">Link bearbeiten</string>
     <string name="create_link_name">zu verknüpfendes Wort</string>

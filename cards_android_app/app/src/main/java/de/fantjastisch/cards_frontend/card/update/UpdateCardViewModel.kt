@@ -7,6 +7,7 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.ErrorEntryEntity
+import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 class UpdateCardViewModel(
@@ -22,6 +23,7 @@ class UpdateCardViewModel(
     val cardAnswer = mutableStateOf("")
     val cardTag = mutableStateOf("")
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
+    val cardLinks = mutableStateOf(listOf<LinkEntity>())
 
     fun setCardQuestion(value: String) {
         cardQuestion.value = value
@@ -52,6 +54,7 @@ class UpdateCardViewModel(
                                 isChecked = card.categoriesOfCard.firstOrNull { categoryOfCard -> categoryOfCard.id == cat.id } != null
                             )
                         }
+                        cardLinks.value = card.links
                     },
                     onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
                     onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." },

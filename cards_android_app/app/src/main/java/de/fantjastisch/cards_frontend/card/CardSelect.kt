@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.openapitools.client.models.CardEntity
@@ -21,6 +23,7 @@ fun LazyListScope.CardSelect(
     cards: List<CardSelectItem>,
     onCardSelected: (UUID) -> Unit = {},
 ) {
+
     cards.map { card ->
         item {
             Row(

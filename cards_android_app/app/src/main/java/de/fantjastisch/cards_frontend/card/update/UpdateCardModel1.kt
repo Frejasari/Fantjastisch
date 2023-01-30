@@ -37,7 +37,8 @@ class UpdateCardModel(
         val question: String,
         val tag: String,
         val allCategories: List<CategoryEntity>,
-        val categoriesOfCard: List<CategoryOfCardEntity>
+        val categoriesOfCard: List<CategoryOfCardEntity>,
+        val links: List<LinkEntity>
     )
 
     @Suppress("UNCHECKED_CAST")
@@ -60,7 +61,8 @@ class UpdateCardModel(
                         answer = card.answer,
                         allCategories = categories,
                         categoriesOfCard = card.categories,
-                        tag = card.tag
+                        tag = card.tag,
+                        links = card.links
                     )
                 )
             }

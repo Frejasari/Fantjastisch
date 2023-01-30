@@ -1,19 +1,22 @@
 package de.fantjastisch.cards_frontend.card.update_and_create
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Divider
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.card.CardSelect
+import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
@@ -28,9 +31,14 @@ fun CardEdit(
     answer: TextFieldState,
     tag: TextFieldState,
     categories: List<CategorySelectItem>,
+    linkName: TextFieldState,
+    cards: List<CardSelectItem>,
     onCategorySelected: (UUID) -> Unit,
     onUpdateCardClicked: () -> Unit,
+    onCardSelected: (UUID) -> Unit,
 ) {
+    var expanded by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
@@ -62,11 +70,63 @@ fun CardEdit(
             placeholder = stringResource(id = R.string.tag_label),
             field = "tag"
         )
+       /* OutlinedTextFieldWithErrors(
+            maxLines = 1,
+            value = linkName.value,
+            errors = linkName.errors,
+            onValueChange = linkName.onValueChange,
+            placeholder = stringResource(id = R.string.link_name),
+            field = "linkName"
+        )
+        LazyColumn(
+            modifier
+                .background(MaterialTheme.colorScheme.background)
+                .weight(1f),
+            verticalArrangement = Arrangement.spacedBy(10.dp))
+        {
+            CardSelect(
+                cards = cards,
+                onCardSelected = onCardSelected
+            )
+        } */
         CategorySelect(
             modifier = Modifier.weight(1f),
             categories = categories,
             onCategorySelected = onCategorySelected
         )
+
+
+        Divider()
+        Row(
+            modifier = Modifier.clickable( onClick = {expanded = !expanded}) ,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Karte verlinken")
+
+        }
+        if(expanded) {
+            OutlinedTextFieldWithErrors(
+                maxLines = 1,
+                value = linkName.value,
+                errors = linkName.errors,
+                onValueChange = linkName.onValueChange,
+                placeholder = stringResource(id = R.string.link_name),
+                field = "linkName"
+            )
+            LazyColumn(
+                modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(10.dp))
+            {
+                CardSelect(
+                    cards = cards,
+                    onCardSelected = onCardSelected
+                )
+            }
+        }
+
+
         FilledTonalButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = onUpdateCardClicked

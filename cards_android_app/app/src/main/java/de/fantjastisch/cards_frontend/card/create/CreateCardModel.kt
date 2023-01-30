@@ -2,6 +2,7 @@ package de.fantjastisch.cards_frontend.card.create
 
 import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.card.CardRepository
+import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
@@ -26,6 +27,19 @@ class CreateCardModel(
             is RepoResult.Error,
             is RepoResult.ServerError -> null // TODO
 
+        }
+    }
+
+    suspend fun getCards(): List<CardSelectItem>? {
+        return when (val result = cardRepository.getPage(null,null,null,false)) {
+            is RepoResult.Success -> result.result.map { card ->
+                CardSelectItem(
+                    card = card,
+                    isChecked = false
+                )
+            }
+            is RepoResult.Error,
+            is RepoResult.ServerError -> null // TODO
         }
     }
 

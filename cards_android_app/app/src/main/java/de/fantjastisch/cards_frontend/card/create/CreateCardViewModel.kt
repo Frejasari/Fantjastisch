@@ -7,7 +7,9 @@ import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
+import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.ErrorEntryEntity
+import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 class CreateCardViewModel(
@@ -27,16 +29,21 @@ class CreateCardViewModel(
     val cardAnswer = mutableStateOf("")
     val cardTag = mutableStateOf("")
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
+    val cards = mutableStateOf(listOf<CardSelectItem>())
+    val linkName = mutableStateOf("")
+    val linkTarget = mutableStateOf<UUID?>(null)
 
     init {
         viewModelScope.launch {
             val result = createCardModel.getCategories()
+            val resultCards = createCardModel.getCards()
 
-            if (result == null) {
+            if (result == null || resultCards == null) {
                 error.value = "Ein Netzwerkfehler ist aufgetreten."
             } else {
                 errors.value = emptyList()
                 cardCategories.value = result
+                cards.value = resultCards
             }
         }
     }
@@ -51,6 +58,20 @@ class CreateCardViewModel(
 
     fun setCardTag(value: String) {
         cardTag.value = value
+    }
+
+    fun setLinkName(value: String) {
+        linkName.value = value
+    }
+
+    fun onCardSelected(id: UUID) {
+        cards.value = cards.value.map {
+            if (it.card.id == id) {
+                it.copy(isChecked = !it.isChecked)
+            } else {
+                it
+            }
+        }
     }
 
     fun onCategorySelected(id: UUID) {
@@ -72,7 +93,10 @@ class CreateCardViewModel(
                 question = cardQuestion.value,
                 answer = cardAnswer.value,
                 tag = cardTag.value.replaceFirstChar { letter -> letter.uppercaseChar() },
-                links = emptyList(),
+                links = listOf( LinkEntity(
+                    label = linkName.value,
+                    target = cards.value[0].card.id
+                )),
                 categories = cardCategories.value
             )
 
