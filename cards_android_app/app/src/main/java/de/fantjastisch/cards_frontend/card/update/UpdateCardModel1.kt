@@ -73,7 +73,9 @@ class UpdateCardModel(
 
     suspend fun getCards(): List<CardSelectItem>? {
         return when (val result = cardRepository.getPage(null,null,null,false)) {
-            is RepoResult.Success -> result.result.map { card ->
+            is RepoResult.Success -> result.result
+                .filter { card -> card.id != id }
+                .map { card ->
                 CardSelectItem(
                     card = card,
                     isChecked = false
