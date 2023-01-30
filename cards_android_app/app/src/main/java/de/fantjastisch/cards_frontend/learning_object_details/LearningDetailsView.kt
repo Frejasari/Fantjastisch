@@ -1,25 +1,16 @@
 package de.fantjastisch.cards_frontend.learning_object_details
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
-import de.fantjastisch.cards_frontend.learning_mode.LearningModeFragment
 import java.util.*
 
 
@@ -27,11 +18,9 @@ import java.util.*
 fun LearningDetailsView(
     modifier: Modifier = Modifier,
     learningObjectId: UUID,
-
-    ) {
+) {
     val viewModel =
         viewModel(key = learningObjectId.toString()) { LearningDetailsViewModel(learningObjectId) }
-    val navigator = FantMainNavigator.current
 
     LazyColumn(
         modifier = modifier
@@ -41,82 +30,14 @@ fun LearningDetailsView(
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         items(viewModel.learningBoxes.value) { learningBox ->
-            Box(
-                Modifier
-                    .clickable(
-                        onClick = {
-                            navigator.push(
-                                LearningModeFragment(
-                                    learningBoxId = learningBox.id,
-                                    learningObjectId = learningObjectId
-                                )
-                            )
-                        })
-            ) {
-                Surface(
-                    modifier = Modifier,
-                    shadowElevation = 6.dp,
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp, horizontal = 16.dp),
-
-                        ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .weight(weight = 1f, fill = false)
-                                    .padding(vertical = 8.dp),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                text = learningBox.label,
-                                fontSize = 18.sp
-                            )
-                            if (learningBox.nrOfCards != 0) {
-                                LearningDetailsContextMenu(
-                                    learningBoxId = learningBox.id,
-                                    learningObjectId = viewModel.learningObjectId
-                                )
-                            }
-                        }
-                        Divider(
-                            modifier = Modifier
-                                .padding(vertical = 3.dp)
-                        )
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                modifier = Modifier,
-                                text = String.format("%s: %d", stringResource(R.string.number_of_cards_text), learningBox.nrOfCards)
-                            )
-                            Spacer(
-                                Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight()
-                            )
-                            Text(
-                                modifier = Modifier,
-                                text = String.format("Box-Nr. %d", (learningBox.boxNumber + 1))
-                            )
-                            Icon(
-                                painter = painterResource(id = R.drawable.inventory_2),
-                                contentDescription = "Box",
-                                // decorative element
-                            )
-                        }
-                    }
-                }
-            }
+            LearningDetailsComponent(
+                learningBox = learningBox,
+                learningObjectId = learningObjectId
+            )
         }
     }
 }
+
+
 
 
