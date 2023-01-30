@@ -5,10 +5,12 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,6 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardContextMenu
+import de.fantjastisch.cards_frontend.card.content_overview.CardContentDialog
+import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
 import kotlinx.coroutines.launch
@@ -295,18 +299,59 @@ private fun CardView(
                         fontWeight = FontWeight(300),
                         fontSize = 12.sp
                     )
-                    IconButton(
-                        modifier = Modifier
-                            .rotate(rotate),
-                        onClick = {
-                            expanded = !expanded
-                        }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowDropDown,
-                            contentDescription = "drop-down arrow"
-                        )
+                }
+                LazyRow(
+                    modifier = Modifier
+                ) {
+                    item {
+                        card.links.forEach {
+                            val viewModel = viewModel { CardContentViewModel(it.target!!) }
+
+                            if (viewModel.linkClicked.value) {
+                                CardContentDialog(id = it.target!!)
+                            }
+
+                            AssistChip(
+                                modifier = Modifier.padding(10.dp),
+                                onClick = viewModel::onLinkClicked,
+                                label = {
+                                    Text(
+                                        modifier = Modifier,
+                                        text = it.label!!
+                                    )
+                                },
+                                //TODO -> padding anpassen
+                                /*trailingIcon = {
+                                    IconButton(
+                                        modifier = Modifier,
+                                        onClick = { onDeleteLinkClicked(it) }) {
+                                        Icon(
+                                            imageVector = Icons.Default.DeleteOutline,
+                                            contentDescription = "delete",
+                                            Modifier.size(AssistChipDefaults.IconSize)
+                                        )
+                                    }
+                                }*/ )
+                        }
                     }
                 }
+                Row(
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    IconButton(
+                    modifier = Modifier
+                        .rotate(rotate),
+                    onClick = {
+                        expanded = !expanded
+                    }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "drop-down arrow"
+                    )
+                }}
+
+
+
             }
         }
     }
