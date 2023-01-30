@@ -18,7 +18,7 @@ fun UpdateCardView(
 
     val viewModel = viewModel { UpdateCardViewModel(id = id) }
     // Componente die ihre Kinder untereinander anzeigt.
- /*   CardEdit(
+    CardEdit(
         modifier = modifier,
         question = TextFieldState(
             value = viewModel.cardQuestion.value,
@@ -38,7 +38,16 @@ fun UpdateCardView(
         categories = viewModel.cardCategories.value,
         onCategorySelected = viewModel::onCategorySelected,
         onUpdateCardClicked = viewModel::onUpdateCardClicked,
-    ) */
+        linkName = TextFieldState(
+            value = viewModel.linkName.value,
+            errors = viewModel.errors.value,
+            onValueChange = viewModel::setLinkName,
+        ),
+        cards = viewModel.cards.value,
+        onCardSelected = viewModel::onCardSelected,
+        onCreateLinkClicked = viewModel::onCreateLinkClicked,
+        links = viewModel.cardLinks.value
+    )
 
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 }
