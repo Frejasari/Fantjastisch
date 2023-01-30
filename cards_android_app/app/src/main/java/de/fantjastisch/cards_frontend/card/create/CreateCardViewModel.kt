@@ -117,10 +117,7 @@ class CreateCardViewModel(
                 question = cardQuestion.value,
                 answer = cardAnswer.value,
                 tag = cardTag.value.replaceFirstChar { letter -> letter.uppercaseChar() },
-                links = listOf( LinkEntity(
-                    label = linkName.value,
-                    target = cards.value[0].card.id
-                )),
+                links = cardLinks.value,
                 categories = cardCategories.value
             )
 
