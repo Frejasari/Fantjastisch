@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_frontend.card.create
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
+import kotlin.collections.ArrayList
 
 class CreateCardViewModel(
     private val createCardModel: CreateCardModel = CreateCardModel()
@@ -32,6 +34,9 @@ class CreateCardViewModel(
     val cards = mutableStateOf(listOf<CardSelectItem>())
     val linkName = mutableStateOf("")
     val linkTarget = mutableStateOf<UUID?>(null)
+    val link = mutableStateOf<LinkEntity?>(null)
+    @SuppressLint("MutableCollectionMutableState")
+    val cardLinks = mutableStateOf(ArrayList<LinkEntity>())
 
     init {
         viewModelScope.launch {
@@ -64,6 +69,10 @@ class CreateCardViewModel(
         linkName.value = value
     }
 
+    fun setLinks(value: LinkEntity) {
+        link.value = value
+    }
+
     fun onCardSelected(id: UUID) {
         cards.value = cards.value.map {
             if (it.card.id == id) {
@@ -82,6 +91,21 @@ class CreateCardViewModel(
                 it
             }
         }
+    }
+
+    fun onCreateLinkClicked() {
+        error.value = null
+        errors.value = emptyList()
+
+        link.value = LinkEntity(
+            label = linkName.value,
+            target = linkTarget.value
+        )
+        cardLinks.value.add(link.value!!)
+
+        linkName.value = ""
+        linkTarget.value = null
+
     }
 
     fun onCreateCardClicked() {

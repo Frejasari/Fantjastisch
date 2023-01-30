@@ -2,6 +2,7 @@ package de.fantjastisch.cards_frontend.card.create
 
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
@@ -56,8 +57,11 @@ fun CreateCardView(
         cards = viewModel.cards.value,
         onCardSelected = viewModel::onCardSelected,
         onUpdateCardClicked = viewModel::onCreateCardClicked,
+        onCreateLinkClicked = viewModel::onCreateLinkClicked
     )
-Column() {
+Column(
+    verticalArrangement = Arrangement.Top
+) {
     Row(
         modifier = Modifier.clickable { expanded = !expanded },
         verticalAlignment = Alignment.CenterVertically
@@ -77,17 +81,6 @@ Column() {
         }
     }
 }
-
-    /*LinkEdit(
-        name = TextFieldState(
-            value = viewModel.linkName.value,
-            errors = viewModel.errors.value,
-            onValueChange = viewModel::setLinkName,
-            ),
-        cards = viewModel.cards.value,
-        onCardSelected = viewModel::onCardSelected) {
-
-    } */
     FilledTonalButton(
         onClick = viewModel::onCreateCardClicked
     ) {

@@ -21,6 +21,8 @@ import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
+import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.link.update_and_create.LinkEdit
 import java.util.*
 
 
@@ -36,6 +38,7 @@ fun CardEdit(
     onCategorySelected: (UUID) -> Unit,
     onUpdateCardClicked: () -> Unit,
     onCardSelected: (UUID) -> Unit,
+    onCreateLinkClicked: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -70,7 +73,7 @@ fun CardEdit(
             placeholder = stringResource(id = R.string.tag_label),
             field = "tag"
         )
-       /* OutlinedTextFieldWithErrors(
+        /* OutlinedTextFieldWithErrors(
             maxLines = 1,
             value = linkName.value,
             errors = linkName.errors,
@@ -88,51 +91,60 @@ fun CardEdit(
                 cards = cards,
                 onCardSelected = onCardSelected
             )
-        } */
+        }
+        Row(
+            modifier = Modifier.clickable(onClick = { expanded = !expanded }),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Karte verlinken")
+        }
         CategorySelect(
             modifier = Modifier.weight(1f),
             categories = categories,
             onCategorySelected = onCategorySelected
-        )
+        ) */
 
 
         Divider()
         Row(
-            modifier = Modifier.clickable( onClick = {expanded = !expanded}) ,
+            modifier = Modifier.clickable(onClick = { expanded = !expanded }),
             verticalAlignment = Alignment.CenterVertically
+
         ) {
             Text(text = "Karte verlinken")
-
         }
-        if(expanded) {
-            OutlinedTextFieldWithErrors(
-                maxLines = 1,
-                value = linkName.value,
-                errors = linkName.errors,
-                onValueChange = linkName.onValueChange,
-                placeholder = stringResource(id = R.string.link_name),
-                field = "linkName"
+
+        if (expanded) {
+
+            LinkEdit(
+                modifier = modifier,
+                name = TextFieldState(
+                    value = linkName.value,
+                    errors = linkName.errors,
+                    onValueChange = linkName.onValueChange,
+                ),
+                cards = cards,
+                onCardSelected = onCardSelected,
+                onUpdateLinkClicked = onCreateLinkClicked,
             )
-            LazyColumn(
-                modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(10.dp))
-            {
-                CardSelect(
-                    cards = cards,
-                    onCardSelected = onCardSelected
-                )
-            }
+        } else {
+            CategorySelect(
+                modifier = Modifier.weight(1f),
+                categories = categories,
+                onCategorySelected = onCategorySelected
+            )
         }
-
-
         FilledTonalButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = onUpdateCardClicked
         ) {
             Text(text = stringResource(R.string.create_card_save_button_text))
         }
+    }
+}
+
+
+
 //        LinkEdit(
 //            modifier = modifier,
 //            name = TextFieldState(
@@ -147,5 +159,4 @@ fun CardEdit(
 //        CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 //    }
 
-    }
-}
+
