@@ -1,10 +1,7 @@
 package de.fantjastisch.cards_frontend.learning_system
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -36,7 +33,8 @@ fun CreateLearningSystemView(
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
-            .fillMaxSize()
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         OutlinedTextFieldWithErrors(
             value = viewModel.learningSystemLabel.value,
@@ -45,7 +43,6 @@ fun CreateLearningSystemView(
             errors = viewModel.errors.value,
             field = "label",
         )
-        Divider()
         OutlinedTextField(
             maxLines = 1,
             keyboardActions = KeyboardActions(

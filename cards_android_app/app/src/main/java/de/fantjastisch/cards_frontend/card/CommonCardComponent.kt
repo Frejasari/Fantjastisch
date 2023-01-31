@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import org.openapitools.client.models.CardEntity
 
 val singleLine = 1
@@ -67,7 +68,7 @@ fun CommonCardComponent(
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = stringResource(R.string.inline_tag_label),
+                        text = stringResource(R.string.tag_label).formatToInlineLabel(),
                         fontWeight = FontWeight(500),
                         fontSize = 12.sp,
                     )
@@ -99,14 +100,12 @@ fun CommonCardComponent(
                         verticalAlignment = Alignment.Top
                     ) {
                         Text(
-                            modifier = Modifier.weight(1.75f),
-                            text = stringResource(R.string.inline_categories_label),
+                            text = stringResource(R.string.categories_label).formatToInlineLabel(),
                             fontWeight = FontWeight(500),
                             fontSize = 12.sp
                         )
                         var hasMultipleLines by remember { mutableStateOf(false) }
                         Text(
-                            modifier = Modifier.weight(4.25f),
                             text = card.categories.map { category -> category.label }
                                 .joinToString(separator = ", "),
                             onTextLayout = {textLayoutResult: TextLayoutResult ->
