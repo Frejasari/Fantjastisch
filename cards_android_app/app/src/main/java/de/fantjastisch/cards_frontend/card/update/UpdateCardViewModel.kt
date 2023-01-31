@@ -51,8 +51,14 @@ class UpdateCardViewModel(
         linkName.value = value
     }
 
-    //TODO -> nur ein checkbox erlauben
     fun onCardSelected(id: UUID) {
+        val selectedCards = cards.value.filter { card -> card.isChecked }
+
+        if(selectedCards.isNotEmpty()) {
+            cards.value = cards.value.map {
+                it.copy(isChecked = false)
+            }
+        }
         cards.value = cards.value.map {
             if (it.card.id == id) {
                 it.copy(isChecked = !it.isChecked)
