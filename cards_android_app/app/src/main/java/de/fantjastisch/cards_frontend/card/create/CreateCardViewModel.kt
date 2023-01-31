@@ -123,7 +123,7 @@ class CreateCardViewModel(
             )
             cardLinks.value.add(link.value!!)
 
-            linkName.value = null.toString()
+            linkName.value = ""
             cards.value = cards.value.map {
                 it.copy(isChecked = false)
             }
