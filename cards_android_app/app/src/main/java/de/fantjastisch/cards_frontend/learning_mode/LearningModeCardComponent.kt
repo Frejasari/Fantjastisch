@@ -1,12 +1,16 @@
 package de.fantjastisch.cards_frontend.learning_mode
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,7 +28,7 @@ fun LearningModeCardComponent(
 
     Card(
         modifier = Modifier
-            .height(0.4 * screenHeight),
+            .height(0.32 * screenHeight),
         shape = CardDefaults.elevatedShape,
         elevation = CardDefaults.cardElevation(8.dp),
         colors = CardDefaults.elevatedCardColors(
@@ -33,29 +37,22 @@ fun LearningModeCardComponent(
         ),
         onClick = onClick
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Box(
             modifier = modifier
                 .fillMaxSize()
-                .padding(30.dp)
+                .padding(10.dp)
+                .align(Alignment.CenterHorizontally)
+                .verticalScroll(rememberScrollState()),
+            contentAlignment = Alignment.CenterStart
         ) {
-            Row(
+            Text(
                 modifier = modifier
-                    .fillMaxWidth()
-                    .height(0.4 * screenHeight),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    modifier = modifier
-                        .padding(5.dp),
-                    overflow = TextOverflow.Ellipsis,
-                    text = content,
-                    fontSize = 20.sp,
-                    fontStyle = FontStyle.Italic
-                )
-            }
+                    .padding(5.dp)
+                    .fillMaxSize(),
+                overflow = TextOverflow.Ellipsis,
+                text = content,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
