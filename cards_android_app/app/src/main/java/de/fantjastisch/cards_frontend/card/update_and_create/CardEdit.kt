@@ -29,7 +29,7 @@ import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun CardEdit(
     modifier: Modifier = Modifier,
@@ -91,112 +91,113 @@ fun CardEdit(
         )
 
         Divider()
-        Row(
-            //modifier = Modifier.clickable(onClick = { expanded = !expanded }),
-            verticalAlignment = Alignment.CenterVertically
-
+        Column(
+            modifier = Modifier.weight(1f)
         ) {
-            Text(
-                text = stringResource(id = R.string.categories_label),
-                modifier = Modifier.weight(4.25f)
-            )
-            IconButton(
-                modifier = Modifier
-                    .rotate(rotateForCat),
-                onClick = {
-                    expandedForCat = !expandedForCat
-                    if (expanded) {
-                        expanded = false
-                    }
-                }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+
             ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = "drop-down arrow"
+                Text(
+                    text = stringResource(id = R.string.categories_label),
+                    modifier = Modifier.weight(4.25f)
                 )
-            }
-        }
-        if (expandedForCat) {
-            CategorySelect(
-                categories = categories,
-                onCategorySelected = onCategorySelected
-            )
-        }
-
-        if (toast && expanded) {
-            Toast.makeText(context, R.string.link_error, Toast.LENGTH_SHORT).show()
-
-        }
-
-
-        Divider()
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-
-        ) {
-            Text(
-                text = stringResource(id = R.string.create_link),
-                modifier = Modifier.weight(4.25f)
-            )
-            IconButton(
-                enabled = expanded,
-                onClick = onCreateLinkClicked
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "add link"
-                )
-            }
-            IconButton(
-                modifier = Modifier
-                    .rotate(rotate),
-                onClick = {
-                    expanded = !expanded
-                    if (expandedForCat) {
-                        expandedForCat = false
+                IconButton(
+                    modifier = Modifier
+                        .rotate(rotateForCat),
+                    onClick = {
+                        expandedForCat = !expandedForCat
+                        if (expanded) {
+                            expanded = false
+                        }
                     }
-                }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = "drop-down arrow"
-                )
-            }
-        }
-
-        LazyRow(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            item {
-                links.forEach {
-                    LinkCardComponent(link = it, onDeleteLinkClicked = onDeleteLinkClicked)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "drop-down arrow"
+                    )
                 }
             }
-        }
-
-
-        if (expanded) {
-            OutlinedTextFieldWithErrors(
-                maxLines = 1,
-                value = linkName.value,
-                errors = linkName.errors,
-                onValueChange = linkName.onValueChange,
-                placeholder = stringResource(id = R.string.create_link_name),
-                field = "name"
-            )
-            LazyColumn(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-
-                CardSelect(
-                    cards = cards,
-                    onCardSelected = onCardSelected,
+            if (expandedForCat) {
+                CategorySelect(
+                    categories = categories,
+                    onCategorySelected = onCategorySelected
                 )
             }
 
+            if (toast && expanded) {
+                Toast.makeText(context, R.string.link_error, Toast.LENGTH_SHORT).show()
+
+            }
+
+
+            Divider()
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.create_link),
+                    modifier = Modifier.weight(4.25f)
+                )
+                IconButton(
+                    enabled = expanded,
+                    onClick = onCreateLinkClicked
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "add link"
+                    )
+                }
+                IconButton(
+                    modifier = Modifier
+                        .rotate(rotate),
+                    onClick = {
+                        expanded = !expanded
+                        if (expandedForCat) {
+                            expandedForCat = false
+                        }
+                    }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "drop-down arrow"
+                    )
+                }
+            }
+
+            LazyRow(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                item {
+                    links.forEach {
+                        LinkCardComponent(link = it, onDeleteLinkClicked = onDeleteLinkClicked)
+                    }
+                }
+            }
+
+
+            if (expanded) {
+                OutlinedTextFieldWithErrors(
+                    maxLines = 1,
+                    value = linkName.value,
+                    errors = linkName.errors,
+                    onValueChange = linkName.onValueChange,
+                    placeholder = stringResource(id = R.string.create_link_name),
+                    field = "name"
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    CardSelect(
+                        cards = cards,
+                        onCardSelected = onCardSelected,
+                    )
+                }
+            }
         }
+
         FilledTonalButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = onUpdateCardClicked

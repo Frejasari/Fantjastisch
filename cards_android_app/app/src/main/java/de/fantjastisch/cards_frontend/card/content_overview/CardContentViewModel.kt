@@ -29,7 +29,6 @@ class CardContentViewModel(
     val cardTag = mutableStateOf("")
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
     val cardLinks = mutableStateOf(listOf<LinkEntity>())
-    var linkClicked =  mutableStateOf(false)
 
     init {
         viewModelScope.launch {
@@ -56,29 +55,5 @@ class CardContentViewModel(
                 )
         }
     }
-
-/*   *//* fun onPageLoaded() {
-        viewModelScope.launch {
-            val result = cardContentModel.getCard(id = cardId.value!!)
-            when (result) {
-                is RepoResult.Success -> {
-                    card.value = result.result
-                }
-                is RepoResult.Error -> Unit
-                is RepoResult.ServerError -> Unit
-
-            }
-        }
-    } *//*
-    @Composable
-    fun OnLinkClicked(id: UUID) {
-        linkClicked.value = true
-        CardContentDialog(id = i)
-
-    }*/
-
-/*    fun onQuitLinkClicked() {
-        linkClicked.value = false
-    }*/
 }
 

@@ -22,7 +22,7 @@ import de.fantjastisch.cards_frontend.glossary.LinkWithoutDeleteComponent
 import java.util.*
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun CardContentDialog(
     id: UUID,

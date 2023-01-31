@@ -85,7 +85,6 @@ fun GlossaryView(
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun CardView(
     card: CardEntity,
     viewModel: GlossaryViewModel,
@@ -95,7 +94,6 @@ private fun CardView(
     val rotate by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f
     )
-    val dialogOpen = remember { mutableStateOf(false) }
 
     Surface(
         modifier = Modifier.clickable(
