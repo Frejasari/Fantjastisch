@@ -213,17 +213,18 @@ fun CardEdit(
                 placeholder = stringResource(id = R.string.create_link_name),
                 field = "name"
             )
-                    LazyColumn(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
+            LazyColumn(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
 
-                        CardSelect(
-                            cards = cards,
-                            onCardSelected = onCardSelected,
-                        )
-                    }
+                CardSelect(
+                    cards = cards,
+                    onCardSelected = onCardSelected,
+                )
+            }
 
         }
         FilledTonalButton(
