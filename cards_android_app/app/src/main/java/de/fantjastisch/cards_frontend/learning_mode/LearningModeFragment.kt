@@ -5,7 +5,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 import java.util.*
@@ -14,8 +13,7 @@ data class LearningModeFragment(
     val learningBoxId: UUID,
     val learningObjectId: UUID,
     val sort: Boolean
-) :
-    AndroidScreen() {
+) : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -33,13 +31,12 @@ data class LearningModeFragment(
         {
             LearningModeView(
                 modifier = Modifier.padding(it),
-                viewModel = viewModel {
-                    LearningModeViewModel(
+
                         learningBoxId = learningBoxId,
                         learningObjectId = learningObjectId,
                         sort = sort
-                    )
-                }
+
+
             )
         }
     }

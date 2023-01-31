@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category
+package de.fantjastisch.cards_frontend.learning_object_details
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -11,11 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import de.fantjastisch.cards_frontend.learning_mode.LearningModeFragment
-import de.fantjastisch.cards_frontend.learning_object_details.LearningModeSortViewModel
 import java.util.*
 
 
@@ -25,12 +24,10 @@ fun LearningModeSortDialog(
     learningObjectId: UUID,
     isOpen: Boolean,
     setIsOpen: (isOpen: Boolean) -> Unit,
-    navigator: Navigator,
 ) {
-    val viewModel =
-        viewModel(key = learningBox.id.toString()) {
-            LearningModeSortViewModel()
-        }
+    val navigator = FantMainNavigator.current
+    val viewModel = viewModel(key = learningBox.id.toString()) { LearningModeSortViewModel() }
+
     val label =
         remember { mutableStateOf(if (viewModel.sort.value) "Alphabetisch" else "Zufällig") }
 

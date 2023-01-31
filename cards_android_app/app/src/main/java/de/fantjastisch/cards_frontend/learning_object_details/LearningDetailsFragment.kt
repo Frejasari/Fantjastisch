@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.androidx.AndroidScreen
-import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.infrastructure.TobBarCreateMenu
 import java.util.*
 
 data class LearningDetailsFragment(val learningObjectId: UUID) :
@@ -23,16 +23,16 @@ data class LearningDetailsFragment(val learningObjectId: UUID) :
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
                 title = { Text(stringResource(R.string.learning_object_detail)) },
+                actions = { TobBarCreateMenu() }
             )
         })
 
         {
             LearningDetailsView(
-                learningObjectId =learningObjectId,
-                modifier = Modifier.padding(it)
+                learningObjectId = learningObjectId,
+                modifier = Modifier.padding(it),
+                screenKey = key
             )
         }
     }
-
-    // companion object : SingletonHolder<UpdateCardFragment, UUID>(::UpdateCardFragment)
 }

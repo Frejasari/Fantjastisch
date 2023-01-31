@@ -1,19 +1,15 @@
 package de.fantjastisch.cards_frontend.card.create
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
-import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CreateCardViewModel(
     private val createCardModel: CreateCardModel = CreateCardModel()
@@ -34,13 +30,14 @@ class CreateCardViewModel(
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
     val cards = mutableStateOf(listOf<CardSelectItem>())
     val linkName = mutableStateOf("")
-    val linkTarget = mutableStateOf<UUID?>(null)
-    val link = mutableStateOf<LinkEntity?>(null)
-    val cardLinks = mutableStateOf(ArrayList<LinkEntity>())
+    private val linkTarget = mutableStateOf<UUID?>(null)
+    private val link = mutableStateOf<LinkEntity?>(null)
+    val cardLinks = mutableStateOf(mutableListOf<LinkEntity>())
     val toast = mutableStateOf(false)
 
     init {
         viewModelScope.launch {
+
             val result = createCardModel.getCategories()
             val resultCards = createCardModel.getCards()
 
@@ -67,16 +64,14 @@ class CreateCardViewModel(
     }
 
     fun setLinkName(value: String) {
-        toast.value = false
         linkName.value = value
     }
 
 
     fun onCardSelected(id: UUID) {
-        toast.value = false
         val selectedCards = cards.value.filter { card -> card.isChecked }
 
-        if(selectedCards.isNotEmpty()) {
+        if (selectedCards.isNotEmpty()) {
             cards.value = cards.value.map {
                 it.copy(isChecked = false)
             }
@@ -99,7 +94,6 @@ class CreateCardViewModel(
     }
 
     fun onCategorySelected(id: UUID) {
-
         cardCategories.value = cardCategories.value.map {
             if (it.id == id) {
                 it.copy(isChecked = !it.isChecked)
@@ -131,8 +125,7 @@ class CreateCardViewModel(
     }
 
     fun onDeleteLinkClicked(link: LinkEntity) {
-        cardLinks.value = cardLinks.value.filter {
-                l -> link != l} as ArrayList<LinkEntity>
+        cardLinks.value = cardLinks.value.filter { l -> link != l } as ArrayList<LinkEntity>
     }
 
     fun onCreateCardClicked() {

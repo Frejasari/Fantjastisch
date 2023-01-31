@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.core.screen.ScreenKey
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import java.util.*
 
@@ -18,9 +20,18 @@ import java.util.*
 fun LearningDetailsView(
     modifier: Modifier = Modifier,
     learningObjectId: UUID,
+    screenKey: ScreenKey,
 ) {
     val viewModel =
         viewModel(key = learningObjectId.toString()) { LearningDetailsViewModel(learningObjectId) }
+
+    val navigator = FantMainNavigator.current
+    LaunchedEffect(navigator.items) {
+        // screen wurde gepoppt -> items hat sich veraendert, dieser effekt wird neu getriggert
+        if (navigator.lastItem.key == screenKey) {
+            viewModel.onPageLoaded()
+        }
+    }
 
     LazyColumn(
         modifier = modifier

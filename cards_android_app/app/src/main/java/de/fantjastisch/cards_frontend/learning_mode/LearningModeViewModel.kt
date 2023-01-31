@@ -25,8 +25,8 @@ class LearningModeViewModel(
 ) : ViewModel() {
 
     val error = mutableStateOf("")
-    val isFinished = mutableStateOf<Boolean>(false)
-    val isShowingAnswer = mutableStateOf<Boolean>(false)
+    val isFinished = mutableStateOf(false)
+    val isShowingAnswer = mutableStateOf(false)
     private var nextCards: Queue<CardEntity> = LinkedList()
     private var learningBoxesInObject: List<LearningBoxWitNrOfCards> = listOf()
     val currentCard = mutableStateOf<CardEntity?>(null)
@@ -37,10 +37,6 @@ class LearningModeViewModel(
     var numberOfCardsRemaining = mutableStateOf(0)
     var isLastBox = false
     var isFirstBox = false
-
-    init {
-        onPageLoaded()
-    }
 
     fun onFlipCardClicked() {
         isShowingAnswer.value = !isShowingAnswer.value
@@ -81,18 +77,17 @@ class LearningModeViewModel(
                     from = learningBoxId,
                     to = nextBoxId,
                     cardIds = listOf(currentCard.value!!.id)
-                )
-                    .fold(
-                        onSuccess = { nextCard() },
-                        onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
-                        onUnexpectedError = {
-                            error.value = "Ein unbekannter Fehler ist aufgetreten."
-                        })
+                ).fold(
+                    onSuccess = { nextCard() },
+                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                    onUnexpectedError = {
+                        error.value = "Ein unbekannter Fehler ist aufgetreten."
+                    })
             }
         }
     }
 
-    private fun onPageLoaded() {
+    fun onPageLoaded() {
 
         viewModelScope.launch {
             val (cardResult, learningBoxResult, cardsInLearningBoxResult) = awaitAll(
@@ -141,7 +136,7 @@ class LearningModeViewModel(
                                 card.id
                             )
                         })
-                        nextCard()
+                        nextCard() // land here 2nd time
                     }
                     isLoading.value = false
                 }
@@ -155,8 +150,7 @@ class LearningModeViewModel(
             isShowingAnswer.value = false
             currentCard.value = nextCards.remove()
             numberOfCardsRemaining.value = nextCards.size + 1
-
-        } else {
+        } else if (!isFinished.value) {
             isFinished.value = true
         }
     }

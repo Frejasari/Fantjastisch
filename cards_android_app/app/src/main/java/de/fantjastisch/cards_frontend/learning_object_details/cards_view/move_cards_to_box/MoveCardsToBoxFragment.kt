@@ -8,7 +8,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.learning_object_details.cards_view.CardsInBoxContextMenu
 import java.util.*
 
 
@@ -29,12 +28,7 @@ data class MoveCardsToBoxFragment(
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
                 title = { Text(text = stringResource(R.string.move_cards_in_learningobject_text)) },
-                actions = {
-                    CardsInBoxContextMenu(
-                        learningBoxId = learningBoxId,
-                        learningObjectId = learningObjectId
-                    )
-                })
+            )
         })
         {
             MoveCardsToBoxView(

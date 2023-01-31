@@ -20,15 +20,14 @@ data class SingleSelectItem(val label: String, val id: UUID)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SingleSelect(
-    modifier: Modifier = Modifier,
     items: List<SingleSelectItem>,
     onItemSelected: (UUID) -> Unit = {},
     selectedItem: SingleSelectItem?,
     placeholder: @Composable() (() -> Unit)
 ) {
-    var isExpanded = remember { mutableStateOf(false) }
-    var isSelected = remember { mutableStateOf(false) }
-    var textFieldSize = remember { mutableStateOf(Size.Zero) }
+    val isExpanded = remember { mutableStateOf(false) }
+    val isSelected = remember { mutableStateOf(false) }
+    val textFieldSize = remember { mutableStateOf(Size.Zero) }
 
     val icon = if (isExpanded.value)
         Icons.Filled.KeyboardArrowUp

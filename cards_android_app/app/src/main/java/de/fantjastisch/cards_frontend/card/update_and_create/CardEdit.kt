@@ -28,10 +28,8 @@ import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
-import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import org.openapitools.client.models.LinkEntity
 import java.util.*
-import kotlin.reflect.KFunction1
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -110,7 +108,7 @@ fun CardEdit(
                     .rotate(rotateForCat),
                 onClick = {
                     expandedForCat = !expandedForCat
-                    if(expanded) {
+                    if (expanded) {
                         expanded = false
                     }
                 }
@@ -121,14 +119,14 @@ fun CardEdit(
                 )
             }
         }
-        if(expandedForCat) {
+        if (expandedForCat) {
             CategorySelect(
                 categories = categories,
                 onCategorySelected = onCategorySelected
             )
         }
 
-        if(toast && expanded) {
+        if (toast && expanded) {
             Toast.makeText(context, R.string.link_error, Toast.LENGTH_SHORT).show()
 
         }
@@ -146,7 +144,7 @@ fun CardEdit(
             IconButton(
                 enabled = expanded,
                 onClick = onCreateLinkClicked
-                ) {
+            ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "add link"
@@ -157,7 +155,7 @@ fun CardEdit(
                     .rotate(rotate),
                 onClick = {
                     expanded = !expanded
-                    if(expandedForCat) {
+                    if (expandedForCat) {
                         expandedForCat = false
                     }
                 }) {

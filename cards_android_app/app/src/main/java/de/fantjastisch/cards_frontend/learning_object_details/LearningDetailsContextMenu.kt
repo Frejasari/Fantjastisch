@@ -7,9 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.glossary.CardsFilters
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_cards_in_box.EditCardsInBoxFragment
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box.MoveCardsToBoxFragment
@@ -19,7 +17,8 @@ import java.util.*
 @Composable
 fun LearningDetailsContextMenu(
     learningBoxId: UUID,
-    learningObjectId: UUID
+    learningObjectId: UUID,
+    onStartLearningClicked: () -> Unit
 ) {
     val navigator = FantMainNavigator.current
     val isMenuOpen = remember { mutableStateOf(false) }
@@ -30,6 +29,12 @@ fun LearningDetailsContextMenu(
             expanded = isMenuOpen.value,
             onDismissRequest = { isMenuOpen.value = false }
         ) {
+            DropdownMenuItem(
+                text = { Text(text = stringResource(R.string.start_learning)) },
+                onClick = {
+                    isMenuOpen.value = false
+                    onStartLearningClicked()
+                })
             DropdownMenuItem(
                 text = { Text(text = stringResource(R.string.show_cards_in_learning_box)) },
                 onClick = {

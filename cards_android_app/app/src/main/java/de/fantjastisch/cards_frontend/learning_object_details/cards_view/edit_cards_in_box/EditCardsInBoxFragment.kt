@@ -8,7 +8,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.infrastructure.TobBarCreateMenu
 import java.util.*
 
 
@@ -30,7 +29,6 @@ data class EditCardsInBoxFragment(
                 ),
                 title = { Text(text = stringResource(R.string.cards_in_this_box_label)) }
             )
-            TobBarCreateMenu()
         })
         {
             EditCardsInBoxView(
