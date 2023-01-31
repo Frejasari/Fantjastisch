@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
@@ -35,7 +36,6 @@ class CreateCardViewModel(
     val linkName = mutableStateOf("")
     val linkTarget = mutableStateOf<UUID?>(null)
     val link = mutableStateOf<LinkEntity?>(null)
-    @SuppressLint("MutableCollectionMutableState")
     val cardLinks = mutableStateOf(ArrayList<LinkEntity>())
 
     init {
@@ -69,8 +69,15 @@ class CreateCardViewModel(
         linkName.value = value
     }
 
-    //TODO -> nur ein checkbox erlauben
+
     fun onCardSelected(id: UUID) {
+        val selectedCards = cards.value.filter { card -> card.isChecked }
+
+        if(selectedCards.isNotEmpty()) {
+            cards.value = cards.value.map {
+                it.copy(isChecked = false)
+            }
+        }
         cards.value = cards.value.map {
             if (it.card.id == id) {
                 it.copy(isChecked = !it.isChecked)
@@ -115,6 +122,11 @@ class CreateCardViewModel(
 
     }
 
+    fun onDeleteLinkClicked(link: LinkEntity) {
+        cardLinks.value = cardLinks.value.filter {
+                l -> link != l} as ArrayList<LinkEntity>
+    }
+
     fun onCreateCardClicked() {
         error.value = null
         errors.value = emptyList()
@@ -135,4 +147,6 @@ class CreateCardViewModel(
             }
         }
     }
+
+
 }
