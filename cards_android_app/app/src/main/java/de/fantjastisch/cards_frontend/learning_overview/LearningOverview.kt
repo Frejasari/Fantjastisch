@@ -12,13 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
+import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.glossary.LearningOverviewModel
 import de.fantjastisch.cards_frontend.infrastructure.FantTopBar
 import de.fantjastisch.cards_frontend.learning_overview.learning_object_component.LearningObjectComponent
-import de.fantjastisch.cards.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 class LearningOverviewScreen : AndroidScreen() {
@@ -50,7 +49,11 @@ fun LearningOverview(
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
-        ) { Text(text = stringResource(R.string.no_content_text), fontSize = 20.sp) }
+        ) {
+            Text(
+                text = stringResource(R.string.no_content_text)
+            )
+        }
     } else {
         LazyColumn(
             modifier = modifier

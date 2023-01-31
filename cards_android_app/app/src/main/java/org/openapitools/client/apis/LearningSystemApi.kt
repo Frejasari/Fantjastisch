@@ -17,9 +17,9 @@ interface LearningSystemApi {
      * Create a new learning system
      * 
      * Responses:
-     *  - 201: Created
      *  - 422: Unprocessable Entity
      *  - 404: Not Found
+     *  - 201: Created
      *
      * @param createLearningSystemEntity 
      * @return [Call]<[kotlin.String]>
@@ -31,9 +31,9 @@ interface LearningSystemApi {
      * Delete a learning system
      * 
      * Responses:
-     *  - 200: OK
      *  - 422: Unprocessable Entity
      *  - 404: Not Found
+     *  - 200: OK
      *
      * @param deleteLearningSystemEntity 
      * @return [Call]<[Unit]>
@@ -45,8 +45,8 @@ interface LearningSystemApi {
      * Get specific learning system
      * 
      * Responses:
-     *  - 200: OK
      *  - 422: Unprocessable Entity
+     *  - 200: OK
      *  - 404: Not Found
      *
      * @param id 
@@ -60,8 +60,8 @@ interface LearningSystemApi {
      * 
      * Responses:
      *  - 422: Unprocessable Entity
-     *  - 404: Not Found
      *  - 200: OK
+     *  - 404: Not Found
      *
      * @return [Call]<[kotlin.collections.List<LearningSystemEntity>]>
      */
@@ -72,9 +72,9 @@ interface LearningSystemApi {
      * Update a learning system
      * 
      * Responses:
-     *  - 200: OK
      *  - 422: Unprocessable Entity
      *  - 404: Not Found
+     *  - 200: OK
      *
      * @param updateLearningSystemEntity 
      * @return [Call]<[Unit]>

@@ -38,7 +38,6 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
                 Text(
                     text = stringResource(R.string.sort_label),
                     fontWeight = FontWeight(500),
-                    fontSize = 20.sp
                 )
                 Switch(checked = viewModel.sort.value, onCheckedChange = viewModel::onSortClicked)
             }
@@ -46,7 +45,6 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
             Text(
                 text = stringResource(R.string.filter_label),
                 fontWeight = FontWeight(500),
-                fontSize = 20.sp
             )
             OutlinedTextField(
                 maxLines = 2,
@@ -65,7 +63,6 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
             Text(
                 text = stringResource(R.string.select_category_label),
                 fontWeight = FontWeight(500),
-                fontSize = 17.sp
             )
             CategorySelect(
                 categories = viewModel.categories.value,

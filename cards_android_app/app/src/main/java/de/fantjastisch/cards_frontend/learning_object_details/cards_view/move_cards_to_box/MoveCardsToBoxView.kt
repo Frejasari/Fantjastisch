@@ -9,7 +9,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
@@ -39,12 +38,16 @@ fun MoveCardsToBoxView(
             onCardSelected = viewModel::onCardSelected
         )
         item {
-            Column() {
-                if (viewModel.cards.value.size == 0) {
+            Column {
+                if (viewModel.cards.value.isEmpty()) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
-                    ) { Text(text = stringResource(R.string.no_content_text), fontSize = 20.sp) }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.no_content_text)
+                        )
+                    }
                 } else {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -59,7 +62,11 @@ fun MoveCardsToBoxView(
                                 if (viewModel.isFirstBox) {
                                     "                 "
                                 } else {
-                                    String.format("%s (%d)", stringResource(R.string.previous_box_text), (viewModel.learningBoxNum.value - 1))
+                                    String.format(
+                                        "%s (%d)",
+                                        stringResource(R.string.previous_box_text),
+                                        (viewModel.learningBoxNum.value - 1)
+                                    )
                                 }
                             )
                         }
@@ -72,7 +79,11 @@ fun MoveCardsToBoxView(
                                 if (viewModel.isLastBox) {
                                     "               "
                                 } else {
-                                    String.format("%s (%d)", stringResource(R.string.next_box_text), (viewModel.learningBoxNum.value + 1))
+                                    String.format(
+                                        "%s (%d)",
+                                        stringResource(R.string.next_box_text),
+                                        (viewModel.learningBoxNum.value + 1)
+                                    )
                                 }
                             )
                         }

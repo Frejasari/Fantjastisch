@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.learning_object_details;
+package de.fantjastisch.cards_frontend.learning_object_details
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,7 +7,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -16,10 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import java.util.*
 
@@ -62,7 +58,6 @@ fun LearningDetailsComponent(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         text = learningBox.label,
-                        fontSize = 18.sp
                     )
                     if (learningBox.nrOfCards != 0) {
                         LearningDetailsContextMenu(

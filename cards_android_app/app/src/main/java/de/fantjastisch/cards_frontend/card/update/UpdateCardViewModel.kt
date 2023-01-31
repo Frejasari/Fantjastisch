@@ -6,10 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
-import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
@@ -29,11 +27,11 @@ class UpdateCardViewModel(
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
     val cards = mutableStateOf(listOf<CardSelectItem>())
     val linkName = mutableStateOf("")
-    val linkTarget = mutableStateOf<UUID?>(null)
-    val link = mutableStateOf<LinkEntity?>(null)
+    private val linkTarget = mutableStateOf<UUID?>(null)
+    private val link = mutableStateOf<LinkEntity?>(null)
+
     @SuppressLint("MutableCollectionMutableState")
     val cardLinks = mutableStateOf(ArrayList<LinkEntity>())
-    var linkClicked =  mutableStateOf(false)
     val toast = mutableStateOf(false)
 
     fun setCardQuestion(value: String) {
@@ -57,7 +55,7 @@ class UpdateCardViewModel(
         toast.value = false
         val selectedCards = cards.value.filter { card -> card.isChecked }
 
-        if(selectedCards.isNotEmpty()) {
+        if (selectedCards.isNotEmpty()) {
             cards.value = cards.value.map {
                 it.copy(isChecked = false)
             }
@@ -76,7 +74,7 @@ class UpdateCardViewModel(
             } else {
                 it
             }
-        }.get(0).card.id
+        }[0].card.id
     }
 
     init {
@@ -123,7 +121,7 @@ class UpdateCardViewModel(
             toast.value = false
             link.value = LinkEntity(
                 label = linkName.value,
-                target = linkTarget.value
+                target = linkTarget.value!!
             )
             cardLinks.value.add(link.value!!)
 
@@ -135,8 +133,7 @@ class UpdateCardViewModel(
     }
 
     fun onDeleteLinkClicked(link: LinkEntity) {
-        cardLinks.value = cardLinks.value.filter {
-                l -> link != l} as ArrayList<LinkEntity>
+        cardLinks.value = cardLinks.value.filter { l -> link != l } as ArrayList<LinkEntity>
     }
 
 
@@ -167,7 +164,6 @@ class UpdateCardViewModel(
             }
         }
     }
-
 
 
 }

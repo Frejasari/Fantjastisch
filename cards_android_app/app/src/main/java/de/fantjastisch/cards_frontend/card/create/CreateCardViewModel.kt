@@ -113,7 +113,7 @@ class CreateCardViewModel(
             toast.value = false
             link.value = LinkEntity(
                 label = linkName.value,
-                target = linkTarget.value
+                target = linkTarget.value!!
             )
             cardLinks.value.add(link.value!!)
 

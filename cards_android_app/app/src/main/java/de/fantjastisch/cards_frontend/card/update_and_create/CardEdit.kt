@@ -171,10 +171,10 @@ fun CardEdit(
         ) {
             item {
                 links.forEach {
-                    val viewModel = viewModel { CardContentViewModel(it.target!!) }
+                    val viewModel = viewModel { CardContentViewModel(it.target) }
 
                     if (viewModel.linkClicked.value) {
-                        CardContentDialog(id = it.target!!)
+                        CardContentDialog(id = it.target)
                     }
 
                     AssistChip(
@@ -183,7 +183,7 @@ fun CardEdit(
                         label = {
                             Text(
                                 modifier = Modifier,
-                                text = it.label!!
+                                text = it.label
                             )
                         },
                         trailingIcon = {

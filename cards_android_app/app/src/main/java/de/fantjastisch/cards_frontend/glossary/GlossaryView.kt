@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,7 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardContextMenu
@@ -128,7 +126,6 @@ private fun CardView(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             text = card.question,
-                            fontSize = 14.sp,
                         )
                         Row(
                             modifier = Modifier
@@ -140,12 +137,10 @@ private fun CardView(
                                 modifier = Modifier,
                                 text = stringResource(R.string.tag_label).formatToInlineLabel(),
                                 fontWeight = FontWeight(500),
-                                fontSize = 14.sp,
                             )
                             Text(
                                 modifier = Modifier,
                                 text = card.tag,
-                                fontSize = 12.sp,
                             )
                         }
                     }
@@ -172,12 +167,10 @@ private fun CardView(
                         Text(
                             text = stringResource(R.string.categories_label).formatToInlineLabel(),
                             fontWeight = FontWeight(500),
-                            fontSize = 14.sp,
                         )
                         Text(
-                            text = card.categories.map { category -> category.label }
-                                .joinToString(separator = ", "),
-                            fontSize = 14.sp,
+                            text = card.categories
+                                .joinToString(separator = ", ") { category -> category.label },
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -230,7 +223,6 @@ private fun CardView(
                     Text(
                         text = stringResource(R.string.answer_label),
                         fontWeight = FontWeight(300),
-                        fontSize = 12.sp
                     )
                 }
                 Row(
@@ -256,7 +248,6 @@ private fun CardView(
                     Text(
                         text = stringResource(R.string.tag_label),
                         fontWeight = FontWeight(300),
-                        fontSize = 12.sp
                     )
                 }
                 Row(
@@ -281,7 +272,6 @@ private fun CardView(
                     Text(
                         text = stringResource(R.string.categories_label),
                         fontWeight = FontWeight(300),
-                        fontSize = 12.sp
                     )
                 }
                 Row(
@@ -290,8 +280,8 @@ private fun CardView(
                 ) {
                     Text(
                         modifier = Modifier.weight(4.25f),
-                        text = card.categories.map { category -> category.label }
-                            .joinToString(separator = ", "),
+                        text = card.categories
+                            .joinToString(separator = ", ") { category -> category.label },
                     )
                 }
                 Divider(
@@ -307,28 +297,27 @@ private fun CardView(
                     Text(
                         text = stringResource(R.string.links_label),
                         fontWeight = FontWeight(300),
-                        fontSize = 12.sp
                     )
                 }
-                Row() {
+                Row {
                     LazyRow(
                         modifier = Modifier.weight(6f)
                     ) {
                         item {
                             card.links.forEach {
-                                val viewModel = viewModel { CardContentViewModel(it.target!!) }
+                                val cardViewModel = viewModel { CardContentViewModel(it.target) }
 
-                                if (viewModel.linkClicked.value) {
-                                    CardContentDialog(id = it.target!!)
+                                if (cardViewModel.linkClicked.value) {
+                                    CardContentDialog(id = it.target)
                                 }
 
                                 AssistChip(
                                     modifier = Modifier.padding(10.dp),
-                                    onClick = viewModel::onLinkClicked,
+                                    onClick = cardViewModel::onLinkClicked,
                                     label = {
                                         Text(
                                             modifier = Modifier,
-                                            text = it.label!!
+                                            text = it.label
                                         )
                                     },
                                 )
@@ -338,7 +327,8 @@ private fun CardView(
                     }
                     IconButton(
                         modifier = Modifier
-                            .rotate(rotate).weight(1f),
+                            .rotate(rotate)
+                            .weight(1f),
                         onClick = {
                             expanded = !expanded
                         }) {

@@ -49,7 +49,6 @@ fun CardContentDialog (
                         Text(
                             text = stringResource(R.string.question_label),
                             fontWeight = FontWeight(300),
-                            fontSize = 12.sp
                         )
                         Text(
                             text = viewModel.cardQuestion.value,
@@ -73,7 +72,6 @@ fun CardContentDialog (
                     Text(
                         text = stringResource(R.string.answer_label),
                         fontWeight = FontWeight(300),
-                        fontSize = 12.sp
                     )
                 }
                 Row(
@@ -99,7 +97,6 @@ fun CardContentDialog (
                     Text(
                         text = stringResource(R.string.tag_label),
                         fontWeight = FontWeight(300),
-                        fontSize = 12.sp
                     )
                 }
                 Row(
@@ -124,7 +121,6 @@ fun CardContentDialog (
                     Text(
                         text = stringResource(R.string.categories_label),
                         fontWeight = FontWeight(300),
-                        fontSize = 12.sp
                     )
                 }
                 Row(
@@ -150,7 +146,6 @@ fun CardContentDialog (
                     Text(
                         text = stringResource(R.string.links_label),
                         fontWeight = FontWeight(300),
-                        fontSize = 12.sp
                     )
                 }
 

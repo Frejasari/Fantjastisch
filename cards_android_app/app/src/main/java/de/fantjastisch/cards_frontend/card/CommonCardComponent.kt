@@ -70,12 +70,10 @@ fun CommonCardComponent(
                         modifier = Modifier,
                         text = stringResource(R.string.tag_label).formatToInlineLabel(),
                         fontWeight = FontWeight(500),
-                        fontSize = 12.sp,
                     )
                     Text(
                         modifier = Modifier,
                         text = card.tag,
-                        fontSize = 12.sp,
                     )
                 }
             }
@@ -102,7 +100,6 @@ fun CommonCardComponent(
                         Text(
                             text = stringResource(R.string.categories_label).formatToInlineLabel(),
                             fontWeight = FontWeight(500),
-                            fontSize = 12.sp
                         )
                         var hasMultipleLines by remember { mutableStateOf(false) }
                         Text(
@@ -113,7 +110,6 @@ fun CommonCardComponent(
                                 },
                             overflow = TextOverflow.Ellipsis,
                             maxLines = maxLines.value,
-                            fontSize = 12.sp
                         )
 
                         val rotate by animateFloatAsState(

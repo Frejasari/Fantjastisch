@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
@@ -99,7 +98,6 @@ fun LearningModeView(
             Text(
                 text = stringResource(R.string.remaining_cards_in_box_text).formatToInlineLabel() + viewModel.numberOfCardsRemaining.value.toString(),
                 style = MaterialTheme.typography.titleMedium,
-                fontSize = 14.sp,
                 fontWeight = FontWeight(350)
             )
             Divider(

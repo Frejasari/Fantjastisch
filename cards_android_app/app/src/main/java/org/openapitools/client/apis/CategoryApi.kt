@@ -16,9 +16,9 @@ interface CategoryApi {
      * Create a new category
      * 
      * Responses:
-     *  - 201: Created
      *  - 422: Unprocessable Entity
      *  - 404: Not Found
+     *  - 201: Created
      *
      * @param createCategoryEntity 
      * @return [Call]<[kotlin.String]>
@@ -30,9 +30,9 @@ interface CategoryApi {
      * Delete a category
      * 
      * Responses:
-     *  - 200: OK
      *  - 422: Unprocessable Entity
      *  - 404: Not Found
+     *  - 200: OK
      *
      * @param id 
      * @return [Call]<[Unit]>
@@ -58,9 +58,9 @@ interface CategoryApi {
      * Get all categories
      * 
      * Responses:
-     *  - 200: OK
      *  - 422: Unprocessable Entity
      *  - 404: Not Found
+     *  - 200: OK
      *
      * @return [Call]<[kotlin.collections.List<CategoryEntity>]>
      */
@@ -71,9 +71,9 @@ interface CategoryApi {
      * Update a category
      * 
      * Responses:
-     *  - 200: OK
      *  - 422: Unprocessable Entity
      *  - 404: Not Found
+     *  - 200: OK
      *
      * @param updateCategoryEntity 
      * @return [Call]<[Unit]>

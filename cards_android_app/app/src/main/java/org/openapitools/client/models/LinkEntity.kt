@@ -29,10 +29,10 @@ import com.squareup.moshi.Json
 data class LinkEntity (
 
     @Json(name = "label")
-    val label: kotlin.String? = null,
+    val label: kotlin.String,
 
     @Json(name = "target")
-    val target: java.util.UUID? = null
+    val target: java.util.UUID
 
 )
 
