@@ -1,19 +1,15 @@
 package de.fantjastisch.cards_frontend.card.create
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
-import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CreateCardViewModel(
     private val createCardModel: CreateCardModel = CreateCardModel()
@@ -37,6 +33,7 @@ class CreateCardViewModel(
     private val linkTarget = mutableStateOf<UUID?>(null)
     private val link = mutableStateOf<LinkEntity?>(null)
     val cardLinks = mutableStateOf(mutableListOf<LinkEntity>())
+    val toast = mutableStateOf(false)
 
     init {
         viewModelScope.launch {
@@ -74,7 +71,7 @@ class CreateCardViewModel(
     fun onCardSelected(id: UUID) {
         val selectedCards = cards.value.filter { card -> card.isChecked }
 
-        if(selectedCards.isNotEmpty()) {
+        if (selectedCards.isNotEmpty()) {
             cards.value = cards.value.map {
                 it.copy(isChecked = false)
             }
@@ -110,22 +107,25 @@ class CreateCardViewModel(
         error.value = null
         errors.value = emptyList()
 
-        link.value = LinkEntity(
-            label = linkName.value,
-            target = linkTarget.value
-        )
-        cardLinks.value.add(link.value!!)
+        if (linkName.value.isBlank() || linkTarget.value == null) {
+            toast.value = true
+        } else {
+            toast.value = false
+            link.value = LinkEntity(
+                label = linkName.value,
+                target = linkTarget.value
+            )
+            cardLinks.value.add(link.value!!)
 
-        linkName.value = ""
-        cards.value = cards.value.map {
+            linkName.value = ""
+            cards.value = cards.value.map {
                 it.copy(isChecked = false)
+            }
         }
-
     }
 
     fun onDeleteLinkClicked(link: LinkEntity) {
-        cardLinks.value = cardLinks.value.filter {
-                l -> link != l} as ArrayList<LinkEntity>
+        cardLinks.value = cardLinks.value.filter { l -> link != l } as ArrayList<LinkEntity>
     }
 
     fun onCreateCardClicked() {

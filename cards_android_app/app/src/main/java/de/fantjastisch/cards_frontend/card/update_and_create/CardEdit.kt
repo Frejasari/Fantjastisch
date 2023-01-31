@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_frontend.card.update_and_create
 
+import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,17 +47,18 @@ fun CardEdit(
     onUpdateCardClicked: () -> Unit,
     onCardSelected: (UUID) -> Unit,
     onCreateLinkClicked: () -> Unit,
-    onDeleteLinkClicked: (LinkEntity) -> Unit
+    onDeleteLinkClicked: (LinkEntity) -> Unit,
+    toast: Boolean
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var expandedForCat by remember { mutableStateOf(true) }
+    var expandedForCat by remember { mutableStateOf(false) }
     val rotate by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f
     )
     val rotateForCat by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f
     )
-
+    val context = LocalContext.current
 
 
     Column(
@@ -97,7 +100,7 @@ fun CardEdit(
 
         ) {
             Text(
-                text = "Kategorien",
+                text = stringResource(id = R.string.categories_label),
                 modifier = Modifier.weight(4.25f)
             )
             IconButton(
@@ -123,15 +126,19 @@ fun CardEdit(
             )
         }
 
+        if (toast && expanded) {
+            Toast.makeText(context, R.string.link_error, Toast.LENGTH_SHORT).show()
+
+        }
+
 
         Divider()
         Row(
-            //modifier = Modifier.clickable(onClick = { expanded = !expanded }),
             verticalAlignment = Alignment.CenterVertically
 
         ) {
             Text(
-                text = "Karte verlinken",
+                text = stringResource(id = R.string.create_link),
                 modifier = Modifier.weight(4.25f)
             )
             IconButton(
@@ -179,7 +186,6 @@ fun CardEdit(
                                 text = it.label!!
                             )
                         },
-                        //TODO -> padding anpassen
                         trailingIcon = {
                             IconButton(
                                 modifier = Modifier,
@@ -207,7 +213,8 @@ fun CardEdit(
             )
             LazyColumn(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background),
+                    .background(MaterialTheme.colorScheme.background)
+                    .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
 
@@ -227,6 +234,7 @@ fun CardEdit(
 
     }
 }
+
 
 
 

@@ -28,7 +28,6 @@ fun EditCardsInBoxView(
             viewModel.onPageLoaded()
         })
 
-    // TODO: Save button nicht sichtbar. Keine Ahnung wie man das fixen soll.
     Column() {
         LazyColumn(
             modifier = modifier.weight(1f),

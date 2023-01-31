@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import java.util.*
 
 @Composable
@@ -75,7 +76,7 @@ fun LearningModeView(
         Column(
             modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
-                .padding(20.dp)
+                .padding(15.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -96,13 +97,13 @@ fun LearningModeView(
             }
 
             Text(
-                text = stringResource(R.string.remaining_cards_in_box_label) + viewModel.numberOfCardsRemaining.value.toString(),
+                text = stringResource(R.string.remaining_cards_in_box_text).formatToInlineLabel() + viewModel.numberOfCardsRemaining.value.toString(),
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 14.sp,
                 fontWeight = FontWeight(350)
             )
             Divider(
-                Modifier.padding(horizontal = 10.dp, vertical = 10.dp)
+                Modifier.padding(horizontal = 7.dp, vertical = 10.dp)
             )
             if (viewModel.currentCard.value == null) {
                 showLoadingIcon()

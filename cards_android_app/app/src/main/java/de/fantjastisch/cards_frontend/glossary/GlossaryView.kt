@@ -29,10 +29,10 @@ import de.fantjastisch.cards_frontend.card.content_overview.CardContentDialog
 import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
+import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
-
 
 @Composable
 @Preview
@@ -127,7 +127,8 @@ private fun CardView(
                         Text(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            text = card.question
+                            text = card.question,
+                            fontSize = 14.sp,
                         )
                         Row(
                             modifier = Modifier
@@ -137,9 +138,9 @@ private fun CardView(
                         ) {
                             Text(
                                 modifier = Modifier,
-                                text = stringResource(R.string.inline_tag_label),
+                                text = stringResource(R.string.tag_label).formatToInlineLabel(),
                                 fontWeight = FontWeight(500),
-                                fontSize = 12.sp,
+                                fontSize = 14.sp,
                             )
                             Text(
                                 modifier = Modifier,
@@ -158,22 +159,28 @@ private fun CardView(
                         .padding(vertical = 6.dp)
                 )
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = stringResource(R.string.inline_categories_label),
-                        fontSize = 14.sp
-                    )
-                    Text(
-                        modifier = Modifier.weight(4.25f),
-                        text = card.categories.map { category -> category.label }
-                            .joinToString(separator = ", "),
-                        fontSize = 14.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
+                    Row(
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(R.string.categories_label).formatToInlineLabel(),
+                            fontWeight = FontWeight(500),
+                            fontSize = 14.sp,
+                        )
+                        Text(
+                            text = card.categories.map { category -> category.label }
+                                .joinToString(separator = ", "),
+                            fontSize = 14.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                     IconButton(
                         modifier = Modifier
                             .rotate(rotate),
@@ -187,6 +194,8 @@ private fun CardView(
                         )
                     }
                 }
+
+
             } else {
                 Row(
                     modifier = Modifier
@@ -300,58 +309,52 @@ private fun CardView(
                         fontSize = 12.sp
                     )
                 }
-                LazyRow(
-                    modifier = Modifier
-                ) {
-                    item {
-                        card.links.forEach {
-                            val viewModel = viewModel { CardContentViewModel(it.target!!) }
+                Row() {
+                    LazyRow(
+                        modifier = Modifier.weight(6f)
+                    ) {
+                        item {
+                            card.links.forEach {
+                                val viewModel = viewModel { CardContentViewModel(it.target!!) }
 
-                            if (viewModel.linkClicked.value) {
-                                CardContentDialog(id = it.target!!)
-                            }
+                                if (viewModel.linkClicked.value) {
+                                    CardContentDialog(id = it.target!!)
+                                }
 
-                            AssistChip(
-                                modifier = Modifier.padding(10.dp),
-                                onClick = viewModel::onLinkClicked,
-                                label = {
-                                    Text(
-                                        modifier = Modifier,
-                                        text = it.label!!
-                                    )
-                                },
-                                //TODO -> padding anpassen
-                                /*trailingIcon = {
-                                    IconButton(
-                                        modifier = Modifier,
-                                        onClick = { onDeleteLinkClicked(it) }) {
-                                        Icon(
-                                            imageVector = Icons.Default.DeleteOutline,
-                                            contentDescription = "delete",
-                                            Modifier.size(AssistChipDefaults.IconSize)
+                                AssistChip(
+                                    modifier = Modifier.padding(10.dp),
+                                    onClick = viewModel::onLinkClicked,
+                                    label = {
+                                        Text(
+                                            modifier = Modifier,
+                                            text = it.label!!
                                         )
-                                    }
-                                }*/ )
+                                    },
+                                )
+                            }
                         }
+
                     }
-                }
-                Row(
-                    horizontalArrangement = Arrangement.End
-                ) {
                     IconButton(
-                    modifier = Modifier
-                        .rotate(rotate),
-                    onClick = {
-                        expanded = !expanded
-                    }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "drop-down arrow"
-                    )
-                }}
+                        modifier = Modifier
+                            .rotate(rotate).weight(1f),
+                        onClick = {
+                            expanded = !expanded
+                        }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "drop-down arrow"
+                        )
+                    }
 
 
+                    Row(
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                    }
 
+
+                }
             }
         }
     }

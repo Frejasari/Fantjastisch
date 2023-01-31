@@ -50,7 +50,8 @@ fun CreateCardView(
         onUpdateCardClicked = viewModel::onCreateCardClicked,
         onCreateLinkClicked = viewModel::onCreateLinkClicked,
         links = viewModel.cardLinks.value,
-        onDeleteLinkClicked = viewModel::onDeleteLinkClicked
+        onDeleteLinkClicked = viewModel::onDeleteLinkClicked,
+        toast = viewModel.toast.value
     )
 
     FilledTonalButton(

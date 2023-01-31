@@ -58,39 +58,40 @@
   <string name="update_link_headline">Link bearbeiten</string>
   <string name="create_link_name">zu verknüpfendes Wort</string>
 
-  <!-- Lernen -->
-  <string name="create_learningobject_headline">Lernobjekt erstellen</string>
-  <string name="create_learningSystem_headline">Lernsystem erstellen</string>
-  <string name="select_num_of_boxes_label">Anzahl der Lernkästen wählen</string>
-  <string name="label_label">Label</string>
-  <string name="learning_object_detail">Lernobjektansicht</string>
-  <string name="study_learning_box">Lernbox lernen</string>
-  <string name="learning_mode_title">Lernmodus</string>
-  <string name="learningbox_label">Lernbox</string>
-  <string name="move_card_to_previous_box_label">Karte in vorherige Lernbox schieben</string>
-  <string name="move_card_to_next_box_label">Karte in nächste Lernbox schieben</string>
-  <string name="number_of_learningboxes_text">Anzahl der Lernkästen</string>
-  <string name="dont_move_card_text">Karte nicht weiterschieben</string>
-  <string name="next_card_text">Nächste Karte</string>
-  <string name="learning_system_label">Lernsystem</string>
-  <string name="add_categories_label">Kategorien hinzufügen</string>
-  <string name="select_cards_label">Einzelne Karten hinzufügen</string>
-  <string name="cards_in_this_box_label">Karten in dieser Box</string>
-  <string name="move_cards_in_learningobject_text">Karten im Lernobjekt verschieben</string>
-  <string name="previous_box_text">Vorherige Box</string>
-  <string name="next_box_text">Nächste Box</string>
-  <string name="start_learning">Lernen</string>
-  <string name="move_cards_text">Karten verschieben</string>
-  <string name="number_of_cards_text">Anzahl Karten</string>
+    <!-- Lernen -->
+    <string name="create_learningobject_headline">Lernobjekt erstellen</string>
+    <string name="create_learningSystem_headline">Lernsystem erstellen</string>
+    <string name="select_num_of_boxes_label">Anzahl der Lernkästen wählen</string>
+    <string name="label_label">Label</string>
+    <string name="learning_object_detail">Lernobjektansicht</string>
+    <string name="study_learning_box">Lernbox lernen</string>
+    <string name="learning_mode_title">Lernmodus</string>
+    <string name="learningbox_label">Lernbox</string>
+    <string name="move_card_to_previous_box_label">Karte in vorherige Lernbox schieben</string>
+    <string name="move_card_to_next_box_label">Karte in nächste Lernbox schieben</string>
+    <string name="number_of_learningboxes_text">Anzahl der Lernkästen</string>
+    <string name="dont_move_card_text">Karte nicht weiterschieben</string>
+    <string name="next_card_text">Nächste Karte</string>
+    <string name="learning_system_label">Lernsystem</string>
+    <string name="add_categories_label">Kategorien hinzufügen</string>
+    <string name="select_cards_label">Einzelne Karten hinzufügen</string>
+    <string name="cards_in_this_box_label">Karten in dieser Box</string>
+    <string name="move_cards_in_learningobject_text">Karten im Lernobjekt verschieben</string>
+    <string name="previous_box_text">Vorherige Box</string>
+    <string name="next_box_text">Nächste Box</string>
+    <string name="choose_card_text">Karten auswählen</string>
+    <string name="start_learning">Lernen</string>
+    <string name="move_cards_text">Karten verschieben</string>
+    <string name="number_of_cards_text">Anzahl Karten</string>
+    <string name="remaining_cards_in_box_text">Anzahl Karten verbleibend</string>
 
-  <!-- Inline Labels -->
-  <string name="inline_tag_label">Tag: </string>
-  <string name="inline_categories_label">Kategorien: </string>
-  <string name="remaining_cards_in_box_label">Anzahl Karten verbleibend: </string>
+    <!-- ? -->
+    <string name="overview">Übersicht</string>
 
-  <!-- ? -->
-  <string name="overview">Übersicht</string>
-  <string name="sort_cards_in_box_dialog_title">Anordnung der Karten</string>
+    <string name="link_name">Link Name TODO</string>
+    <string name="link_error">Bitte alle Felder ausfüllen</string>
+    <string name="create_link">Karte verlinken</string>
 
+    <string name="sort_cards_in_box_dialog_title">Anordnung der Karten</string>
 
 </resources>
