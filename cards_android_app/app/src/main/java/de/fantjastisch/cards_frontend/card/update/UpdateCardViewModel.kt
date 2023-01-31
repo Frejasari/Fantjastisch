@@ -27,11 +27,11 @@ class UpdateCardViewModel(
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
     val cards = mutableStateOf(listOf<CardSelectItem>())
     val linkName = mutableStateOf("")
-    private val linkTarget = mutableStateOf<UUID?>(null)
-    private val link = mutableStateOf<LinkEntity?>(null)
-
+    val linkTarget = mutableStateOf<UUID?>(null)
+    val link = mutableStateOf<LinkEntity?>(null)
     @SuppressLint("MutableCollectionMutableState")
     val cardLinks = mutableStateOf(ArrayList<LinkEntity>())
+    var linkClicked =  mutableStateOf(false)
     val toast = mutableStateOf(false)
 
     fun setCardQuestion(value: String) {
@@ -68,13 +68,9 @@ class UpdateCardViewModel(
             }
         }
 
-        linkTarget.value = cards.value.map {
-            if (it.card.id == id) {
-                it.copy(isChecked = !it.isChecked)
-            } else {
-                it
-            }
-        }[0].card.id
+        val list = cards.value
+            .filter{ card -> card.isChecked }
+        linkTarget.value = list[0].card.id
     }
 
     init {
