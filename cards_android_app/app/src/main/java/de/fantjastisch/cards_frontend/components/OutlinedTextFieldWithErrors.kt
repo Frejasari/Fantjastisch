@@ -38,6 +38,7 @@ fun OutlinedTextFieldWithErrors(
         },
         onValueChange = onValueChange,
         placeholder = { Text(text = placeholder) },
+        label = { Text(text = placeholder) },
         keyboardOptions = keyboardOptions
     )
 }
