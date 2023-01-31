@@ -53,7 +53,7 @@ fun CardEdit(
         targetValue = if (expanded) 180f else 0f
     )
     val rotateForCat by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f
+        targetValue = if (expandedForCat) 180f else 0f
     )
     val context = LocalContext.current
 
