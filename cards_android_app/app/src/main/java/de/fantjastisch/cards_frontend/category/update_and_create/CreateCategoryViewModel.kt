@@ -1,9 +1,13 @@
 package de.fantjastisch.cards_frontend.category.update_and_create
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.category.CategoryViewModel
+import de.fantjastisch.cards_frontend.infrastructure.fold
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.openapitools.client.models.CreateCategoryEntity
 
 class CreateCategoryViewModel(
@@ -14,23 +18,24 @@ class CreateCategoryViewModel(
     val categories = mutableStateOf(listOf<CategorySelectItem>())
 
     init {
-        categoryRepository.getPage(
-            onSuccess = {
-                errors.value = emptyList()
+        viewModelScope.launch {
+            categoryRepository.getPage().fold(
+                onSuccess = {
+                    errors.value = emptyList()
 
-                subcategories.value = it.map { category ->
-                    CategorySelectItem(
-                        id = category.id,
-                        label = category.label,
-                        isChecked = false,
-                    )
-                }
+                    subcategories.value = it.map { category ->
+                        CategorySelectItem(
+                            id = category.id,
+                            label = category.label,
+                            isChecked = false,
+                        )
+                    }
 
-            },
-            onFailure = {
-                error.value = "Ein Netzwerkfehler ist aufgetreten."
-            },
-        )
+                },
+                onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
+            )
+        }
     }
 
 
@@ -48,20 +53,19 @@ class CreateCategoryViewModel(
                 )
             }
             .let {
-                categoryRepository.createCategory(
-                    category = it,
-                    onSuccess = {
-                        isFinished.value = true
-                    },
-                    onFailure = {
-                        if (it == null) {
-                            // Fehler anzeigen:
-                            error.value = "Ein Netzwerkfehler ist aufgetreten."
-                        } else {
-                            errors.value = it.errors
+                viewModelScope.launch {
+                    categoryRepository.createCategory(
+                        category = it
+                    ).fold(
+                        onSuccess = {
+                            isFinished.value = true
+                        },
+                        onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                        onUnexpectedError = {
+                            error.value = "Ein unbekannter Fehler ist aufgetreten."
                         }
-                    }
-                )
+                    )
+                }
             }
     }
 }
