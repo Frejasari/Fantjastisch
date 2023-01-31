@@ -2,7 +2,10 @@ package de.fantjastisch.cards_frontend.learning_object_details;
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,11 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.category.LearningModeSortDialog
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import java.util.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LearningDetailsComponent(
     learningBox: LearningBoxWitNrOfCards,
@@ -67,6 +68,7 @@ fun LearningDetailsComponent(
                         LearningDetailsContextMenu(
                             learningBoxId = learningBox.id,
                             learningObjectId = learningObjectId,
+                            onStartLearningClicked = { dialogOpen.value = true }
                         )
                     }
                 }

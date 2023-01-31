@@ -1,96 +1,96 @@
 <resources>
-    <string name="app_name">Karten</string>
-    <!--    MENU TAB NAMES -->
-    <string name="menu_learning_object_overview_label">Lernen</string>
-    <string name="menu_glossar_label">Glossar</string>
-    <string name="menu_categories_overview_label">Kategorien</string>
+  <string name="app_name">Karten</string>
+  <!--    MENU TAB NAMES -->
+  <string name="menu_learning_object_overview_label">Lernen</string>
+  <string name="menu_glossar_label">Glossar</string>
+  <string name="menu_categories_overview_label">Kategorien</string>
 
-    <!-- Glossar - Kartenansicht -->
-    <string name="question_label">Frage</string>
-    <string name="answer_label">Antwort</string>
-    <string name="tag_label">Tag</string>
-    <string name="categories_label">Kategorien</string>
-    <string name="links_label">Links</string>
+  <!-- Glossar - Kartenansicht -->
+  <string name="question_label">Frage</string>
+  <string name="answer_label">Antwort</string>
+  <string name="tag_label">Tag</string>
+  <string name="categories_label">Kategorien</string>
+  <string name="links_label">Links</string>
 
-    <!-- Floating Add Button -->
-    <string name="menu_create_card">Neue Karte</string>
-    <string name="menu_create_category">Neue Kategorie</string>
-    <string name="menu_create_learningsystem">Neues Lernsystem</string>
-    <string name="menu_create_learningobject">Neues Lernobjekt</string>
+  <!-- Floating Add Button -->
+  <string name="menu_create_card">Neue Karte</string>
+  <string name="menu_create_category">Neue Kategorie</string>
+  <string name="menu_create_learningsystem">Neues Lernsystem</string>
+  <string name="menu_create_learningobject">Neues Lernobjekt</string>
 
-    <!-- Common Options -->
-    <string name="save_button_text">Speichern</string>
-    <string name="update_button_text">Bearbeiten</string>
-    <string name="delete_button_text">Löschen</string>
-    <string name="confirm">Bestätigen</string>
-    <string name="cancel">Abbrechen</string>
-    <string name="no_content_text">Leer hier…</string>
-    <string name="fetching_data_text">Hole Daten…</string>
+  <!-- Common Options -->
+  <string name="save_button_text">Speichern</string>
+  <string name="update_button_text">Bearbeiten</string>
+  <string name="delete_button_text">Löschen</string>
+  <string name="confirm">Bestätigen</string>
+  <string name="cancel">Abbrechen</string>
+  <string name="no_content_text">Leer hier…</string>
+  <string name="fetching_data_text">Hole Daten…</string>
 
-    <!-- Glossary Options Panel -->
-    <string name="search_card_placeholder">Nach Karten suchen</string>
-    <string name="search_tag_placeholder">Nach Tag suchen</string>
-    <string name="sort_label">Sortieren</string>
-    <string name="filter_label">Filter</string>
+  <!-- Glossary Options Panel -->
+  <string name="search_card_placeholder">Nach Karten suchen</string>
+  <string name="search_tag_placeholder">Nach Tag suchen</string>
+  <string name="sort_label">Sortieren</string>
+  <string name="filter_label">Filter</string>
 
-    <!-- Delete Dialogs -->
-    <string name="delete_learningobject_dialog_title">Möchtest du dieses Lernobjekt wirklich löschen?</string>
-    <string name="delete_card_dialog_title">Möchtest du diese Karte wirklich löschen?</string>
-    <string name="delete_category_dialog_title">Möchtest du diese Kategorie wirklich löschen?</string>
-    <string name="delete_link_dialog_title">Möchtest du diesen Link wirklich löschen?</string>
+  <!-- Delete Dialogs -->
+  <string name="delete_learningobject_dialog_title">Möchtest du dieses Lernobjekt wirklich löschen?</string>
+  <string name="delete_card_dialog_title">Möchtest du diese Karte wirklich löschen?</string>
+  <string name="delete_category_dialog_title">Möchtest du diese Kategorie wirklich löschen?</string>
+  <string name="delete_link_dialog_title">Möchtest du diesen Link wirklich löschen?</string>
 
-    <!-- Kategorien -->
-    <string name="select_category_label">Kategorie auswählen</string>
-    <string name="create_category_headline">Kategorie erstellen</string>
-    <string name="card_category_select_button">Select Categories</string>
-    <string name="update_category_headline">Kategorie bearbeiten</string>
-    <string name="no_subcategories">Keine Unterkategorien</string>
+  <!-- Kategorien -->
+  <string name="select_category_label">Kategorie auswählen</string>
+  <string name="create_category_headline">Kategorie erstellen</string>
+  <string name="card_category_select_button">Select Categories</string>
+  <string name="update_category_headline">Kategorie bearbeiten</string>
+  <string name="no_subcategories">Keine Unterkategorien</string>
 
-    <!-- Karten -->
-    <string name="create_card_headline">Karte erstellen</string>
-    <string name="update_card_headline">Karte bearbeiten</string>
-    <string name="show_cards_in_learning_box">Karten verwalten</string>
-    <string name="show_question_from_card_button">Zeige Frage</string>
-    <string name="show_answer_from_card_button">Zeige Antwort</string>
+  <!-- Karten -->
+  <string name="create_card_headline">Karte erstellen</string>
+  <string name="update_card_headline">Karte bearbeiten</string>
+  <string name="show_cards_in_learning_box">Karten verwalten</string>
+  <string name="show_question_from_card_button">Zeige Frage</string>
+  <string name="show_answer_from_card_button">Zeige Antwort</string>
 
-    <!-- Links -->
-    <string name="create_link_headline">Link erstellen</string>
-    <string name="update_link_headline">Link bearbeiten</string>
-    <string name="create_link_name">zu verknüpfendes Wort</string>
+  <!-- Links -->
+  <string name="create_link_headline">Link erstellen</string>
+  <string name="update_link_headline">Link bearbeiten</string>
+  <string name="create_link_name">zu verknüpfendes Wort</string>
 
-    <!-- Lernen -->
-    <string name="create_learningobject_headline">Lernobjekt erstellen</string>
-    <string name="create_learningSystem_headline">Lernsystem erstellen</string>
-    <string name="select_num_of_boxes_label">Anzahl der Lernkästen wählen</string>
-    <string name="label_label">Label</string>
-    <string name="learning_object_detail">Lernobjektansicht</string>
-    <string name="study_learning_box">Lernbox lernen</string>
-    <string name="learning_mode_title">Lernmodus</string>
-    <string name="learningbox_label">Lernbox</string>
-    <string name="move_card_to_previous_box_label">Karte in vorherige Lernbox schieben</string>
-    <string name="move_card_to_next_box_label">Karte in nächste Lernbox schieben</string>
-    <string name="number_of_learningboxes_text">Anzahl der Lernkästen</string>
-    <string name="dont_move_card_text">Karte nicht weiterschieben</string>
-    <string name="next_card_text">Nächste Karte</string>
-    <string name="learning_system_label">Lernsystem</string>
-    <string name="add_categories_label">Kategorien hinzufügen</string>
-    <string name="select_cards_label">Einzelne Karten hinzufügen</string>
-    <string name="cards_in_this_box_label">Karten in dieser Box</string>
-    <string name="move_cards_in_learningobject_text">Karten im Lernobjekt verschieben</string>
-    <string name="previous_box_text">Vorherige Box</string>
-    <string name="next_box_text">Nächste Box</string>
-    <string name="choose_card_text">Karten auswählen</string>
-    <string name="move_cards_text">Karten verschieben</string>
-    <string name="number_of_cards_text">Anzahl Karten</string>
+  <!-- Lernen -->
+  <string name="create_learningobject_headline">Lernobjekt erstellen</string>
+  <string name="create_learningSystem_headline">Lernsystem erstellen</string>
+  <string name="select_num_of_boxes_label">Anzahl der Lernkästen wählen</string>
+  <string name="label_label">Label</string>
+  <string name="learning_object_detail">Lernobjektansicht</string>
+  <string name="study_learning_box">Lernbox lernen</string>
+  <string name="learning_mode_title">Lernmodus</string>
+  <string name="learningbox_label">Lernbox</string>
+  <string name="move_card_to_previous_box_label">Karte in vorherige Lernbox schieben</string>
+  <string name="move_card_to_next_box_label">Karte in nächste Lernbox schieben</string>
+  <string name="number_of_learningboxes_text">Anzahl der Lernkästen</string>
+  <string name="dont_move_card_text">Karte nicht weiterschieben</string>
+  <string name="next_card_text">Nächste Karte</string>
+  <string name="learning_system_label">Lernsystem</string>
+  <string name="add_categories_label">Kategorien hinzufügen</string>
+  <string name="select_cards_label">Einzelne Karten hinzufügen</string>
+  <string name="cards_in_this_box_label">Karten in dieser Box</string>
+  <string name="move_cards_in_learningobject_text">Karten im Lernobjekt verschieben</string>
+  <string name="previous_box_text">Vorherige Box</string>
+  <string name="next_box_text">Nächste Box</string>
+  <string name="start_learning">Lernen</string>
+  <string name="move_cards_text">Karten verschieben</string>
+  <string name="number_of_cards_text">Anzahl Karten</string>
 
-    <!-- Inline Labels -->
-    <string name="inline_tag_label">Tag: </string>
-    <string name="inline_categories_label">Kategorien: </string>
-    <string name="remaining_cards_in_box_label">Anzahl Karten verbleibend: </string>
+  <!-- Inline Labels -->
+  <string name="inline_tag_label">Tag: </string>
+  <string name="inline_categories_label">Kategorien: </string>
+  <string name="remaining_cards_in_box_label">Anzahl Karten verbleibend: </string>
 
-    <!-- ? -->
-    <string name="overview">Übersicht</string>
-    <string name="sort_cards_in_box_dialog_title">Anordnung der Karten</string>
+  <!-- ? -->
+  <string name="overview">Übersicht</string>
+  <string name="sort_cards_in_box_dialog_title">Anordnung der Karten</string>
 
 
 </resources>

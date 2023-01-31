@@ -34,12 +34,13 @@ class CreateCardViewModel(
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
     val cards = mutableStateOf(listOf<CardSelectItem>())
     val linkName = mutableStateOf("")
-    val linkTarget = mutableStateOf<UUID?>(null)
-    val link = mutableStateOf<LinkEntity?>(null)
-    val cardLinks = mutableStateOf(ArrayList<LinkEntity>())
+    private val linkTarget = mutableStateOf<UUID?>(null)
+    private val link = mutableStateOf<LinkEntity?>(null)
+    val cardLinks = mutableStateOf(mutableListOf<LinkEntity>())
 
     init {
         viewModelScope.launch {
+
             val result = createCardModel.getCategories()
             val resultCards = createCardModel.getCards()
 

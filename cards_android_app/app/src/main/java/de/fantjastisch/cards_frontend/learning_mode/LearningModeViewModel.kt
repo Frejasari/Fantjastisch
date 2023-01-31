@@ -155,7 +155,6 @@ class LearningModeViewModel(
             isShowingAnswer.value = false
             currentCard.value = nextCards.remove()
             numberOfCardsRemaining.value = nextCards.size + 1
-
         } else {
             isFinished.value = true
         }
