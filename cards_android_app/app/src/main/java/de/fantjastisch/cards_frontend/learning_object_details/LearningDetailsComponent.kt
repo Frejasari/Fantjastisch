@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import java.util.*
 
@@ -26,7 +27,7 @@ fun LearningDetailsComponent(
     learningBox: LearningBoxWitNrOfCards,
     learningObjectId: UUID
 ) {
-    val navigator = LocalNavigator.current!!
+    val navigator = FantMainNavigator.current
 
     val dialogOpen = remember { mutableStateOf(false) }
     Box(
@@ -47,7 +48,6 @@ fun LearningDetailsComponent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp, horizontal = 16.dp),
-
                 ) {
                 Row(
                     modifier = Modifier
@@ -109,8 +109,7 @@ fun LearningDetailsComponent(
         learningBox = learningBox,
         learningObjectId = learningObjectId,
         isOpen = dialogOpen.value,
-        setIsOpen = { dialogOpen.value = it },
-        navigator = navigator
+        setIsOpen = { dialogOpen.value = it }
     )
 }
 

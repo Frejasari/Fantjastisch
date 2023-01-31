@@ -14,8 +14,7 @@ data class LearningModeFragment(
     val learningBoxId: UUID,
     val learningObjectId: UUID,
     val sort: Boolean
-) :
-    AndroidScreen() {
+) : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {

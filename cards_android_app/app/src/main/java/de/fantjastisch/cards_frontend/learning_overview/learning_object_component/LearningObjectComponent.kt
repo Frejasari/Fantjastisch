@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsFragment
 import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObjectDialog
@@ -27,7 +28,7 @@ fun LearningObjectComponent(
     learningObject: LearningObject,
     onDeleteSuccessful: () -> Unit
 ) {
-    val navigator = LocalNavigator.current!!
+    val navigator = FantMainNavigator.current
     val viewModel = viewModel(key = learningObject.id.toString()) {
         LearningObjectComponentViewModel(
             learningSystemId = learningObject.learningSystemId,

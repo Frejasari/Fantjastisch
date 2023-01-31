@@ -25,8 +25,8 @@ class LearningModeViewModel(
 ) : ViewModel() {
 
     val error = mutableStateOf("")
-    val isFinished = mutableStateOf<Boolean>(false)
-    val isShowingAnswer = mutableStateOf<Boolean>(false)
+    val isFinished = mutableStateOf(false)
+    val isShowingAnswer = mutableStateOf(false)
     private var nextCards: Queue<CardEntity> = LinkedList()
     private var learningBoxesInObject: List<LearningBoxWitNrOfCards> = listOf()
     val currentCard = mutableStateOf<CardEntity?>(null)
@@ -81,13 +81,12 @@ class LearningModeViewModel(
                     from = learningBoxId,
                     to = nextBoxId,
                     cardIds = listOf(currentCard.value!!.id)
-                )
-                    .fold(
-                        onSuccess = { nextCard() },
-                        onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
-                        onUnexpectedError = {
-                            error.value = "Ein unbekannter Fehler ist aufgetreten."
-                        })
+                ).fold(
+                    onSuccess = { nextCard() },
+                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                    onUnexpectedError = {
+                        error.value = "Ein unbekannter Fehler ist aufgetreten."
+                    })
             }
         }
     }
