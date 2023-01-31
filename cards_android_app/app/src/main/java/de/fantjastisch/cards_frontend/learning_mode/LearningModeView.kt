@@ -2,6 +2,8 @@ package de.fantjastisch.cards_frontend.learning_mode
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -57,7 +59,7 @@ fun LearningModeView(
         Column(
             modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
-                .padding(20.dp)
+                .padding(15.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -84,7 +86,7 @@ fun LearningModeView(
                 fontWeight = FontWeight(350)
             )
             Divider(
-                Modifier.padding(horizontal = 10.dp, vertical = 10.dp)
+                Modifier.padding(horizontal = 7.dp, vertical = 10.dp)
             )
             if (viewModel.currentCard.value == null) {
                 showLoadingIcon()
