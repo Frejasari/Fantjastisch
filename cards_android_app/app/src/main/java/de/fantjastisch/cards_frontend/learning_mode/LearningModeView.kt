@@ -11,8 +11,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import java.util.*
 
 @Composable
 private fun showLoadingIcon() {
@@ -36,9 +38,26 @@ private fun showLoadingIcon() {
 @Composable
 fun LearningModeView(
     modifier: Modifier = Modifier,
-    viewModel: LearningModeViewModel
+    learningBoxId: UUID,
+    learningObjectId: UUID,
+    sort: Boolean
 ) {
     val navigator = FantMainNavigator.current
+
+    val viewModel = viewModel {
+        LearningModeViewModel(
+            learningBoxId = learningBoxId,
+            learningObjectId = learningObjectId,
+            sort = sort
+        )
+    }
+
+    LaunchedEffect(
+        key1 = Unit,
+        block = {
+            viewModel.onPageLoaded()
+        })
+
     // einmaliger Effekt
     LaunchedEffect(
         // wenn sich diese Variable ändert

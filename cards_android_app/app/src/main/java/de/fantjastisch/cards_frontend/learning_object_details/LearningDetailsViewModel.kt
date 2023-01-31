@@ -22,7 +22,7 @@ class LearningDetailsViewModel(
     var learningObjectLabel = ""
     val error = mutableStateOf("")
 
-    init {
+    fun onPageLoaded() {
         viewModelScope.launch() {
             learningBoxRepository.getAllBoxesForLearningObject(learningObjectId)
                 .fold(

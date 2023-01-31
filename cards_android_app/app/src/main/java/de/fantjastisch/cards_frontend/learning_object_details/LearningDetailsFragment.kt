@@ -30,7 +30,8 @@ data class LearningDetailsFragment(val learningObjectId: UUID) :
         {
             LearningDetailsView(
                 learningObjectId = learningObjectId,
-                modifier = Modifier.padding(it)
+                modifier = Modifier.padding(it),
+                screenKey = key
             )
         }
     }

@@ -38,10 +38,6 @@ class LearningModeViewModel(
     var isLastBox = false
     var isFirstBox = false
 
-    init {
-        onPageLoaded()
-    }
-
     fun onFlipCardClicked() {
         isShowingAnswer.value = !isShowingAnswer.value
     }
@@ -91,7 +87,7 @@ class LearningModeViewModel(
         }
     }
 
-    private fun onPageLoaded() {
+    fun onPageLoaded() {
 
         viewModelScope.launch {
             val (cardResult, learningBoxResult, cardsInLearningBoxResult) = awaitAll(
@@ -140,7 +136,7 @@ class LearningModeViewModel(
                                 card.id
                             )
                         })
-                        nextCard()
+                        nextCard() // land here 2nd time
                     }
                     isLoading.value = false
                 }
@@ -154,7 +150,7 @@ class LearningModeViewModel(
             isShowingAnswer.value = false
             currentCard.value = nextCards.remove()
             numberOfCardsRemaining.value = nextCards.size + 1
-        } else {
+        } else if (!isFinished.value) {
             isFinished.value = true
         }
     }

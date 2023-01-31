@@ -7,6 +7,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -16,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
@@ -27,9 +28,8 @@ fun LearningDetailsComponent(
     learningBox: LearningBoxWitNrOfCards,
     learningObjectId: UUID
 ) {
-    val navigator = FantMainNavigator.current
-
     val dialogOpen = remember { mutableStateOf(false) }
+
     Box(
         modifier =
         if (learningBox.nrOfCards != 0) {
@@ -48,7 +48,7 @@ fun LearningDetailsComponent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp, horizontal = 16.dp),
-                ) {
+            ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -105,6 +105,7 @@ fun LearningDetailsComponent(
             }
         }
     }
+
     LearningModeSortDialog(
         learningBox = learningBox,
         learningObjectId = learningObjectId,
