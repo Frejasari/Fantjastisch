@@ -64,7 +64,12 @@ fun LearningModeView(
             val learningBox = viewModel.learningBox.value
             if (learningBox != null) {
                 Text(
-                    text = String.format("%s Nr. %d - %s", stringResource(R.string.learningbox_label), learningBox.boxNumber.plus(1), learningBox.label),
+                    text = String.format(
+                        "%s Nr. %d - %s",
+                        stringResource(R.string.learningbox_label),
+                        learningBox.boxNumber.plus(1),
+                        learningBox.label
+                    ),
                     style = MaterialTheme.typography.titleMedium
                 )
             } else {

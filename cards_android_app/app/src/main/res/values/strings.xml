@@ -90,6 +90,7 @@
 
     <!-- ? -->
     <string name="overview">Übersicht</string>
+    <string name="sort_cards_in_box_dialog_title">Anordnung der Karten</string>
 
 
 </resources>

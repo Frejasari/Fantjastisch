@@ -18,6 +18,7 @@ import java.util.*
 class LearningModeViewModel(
     private val learningObjectId: UUID,
     private val learningBoxId: UUID,
+    private val sort: Boolean,
     private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(),
     private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(),
     private val cardRepository: CardRepository = CardRepository()
@@ -84,7 +85,9 @@ class LearningModeViewModel(
                     .fold(
                         onSuccess = { nextCard() },
                         onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
-                        onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." })
+                        onUnexpectedError = {
+                            error.value = "Ein unbekannter Fehler ist aufgetreten."
+                        })
             }
         }
     }
@@ -98,7 +101,7 @@ class LearningModeViewModel(
                         categoryIds = null,
                         search = null,
                         tag = null,
-                        sort = null
+                        sort = sort
                     )
                 },
                 async {
@@ -117,13 +120,15 @@ class LearningModeViewModel(
                 cardResult is RepoResult.Success
                         && learningBoxResult is RepoResult.Success
                         && cardsInLearningBoxResult is RepoResult.Success -> {
-                    val allCards = cardResult.result as List<CardEntity>
+                    val allCards =
+                        (if (!sort) cardResult.result.shuffled() else cardResult.result) as List<CardEntity>
                     val learningBoxes = learningBoxResult.result as List<LearningBoxWitNrOfCards>
                     val cardsInLearningBox = cardsInLearningBoxResult.result as List<UUID>
 
                     learningBoxesInObject = learningBoxes
 
                     val box = learningBoxes.firstOrNull { it.id == learningBoxId }
+
 
                     if (box == null) {
                         error.value = "Ein Netzwerkfehler ist aufgetreten."
