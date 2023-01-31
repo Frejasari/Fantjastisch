@@ -123,7 +123,8 @@ private fun CardView(
                         Text(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            text = card.question
+                            text = card.question,
+                            fontSize = 14.sp,
                         )
                         Row(
                             modifier = Modifier
@@ -135,7 +136,7 @@ private fun CardView(
                                 modifier = Modifier,
                                 text = stringResource(R.string.tag_label).formatToInlineLabel(),
                                 fontWeight = FontWeight(500),
-                                fontSize = 12.sp,
+                                fontSize = 14.sp,
                             )
                             Text(
                                 modifier = Modifier,
@@ -166,7 +167,7 @@ private fun CardView(
                         Text(
                             text = stringResource(R.string.categories_label).formatToInlineLabel(),
                             fontWeight = FontWeight(500),
-                            fontSize = 12.sp,
+                            fontSize = 14.sp,
                         )
                         Text(
                             text = card.categories.map { category -> category.label }
