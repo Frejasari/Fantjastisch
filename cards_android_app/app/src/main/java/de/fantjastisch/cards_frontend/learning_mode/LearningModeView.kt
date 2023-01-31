@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 
 @Composable
 private fun showLoadingIcon() {
@@ -77,7 +78,7 @@ fun LearningModeView(
             }
 
             Text(
-                text = stringResource(R.string.remaining_cards_in_box_label) + viewModel.numberOfCardsRemaining.value.toString(),
+                text = stringResource(R.string.remaining_cards_in_box_text).formatToInlineLabel() + viewModel.numberOfCardsRemaining.value.toString(),
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 14.sp,
                 fontWeight = FontWeight(350)
