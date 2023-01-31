@@ -5,14 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
-import org.openapitools.client.models.LinkEntity
 import java.util.*
-
 
 object CardsFilters {
     val filters = MutableStateFlow(
@@ -46,15 +43,6 @@ class GlossaryViewModel(
             CardsFilters.filters.collectLatest {
                 onPageLoaded()
             }
-            /*glossaryModel
-                .initializePage()
-                .fold(
-                    onSuccess = { card ->
-                        cardLinks.value = card.links
-                    },
-                    onError = { error.value = "Something is wrong" },
-                    onUnexpectedError = { error.value = "Ein Netzwerkfehler ist aufgetreten." }
-                )*/
         }
     }
 
@@ -100,7 +88,6 @@ class GlossaryViewModel(
                     // Fehler anzeigen:
                     error.value = "Ein Netzwerkfehler ist aufgetreten."
                 }
-
             }
         }
     }
@@ -115,7 +102,6 @@ class GlossaryViewModel(
         data class ConfirmWithUser(override val card: CardEntity) : DeletionProgress()
         data class Deleting(override val card: CardEntity) : DeletionProgress()
     }
-
 
 
 }

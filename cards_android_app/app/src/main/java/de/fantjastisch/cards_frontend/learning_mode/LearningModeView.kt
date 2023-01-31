@@ -18,7 +18,7 @@ import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import java.util.*
 
 @Composable
-private fun showLoadingIcon() {
+private fun LoadingIcon() {
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -71,7 +71,7 @@ fun LearningModeView(
         })
 
     if (viewModel.isLoading.value) {
-        showLoadingIcon()
+        LoadingIcon()
     } else {
         Column(
             modifier = modifier
@@ -93,7 +93,7 @@ fun LearningModeView(
                     style = MaterialTheme.typography.titleMedium
                 )
             } else {
-                showLoadingIcon()
+                LoadingIcon()
             }
 
             Text(
@@ -106,7 +106,7 @@ fun LearningModeView(
                 Modifier.padding(horizontal = 7.dp, vertical = 10.dp)
             )
             if (viewModel.currentCard.value == null) {
-                showLoadingIcon()
+                LoadingIcon()
             } else {
                 LearningModeCardComponent(
                     content = if (viewModel.isShowingAnswer.value) {

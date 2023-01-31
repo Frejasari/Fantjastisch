@@ -1,12 +1,16 @@
 package de.fantjastisch.cards_frontend.glossary
 
 import de.fantjastisch.cards_frontend.card.CardRepository
+import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import java.util.*
 
 class GlossaryModel(
-    //private val cardId: UUID,
+    private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(),
     private val cardRepository: CardRepository = CardRepository(),
-    //private val linkRepository: LinkRepository = LinkRepository()
 ) {
 
     suspend fun getCards(
@@ -21,36 +25,24 @@ class GlossaryModel(
         sort = sort
     )
 
-    suspend fun deleteCard(cardId: UUID) = cardRepository.deleteCard(
-        cardId = cardId
-    )
 
-/*    data class Link(
-        val links: List<LinkEntity>
-    )*/
-
-/*    @Suppress("UNCHECKED_CAST")
-    suspend fun initializePage(): RepoResult<GlossaryModel.Link> = coroutineScope {
-        // Runs coroutines in parallel and waits until all of them are done
-        val (linkResult) = awaitAll(
-            async { linkRepository.getLinkPage(id = cardId)}
-        )
-
-        when {
-                    linkResult is RepoResult.Success-> {
-                val links = linkResult.result as List<LinkEntity>
-                RepoResult.Success(
-                    Link(
-                        links = links
-                    )
+    suspend fun deleteCard(cardId: UUID): RepoResult<Unit> = coroutineScope {
+        val (apiResult, dbResult) = awaitAll(
+            async { cardRepository.deleteCard(cardId = cardId) },
+            async {
+                cardToLearningBoxRepository.deleteCard(
+                    cardId = cardId
                 )
+            },
+        )
+        when {
+            apiResult is RepoResult.Success
+                    && dbResult is RepoResult.Success -> {
+                RepoResult.Success(Unit)
             }
             else -> RepoResult.Error(emptyList())
         }
-
     }
 
-    suspend fun deleteLink(linkId: UUID) = linkRepository.deleteLink(
-        id = linkId
-    )*/
+
 }

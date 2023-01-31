@@ -3,7 +3,6 @@ package de.fantjastisch.cards_frontend.learning_box.card_to_learning_box
 import androidx.room.Transaction
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
 
@@ -62,19 +61,6 @@ class CardToLearningBoxRepository(
         }
     }
 
-    suspend fun getNumOfCardsFromLearningBoxId(
-        learningBoxId: UUID,
-        onSuccess: (Int) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-
-    ) {
-        try {
-            onSuccess(repository.getNumOfCardsFromLearningBoxId(learningBoxId))
-        } catch (ex: Throwable) {
-            onFailure(null)
-        }
-    }
-
     suspend fun getAllCardsForLearningObject(
         learningObjectId: UUID,
     ): RepoResult<List<UUID>> {
@@ -98,6 +84,16 @@ class CardToLearningBoxRepository(
                     cardId = it
                 )
             })
+            RepoResult.Success(Unit)
+        } catch (ex: Throwable) {
+            RepoResult.ServerError()
+        }
+    }
+
+
+    suspend fun deleteCard(cardId: UUID): RepoResult<Unit> {
+        return try {
+            repository.deleteCardFromAllBoxes(cardId = cardId)
             RepoResult.Success(Unit)
         } catch (ex: Throwable) {
             RepoResult.ServerError()
