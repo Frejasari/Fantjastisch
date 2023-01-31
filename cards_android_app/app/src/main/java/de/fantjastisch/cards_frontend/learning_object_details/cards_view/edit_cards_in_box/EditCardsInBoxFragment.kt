@@ -30,7 +30,6 @@ data class EditCardsInBoxFragment(
                 ),
                 title = { Text(text = stringResource(R.string.cards_in_this_box_label)) }
             )
-            TobBarCreateMenu()
         })
         {
             EditCardsInBoxView(
