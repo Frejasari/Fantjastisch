@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_frontend.card.update_and_create
 
+import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -47,7 +49,8 @@ fun CardEdit(
     onUpdateCardClicked: () -> Unit,
     onCardSelected: (UUID) -> Unit,
     onCreateLinkClicked: () -> Unit,
-    onDeleteLinkClicked: (LinkEntity) -> Unit
+    onDeleteLinkClicked: (LinkEntity) -> Unit,
+    toast: Boolean
 ) {
     var expanded by remember { mutableStateOf(false) }
     var expandedForCat by remember { mutableStateOf(true) }
@@ -57,7 +60,8 @@ fun CardEdit(
     val rotateForCat by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f
     )
-
+    val context = LocalContext.current
+    var notifyToast by remember { mutableStateOf(toast) }
 
 
     Column(
@@ -125,10 +129,14 @@ fun CardEdit(
             )
         }
 
+        if(toast && expanded) {
+            Toast.makeText(context, "Please fill the fields!", Toast.LENGTH_SHORT).show()
+
+        }
+
 
         Divider()
         Row(
-            //modifier = Modifier.clickable(onClick = { expanded = !expanded }),
             verticalAlignment = Alignment.CenterVertically
 
         ) {
@@ -229,6 +237,7 @@ fun CardEdit(
 
     }
 }
+
 
 
 

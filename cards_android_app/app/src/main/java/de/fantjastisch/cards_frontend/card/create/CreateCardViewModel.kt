@@ -37,6 +37,7 @@ class CreateCardViewModel(
     val linkTarget = mutableStateOf<UUID?>(null)
     val link = mutableStateOf<LinkEntity?>(null)
     val cardLinks = mutableStateOf(ArrayList<LinkEntity>())
+    val toast = mutableStateOf(false)
 
     init {
         viewModelScope.launch {
@@ -66,11 +67,13 @@ class CreateCardViewModel(
     }
 
     fun setLinkName(value: String) {
+        toast.value = false
         linkName.value = value
     }
 
 
     fun onCardSelected(id: UUID) {
+        toast.value = false
         val selectedCards = cards.value.filter { card -> card.isChecked }
 
         if(selectedCards.isNotEmpty()) {
@@ -96,6 +99,7 @@ class CreateCardViewModel(
     }
 
     fun onCategorySelected(id: UUID) {
+
         cardCategories.value = cardCategories.value.map {
             if (it.id == id) {
                 it.copy(isChecked = !it.isChecked)
@@ -109,17 +113,21 @@ class CreateCardViewModel(
         error.value = null
         errors.value = emptyList()
 
-        link.value = LinkEntity(
-            label = linkName.value,
-            target = linkTarget.value
-        )
-        cardLinks.value.add(link.value!!)
+        if (linkName.value.isBlank() || linkTarget.value == null) {
+            toast.value = true
+        } else {
+            toast.value = false
+            link.value = LinkEntity(
+                label = linkName.value,
+                target = linkTarget.value
+            )
+            cardLinks.value.add(link.value!!)
 
-        linkName.value = ""
-        cards.value = cards.value.map {
+            linkName.value = null.toString()
+            cards.value = cards.value.map {
                 it.copy(isChecked = false)
+            }
         }
-
     }
 
     fun onDeleteLinkClicked(link: LinkEntity) {

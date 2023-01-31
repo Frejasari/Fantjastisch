@@ -132,7 +132,7 @@ class UpdateCardViewModel(
                 l -> link != l} as ArrayList<LinkEntity>
     }
 
-    //TODO für delete die linkentity einfach aus der liste rausnehmen
+
     fun onUpdateCardClicked() {
         errors.value = emptyList()
         viewModelScope.launch {

@@ -22,7 +22,7 @@ fun UpdateCardView(
 
 
     // Componente die ihre Kinder untereinander anzeigt.
-    CardEdit(
+  /*  CardEdit(
         modifier = modifier,
         question = TextFieldState(
             value = viewModel.cardQuestion.value,
@@ -53,7 +53,7 @@ fun UpdateCardView(
         links = viewModel.cardLinks.value,
         onDeleteLinkClicked = viewModel::onDeleteLinkClicked
 
-    )
+    ) */
 
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 }
