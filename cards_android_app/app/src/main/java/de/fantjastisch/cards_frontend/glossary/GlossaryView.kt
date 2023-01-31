@@ -309,58 +309,52 @@ private fun CardView(
                         fontSize = 12.sp
                     )
                 }
-                LazyRow(
-                    modifier = Modifier
-                ) {
-                    item {
-                        card.links.forEach {
-                            val viewModel = viewModel { CardContentViewModel(it.target!!) }
+                Row() {
+                    LazyRow(
+                        modifier = Modifier.weight(6f)
+                    ) {
+                        item {
+                            card.links.forEach {
+                                val viewModel = viewModel { CardContentViewModel(it.target!!) }
 
-                            if (viewModel.linkClicked.value) {
-                                CardContentDialog(id = it.target!!)
-                            }
+                                if (viewModel.linkClicked.value) {
+                                    CardContentDialog(id = it.target!!)
+                                }
 
-                            AssistChip(
-                                modifier = Modifier.padding(10.dp),
-                                onClick = viewModel::onLinkClicked,
-                                label = {
-                                    Text(
-                                        modifier = Modifier,
-                                        text = it.label!!
-                                    )
-                                },
-                                //TODO -> padding anpassen
-                                /*trailingIcon = {
-                                    IconButton(
-                                        modifier = Modifier,
-                                        onClick = { onDeleteLinkClicked(it) }) {
-                                        Icon(
-                                            imageVector = Icons.Default.DeleteOutline,
-                                            contentDescription = "delete",
-                                            Modifier.size(AssistChipDefaults.IconSize)
+                                AssistChip(
+                                    modifier = Modifier.padding(10.dp),
+                                    onClick = viewModel::onLinkClicked,
+                                    label = {
+                                        Text(
+                                            modifier = Modifier,
+                                            text = it.label!!
                                         )
-                                    }
-                                }*/ )
+                                    },
+                                )
+                            }
                         }
+
                     }
-                }
-                Row(
-                    horizontalArrangement = Arrangement.End
-                ) {
                     IconButton(
-                    modifier = Modifier
-                        .rotate(rotate),
-                    onClick = {
-                        expanded = !expanded
-                    }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "drop-down arrow"
-                    )
-                }}
+                        modifier = Modifier
+                            .rotate(rotate).weight(1f),
+                        onClick = {
+                            expanded = !expanded
+                        }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "drop-down arrow"
+                        )
+                    }
 
 
+                    Row(
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                    }
 
+
+                }
             }
         }
     }

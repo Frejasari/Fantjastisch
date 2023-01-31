@@ -53,7 +53,7 @@ fun CardEdit(
     toast: Boolean
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var expandedForCat by remember { mutableStateOf(true) }
+    var expandedForCat by remember { mutableStateOf(false) }
     val rotate by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f
     )
@@ -61,7 +61,6 @@ fun CardEdit(
         targetValue = if (expanded) 180f else 0f
     )
     val context = LocalContext.current
-    var notifyToast by remember { mutableStateOf(toast) }
 
 
     Column(
@@ -103,7 +102,7 @@ fun CardEdit(
 
         ) {
             Text(
-                text = "Kategorien",
+                text = stringResource(id = R.string.categories_label),
                 modifier = Modifier.weight(4.25f)
             )
             IconButton(
@@ -130,7 +129,7 @@ fun CardEdit(
         }
 
         if(toast && expanded) {
-            Toast.makeText(context, "Please fill the fields!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.link_error, Toast.LENGTH_SHORT).show()
 
         }
 
@@ -141,7 +140,7 @@ fun CardEdit(
 
         ) {
             Text(
-                text = "Karte verlinken",
+                text = stringResource(id = R.string.create_link),
                 modifier = Modifier.weight(4.25f)
             )
             IconButton(
@@ -189,7 +188,6 @@ fun CardEdit(
                                 text = it.label!!
                             )
                         },
-                        //TODO -> padding anpassen
                         trailingIcon = {
                             IconButton(
                                 modifier = Modifier,
