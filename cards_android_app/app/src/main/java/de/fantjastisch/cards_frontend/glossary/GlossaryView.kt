@@ -25,10 +25,10 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardContextMenu
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
+import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
-
 
 @Composable
 @Preview
@@ -133,7 +133,7 @@ private fun CardView(
                         ) {
                             Text(
                                 modifier = Modifier,
-                                text = stringResource(R.string.inline_tag_label),
+                                text = stringResource(R.string.tag_label).formatToInlineLabel(),
                                 fontWeight = FontWeight(500),
                                 fontSize = 12.sp,
                             )
@@ -154,22 +154,28 @@ private fun CardView(
                         .padding(vertical = 6.dp)
                 )
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = stringResource(R.string.inline_categories_label),
-                        fontSize = 14.sp
-                    )
-                    Text(
-                        modifier = Modifier.weight(4.25f),
-                        text = card.categories.map { category -> category.label }
-                            .joinToString(separator = ", "),
-                        fontSize = 14.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
+                    Row(
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(R.string.categories_label).formatToInlineLabel(),
+                            fontWeight = FontWeight(500),
+                            fontSize = 12.sp,
+                        )
+                        Text(
+                            text = card.categories.map { category -> category.label }
+                                .joinToString(separator = ", "),
+                            fontSize = 14.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                     IconButton(
                         modifier = Modifier
                             .rotate(rotate),
@@ -183,6 +189,8 @@ private fun CardView(
                         )
                     }
                 }
+
+
             } else {
                 Row(
                     modifier = Modifier
