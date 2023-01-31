@@ -129,6 +129,12 @@ class CreateCardViewModel(
         error.value = null
         errors.value = emptyList()
 
+        if(linkName.value.isNotBlank() && linkTarget.value != null) {
+            cardLinks.value.add(LinkEntity(
+                label = linkName.value,
+                target = linkTarget.value!!
+            ))
+        }
         viewModelScope.launch {
             val result = createCardModel.createCard(
                 question = cardQuestion.value,

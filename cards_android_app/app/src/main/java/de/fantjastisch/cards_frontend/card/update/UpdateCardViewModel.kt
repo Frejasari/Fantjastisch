@@ -135,6 +135,14 @@ class UpdateCardViewModel(
 
     fun onUpdateCardClicked() {
         errors.value = emptyList()
+
+        if(linkName.value.isNotBlank() && linkTarget.value != null) {
+            cardLinks.value.add(LinkEntity(
+                label = linkName.value,
+                target = linkTarget.value!!
+            ))
+        }
+
         viewModelScope.launch {
             cardModel.update(
                 question = cardQuestion.value,
