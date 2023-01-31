@@ -23,8 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardContextMenu
-import de.fantjastisch.cards_frontend.card.content_overview.CardContentDialog
-import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
 import de.fantjastisch.cards_frontend.util.formatToInlineLabel
@@ -60,8 +58,10 @@ fun GlossaryView(
         block = {
             viewModel.onPageLoaded()
         })
+
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+
 
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     LazyColumn(
@@ -95,6 +95,7 @@ private fun CardView(
     val rotate by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f
     )
+    val dialogOpen = remember { mutableStateOf(false) }
 
     Surface(
         modifier = Modifier.clickable(
@@ -305,49 +306,31 @@ private fun CardView(
                     ) {
                         item {
                             card.links.forEach {
-                                val cardViewModel = viewModel { CardContentViewModel(it.target) }
-
-                                if (cardViewModel.linkClicked.value) {
-                                    CardContentDialog(id = it.target)
-                                }
-
-                                AssistChip(
-                                    modifier = Modifier.padding(10.dp),
-                                    onClick = cardViewModel::onLinkClicked,
-                                    label = {
-                                        Text(
-                                            modifier = Modifier,
-                                            text = it.label
-                                        )
-                                    },
-                                )
+                                LinkWithoutDeleteComponent(link = it)
                             }
                         }
-
                     }
-                    IconButton(
-                        modifier = Modifier
-                            .rotate(rotate)
-                            .weight(1f),
-                        onClick = {
-                            expanded = !expanded
-                        }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowDropDown,
-                            contentDescription = "drop-down arrow"
-                        )
-                    }
-
-
-                    Row(
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                    }
-
-
+                }
+                IconButton(
+                    modifier = Modifier
+                        .rotate(rotate)
+                        .weight(1f),
+                    onClick = {
+                        expanded = !expanded
+                    }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "drop-down arrow"
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.End
+                ) {
                 }
             }
         }
     }
 }
+
+
 

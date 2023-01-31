@@ -76,6 +76,7 @@ class CreateCardViewModel(
                 it.copy(isChecked = false)
             }
         }
+
         cards.value = cards.value.map {
             if (it.card.id == id) {
                 it.copy(isChecked = !it.isChecked)
@@ -84,13 +85,9 @@ class CreateCardViewModel(
             }
         }
 
-        linkTarget.value = cards.value.map {
-            if (it.card.id == id) {
-                it.copy(isChecked = !it.isChecked)
-            } else {
-                it
-            }
-        }.get(0).card.id
+        val list = cards.value
+            .filter{ card -> card.isChecked }
+        linkTarget.value = list[0].card.id
     }
 
     fun onCategorySelected(id: UUID) {

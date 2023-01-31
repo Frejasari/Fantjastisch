@@ -17,12 +17,6 @@ class CardContentModel(
     private val categoryRepository: CategoryRepository = CategoryRepository(),
     private val id: UUID
 ) {
-
-    suspend fun getCard(
-        id: UUID,
-    ) = cardRepository.getCard(id = id)
-
-
     data class Card(
         val id: UUID,
         val answer: String,

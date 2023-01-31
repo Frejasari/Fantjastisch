@@ -2,6 +2,7 @@ package de.fantjastisch.cards_frontend.learning_mode
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -10,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.glossary.LinkWithoutDeleteComponent
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import java.util.*
@@ -118,7 +121,29 @@ fun LearningModeView(
             Divider(
                 Modifier.padding(horizontal = 10.dp, vertical = 10.dp)
             )
-
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.links_label),
+                    fontWeight = FontWeight(350),
+                    fontSize = 12.sp
+                )
+            }
+            Row() {
+                LazyRow(
+                    modifier = Modifier.weight(6f)
+                ) {
+                    item {
+                        viewModel.currentCard.value!!.links.forEach {
+                            LinkWithoutDeleteComponent(link = it)
+                        }
+                    }
+                }
+            }
             Spacer(
                 modifier = modifier
                     .weight(1f)
