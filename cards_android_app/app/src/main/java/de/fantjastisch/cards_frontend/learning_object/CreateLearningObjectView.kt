@@ -49,7 +49,6 @@ fun CreateLearningObjectView(
                         label = { Text(text = stringResource(R.string.label_label)) },
                         isError = viewModel.learningObjectLabel.value.isBlank()
                     )
-                    Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
                     SingleSelect(
                         items = viewModel.learningSystems.value,
                         selectedItem = viewModel.selectedSystem.value,

@@ -82,11 +82,7 @@
     <string name="choose_card_text">Karten auswählen</string>
     <string name="move_cards_text">Karten verschieben</string>
     <string name="number_of_cards_text">Anzahl Karten</string>
-
-    <!-- Inline Labels -->
-    <string name="inline_tag_label">Tag: </string>
-    <string name="inline_categories_label">Kategorien: </string>
-    <string name="remaining_cards_in_box_label">Anzahl Karten verbleibend: </string>
+    <string name="remaining_cards_in_box_text">Anzahl Karten verbleibend</string>
 
     <!-- ? -->
     <string name="overview">Übersicht</string>
