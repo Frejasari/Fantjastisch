@@ -74,7 +74,7 @@ class EditCardsInBoxViewModel(
                                         card = card,
                                         isChecked = listOfCardIdsInBox.contains(card.id)
                                     )
-                                }
+                                }.sortedByDescending { it.isChecked }
                             },
                             onValidationError = {},
                             onUnexpectedError = {})
