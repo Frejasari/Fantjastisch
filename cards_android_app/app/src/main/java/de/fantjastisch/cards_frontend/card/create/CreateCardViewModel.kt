@@ -34,6 +34,7 @@ class CreateCardViewModel(
     private val link = mutableStateOf<LinkEntity?>(null)
     val cardLinks = mutableStateOf(mutableListOf<LinkEntity>())
     val toast = mutableStateOf(false)
+    val noCategories = mutableStateOf(false)
 
     init {
         viewModelScope.launch {
@@ -65,10 +66,12 @@ class CreateCardViewModel(
 
     fun setLinkName(value: String) {
         linkName.value = value
+        toast.value = false
     }
 
 
     fun onCardSelected(id: UUID) {
+        toast.value = false
         val selectedCards = cards.value.filter { card -> card.isChecked }
 
         if (selectedCards.isNotEmpty()) {
@@ -98,6 +101,7 @@ class CreateCardViewModel(
                 it
             }
         }
+        noCategories.value = false
     }
 
     fun onCreateLinkClicked() {
@@ -129,27 +133,38 @@ class CreateCardViewModel(
         error.value = null
         errors.value = emptyList()
 
+        // check if fields for links have been filled but not saved
         if(linkName.value.isNotBlank() && linkTarget.value != null) {
-            cardLinks.value.add(LinkEntity(
+            cardLinks.value.add(
+                LinkEntity(
                 label = linkName.value,
                 target = linkTarget.value!!
-            ))
-        }
-        viewModelScope.launch {
-            val result = createCardModel.createCard(
-                question = cardQuestion.value,
-                answer = cardAnswer.value,
-                tag = cardTag.value.replaceFirstChar { letter -> letter.uppercaseChar() },
-                links = cardLinks.value,
-                categories = cardCategories.value
             )
+            )
+        }
 
-            when (result) {
-                is RepoResult.Success -> isFinished.value = true
-                is RepoResult.Error -> errors.value = result.errors
-                is RepoResult.ServerError -> error.value = "Ein Netzwerkfehler ist aufgetreten."
+        // check for categories -> if no then wait till yes
+        if(cardCategories.value.none { cat -> cat.isChecked }) {
+            noCategories.value = true
+        } else {
+            viewModelScope.launch {
+                val result = createCardModel.createCard(
+                    question = cardQuestion.value,
+                    answer = cardAnswer.value,
+                    tag = cardTag.value.replaceFirstChar { letter -> letter.uppercaseChar() },
+                    links = cardLinks.value,
+                    categories = cardCategories.value
+                )
+
+                when (result) {
+                    is RepoResult.Success -> isFinished.value = true
+                    is RepoResult.Error -> errors.value = result.errors
+                    is RepoResult.ServerError -> error.value = "Ein Netzwerkfehler ist aufgetreten."
+                }
             }
         }
+
+
     }
 
 

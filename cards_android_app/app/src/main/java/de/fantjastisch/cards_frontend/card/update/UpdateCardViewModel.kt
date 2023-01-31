@@ -31,8 +31,8 @@ class UpdateCardViewModel(
     val link = mutableStateOf<LinkEntity?>(null)
     @SuppressLint("MutableCollectionMutableState")
     val cardLinks = mutableStateOf(ArrayList<LinkEntity>())
-    var linkClicked =  mutableStateOf(false)
     val toast = mutableStateOf(false)
+    val noCategories = mutableStateOf(false)
 
     fun setCardQuestion(value: String) {
         cardQuestion.value = value
@@ -143,18 +143,22 @@ class UpdateCardViewModel(
             ))
         }
 
-        viewModelScope.launch {
-            cardModel.update(
-                question = cardQuestion.value,
-                answer = cardAnswer.value,
-                tag = cardTag.value,
-                categories = cardCategories.value,
-                links = cardLinks.value
-            ).fold(
-                onSuccess = { isFinished.value = true },
-                onValidationError = { errors.value = it },
-                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
-            )
+        if (cardCategories.value.none { cat -> cat.isChecked }) {
+            noCategories.value = true
+        } else {
+            viewModelScope.launch {
+                cardModel.update(
+                    question = cardQuestion.value,
+                    answer = cardAnswer.value,
+                    tag = cardTag.value,
+                    categories = cardCategories.value,
+                    links = cardLinks.value
+                ).fold(
+                    onSuccess = { isFinished.value = true },
+                    onValidationError = { errors.value = it },
+                    onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
+                )
+            }
         }
     }
 
@@ -167,6 +171,7 @@ class UpdateCardViewModel(
                 it
             }
         }
+        noCategories.value = false
     }
 
 

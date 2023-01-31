@@ -1,5 +1,8 @@
 package de.fantjastisch.cards_frontend.card.update_and_create
 
+import android.annotation.SuppressLint
+import android.graphics.Color.RED
+import android.provider.CalendarContract
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -14,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -30,6 +34,7 @@ import java.util.*
 
 
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun CardEdit(
     modifier: Modifier = Modifier,
@@ -45,7 +50,8 @@ fun CardEdit(
     onCardSelected: (UUID) -> Unit,
     onCreateLinkClicked: () -> Unit,
     onDeleteLinkClicked: (LinkEntity) -> Unit,
-    toast: Boolean
+    toast: Boolean,
+    noCategories: Boolean
 ) {
     var expanded by remember { mutableStateOf(false) }
     var expandedForCat by remember { mutableStateOf(false) }
@@ -56,7 +62,6 @@ fun CardEdit(
         targetValue = if (expandedForCat) 180f else 0f
     )
     val context = LocalContext.current
-
 
     Column(
         modifier = modifier
@@ -90,34 +95,65 @@ fun CardEdit(
             field = "tag"
         )
 
-        Divider()
+
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-
-            ) {
-                Text(
-                    text = stringResource(id = R.string.categories_label),
-                    modifier = Modifier.weight(4.25f)
-                )
-                IconButton(
-                    modifier = Modifier
-                        .rotate(rotateForCat),
-                    onClick = {
-                        expandedForCat = !expandedForCat
-                        if (expanded) {
-                            expanded = false
-                        }
-                    }
+            Divider()
+            if(noCategories) {
+                expandedForCat = true
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "drop-down arrow"
+                    Text(
+                        text = stringResource(id = R.string.categories_label),
+                        color = Color.Red,
+                        modifier = Modifier.weight(4.25f)
                     )
+                    IconButton(
+                        modifier = Modifier
+                            .rotate(rotateForCat),
+                        onClick = {
+                            expandedForCat = !expandedForCat
+                            if (expanded) {
+                                expanded = false
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "drop-down arrow",
+                            tint = Color.Red
+                        )
+                    }
+                }
+            } else {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.categories_label),
+                        modifier = Modifier.weight(4.25f)
+                    )
+                    IconButton(
+                        modifier = Modifier
+                            .rotate(rotateForCat),
+                        onClick = {
+                            expandedForCat = !expandedForCat
+                            if (expanded) {
+                                expanded = false
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "drop-down arrow"
+                        )
+                    }
                 }
             }
+
             if (expandedForCat) {
                 CategorySelect(
                     categories = categories,
@@ -129,6 +165,11 @@ fun CardEdit(
                 Toast.makeText(context, R.string.link_error, Toast.LENGTH_SHORT).show()
 
             }
+
+            if (noCategories) {
+                Toast.makeText(context, R.string.categories_error, Toast.LENGTH_SHORT).show()
+            }
+
 
 
             Divider()
@@ -197,6 +238,7 @@ fun CardEdit(
                 }
             }
         }
+
 
         FilledTonalButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),

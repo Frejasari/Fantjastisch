@@ -51,14 +51,9 @@ fun CreateCardView(
         onCreateLinkClicked = viewModel::onCreateLinkClicked,
         links = viewModel.cardLinks.value,
         onDeleteLinkClicked = viewModel::onDeleteLinkClicked,
-        toast = viewModel.toast.value
+        toast = viewModel.toast.value,
+        noCategories = viewModel.noCategories.value
     )
-
-    FilledTonalButton(
-        onClick = viewModel::onCreateCardClicked
-    ) {
-        Text(text = stringResource(R.string.save_button_text))
-    }
 
 
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
