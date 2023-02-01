@@ -22,20 +22,18 @@ class LearningSystemRepository {
         .awaitResponse()
         .toRepoResponse()
 
-    suspend fun getPage(
-        onSuccess: (List<LearningSystemEntity>) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) = service.getLearningSystemList().enqueue(onSuccess, onFailure)
+    suspend fun getPage() = service.getLearningSystemList()
+        .awaitResponse()
+        .toRepoResponse()
 
     suspend fun createLearningsystem(
         learningSystem: CreateLearningSystemEntity,
-        onSuccess: (String) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) = service.createLearningSystem(learningSystem).enqueue(onSuccess, onFailure)
+    ) = service.createLearningSystem(learningSystem)
+        .awaitResponse()
+        .toRepoResponse()
 
     suspend fun updateLearningSystem(
-        learningSystem: UpdateLearningSystemEntity,
-        onSuccess: (Unit) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) = service.updateLearningSystem(learningSystem).enqueue(onSuccess, onFailure)
+        learningSystem: UpdateLearningSystemEntity) = service.updateLearningSystem(learningSystem)
+        .awaitResponse()
+        .toRepoResponse()
 }

@@ -3,7 +3,10 @@ package de.fantjastisch.cards_frontend.category.delete
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.category.CategoryRepository
+import de.fantjastisch.cards_frontend.infrastructure.fold
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -18,17 +21,16 @@ class DeleteCategoryViewModel(
 
     fun onDeleteClicked() {
         error.value = null
-        categoryRepository.deleteCategory(
-            categoryId = categoryId,
-            onSuccess = {
-                isFinished.value = true
-            },
-            onFailure = {
-                // Fehler anzeigen:
-                error.value = "Ein Netzwerkfehler ist aufgetreten."
-
-            }
-        )
+        viewModelScope.launch {
+            categoryRepository.deleteCategory(
+                categoryId = categoryId
+            ).fold(
+                onSuccess = {
+                    isFinished.value = true
+                }, onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
+            )
+        }
     }
 
     fun onDismissClicked() {
