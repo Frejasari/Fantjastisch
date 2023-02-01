@@ -47,10 +47,13 @@ class CreateLearningObjectModel(
             async { learningSystemRepository.getPage() })
 
         when {
+            // Wenn alle Resultate da
             cardsResult is RepoResult.Success &&
                     categoriesResult is RepoResult.Success &&
                     learningSystemsResult is RepoResult.Success -> {
+                // Verarbeite
                 val cards = (cardsResult.result) as List<CardEntity>
+
                 val cardSelectItems = cards.map { card ->
                     CardSelectItem(
                         card = card, isChecked = false
@@ -73,6 +76,8 @@ class CreateLearningObjectModel(
                         label = learningSystem.label,
                     )
                 }
+
+                // Objekt für Rückgabe füllen
                 RepoResult.Success(
                     CreateLearningObject(
                         cardSelectItems = cardSelectItems,
@@ -81,6 +86,7 @@ class CreateLearningObjectModel(
                     )
                 )
             }
+            // Sonst Fehler
             else -> RepoResult.Error(emptyList())
         }
     }
