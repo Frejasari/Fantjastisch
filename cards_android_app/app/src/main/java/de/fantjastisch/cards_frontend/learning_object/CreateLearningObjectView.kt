@@ -148,5 +148,4 @@ fun CreateLearningObjectView(
 
     CloseScreenOnSignalEffect(viewModel.isFinished.value)
 
-    //C:\Users\Tamari Bayer\.android\avd\Pixel_6_Pro_API_29.avd
 }
