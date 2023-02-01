@@ -61,7 +61,7 @@ fun CreateLearningObjectView(
                         style = MaterialTheme.typography.titleMedium
                     )
                     CategorySelect(
-                        categories = viewModel.categories.value,
+                        categories = viewModel.allCategories.value,
                         onCategorySelected = viewModel::onCategorySelected
                     )
                     Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
@@ -72,7 +72,7 @@ fun CreateLearningObjectView(
                 }
             }
             CardSelect(
-                cards = viewModel.cards.value,
+                cards = viewModel.allCards.value,
                 onCardSelected = viewModel::onCardSelected
             )
         }

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
+import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
 import java.util.*
@@ -16,9 +17,8 @@ class CreateLearningObjectViewModel(
 ) : ViewModel() {
 
     // states, die vom view gelesen werden können -> automatisches Update vom View.
-    val categories = mutableStateOf(listOf<CategorySelectItem>())
-    val cards = mutableStateOf(listOf<CardSelectItem>())
-    val cardIds = mutableStateOf(mutableListOf<UUID>())
+    val allCategories = mutableStateOf(listOf<CategorySelectItem>())
+    val allCards = mutableStateOf(listOf<CardSelectItem>())
     val learningSystems = mutableStateOf(listOf<SingleSelectItem>())
     val selectedSystem = mutableStateOf<SingleSelectItem?>(null)
     val error = mutableStateOf<String?>(null)
@@ -34,8 +34,8 @@ class CreateLearningObjectViewModel(
                 .fold(
                     onSuccess = { learningObject ->
                         error.value = ""
-                        categories.value = learningObject.allCategories
-                        cards.value = learningObject.cardSelectItems
+                        allCategories.value = learningObject.categorySelectItems
+                        allCards.value = learningObject.cardSelectItems
                         learningSystems.value = learningObject.learningSystems
                     },
                     onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
@@ -49,7 +49,7 @@ class CreateLearningObjectViewModel(
     }
 
     fun onCardSelected(id: UUID) {
-        cards.value = cards.value.map {
+        allCards.value = allCards.value.map {
             if (it.card.id == id) {
                 it.copy(isChecked = !it.isChecked)
             } else {
@@ -59,7 +59,7 @@ class CreateLearningObjectViewModel(
     }
 
     fun onCategorySelected(id: UUID) {
-        categories.value = categories.value.map {
+        allCategories.value = allCategories.value.map {
             if (it.id == id) {
                 it.copy(isChecked = !it.isChecked)
             } else {
@@ -77,19 +77,18 @@ class CreateLearningObjectViewModel(
         val learningObject =
             LearningObject(label = learningObjectLabel.value, learningSystemId = learningSystemId)
         viewModelScope.launch {
-            model.insertLearningObject(learningObject)
-            val learningSystem = model.getLearningSystemFromInput(selectedSystem.value!!.id)
-            val cardsFromCategories = model.getCardsFromCategories(categories = categories.value)
-            model.createLearningBoxesFromCards(
-                cardsFromCategories = cardsFromCategories!!,
-                learningSystem = learningSystem!!,
+            val response = model.addLearningObject(
                 learningObject = learningObject,
-                cardIds = cardIds.value,
-                cards = cards.value
+                selectedSystemId = selectedSystem.value!!.id,
+                categories = allCategories.value,
+                cards = allCards.value
             )
 
-            // TODO: Validierung ob iwas nicht geklappt hat...
-            isFinished.value = true
+            when (response) {
+                is RepoResult.Success -> isFinished.value = true
+                is RepoResult.Error, is RepoResult.ServerError -> null
+            }
         }
+
     }
 }
