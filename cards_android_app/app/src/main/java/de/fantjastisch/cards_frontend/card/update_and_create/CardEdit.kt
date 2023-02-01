@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,12 +17,10 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.card.content_overview.CardContentDialog
-import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
+import de.fantjastisch.cards_frontend.card.create.LinkCardComponent
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
@@ -171,32 +168,7 @@ fun CardEdit(
         ) {
             item {
                 links.forEach {
-                    val viewModel = viewModel { CardContentViewModel(it.target) }
-
-                    if (viewModel.linkClicked.value) {
-                        CardContentDialog(id = it.target)
-                    }
-
-                    AssistChip(
-                        modifier = Modifier.padding(10.dp),
-                        onClick = viewModel::onLinkClicked,
-                        label = {
-                            Text(
-                                modifier = Modifier,
-                                text = it.label
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(
-                                modifier = Modifier,
-                                onClick = { onDeleteLinkClicked(it) }) {
-                                Icon(
-                                    imageVector = Icons.Default.DeleteOutline,
-                                    contentDescription = "delete",
-                                    Modifier.size(AssistChipDefaults.IconSize)
-                                )
-                            }
-                        })
+                    LinkCardComponent(link = it, onDeleteLinkClicked = onDeleteLinkClicked)
                 }
             }
         }

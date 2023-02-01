@@ -1,9 +1,6 @@
 package de.fantjastisch.cards_frontend.card.content_overview
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
@@ -32,7 +29,6 @@ class CardContentViewModel(
     val cardTag = mutableStateOf("")
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
     val cardLinks = mutableStateOf(listOf<LinkEntity>())
-
     var linkClicked =  mutableStateOf(false)
 
     init {
@@ -61,7 +57,7 @@ class CardContentViewModel(
         }
     }
 
-    fun onPageLoaded() {
+/*   *//* fun onPageLoaded() {
         viewModelScope.launch {
             val result = cardContentModel.getCard(id = cardId.value!!)
             when (result) {
@@ -73,14 +69,16 @@ class CardContentViewModel(
 
             }
         }
-    }
-
-    fun onLinkClicked() {
+    } *//*
+    @Composable
+    fun OnLinkClicked(id: UUID) {
         linkClicked.value = true
-    }
+        CardContentDialog(id = i)
 
-    fun onQuitLinkClicked() {
+    }*/
+
+/*    fun onQuitLinkClicked() {
         linkClicked.value = false
-    }
+    }*/
 }
 
