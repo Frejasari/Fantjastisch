@@ -44,6 +44,9 @@ class CreateLearningObjectViewModel(
         }
     }
 
+    fun setLearningObjectLabel(value: String) {
+        learningObjectLabel.value = value
+    }
     fun onCardSelected(id: UUID) {
         cards.value = cards.value.map {
             if (it.card.id == id) {

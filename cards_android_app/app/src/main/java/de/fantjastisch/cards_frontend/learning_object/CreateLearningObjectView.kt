@@ -44,7 +44,7 @@ fun CreateLearningObjectView(
                         ),
                         modifier = Modifier.fillMaxWidth(),
                         value = viewModel.learningObjectLabel.value,
-                        onValueChange = { viewModel.learningObjectLabel.value = it },
+                        onValueChange = viewModel::setLearningObjectLabel,
                         placeholder = { Text(text = stringResource(id = R.string.label_label)) },
                         label = { Text(text = stringResource(R.string.label_label)) },
                         isError = viewModel.learningObjectLabel.value.isBlank()
@@ -85,5 +85,4 @@ fun CreateLearningObjectView(
     }
 
     CloseScreenOnSignalEffect(viewModel.isFinished.value)
-
 }
