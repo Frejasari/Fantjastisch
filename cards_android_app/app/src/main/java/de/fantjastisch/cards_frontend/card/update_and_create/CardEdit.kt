@@ -102,6 +102,11 @@ fun CardEdit(
             Divider()
             if(noCategories) {
                 expandedForCat = true
+                var categoriesError by remember { mutableStateOf(noCategories) }
+                if (categoriesError) {
+                    Toast.makeText(context, R.string.categories_error, Toast.LENGTH_SHORT).show()
+                    categoriesError = false
+                }
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -154,9 +159,6 @@ fun CardEdit(
             }
 
             if (expandedForCat) {
-                if (noCategories) {
-                    Toast.makeText(context, R.string.categories_error, Toast.LENGTH_SHORT).show()
-                }
                 CategorySelect(
                     categories = categories,
                     onCategorySelected = onCategorySelected

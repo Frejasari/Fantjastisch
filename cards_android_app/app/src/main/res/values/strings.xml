@@ -91,6 +91,7 @@
     <string name="link_name">Link Name TODO</string>
     <string name="link_error">Bitte alle Felder ausfüllen</string>
     <string name="categories_error">Bitte wählen Sie eine Kategorie aus</string>
+    <string name="categories_delete_error">Die Kategorie hat Unterkategorien</string>
     <string name="create_link">Karte verlinken</string>
 
     <string name="sort_cards_in_box_dialog_title">Anordnung der Karten</string>

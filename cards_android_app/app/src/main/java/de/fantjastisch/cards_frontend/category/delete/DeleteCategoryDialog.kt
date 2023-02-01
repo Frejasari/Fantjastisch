@@ -4,60 +4,40 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.category.delete.DeleteCategoryViewModel
-import java.util.*
+import org.openapitools.client.models.CategoryEntity
 
 
 @Composable
 fun DeleteCategoryDialog(
-    label: String,
-    categoryId: UUID,
-    isOpen: Boolean,
-    setIsOpen: (isOpen: Boolean) -> Unit
+    cat: CategoryEntity,
+    isDeleteButtonEnabled: Boolean = true,
+    onDismissClicked: () -> Unit,
+    onDeleteClicked: () -> Unit
 ) {
-    val viewModel =
-        viewModel(key = categoryId.toString()) { DeleteCategoryViewModel(categoryId = categoryId) }
-    if (isOpen) {
-        AlertDialog(
-            onDismissRequest = { setIsOpen(false) },
-            title = {
-                Text(
-                    text = stringResource(R.string.delete_category_dialog_title)
-                )
-            },
-            text = {
-                Text(label)
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        viewModel.onDeleteClicked()
-                    }) {
-                    Text(text = stringResource(R.string.confirm))
-                }
-            },
-            dismissButton = {
-                Button(
-                    onClick = {
-                        viewModel.onDismissClicked()
-                    }) {
-                    Text(text = stringResource(R.string.cancel))
-                }
+    AlertDialog(
+        onDismissRequest = onDismissClicked,
+        title = {
+            Text(text = stringResource(R.string.delete_category_dialog_title))
+        },
+        text = {
+            Text(cat.label)
+        },
+        confirmButton = {
+            Button(
+                enabled = isDeleteButtonEnabled,
+                onClick = onDeleteClicked
+            ) {
+                Text(text = stringResource(R.string.confirm))
             }
-        )
-    }
-    // einmaliger Effekt
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = viewModel.isFinished.value,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            if (viewModel.isFinished.value) {
-                setIsOpen(false)
+        },
+        dismissButton = {
+            Button(
+                onClick = onDismissClicked
+            ) {
+                Text(text = stringResource(R.string.cancel))
             }
-        })
+        }
+    )
 }

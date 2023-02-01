@@ -36,7 +36,6 @@ class GlossaryViewModel(
     val cards = mutableStateOf<List<CardEntity>>(emptyList())
     val error = mutableStateOf<String?>(null)
     val currentDeleteDialog = mutableStateOf<DeletionProgress?>(null)
-//    val cardLinks = mutableStateOf<List<LinkEntity>>(emptyList())
 
     init {
         viewModelScope.launch {

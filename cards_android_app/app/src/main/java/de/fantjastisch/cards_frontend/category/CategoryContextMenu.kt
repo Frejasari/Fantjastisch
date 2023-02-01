@@ -10,14 +10,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.category.update_and_create.UpdateCategoryFragment
+import de.fantjastisch.cards_frontend.category.update.UpdateCategoryFragment
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import java.util.*
 
 
 @Composable
-fun CategoryContextMenu(navigator: Navigator, id: UUID, label: String) {
+fun CategoryContextMenu(
+    id: UUID,
+    onDeleteClicked: () -> Unit
+) {
+    val navigator = FantMainNavigator.current
     val isMenuOpen = remember { mutableStateOf(false) }
-    val isDeleteDialogOpen = remember { mutableStateOf(false) }
 
 
     IconButton(onClick = { isMenuOpen.value = !isMenuOpen.value }) {
@@ -37,15 +41,8 @@ fun CategoryContextMenu(navigator: Navigator, id: UUID, label: String) {
                 text = { Text(text = stringResource(id = R.string.delete_button_text)) },
                 onClick = {
                     isMenuOpen.value = false
-                    isDeleteDialogOpen.value = true
-                }
-            )
+                    onDeleteClicked()
+                })
         }
     }
-    DeleteCategoryDialog(
-        label = label,
-        categoryId = id,
-        isOpen = isDeleteDialogOpen.value,
-        setIsOpen = { isDeleteDialogOpen.value = it })
-
 }
