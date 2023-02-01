@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.util.LoadingIcon
 
 
 @Composable
@@ -28,25 +29,28 @@ fun EditCardsInBoxView(
             viewModel.onPageLoaded()
         })
 
-    Column() {
-        LazyColumn(
-            modifier = modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            contentPadding = PaddingValues(all = 16.dp),
-        ) {
-            CardSelect(
-                cards = viewModel.cards.value,
-                onCardSelected = viewModel::onCardSelected
-            )
-        }
-        FilledTonalButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = viewModel::onAddCardsClicked
-        ) {
-            Text(text = stringResource(R.string.save_button_text))
+    if (viewModel.isLoading.value) {
+        LoadingIcon()
+    } else {
+        Column() {
+            LazyColumn(
+                modifier = modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                contentPadding = PaddingValues(all = 16.dp),
+            ) {
+                CardSelect(
+                    cards = viewModel.cards.value,
+                    onCardSelected = viewModel::onCardSelected
+                )
+            }
+            FilledTonalButton(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = viewModel::onAddCardsClicked
+            ) {
+                Text(text = stringResource(R.string.save_button_text))
+            }
         }
     }
-
 
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 
