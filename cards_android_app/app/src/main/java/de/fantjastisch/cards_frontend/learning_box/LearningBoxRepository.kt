@@ -35,17 +35,17 @@ class LearningBoxRepository(
     }
 
 
-    suspend fun findByBoxId(
-        learningBoxId: UUID,
-        onSuccess: (LearningBox) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) {
-        try {
-            onSuccess(repository.findById(learningBoxId))
-        } catch (ex: Throwable) {
-            onFailure(null)
-        }
-    }
+//    suspend fun findByBoxId(
+//        learningBoxId: UUID,
+//        onSuccess: (LearningBox) -> Unit,
+//        onFailure: (errors: ErrorResponseEntity?) -> Unit
+//    ) {
+//        try {
+//            onSuccess(repository.findById(learningBoxId))
+//        } catch (ex: Throwable) {
+//            onFailure(null)
+//        }
+//    }
 
     suspend fun insert(
         learningBox: LearningBox,
