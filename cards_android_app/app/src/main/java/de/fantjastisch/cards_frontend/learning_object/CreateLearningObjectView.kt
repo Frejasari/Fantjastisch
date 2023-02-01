@@ -70,19 +70,6 @@ fun CreateLearningObjectView(
                         placeholder = { Text(text = stringResource(R.string.learning_system_label)) }
                     )
                     Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
-                   /* Text(
-                        text = stringResource(R.string.add_categories_label),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    CategorySelect(
-                        categories = viewModel.allCategories.value,
-                        onCategorySelected = viewModel::onCategorySelected
-                    )
-                    Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
-                    Text(
-                        text = stringResource(R.string.select_cards_label),
-                        style = MaterialTheme.typography.titleMedium
-                    ) */
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -150,7 +137,6 @@ fun CreateLearningObjectView(
                 )
             }
 
-
         }
         FilledTonalButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -161,4 +147,6 @@ fun CreateLearningObjectView(
     }
 
     CloseScreenOnSignalEffect(viewModel.isFinished.value)
+
+    //C:\Users\Tamari Bayer\.android\avd\Pixel_6_Pro_API_29.avd
 }
