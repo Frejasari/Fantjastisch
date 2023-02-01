@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import kotlinx.coroutines.Dispatchers
+import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CreateLearningSystemEntity
 import org.openapitools.client.models.ErrorEntryEntity
@@ -33,19 +33,15 @@ class CreateLearningSystemViewModel(
                 learningSystem = CreateLearningSystemEntity(
                     label = learningSystemLabel.value,
                     boxLabels = learningSystemBoxLabels.value,
-                ),
+                )
+            ).fold(
                 onSuccess = {
                     isFinished.value = true
                     // on Success -> dialog schliessen, zur Category  übersicht?
                 },
-                onFailure = {
-                    if (it == null) {
-                        // Fehler anzeigen:
-                        error.value = "Ein Netzwerkfehler ist aufgetreten."
-                    } else {
-                        errors.value = it.errors
-                    }
-                })
+                onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." },
+            )
         }
     }
 

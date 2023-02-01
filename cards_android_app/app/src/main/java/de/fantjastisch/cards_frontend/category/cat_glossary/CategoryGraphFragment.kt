@@ -128,11 +128,7 @@ fun CategoryGraphFragment(
                                 } else {
                                     category.subCategories.forEach {
                                         val nameOfSubcategory = remember { mutableStateOf("") }
-                                        viewModel.categoryRepository.getCategory(id = it,
-                                            onSuccess = {
-                                                nameOfSubcategory.value = it.label
-                                            },
-                                            onFailure = {})
+                                        nameOfSubcategory.value = viewModel.categories.value.filter {category -> category.id == it}.map{category -> category.label}.first()
                                         Row(
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {

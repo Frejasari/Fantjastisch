@@ -1,6 +1,7 @@
 package de.fantjastisch.cards_frontend.learning_object
 
 import de.fantjastisch.cards_frontend.config.AppDatabase
+import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
@@ -36,15 +37,13 @@ class LearningObjectRepository(
     }
 
     suspend fun insert(
-        learningObject: LearningObject,
-        onSuccess: () -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) {
-        try {
+        learningObject: LearningObject
+    ) : RepoResult<Unit> {
+        return try {
             repository.insert(learningObject)
-            onSuccess()
+            RepoResult.Success(Unit)
         } catch (ex: Throwable) {
-            onFailure(null)
+            RepoResult.ServerError()
         }
     }
 

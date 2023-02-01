@@ -44,7 +44,7 @@ fun CreateLearningObjectView(
                         ),
                         modifier = Modifier.fillMaxWidth(),
                         value = viewModel.learningObjectLabel.value,
-                        onValueChange = { viewModel.learningObjectLabel.value = it },
+                        onValueChange = viewModel::setLearningObjectLabel,
                         placeholder = { Text(text = stringResource(id = R.string.label_label)) },
                         label = { Text(text = stringResource(R.string.label_label)) },
                         isError = viewModel.learningObjectLabel.value.isBlank()
@@ -61,7 +61,7 @@ fun CreateLearningObjectView(
                         style = MaterialTheme.typography.titleMedium
                     )
                     CategorySelect(
-                        categories = viewModel.categories.value,
+                        categories = viewModel.allCategories.value,
                         onCategorySelected = viewModel::onCategorySelected
                     )
                     Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
@@ -72,7 +72,7 @@ fun CreateLearningObjectView(
                 }
             }
             CardSelect(
-                cards = viewModel.cards.value,
+                cards = viewModel.allCards.value,
                 onCardSelected = viewModel::onCardSelected
             )
         }
@@ -85,5 +85,4 @@ fun CreateLearningObjectView(
     }
 
     CloseScreenOnSignalEffect(viewModel.isFinished.value)
-
 }

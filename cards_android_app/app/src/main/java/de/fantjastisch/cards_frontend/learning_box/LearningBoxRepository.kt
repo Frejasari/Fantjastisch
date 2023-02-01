@@ -49,14 +49,12 @@ class LearningBoxRepository(
 
     suspend fun insert(
         learningBox: LearningBox,
-        onSuccess: () -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) {
-        try {
+    ) : RepoResult<Unit> {
+        return try {
             repository.insert(learningBox)
-            onSuccess()
+            RepoResult.Success(Unit)
         } catch (ex: Throwable) {
-            onFailure(null)
+            RepoResult.ServerError()
         }
     }
 

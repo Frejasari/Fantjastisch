@@ -15,41 +15,32 @@ class CategoryRepository {
 
     private val service = client.createService(CategoryApi::class.java)
 
-    fun getCategory(
-        id: UUID,
-        onSuccess: (CategoryEntity) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) =
-        service.getCategory(id).enqueue(onSuccess, onFailure)
+    suspend fun getCategory(
+        id: UUID
+    ) = service.getCategory(id)
+        .awaitResponse()
+        .toRepoResponse()
 
     suspend fun getPage(
     ) = service.getCategoryPage().awaitResponse().toRepoResponse()
 
 
-    fun getPage(
-        onSuccess: (List<CategoryEntity>) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) = service.getCategoryPage().enqueue(onSuccess, onFailure)
+    suspend fun createCategory(
+        category: CreateCategoryEntity
+    ) = service.createCategory(category)
+        .awaitResponse()
+        .toRepoResponse()
 
-    fun createCategory(
-        category: CreateCategoryEntity,
-        onSuccess: (String) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) =
-        service.createCategory(category).enqueue(onSuccess, onFailure)
+    suspend fun updateCategory(
+        category: UpdateCategoryEntity
+    ) = service.updateCategory(category)
+        .awaitResponse()
+        .toRepoResponse()
 
-    fun updateCategory(
-        category: UpdateCategoryEntity,
-        onSuccess: (Unit) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) =
-        service.updateCategory(category).enqueue(onSuccess, onFailure)
-
-    fun deleteCategory(
-        categoryId: UUID,
-        onSuccess: (Unit) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) =
-        service.deleteCategory(categoryId).enqueue(onSuccess, onFailure)
+    suspend fun deleteCategory(
+        categoryId: UUID
+    ) = service.deleteCategory(categoryId)
+        .awaitResponse()
+        .toRepoResponse()
 
 }
