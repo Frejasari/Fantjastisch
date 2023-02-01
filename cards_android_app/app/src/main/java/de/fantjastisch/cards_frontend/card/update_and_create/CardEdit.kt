@@ -130,7 +130,6 @@ fun CardEdit(
             } else {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
-
                 ) {
                     Text(
                         text = stringResource(id = R.string.categories_label),
@@ -155,6 +154,9 @@ fun CardEdit(
             }
 
             if (expandedForCat) {
+                if (noCategories) {
+                    Toast.makeText(context, R.string.categories_error, Toast.LENGTH_SHORT).show()
+                }
                 CategorySelect(
                     categories = categories,
                     onCategorySelected = onCategorySelected
@@ -164,10 +166,6 @@ fun CardEdit(
             if (toast && expanded) {
                 Toast.makeText(context, R.string.link_error, Toast.LENGTH_SHORT).show()
 
-            }
-
-            if (noCategories) {
-                Toast.makeText(context, R.string.categories_error, Toast.LENGTH_SHORT).show()
             }
 
 
