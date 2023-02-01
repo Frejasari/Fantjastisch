@@ -22,8 +22,8 @@ interface LearningBoxDao {
     @Query("SELECT * FROM learning_box where learning_object_id = :learningObjectId ORDER BY box_number ASC")
     suspend fun getAllBoxesForLearningObject(learningObjectId: UUID): List<LearningBox>
 
-    @Query("SELECT * FROM learning_box WHERE id = :learningBoxId")
-    suspend fun findById(learningBoxId: UUID): LearningBox
+//    @Query("SELECT * FROM learning_box WHERE id = :learningBoxId")
+//    suspend fun findById(learningBoxId: UUID): LearningBox
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(learningBox: LearningBox)
