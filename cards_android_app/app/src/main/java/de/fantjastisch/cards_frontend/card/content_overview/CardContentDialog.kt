@@ -145,23 +145,19 @@ fun CardContentDialog(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = stringResource(R.string.links_label),
                             fontWeight = FontWeight(300),
                             fontSize = 12.sp
                         )
-                        Row() {
-                            LazyRow(
-                                modifier = Modifier.weight(6f)
-                            ) {
-                                item {
-                                    viewModel.cardLinks.value.forEach {
-                                        LinkWithoutDeleteComponent(link = it)
-                                    }
-                                }
+                    }
+                    LazyRow(
+                        modifier= Modifier.fillMaxWidth()
+                    ) {
+                        item {
+                            viewModel.cardLinks.value.forEach {
+                                LinkWithoutDeleteComponent(link = it)
                             }
                         }
                     }
