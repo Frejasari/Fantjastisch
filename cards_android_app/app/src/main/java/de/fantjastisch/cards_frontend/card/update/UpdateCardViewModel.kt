@@ -2,7 +2,8 @@ package de.fantjastisch.cards_frontend.card.update
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import de.fantjastisch.cards_frontend.card.update_and_create.CreateLinkViewModel
+import de.fantjastisch.cards_frontend.card.update_and_create.CreateAndUpdateViewModel
+import de.fantjastisch.cards_frontend.infrastructure.ErrorTexts
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
@@ -20,7 +21,7 @@ import java.util.*
 class UpdateCardViewModel(
     id: UUID,
     private val cardModel: UpdateCardModel = UpdateCardModel(id = id),
-) : CreateLinkViewModel() {
+) : CreateAndUpdateViewModel() {
 
     val isFinished = mutableStateOf(false)
 
@@ -42,7 +43,6 @@ class UpdateCardViewModel(
     fun setCardTag(value: String) {
         cardTag.value = value
     }
-
 
     init {
         viewModelScope.launch {
@@ -66,13 +66,13 @@ class UpdateCardViewModel(
                     onValidationError = { errorResult ->
                         errors.value = errorResult
                     },
-                    onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." },
+                    onUnexpectedError = { error.value = ErrorTexts.NETWORK },
                 )
 
             val resultCards = cardModel.getCards()
 
             if (resultCards == null) {
-                error.value = "Ein Netzwerkfehler ist aufgetreten."
+                error.value = ErrorTexts.NETWORK
             } else {
                 errors.value = emptyList()
                 cards.value = resultCards
@@ -80,21 +80,8 @@ class UpdateCardViewModel(
         }
     }
 
-
-    fun onDeleteLinkClicked(link: LinkEntity) {
-        cardLinks.value = cardLinks.value.filter { l -> link != l } as ArrayList<LinkEntity>
-    }
-
-
     fun onUpdateCardClicked() {
         errors.value = emptyList()
-
-        if (linkName.value.isNotBlank() && linkTarget.value != null) {
-            cardLinks.value = cardLinks.value + LinkEntity(
-                label = linkName.value,
-                target = linkTarget.value!!
-            )
-        }
 
         if (cardCategories.value.none { cat -> cat.isChecked }) {
             noCategories.value = true
@@ -109,7 +96,7 @@ class UpdateCardViewModel(
                 ).fold(
                     onSuccess = { isFinished.value = true },
                     onValidationError = { errors.value = it },
-                    onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
+                    onUnexpectedError = { error.value = ErrorTexts.UNEXPECTED }
                 )
             }
         }
@@ -126,6 +113,4 @@ class UpdateCardViewModel(
         noCategories.value = false
     }
 
-
 }
-

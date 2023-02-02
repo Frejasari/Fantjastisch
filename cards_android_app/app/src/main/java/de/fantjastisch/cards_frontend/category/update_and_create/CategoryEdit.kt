@@ -7,7 +7,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
@@ -18,6 +17,7 @@ import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import java.util.*
 
 
+<<<<<<< HEAD
 /**
  * Zeigt das Fenster um eine Kategorie zu bearbeiten.
  *
@@ -29,6 +29,8 @@ import java.util.*
  *
  * @author Tamari Bayer, Freja Sender
  */
+=======
+>>>>>>> f889dfb (refactor create/edit card view)
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun CategoryEdit(
@@ -38,8 +40,6 @@ fun CategoryEdit(
     onCategorySelected: (UUID) -> Unit,
     onUpdateCategoryClicked: () -> Unit,
 ) {
-    val context = LocalContext.current
-
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)

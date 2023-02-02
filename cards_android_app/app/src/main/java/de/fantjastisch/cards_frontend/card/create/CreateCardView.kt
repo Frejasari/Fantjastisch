@@ -8,7 +8,6 @@ import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.card.update_and_create.CardEditView
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 
-//TODO Fehler anzeigen.
 /**
  * Rendert die Seite "Karteikarte erstellen".
  *
@@ -43,7 +42,7 @@ fun CreateCardView(
         categories = viewModel.cardCategories.value,
         onCategorySelected = viewModel::onCategorySelected,
         linkName = TextFieldState(
-            value = viewModel.linkName.value,
+            value = viewModel.linkLabel.value,
             errors = viewModel.errors.value,
             onValueChange = viewModel::setLinkName,
         ),
@@ -53,8 +52,8 @@ fun CreateCardView(
         onCreateLinkClicked = viewModel::onCreateLinkClicked,
         links = viewModel.cardLinks.value,
         onDeleteLinkClicked = viewModel::onDeleteLinkClicked,
-        toast = viewModel.toast.value,
-        noCategories = viewModel.noCategories.value
+        toast = viewModel.error.value,
+        onToastShown = viewModel::onToastShown
     )
 
 

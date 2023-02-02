@@ -8,12 +8,8 @@ import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
+
 //TODO Fehler anzeigen.
-/**
- * Rendert die Seite "Karteikarte bearbeiten".
- *
- * @author Freja Sender, Tamari Bayer
- */
 @Composable
 fun UpdateCardView(
     modifier: Modifier = Modifier,
@@ -45,7 +41,7 @@ fun UpdateCardView(
         onCategorySelected = viewModel::onCategorySelected,
         onUpdateCardClicked = viewModel::onUpdateCardClicked,
         linkName = TextFieldState(
-            value = viewModel.linkName.value,
+            value = viewModel.linkLabel.value,
             errors = viewModel.errors.value,
             onValueChange = viewModel::setLinkName,
         ),
@@ -54,8 +50,8 @@ fun UpdateCardView(
         onCreateLinkClicked = viewModel::onCreateLinkClicked,
         links = viewModel.cardLinks.value,
         onDeleteLinkClicked = viewModel::onDeleteLinkClicked,
-        toast = viewModel.toast.value,
-        noCategories = viewModel.noCategories.value
+        toast = viewModel.error.value,
+        onToastShown = viewModel::onToastShown
     )
 
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
