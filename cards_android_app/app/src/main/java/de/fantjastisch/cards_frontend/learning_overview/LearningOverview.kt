@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.glossary.LearningOverviewModel
 import de.fantjastisch.cards_frontend.infrastructure.FantTopBar
 import de.fantjastisch.cards_frontend.learning_overview.learning_object_component.LearningObjectComponent
 
@@ -36,7 +35,7 @@ class LearningOverviewScreen : AndroidScreen() {
 fun LearningOverview(
     modifier: Modifier = Modifier
 ) {
-    val viewModel = viewModel { LearningOverviewModel() }
+    val viewModel = viewModel { LearningOverviewViewModel() }
     LaunchedEffect(
         // wenn sich diese Variable ändert
         key1 = Unit,
