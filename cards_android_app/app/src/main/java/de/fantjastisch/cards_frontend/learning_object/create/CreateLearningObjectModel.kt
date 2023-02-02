@@ -55,6 +55,8 @@ class CreateLearningObjectModel(
                     learningSystemsResult is RepoResult.Success -> {
                 // Verarbeite
                 val cards = (cardsResult.result) as List<CardEntity>
+                val categories = categoriesResult.result as List<CategoryEntity>
+                val learningSystems = learningSystemsResult.result as List<LearningSystemEntity>
 
                 val cardSelectItems = cards.map { card ->
                     CardSelectItem(
@@ -62,7 +64,6 @@ class CreateLearningObjectModel(
                     )
                 }
 
-                val categories = categoriesResult.result as List<CategoryEntity>
                 val categorySelectItems = categories.map { category ->
                     CategorySelectItem(
                         id = category.id,
@@ -71,7 +72,6 @@ class CreateLearningObjectModel(
                     )
                 }
 
-                val learningSystems = learningSystemsResult.result as List<LearningSystemEntity>
                 val learningSystemSelectItems = learningSystems.map { learningSystem ->
                     SingleSelectItem(
                         id = learningSystem.id,
@@ -89,7 +89,7 @@ class CreateLearningObjectModel(
                 )
             }
             // Sonst Fehler
-            else -> RepoResult.Error(emptyList())
+            else -> RepoResult.ServerError()
         }
     }
 
@@ -123,7 +123,7 @@ class CreateLearningObjectModel(
         learningSystem: LearningSystemEntity,
         learningObject: LearningObject,
         cardsToInsert: MutableList<UUID>,
-    ) : RepoResult<Unit> {
+    ): RepoResult<Unit> {
         learningSystem.boxLabels.forEachIndexed { index, label ->
             // Erstelle die Lernbox
             val learningBox = LearningBox(
@@ -139,7 +139,8 @@ class CreateLearningObjectModel(
                     cardIds = if (index == 0) cardsToInsert else mutableListOf()
                 )
                 if (cardInsertionResponse is RepoResult.ServerError ||
-                        cardInsertionResponse is RepoResult.Error) {
+                    cardInsertionResponse is RepoResult.Error
+                ) {
                     return RepoResult.ServerError() // Konnte Karten nicht in Lernbox einsetzen
                 }
             } else {
@@ -172,7 +173,8 @@ class CreateLearningObjectModel(
             return RepoResult.ServerError()
 
         // Sammle einzeln hinzugefügte Karten
-        val cardsToInsert : MutableList<UUID> = cards.filter { card -> card.isChecked }.map { card -> card.card.id }.toMutableList()
+        val cardsToInsert: MutableList<UUID> =
+            cards.filter { card -> card.isChecked }.map { card -> card.card.id }.toMutableList()
 
         // Hole Karten aus angekreuzten Kategorien und füge sie hinzu
         val cardsFromSelectedCategories = getCardsFromCategories(categories = categories)
@@ -184,7 +186,8 @@ class CreateLearningObjectModel(
         val insertLearningObjectResponse = insertLearningObject(learningObject)
 
         if (insertLearningObjectResponse is RepoResult.Error ||
-                insertLearningObjectResponse is RepoResult.ServerError) {
+            insertLearningObjectResponse is RepoResult.ServerError
+        ) {
             // Konnte Lernobjekt nicht in DB einsetzen
             return RepoResult.ServerError()
         }

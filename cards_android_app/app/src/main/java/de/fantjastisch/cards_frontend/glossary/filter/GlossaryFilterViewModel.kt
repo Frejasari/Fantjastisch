@@ -1,9 +1,11 @@
-package de.fantjastisch.cards_frontend.glossary
+package de.fantjastisch.cards_frontend.glossary.filter
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.glossary.CardFilters
+import de.fantjastisch.cards_frontend.glossary.CardsFilters
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.infrastructure.toCategorySelectItems
 import kotlinx.coroutines.launch
