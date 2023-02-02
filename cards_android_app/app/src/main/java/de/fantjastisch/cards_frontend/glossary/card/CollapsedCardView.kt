@@ -23,7 +23,7 @@ import org.openapitools.client.models.CardEntity
  * @param card: Die Angezeigte Karte
  *
  * @author Tamari Bayer, Freja Sender, Jessica Repty, Semjon Nirmann
- * **/
+ */
 @Composable
 fun CollapsedCardView(
     card: CardEntity

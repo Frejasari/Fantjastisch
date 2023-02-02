@@ -8,6 +8,15 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import java.util.*
 
+/**
+ * Kapselt die Logik für das [GlossaryViewModel].
+ * Fungiert als Vermittler zwischen Repository und ViewModel.
+ *
+ * @property cardToLearningBoxRepository Repository Karten in Lernboxen
+ * @property cardRepository Repository Karten
+ *
+ * @author Freja Sender, Jessica Repty, Tamari Bayer
+ */
 class GlossaryModel(
     private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(),
     private val cardRepository: CardRepository = CardRepository(),
