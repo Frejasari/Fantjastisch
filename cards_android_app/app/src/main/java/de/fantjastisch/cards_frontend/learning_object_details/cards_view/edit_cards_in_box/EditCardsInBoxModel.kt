@@ -4,6 +4,8 @@ import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.openapitools.client.models.*
 import java.util.*
@@ -18,70 +20,45 @@ class EditCardsInBoxModel(
         learningBoxId: UUID,
         learningObjectId: UUID
     ): RepoResult<List<CardSelectItem>> = coroutineScope {
-        val cards = getCards()
-
-        if (cards != null) {
-            val containedCards = loadContainedCards(
-                allCards = cards,
-                learningBoxId = learningBoxId,
-                learningObjectId = learningObjectId
-            )
-            if (containedCards != null) {
-                return@coroutineScope RepoResult.Success(containedCards)
+        val (cardsResult, cardsInLearningBoxResult, cardsInLearningObjectResult) = awaitAll(
+            async {
+                cardRepository.getPage(
+                    categoryIds = null,
+                    search = null,
+                    tag = null,
+                    sort = false
+                )
+            },
+            async {
+                cardToLearningBoxRepository.getCardIdsForBox(
+                    learningBoxId = learningBoxId
+                )
+            },
+            async {
+                cardToLearningBoxRepository.getAllCardsForLearningObject(
+                    learningObjectId = learningObjectId
+                )
             }
-        }
-        return@coroutineScope RepoResult.ServerError()
-
-    }
-
-    suspend fun getCards(): List<CardEntity>? {
-        val result = cardRepository.getPage(
-            categoryIds = null,
-            search = null,
-            tag = null,
-            sort = false
         )
-        return when (result) {
-            is RepoResult.Success -> result.result
-            is RepoResult.Error,
-            is RepoResult.ServerError -> null // TODO
+        when {
+            cardsResult is RepoResult.Success
+                    && cardsInLearningBoxResult is RepoResult.Success
+                    && cardsInLearningObjectResult is RepoResult.Success -> {
+                val cards = (cardsResult.result) as List<CardEntity>
+                val cardsInLearningBox = (cardsInLearningBoxResult.result) as List<UUID>
+                val cardsInLearningObject = (cardsInLearningObjectResult.result) as List<UUID>
+                val containedCards = filterContainedAndSelectableCards(
+                    listOfCardIdsInBox = cardsInLearningBox,
+                    listOfCardIdsInObject = cardsInLearningObject,
+                    allCards = cards
+                )
+                RepoResult.Success(containedCards)
+            }
+            else -> RepoResult.Error(emptyList())
         }
     }
 
-    suspend fun loadContainedCards(
-        allCards: List<CardEntity>,
-        learningBoxId: UUID,
-        learningObjectId: UUID
-    ): List<CardSelectItem>? {
-        val result = cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId)
-
-        if (result is RepoResult.Success) {
-            val listOfCardIdsInBox = result.result
-            val listOfCardIdsInObject =
-                getCardsInLearningObject(learningObjectId = learningObjectId)
-                    ?: return null
-
-            return filterContainedAndSelectableCards(
-                listOfCardIdsInBox = listOfCardIdsInBox,
-                listOfCardIdsInObject = listOfCardIdsInObject,
-                allCards = allCards
-            )
-        }
-        return null
-    }
-
-    suspend fun getCardsInLearningObject(learningObjectId: UUID): List<UUID>? {
-        val listOfCardIdsInObject =
-            cardToLearningBoxRepository.getAllCardsForLearningObject(learningObjectId = learningObjectId)
-
-        return when (listOfCardIdsInObject) {
-            is RepoResult.Success -> listOfCardIdsInObject.result
-            is RepoResult.Error,
-            is RepoResult.ServerError -> null
-        }
-    }
-
-    fun filterContainedAndSelectableCards(
+    private fun filterContainedAndSelectableCards(
         listOfCardIdsInBox: List<UUID>,
         listOfCardIdsInObject: List<UUID>,
         allCards: List<CardEntity>
@@ -102,7 +79,10 @@ class EditCardsInBoxModel(
         return selectableCardsInBox
     }
 
-    suspend fun updateCardsInBox(selectedCardsIds: List<UUID>, learningBoxId: UUID): RepoResult<Unit> {
+    suspend fun updateCardsInBox(
+        selectedCardsIds: List<UUID>,
+        learningBoxId: UUID
+    ): RepoResult<Unit> {
         return cardToLearningBoxRepository.updateBoxCards(
             selected = selectedCardsIds,
             learningBoxId = learningBoxId,

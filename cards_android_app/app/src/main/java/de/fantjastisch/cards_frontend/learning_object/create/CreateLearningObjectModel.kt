@@ -93,14 +93,14 @@ class CreateLearningObjectModel(
         }
     }
 
-    suspend fun getLearningSystemFromInput(selectedSystemId: UUID): LearningSystemEntity? {
+    private suspend fun getLearningSystemFromInput(selectedSystemId: UUID): LearningSystemEntity? {
         return when (val response = learningSystemRepository.getLearningSystem(selectedSystemId)) {
             is RepoResult.Success -> response.result
             is RepoResult.Error, is RepoResult.ServerError -> null // TODO
         }
     }
 
-    suspend fun getCardsFromCategories(
+    private suspend fun getCardsFromCategories(
         categories: List<CategorySelectItem>
     ): List<CardEntity>? {
         val checkedCategories = categories.filter { category -> category.isChecked }.map { it.id }
@@ -119,7 +119,7 @@ class CreateLearningObjectModel(
         }
     }
 
-    suspend fun insertLearningBoxesWithCards(
+    private suspend fun insertLearningBoxesWithCards(
         learningSystem: LearningSystemEntity,
         learningObject: LearningObject,
         cardsToInsert: MutableList<UUID>,
@@ -149,14 +149,14 @@ class CreateLearningObjectModel(
         return RepoResult.Success(Unit)
     }
 
-    suspend fun insertLearningBox(learningBox: LearningBox): RepoResult<Unit> =
+    private suspend fun insertLearningBox(learningBox: LearningBox): RepoResult<Unit> =
         learningBoxRepository.insert(learningBox = learningBox)
 
-    suspend fun insertCardsIntoBox(
+    private suspend fun insertCardsIntoBox(
         learningBox: LearningBox, cardIds: MutableList<UUID>
     ): RepoResult<Unit> = cardToLearningBoxRepository.insertCards(cardIds, learningBox.id)
 
-    suspend fun insertLearningObject(
+    private suspend fun insertLearningObject(
         learningObject: LearningObject,
     ): RepoResult<Unit> = learningObjectRepository.insert(learningObject = learningObject)
 
