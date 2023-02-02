@@ -8,8 +8,8 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.infrastructure.fold
-import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import kotlinx.coroutines.launch
+import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
 class CreateLearningObjectViewModel(
@@ -24,8 +24,9 @@ class CreateLearningObjectViewModel(
     val selectedSystem = mutableStateOf<SingleSelectItem?>(null)
     val error = mutableStateOf<String?>(null)
     val isFinished = mutableStateOf(false)
-
+    val toast = mutableStateOf(false)
     val learningObjectLabel = mutableStateOf("")
+    val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
 
     // constructor (wird ganz am Anfang aufgerufen)
     init {
@@ -47,6 +48,7 @@ class CreateLearningObjectViewModel(
 
     fun setLearningObjectLabel(value: String) {
         learningObjectLabel.value = value
+        toast.value = false
     }
 
     fun onCardSelected(id: UUID) {
@@ -71,23 +73,22 @@ class CreateLearningObjectViewModel(
 
     fun onLearningSystemSelected(id: UUID) {
         selectedSystem.value = learningSystems.value.first { it.id == id }
+        toast.value = false
     }
 
     fun onAddLearningObjectClicked() {
-        val learningSystemId = selectedSystem.value!!.id
-        val learningObject =
-            LearningObject(label = learningObjectLabel.value, learningSystemId = learningSystemId)
         viewModelScope.launch {
             val response = model.addLearningObject(
-                learningObject = learningObject,
-                selectedSystemId = selectedSystem.value!!.id,
+                learningObjectLabel = learningObjectLabel.value,
+                selectedSystem = selectedSystem.value,
                 categories = allCategories.value,
                 cards = allCards.value
             )
 
             when (response) {
                 is RepoResult.Success -> isFinished.value = true
-                is RepoResult.Error, is RepoResult.ServerError -> null
+                is RepoResult.Error -> errors.value = response.errors
+                is RepoResult.ServerError -> error.value = "Ein Netzwerkfehler ist aufgetreten."
             }
         }
 

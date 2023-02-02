@@ -4,7 +4,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
@@ -18,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.category.CategorySelect
+import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import de.fantjastisch.cards_frontend.components.SingleSelect
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import java.util.*
@@ -51,23 +51,21 @@ fun CreateLearningObjectView(
         ) {
             item {
                 Column() {
-                    OutlinedTextField(
+                    OutlinedTextFieldWithErrors(
                         maxLines = 1,
-                        keyboardActions = KeyboardActions(
-                            onDone = { viewModel.onAddLearningObjectClicked() },
-                        ),
-                        modifier = Modifier.fillMaxWidth(),
                         value = viewModel.learningObjectLabel.value,
                         onValueChange = viewModel::setLearningObjectLabel,
-                        placeholder = { Text(text = stringResource(id = R.string.label_label)) },
-                        label = { Text(text = stringResource(R.string.label_label)) },
-                        isError = viewModel.learningObjectLabel.value.isBlank()
+                        placeholder = stringResource(id = R.string.label_label),
+                        errors = viewModel.errors.value,
+                        field = "label"
                     )
                     SingleSelect(
                         items = viewModel.learningSystems.value,
                         selectedItem = viewModel.selectedSystem.value,
                         onItemSelected = viewModel::onLearningSystemSelected,
-                        placeholder = { Text(text = stringResource(R.string.learning_system_label)) }
+                        placeholder = stringResource(R.string.learning_system_label),
+                        field = "learningsystem",
+                        errors = viewModel.errors.value
                     )
                     Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
 
@@ -95,7 +93,7 @@ fun CreateLearningObjectView(
                             )
                         }
                     }
-                    if(expandedForCat) {
+                    if (expandedForCat) {
                         CategorySelect(
                             categories = viewModel.allCategories.value,
                             onCategorySelected = viewModel::onCategorySelected
@@ -130,7 +128,7 @@ fun CreateLearningObjectView(
                     }
                 }
             }
-            if(expanded) {
+            if (expanded) {
                 CardSelect(
                     cards = viewModel.allCards.value,
                     onCardSelected = viewModel::onCardSelected

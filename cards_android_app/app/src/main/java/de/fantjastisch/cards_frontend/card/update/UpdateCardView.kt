@@ -3,9 +3,7 @@ package de.fantjastisch.cards_frontend.card.update
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.card.update_and_create.CardEdit
-import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
@@ -64,24 +62,3 @@ data class TextFieldState(
     val errors: List<ErrorEntryEntity>,
     val onValueChange: (String) -> Unit,
 )
-
-
-fun mapError(code: ErrorEntryEntity.Code): String {
-    return when (code) {
-        ErrorEntryEntity.Code.cONSTRAINTVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.nOCATEGORIESVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.nOTNULLVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.nOTBLANKVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.lABELTAKENVIOLATION -> "Label ist bereits vergeben."
-        ErrorEntryEntity.Code.cATEGORYDOESNTEXISTVIOLATION -> "Kategorie existiert nicht."
-        ErrorEntryEntity.Code.sUBCATEGORYDOESNTEXISTVIOLATION -> "Kategorie existiert nicht."
-        ErrorEntryEntity.Code.cATEGORYNOTEMPTYVIOLATION -> "Es muss eine Kategorie ausgewaehlt werden."
-        ErrorEntryEntity.Code.cYCLICSUBCATEGORYRELATIONVIOLATION -> "Zyklen sind nicht erlaubt."
-        ErrorEntryEntity.Code.sUBCATEGORYISNULLVIOLATION -> "Subkategorien dürfen nicht null sein."
-        ErrorEntryEntity.Code.eNTITYDOESNOTEXIST -> "Entität exisitert nicht."
-        ErrorEntryEntity.Code.cARDDUPLICATEVIOLATION -> "Karte existiert bereits."
-        ErrorEntryEntity.Code.bOXLABELSISNULLVIOLATION -> "Die Box-Labels dürfen nicht leer sein."
-    }
-}
-
-

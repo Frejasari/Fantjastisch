@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.toSize
+import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
 data class SingleSelectItem(val label: String, val id: UUID)
@@ -23,7 +24,9 @@ fun SingleSelect(
     items: List<SingleSelectItem>,
     onItemSelected: (UUID) -> Unit = {},
     selectedItem: SingleSelectItem?,
-    placeholder: @Composable() (() -> Unit)
+    placeholder: String,
+    errors: List<ErrorEntryEntity>,
+    field: String
 ) {
     val isExpanded = remember { mutableStateOf(false) }
     val isSelected = remember { mutableStateOf(false) }
@@ -33,15 +36,15 @@ fun SingleSelect(
         Icons.Filled.KeyboardArrowUp
     else
         Icons.Filled.KeyboardArrowDown
+    val error = errors.find { it.field == field }
 
     Column() {
         // Create an Outlined Text Field
         // with icon and not expanded
-        OutlinedTextField(
+        OutlinedTextFieldWithErrors(
             value = selectedItem?.label ?: "",
             onValueChange = { },
             modifier = Modifier
-                .fillMaxWidth()
                 .clickable { isExpanded.value = !isExpanded.value }
                 .onGloballyPositioned { coordinates ->
                     // This value is used to assign to
@@ -49,7 +52,6 @@ fun SingleSelect(
                     textFieldSize.value = coordinates.size.toSize()
                 },
             placeholder = placeholder,
-            label = placeholder,
             trailingIcon = {
                 Icon(icon, "contentDescription")
             },
@@ -58,25 +60,25 @@ fun SingleSelect(
                 unfocusedBorderColor = Color(0xFF625b71),
                 cursorColor = Color.Transparent,
                 errorCursorColor = Color.Transparent,
-                textColor = if (!isSelected.value) MaterialTheme.colorScheme.error else Color(
+                textColor = if (error != null) MaterialTheme.colorScheme.error else Color(
                     0xFF625b71
                 ),
-                disabledTextColor = if (!isSelected.value) MaterialTheme.colorScheme.error else Color(
+                disabledTextColor = if (error != null) MaterialTheme.colorScheme.error else Color(
                     0xFF625b71
                 ),
-                disabledBorderColor = if (!isSelected.value) MaterialTheme.colorScheme.error else Color(
+                disabledBorderColor = if (error != null) MaterialTheme.colorScheme.error else Color(
                     0xFF625b71
                 ),
-                disabledLabelColor = if (!isSelected.value) MaterialTheme.colorScheme.error else Color(
+                disabledLabelColor = if (error != null) MaterialTheme.colorScheme.error else Color(
                     0xFF625b71
                 ),
-                disabledPlaceholderColor = if (!isSelected.value) MaterialTheme.colorScheme.error else Color(
+                disabledPlaceholderColor = if (error != null) MaterialTheme.colorScheme.error else Color(
                     0xFF625b71
                 )
             ),
-
+            errors = errors,
             enabled = false,
-            isError = !isSelected.value
+            field = field
         )
 
         // Create a drop-down menu with list of cities,

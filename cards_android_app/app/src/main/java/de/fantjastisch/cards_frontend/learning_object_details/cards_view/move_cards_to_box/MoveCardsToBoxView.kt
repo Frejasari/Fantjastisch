@@ -28,72 +28,77 @@ fun MoveCardsToBoxView(
             viewModel.onPageLoaded()
         })
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = PaddingValues(all = 16.dp)
-    ) {
-        CardSelect(
-            cards = viewModel.cards.value,
-            onCardSelected = viewModel::onCardSelected
-        )
-        item {
-            Column {
-                if (viewModel.isLoading.value) {
-                    LoadingIcon()
-                } else if (viewModel.cards.value.isEmpty()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.no_content_text)
-                        )
-                    }
-                } else {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        FilledTonalButton(
-                            onClick = viewModel::onMoveToPreviousBox,
-                            enabled = !viewModel.isFirstBox
+    Column() {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxWidth()
+                .weight(1f),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            contentPadding = PaddingValues(all = 16.dp)
+        ) {
+            CardSelect(
+                cards = viewModel.cards.value,
+                onCardSelected = viewModel::onCardSelected
+            )
+            item {
+                Column {
+                    if (viewModel.isLoading.value) {
+                        LoadingIcon()
+                    } else if (viewModel.cards.value.isEmpty()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
                         ) {
                             Text(
-                                text =
-                                if (viewModel.isFirstBox) {
-                                    "                 "
-                                } else {
-                                    String.format(
-                                        "%s (%d)",
-                                        stringResource(R.string.previous_box_text),
-                                        (viewModel.learningBoxNum.value - 1)
-                                    )
-                                }
-                            )
-                        }
-                        FilledTonalButton(
-                            onClick = viewModel::onMoveToNextBox, //viewModel::onAddCardsClicked
-                            enabled = !viewModel.isLastBox
-                        ) {
-                            Text(
-                                text =
-                                if (viewModel.isLastBox) {
-                                    "               "
-                                } else {
-                                    String.format(
-                                        "%s (%d)",
-                                        stringResource(R.string.next_box_text),
-                                        (viewModel.learningBoxNum.value + 1)
-                                    )
-                                }
+                                text = stringResource(R.string.no_content_text)
                             )
                         }
                     }
                 }
             }
 
+        }
+        if (viewModel.cards.value.isNotEmpty()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                FilledTonalButton(
+                    onClick = viewModel::onMoveToPreviousBox,
+                    enabled = !viewModel.isFirstBox
+                ) {
+                    Text(
+                        text =
+                        if (viewModel.isFirstBox) {
+                            "                 "
+                        } else {
+                            String.format(
+                                "%s (%d)",
+                                stringResource(R.string.previous_box_text),
+                                (viewModel.learningBoxNum.value - 1)
+                            )
+                        }
+                    )
+                }
+
+                FilledTonalButton(
+                    onClick = viewModel::onMoveToNextBox, //viewModel::onAddCardsClicked
+                    enabled = !viewModel.isLastBox
+                ) {
+                    Text(
+                        text =
+                        if (viewModel.isLastBox) {
+                            "               "
+                        } else {
+                            String.format(
+                                "%s (%d)",
+                                stringResource(R.string.next_box_text),
+                                (viewModel.learningBoxNum.value + 1)
+                            )
+                        }
+                    )
+                }
+            }
         }
     }
 
