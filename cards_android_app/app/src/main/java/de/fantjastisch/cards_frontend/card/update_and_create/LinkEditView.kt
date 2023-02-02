@@ -13,6 +13,14 @@ import de.fantjastisch.cards_frontend.card.content_overview.CardContentDialogVie
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 
+/**
+ * Zeigt den AssistChip eines Links inklusive Delete Option.
+ *
+ * @param link Link, welcher angezeigt wird.
+ * @param onDeleteLinkClicked Funktion, um einen Link zu löschen
+ *
+ * @author Jessica Repty, Tamari Bayer, Freja Sender
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LinkEditView(

@@ -8,6 +8,11 @@ import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 
+/**
+ * Zeigt den Screen um eine Karte zu erstellen
+ *
+ * @author Freja Sender, Tamari Bayer
+ */
 class CreateCardFragment : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable

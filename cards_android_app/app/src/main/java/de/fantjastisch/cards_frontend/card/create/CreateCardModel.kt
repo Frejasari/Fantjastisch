@@ -3,12 +3,19 @@ package de.fantjastisch.cards_frontend.card.create
 import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
+import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import org.openapitools.client.models.CreateCardEntity
 import org.openapitools.client.models.LinkEntity
 
+/**
+ * Kapselt die Logik für das [CreateCardViewModel].
+ * Fungiert als Vermittler zwischen Repository und ViewModel.
+ *
+ * @author Freja Sender, Tamari Bayer
+ */
 class CreateCardModel(
     private val cardRepository: CardRepository = CardRepository(),
     private val categoryRepository: CategoryRepository = CategoryRepository()

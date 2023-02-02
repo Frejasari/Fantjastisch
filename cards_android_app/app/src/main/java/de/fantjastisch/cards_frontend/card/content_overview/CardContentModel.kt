@@ -6,6 +6,12 @@ import kotlinx.coroutines.coroutineScope
 import org.openapitools.client.models.CardEntity
 import java.util.*
 
+/**
+ * Kapselt die Logik für das [CardContentViewModel].
+ * Fungiert als Vermittler zwischen Repository und ViewModel.
+ *
+ * @author Semjon Nirmann
+ */
 class CardContentModel(
     private val cardRepository: CardRepository = CardRepository(),
     private val id: UUID

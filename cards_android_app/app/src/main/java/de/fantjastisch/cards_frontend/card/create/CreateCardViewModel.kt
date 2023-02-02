@@ -11,6 +11,13 @@ import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 
+/**
+ * Stellt die Daten für die [CreateCardView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property createCardModel Das zugehörige Model, welches die Logik kapselt.
+ *
+ * @author Tamari Bayer, Freja Sender, Jessica Repty, Semjon Nirmann
+ */
 class CreateCardViewModel(
     private val createCardModel: CreateCardModel = CreateCardModel()
 ) : ViewModel() {
@@ -89,7 +96,7 @@ class CreateCardViewModel(
         }
 
         val list = cards.value
-            .filter{ card -> card.isChecked }
+            .filter { card -> card.isChecked }
         linkTarget.value = list[0].card.id
     }
 
@@ -134,17 +141,17 @@ class CreateCardViewModel(
         errors.value = emptyList()
 
         // check if fields for links have been filled but not saved
-        if(linkName.value.isNotBlank() && linkTarget.value != null) {
+        if (linkName.value.isNotBlank() && linkTarget.value != null) {
             cardLinks.value.add(
                 LinkEntity(
-                label = linkName.value,
-                target = linkTarget.value!!
-            )
+                    label = linkName.value,
+                    target = linkTarget.value!!
+                )
             )
         }
 
         // check for categories -> if no then wait till yes
-        if(cardCategories.value.none { cat -> cat.isChecked }) {
+        if (cardCategories.value.none { cat -> cat.isChecked }) {
             noCategories.value = true
         } else {
             viewModelScope.launch {

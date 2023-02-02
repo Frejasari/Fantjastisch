@@ -12,6 +12,14 @@ import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 
+/**
+ * Stellt die Daten für die [UpdateCardView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property cardModel Das zugehörige Model, welches die Logik kapselt.
+ * @param id Id, der zu bearbeitende Karte
+ *
+ * @author Freja Sender, Tamari Bayer, Jessica Repty
+ */
 class UpdateCardViewModel(
     id: UUID,
     private val cardModel: UpdateCardModel = UpdateCardModel(id = id)

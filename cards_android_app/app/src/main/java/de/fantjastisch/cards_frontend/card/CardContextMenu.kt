@@ -12,6 +12,14 @@ import de.fantjastisch.cards_frontend.card.update.UpdateCardFragment
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import java.util.*
 
+/**
+ * Zeigt das Kontext-Menü einer Karte.
+ *
+ * @param cardId Ausgewählte Karte.
+ * @param onDeleteClicked Funktion, mit der man die Karte löschen kann.
+ *
+ * @author Freja Sender
+ */
 @Composable
 fun CardContextMenu(
     cardId: UUID,
