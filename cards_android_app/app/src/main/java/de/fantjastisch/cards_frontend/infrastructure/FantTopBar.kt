@@ -36,7 +36,9 @@ fun FantTopBar(
 //                TODO
                 IconButton(
                     onClick = {
-                        bottomSheetNavigator.show(GlossaryFilterView(bottomSheetNavigator = bottomSheetNavigator))
+                        bottomSheetNavigator.show(
+                            GlossaryFilterView(bottomSheetNavigator = bottomSheetNavigator)
+                        )
                     }
                 ) {
                     Icon(Icons.Default.Tune, contentDescription = "more")
