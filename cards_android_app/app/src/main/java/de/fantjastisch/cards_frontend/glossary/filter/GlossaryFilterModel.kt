@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.glossary
+package de.fantjastisch.cards_frontend.glossary.filter
 
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult

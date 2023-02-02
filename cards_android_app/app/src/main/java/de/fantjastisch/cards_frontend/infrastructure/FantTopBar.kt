@@ -7,7 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.glossary.GlossaryFilterView
+import de.fantjastisch.cards_frontend.glossary.filter.GlossaryFilterView
 import org.openapitools.client.models.CategoryEntity
 import java.util.*
 

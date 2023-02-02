@@ -69,7 +69,7 @@ fun CommonCardComponent(
                     Text(
                         modifier = Modifier,
                         text = stringResource(R.string.tag_label).formatToInlineLabel(),
-                        fontWeight = FontWeight(500),
+                        fontWeight = FontWeight.Medium,
                     )
                     Text(
                         modifier = Modifier,
@@ -99,7 +99,7 @@ fun CommonCardComponent(
                     ) {
                         Text(
                             text = stringResource(R.string.categories_label).formatToInlineLabel(),
-                            fontWeight = FontWeight(500),
+                            fontWeight = FontWeight.Medium,
                         )
                         var hasMultipleLines by remember { mutableStateOf(false) }
                         Text(
