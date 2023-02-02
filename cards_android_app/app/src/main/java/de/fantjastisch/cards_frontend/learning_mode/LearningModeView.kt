@@ -25,6 +25,16 @@ import de.fantjastisch.cards_frontend.util.LoadingIcon
 import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import java.util.*
 
+/**
+ * Rendert die Seite "Lernmodus".
+ *
+ * @param modifier Modifier für die Seite.
+ * @param learningBoxId Id, der ausgewählten Lernbox.
+ * @param learningObjectId Id, des ausgewählten Lernobjektes.
+ * @param sort True, wenn Karten alphabetisch sortiert.
+ *
+ * @author Jessica Repty, Freja Sender, Semjon Nirmann
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LearningModeView(
