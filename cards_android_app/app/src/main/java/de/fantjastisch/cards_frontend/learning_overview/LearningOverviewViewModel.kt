@@ -8,7 +8,7 @@ import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import kotlinx.coroutines.launch
 
 class LearningOverviewViewModel(
-    val model: LearningOverviewModel = LearningOverviewModel()
+    private val model: LearningOverviewModel = LearningOverviewModel()
 ) : ViewModel() {
 
     val learningObjects = mutableStateOf<List<LearningObject>>(emptyList())
