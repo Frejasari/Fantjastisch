@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.infrastructure.ErrorsEnum
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.ErrorEntryEntity
@@ -15,7 +16,7 @@ class CreateLearningSystemViewModel(
     // states, die vom view gelesen werden können -> automatisches Update vom View.
 
     val categories = mutableStateOf(listOf<CategorySelectItem>())
-    val error = mutableStateOf<String?>(null)
+    val error = mutableStateOf(ErrorsEnum.NO_ERROR)
     val errors = mutableStateOf<List<ErrorEntryEntity>>(mutableListOf())
     val isFinished = mutableStateOf(false)
 
@@ -32,8 +33,8 @@ class CreateLearningSystemViewModel(
                 onSuccess = {
                     isFinished.value = true
                 },
-                onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
-                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." },
+                onValidationError = { resultErrors -> errors.value = resultErrors },
+                onUnexpectedError = { error.value = ErrorsEnum.UNEXPECTED },
             )
         }
     }

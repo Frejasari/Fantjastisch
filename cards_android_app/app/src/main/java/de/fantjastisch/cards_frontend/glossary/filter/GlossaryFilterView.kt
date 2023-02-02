@@ -8,12 +8,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategorySelect
+import de.fantjastisch.cards_frontend.components.SaveLayout
 
 /**
  * Rendert die View zum Filtern im Glossar.
@@ -29,11 +29,9 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
     @Composable
     override fun Content() {
         val viewModel = viewModel { GlossaryFilterViewModel() }
-        Column(
+        SaveLayout(
+            onSaveClicked = viewModel::onLoadPageClicked,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp, horizontal = 18.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
             Row(
@@ -74,13 +72,6 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
                 categories = viewModel.categories.value,
                 onCategorySelected = viewModel::onCategorySelected
             )
-            FilledTonalButton(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = viewModel::onLoadPageClicked
-            ) {
-                Text(text = stringResource(R.string.save_button_text))
-            }
-
         }
 
         LaunchedEffect(

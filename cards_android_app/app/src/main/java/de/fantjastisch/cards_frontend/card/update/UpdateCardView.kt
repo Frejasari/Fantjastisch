@@ -8,12 +8,8 @@ import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
+
 //TODO Fehler anzeigen.
-/**
- * Rendert die Seite "Karteikarte bearbeiten".
- *
- * @author Freja Sender, Tamari Bayer
- */
 @Composable
 fun UpdateCardView(
     modifier: Modifier = Modifier,
@@ -21,6 +17,7 @@ fun UpdateCardView(
 ) {
 
     val viewModel = viewModel { UpdateCardViewModel(id = id) }
+
 
     // Componente die ihre Kinder untereinander anzeigt.
     CardEditView(
@@ -44,7 +41,7 @@ fun UpdateCardView(
         onCategorySelected = viewModel::onCategorySelected,
         onUpdateCardClicked = viewModel::onUpdateCardClicked,
         linkName = TextFieldState(
-            value = viewModel.linkName.value,
+            value = viewModel.linkLabel.value,
             errors = viewModel.errors.value,
             onValueChange = viewModel::setLinkName,
         ),
@@ -53,8 +50,8 @@ fun UpdateCardView(
         onCreateLinkClicked = viewModel::onCreateLinkClicked,
         links = viewModel.cardLinks.value,
         onDeleteLinkClicked = viewModel::onDeleteLinkClicked,
-        toast = viewModel.toast.value,
-        noCategories = viewModel.noCategories.value
+        toast = viewModel.error.value,
+        onToastShown = viewModel::onToastShown
     )
 
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
@@ -65,24 +62,3 @@ data class TextFieldState(
     val errors: List<ErrorEntryEntity>,
     val onValueChange: (String) -> Unit,
 )
-
-
-fun mapError(code: ErrorEntryEntity.Code): String {
-    return when (code) {
-        ErrorEntryEntity.Code.cONSTRAINTVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.nOCATEGORIESVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.nOTNULLVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.nOTBLANKVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.lABELTAKENVIOLATION -> "Label ist bereits vergeben."
-        ErrorEntryEntity.Code.cATEGORYDOESNTEXISTVIOLATION -> "Kategorie existiert nicht."
-        ErrorEntryEntity.Code.sUBCATEGORYDOESNTEXISTVIOLATION -> "Kategorie existiert nicht."
-        ErrorEntryEntity.Code.cATEGORYNOTEMPTYVIOLATION -> "Es muss eine Kategorie ausgewaehlt werden."
-        ErrorEntryEntity.Code.cYCLICSUBCATEGORYRELATIONVIOLATION -> "Zyklen sind nicht erlaubt."
-        ErrorEntryEntity.Code.sUBCATEGORYISNULLVIOLATION -> "Subkategorien dürfen nicht null sein."
-        ErrorEntryEntity.Code.eNTITYDOESNOTEXIST -> "Entität exisitert nicht."
-        ErrorEntryEntity.Code.cARDDUPLICATEVIOLATION -> "Karte existiert bereits."
-        ErrorEntryEntity.Code.bOXLABELSISNULLVIOLATION -> "Die Box-Labels dürfen nicht leer sein."
-    }
-}
-
-

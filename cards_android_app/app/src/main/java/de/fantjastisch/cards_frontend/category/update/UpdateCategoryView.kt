@@ -1,13 +1,12 @@
 package de.fantjastisch.cards_frontend.category.update
 
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.update_and_create.CategoryEdit
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
-import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
 //TODO Fehler anzeigen.
@@ -25,7 +24,7 @@ fun UpdateCategoryView(
     id: UUID
 ) {
 
-    val viewModel = viewModel { UpdateCategoryViewModel( id = id ) }
+    val viewModel = viewModel { UpdateCategoryViewModel(id = id) }
 
     CategoryEdit(
         modifier = modifier,
@@ -38,7 +37,6 @@ fun UpdateCategoryView(
         onCategorySelected = viewModel::onCategorySelected,
         onUpdateCategoryClicked = viewModel::onUpdateCategoryClicked,
     )
-
 
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 }

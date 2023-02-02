@@ -12,7 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
  * @author Freja Sender
  */
 @Composable
-public fun CloseScreenOnSignalEffect(shouldClose: Boolean) {
+fun CloseScreenOnSignalEffect(shouldClose: Boolean) {
     val navigator = FantMainNavigator.current
     // einmaliger Effekt
     LaunchedEffect(

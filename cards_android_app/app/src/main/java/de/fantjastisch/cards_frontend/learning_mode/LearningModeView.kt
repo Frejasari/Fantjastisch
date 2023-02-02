@@ -2,7 +2,8 @@ package de.fantjastisch.cards_frontend.learning_mode
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.flowlayout.MainAxisAlignment
+import com.google.accompanist.flowlayout.SizeMode
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.glossary.LinkWithoutDeleteComponent
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
@@ -22,16 +25,7 @@ import de.fantjastisch.cards_frontend.util.LoadingIcon
 import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import java.util.*
 
-/**
- * Rendert die Seite "Lernmodus".
- *
- * @param modifier Modifier für die Seite.
- * @param learningBoxId Id, der ausgewählten Lernbox.
- * @param learningObjectId Id, des ausgewählten Lernobjektes.
- * @param sort True, wenn Karten alphabetisch sortiert.
- *
- * @author Jessica Repty, Freja Sender, Semjon Nirmann
- */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LearningModeView(
     modifier: Modifier = Modifier,
@@ -81,7 +75,7 @@ fun LearningModeView(
                 text = stringResource(R.string.remaining_cards_in_box_text)
                     .formatToInlineLabel() + viewModel.numberOfCardsRemaining.value.toString(),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight(350)
+                fontWeight = FontWeight.Medium
             )
             Divider(
                 Modifier.padding(horizontal = 7.dp, vertical = 10.dp)
@@ -94,19 +88,21 @@ fun LearningModeView(
                 },
                 onClick = viewModel::onFlipCardClicked,
             )
-            LazyRow(
-                modifier = Modifier.weight(6f)
-            ) {
-                item {
-                    viewModel.currentCard.value!!.links.forEach {
-                        LinkWithoutDeleteComponent(link = it)
-                    }
+            Column(modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState())) {
+                val currentCard = viewModel.currentCard.value
+                if (currentCard != null) {
+                    FlowRow(
+                        content = {
+                            currentCard.links.map {
+                                LinkWithoutDeleteComponent(link = it)
+                            }
+                        })
                 }
+
             }
-            Spacer(
-                modifier = Modifier
-                    .weight(1f)
-            )
+
             if (!viewModel.isFirstBox) {
                 FilledTonalButton(
                     modifier = Modifier.align(Alignment.CenterHorizontally),

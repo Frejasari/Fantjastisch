@@ -1,0 +1,103 @@
+<resources>
+  <string name="app_name">Karten</string>
+  <!--    MENU TAB NAMES -->
+  <string name="menu_learning_object_overview_label">Learn</string>
+  <string name="menu_glossar_label">Glossary</string>
+  <string name="menu_categories_overview_label">Categories</string>
+
+  <!-- Glossar - Kartenansicht -->
+  <string name="question_label">Question</string>
+  <string name="answer_label">Answer</string>
+  <string name="tag_label">Tag</string>
+  <string name="categories_label">Categories</string>
+  <string name="links_label">Links</string>
+
+  <!-- Floating Add Button -->
+  <string name="menu_create_card">New Card</string>
+  <string name="menu_create_category">New Category</string>
+  <string name="menu_create_learningsystem">New Learning System</string>
+  <string name="menu_create_learningobject">New Learning Object</string>
+
+  <!-- Common Options -->
+  <string name="save_button_text">Save</string>
+  <string name="update_button_text">Edit</string>
+  <string name="delete_button_text">Delete</string>
+  <string name="confirm">Confirm</string>
+  <string name="cancel">Cancel</string>
+  <string name="no_content_text">Nothing To Be Found…</string>
+  <string name="fetching_data_text">Fetching Data…</string>
+
+  <!-- Glossary Options Panel -->
+  <string name="search_card_placeholder">Search For Card</string>
+  <string name="search_tag_placeholder">Search For Tag</string>
+  <string name="sort_label">Sort</string>
+  <string name="filter_label">Filter</string>
+
+  <!-- Delete Dialogs -->
+  <string name="delete_learningobject_dialog_title">Are you sure you want to delete this learning object?</string>
+  <string name="delete_card_dialog_title">Are you sure you want to delete this card?</string>
+  <string name="delete_category_dialog_title">Are you sure you want to delete this category?</string>
+  <string name="delete_link_dialog_title">Are you sure you want to delete this link?</string>
+
+  <!-- Kategorien -->
+  <string name="select_category_label">Choose category</string>
+  <string name="create_category_headline">Create category</string>
+  <string name="card_category_select_button">Select Categories</string>
+  <string name="update_category_headline">Edit category</string>
+  <string name="no_subcategories">No sub-categories</string>
+
+  <!-- Karten -->
+  <string name="create_card_headline">Create card</string>
+  <string name="update_card_headline">Edit card</string>
+  <string name="show_cards_in_learning_box">Manage cards</string>
+  <string name="show_question_from_card_button">Show question</string>
+  <string name="show_answer_from_card_button">Show answer</string>
+
+  <!-- Links -->
+  <string name="create_link_headline">Create link</string>
+  <string name="update_link_headline">Edit link</string>
+  <string name="create_link_name">word to be linked</string>
+
+  <!-- Lernen -->
+  <string name="create_learningobject_headline">Create learning object</string>
+  <string name="create_learningSystem_headline">Create learning system</string>
+  <string name="select_num_of_boxes_label">Amount of learning boxes</string>
+  <string name="label_label">Label</string>
+  <string name="learning_object_detail">Learning object details</string>
+  <string name="study_learning_box">Learn this box</string>
+  <string name="learning_mode_title">Learning Mode</string>
+  <string name="learningbox_label">Learning box</string>
+  <string name="move_card_to_previous_box_label">Move card to previous box</string>
+  <string name="move_card_to_next_box_label">Move card to next box</string>
+  <string name="number_of_learningboxes_text">Amount of learning boxes</string>
+  <string name="dont_move_card_text">Keep card in this box</string>
+  <string name="next_card_text">Next card</string>
+  <string name="learning_system_label">Learning system</string>
+  <string name="add_categories_label">Add categories</string>
+  <string name="select_cards_label">Add cards</string>
+  <string name="cards_in_this_box_label">Cards in this box</string>
+  <string name="move_cards_in_learningobject_text">Move cards in this learning object</string>
+  <string name="previous_box_text">Previous Box</string>
+  <string name="next_box_text">Next Box</string>
+  <string name="choose_card_text">Choose cards</string>
+  <string name="start_learning">Learn</string>
+  <string name="move_cards_text">Move cards</string>
+  <string name="number_of_cards_text">Amount of cards</string>
+  <string name="remaining_cards_in_box_text">Remaining Cards</string>
+
+  <string name="link_name">Link Name TODO</string>
+
+  <string name="categories_error">Please choose a category</string>
+  <string name="categories_delete_error">This category has sub-categories</string>
+  <string name="create_link">Link a card</string>
+
+  <string name="sort_cards_in_box_dialog_title">Card Arrangement</string>
+
+  <!--  errors-->
+  <string name="error_network">A network error occurred.</string>
+  <string name="error_link_no_card">Please choose a target card.</string>
+  <string name="error_unexpected">An unknown error occurred.</string>
+  <string name="allgemein_card_label">General card information</string>
+  <string name="allgemein_learningobject_label">General learning object fields</string>
+
+</resources>

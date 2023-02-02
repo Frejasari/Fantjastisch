@@ -25,6 +25,7 @@ class CreateLearningObjectModel(
     private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(),
     private val categoryRepository: CategoryRepository = CategoryRepository(),
     private val cardRepository: CardRepository = CardRepository(),
+    private val validator: CreateLearningObjectValidator = CreateLearningObjectValidator()
 ) {
 
     data class CreateLearningObject(
@@ -162,13 +163,23 @@ class CreateLearningObjectModel(
     ): RepoResult<Unit> = learningObjectRepository.insert(learningObject = learningObject)
 
     suspend fun addLearningObject(
-        learningObject: LearningObject,
-        selectedSystemId: UUID,
+        learningObjectLabel: String,
+        selectedSystem: SingleSelectItem?,
         categories: List<CategorySelectItem>,
         cards: List<CardSelectItem>
     ): RepoResult<Unit> {
+
+        val errors = validator.validate(
+            selectedSystem = selectedSystem,
+            learningObjectLabel = learningObjectLabel
+        )
+
+        if (errors.isNotEmpty()) {
+            return RepoResult.Error(errors = errors)
+        }
+
         // Hole Lernsystem aus DB
-        val learningSystem = getLearningSystemFromInput(selectedSystemId)
+        val learningSystem = getLearningSystemFromInput(selectedSystem!!.id)
             ?: // Konnte Lernsystem nicht finden, kann Lernboxen nicht einfügen.
             return RepoResult.ServerError()
 
@@ -182,6 +193,8 @@ class CreateLearningObjectModel(
             cardsToInsert.addAll(cardsFromSelectedCategories.map { it.id })
         }
 
+        val learningObject =
+            LearningObject(label = learningObjectLabel, learningSystemId = selectedSystem.id)
         // Füge Lernobjekt in DB ein
         val insertLearningObjectResponse = insertLearningObject(learningObject)
 

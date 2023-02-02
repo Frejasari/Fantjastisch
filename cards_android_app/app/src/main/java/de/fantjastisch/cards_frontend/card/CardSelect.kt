@@ -1,9 +1,6 @@
 package de.fantjastisch.cards_frontend.card
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -20,6 +17,7 @@ data class CardSelectItem(
     val card: CardEntity,
     val isChecked: Boolean
 )
+
 
 /**
  * Rendert eine Liste an von Karten, die selektiert werden können.

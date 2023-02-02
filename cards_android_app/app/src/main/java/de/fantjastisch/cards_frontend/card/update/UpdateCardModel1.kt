@@ -2,7 +2,6 @@ package de.fantjastisch.cards_frontend.card.update
 
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.card.create.CreateCardViewModel
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult

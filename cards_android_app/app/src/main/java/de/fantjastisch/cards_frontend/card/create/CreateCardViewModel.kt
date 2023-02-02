@@ -3,11 +3,11 @@ package de.fantjastisch.cards_frontend.card.create
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.card.update_and_create.CreateLinkViewModel
+import de.fantjastisch.cards_frontend.card.update_and_create.CreateAndUpdateViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.infrastructure.ErrorsEnum
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
-import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 /**
@@ -19,7 +19,7 @@ import java.util.*
  */
 class CreateCardViewModel(
     private val createCardModel: CreateCardModel = CreateCardModel()
-) : CreateLinkViewModel() {
+) : CreateAndUpdateViewModel() {
 
     // states, die vom View gelesen werden können -> automatisches Update vom View.
     val card = mutableStateOf(listOf<CardSelectItem>())
@@ -32,8 +32,6 @@ class CreateCardViewModel(
     val cardAnswer = mutableStateOf("")
     val cardTag = mutableStateOf("")
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
-    private val link = mutableStateOf<LinkEntity?>(null)
-    val noCategories = mutableStateOf(false)
 
     init {
         viewModelScope.launch {
@@ -42,7 +40,7 @@ class CreateCardViewModel(
             val resultCards = createCardModel.getCards()
 
             if (result == null || resultCards == null) {
-                error.value = "Ein Netzwerkfehler ist aufgetreten."
+                error.value = ErrorsEnum.NETWORK
             } else {
                 errors.value = emptyList()
                 cardCategories.value = result
@@ -71,30 +69,13 @@ class CreateCardViewModel(
                 it
             }
         }
-        noCategories.value = false
-    }
-
-    fun onDeleteLinkClicked(link: LinkEntity) {
-        cardLinks.value = cardLinks.value.filter { l -> link != l } as ArrayList<LinkEntity>
     }
 
     fun onCreateCardClicked() {
-        error.value = null
         errors.value = emptyList()
 
-        // check if fields for links have been filled but not saved
-        if (linkName.value.isNotBlank() && linkTarget.value != null) {
-            cardLinks.value = cardLinks.value +
-                    LinkEntity(
-                        label = linkName.value,
-                        target = linkTarget.value!!
-                    )
-        }
-
         // check for categories -> if no then wait till yes
-        if (cardCategories.value.none { cat -> cat.isChecked }) {
-            noCategories.value = true
-        } else {
+        if (!cardCategories.value.none { cat -> cat.isChecked }) {
             viewModelScope.launch {
                 val result = createCardModel.createCard(
                     question = cardQuestion.value,
@@ -107,13 +88,9 @@ class CreateCardViewModel(
                 when (result) {
                     is RepoResult.Success -> isFinished.value = true
                     is RepoResult.Error -> errors.value = result.errors
-                    is RepoResult.ServerError -> error.value = "Ein Netzwerkfehler ist aufgetreten."
+                    is RepoResult.ServerError -> error.value = ErrorsEnum.NETWORK
                 }
             }
         }
-
-
     }
-
-
 }

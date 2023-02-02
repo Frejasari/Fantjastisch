@@ -3,36 +3,30 @@ package de.fantjastisch.cards_frontend.card.update_and_create
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.card.update.UpdateCardView
+import de.fantjastisch.cards_frontend.infrastructure.ErrorsEnum
 import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 /**
- * Stellt die Daten für die [] bereit und nimmt seine Anfragen entgegen.
+ * Parent Class, die gemeinsame Daten  & Funktionen zum Erzeugen und Bearbeiten von Karten bereitstellt
  *
  * @author Freja Sender
  */
-open class CreateLinkViewModel : ViewModel() {
+open class CreateAndUpdateViewModel : ViewModel() {
 
-    val linkName = mutableStateOf("")
-    val linkTarget = mutableStateOf<UUID?>(null)
-    private val link = mutableStateOf<LinkEntity?>(null)
-    val toast = mutableStateOf(false)
+    val linkLabel = mutableStateOf("")
+    val error = mutableStateOf(ErrorsEnum.NO_ERROR)
     val cards = mutableStateOf(listOf<CardSelectItem>())
-    val error = mutableStateOf<String?>(null)
     val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
 
     val cardLinks = mutableStateOf<List<LinkEntity>>(listOf())
 
     fun setLinkName(value: String) {
-        toast.value = false
-        linkName.value = value
+        linkLabel.value = value
     }
 
-
     fun onCardSelected(id: UUID) {
-        toast.value = false
         val selectedCards = cards.value.filter { card -> card.isChecked }
 
         if (selectedCards.isNotEmpty()) {
@@ -48,36 +42,37 @@ open class CreateLinkViewModel : ViewModel() {
             }
         }
 
-        val list = cards.value
-            .filter { card -> card.isChecked }
-        linkTarget.value = list[0].card.id
     }
 
+    fun onDeleteLinkClicked(link: LinkEntity) {
+        cardLinks.value = cardLinks.value.filter { l -> link != l } as ArrayList<LinkEntity>
+    }
+
+    fun onToastShown() {
+        error.value = ErrorsEnum.NO_ERROR
+    }
 
     fun onCreateLinkClicked() {
-        error.value = null
         errors.value = emptyList()
 
-        if (linkName.value.isBlank()) {
-            errors.value = listOf(
-                ErrorEntryEntity(
-                    code = ErrorEntryEntity.Code.nOTBLANKVIOLATION,
-                    message = "Darf nicht leer sein",
-                    field = "linkName"
-                )
-            )
-        } else if (linkTarget.value == null) {
-            toast.value = true
+        val target = cards.value.firstOrNull() { card -> card.isChecked }
+
+        if (linkLabel.value.isBlank()) {
+            errors.value = errors.value +
+                    ErrorEntryEntity(
+                        code = ErrorEntryEntity.Code.nOTBLANKVIOLATION,
+                        message = "Darf nicht leer sein",
+                        field = "linkName"
+                    )
+        } else if (target == null) {
+            error.value = ErrorsEnum.LINK_ERROR
         } else {
-            toast.value = false
-            link.value = LinkEntity(
-                label = linkName.value,
-                target = linkTarget.value!!
+            cardLinks.value = cardLinks.value + LinkEntity(
+                label = linkLabel.value,
+                target = target.card.id
             )
-            cardLinks.value = cardLinks.value + link.value!!
+            linkLabel.value = ""
 
-
-            linkName.value = ""
             cards.value = cards.value.map {
                 it.copy(isChecked = false)
             }
