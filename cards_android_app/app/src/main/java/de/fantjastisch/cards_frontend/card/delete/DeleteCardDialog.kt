@@ -1,8 +1,8 @@
 package de.fantjastisch.cards_frontend.card.delete
 
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import de.fantjastisch.cards.R
@@ -31,10 +31,10 @@ fun DeleteCardDialog(
             Text(text = stringResource(R.string.delete_card_dialog_title))
         },
         text = {
-            Text(card.question)
+            Text(text = card.question)
         },
         confirmButton = {
-            Button(
+            TextButton(
                 enabled = isDeleteButtonEnabled,
                 onClick = onDeleteClicked
             ) {
@@ -42,7 +42,7 @@ fun DeleteCardDialog(
             }
         },
         dismissButton = {
-            Button(
+            TextButton(
                 onClick = onDismissClicked
             ) {
                 Text(text = stringResource(R.string.cancel))

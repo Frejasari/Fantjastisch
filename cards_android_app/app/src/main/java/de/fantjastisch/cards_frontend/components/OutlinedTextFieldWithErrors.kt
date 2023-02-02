@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import de.fantjastisch.cards_frontend.util.mapError
 import org.openapitools.client.models.ErrorEntryEntity
 
@@ -38,6 +39,7 @@ fun OutlinedTextFieldWithErrors(
     enabled: Boolean = true
 ) {
     val error = errors.find { it.field == field }
+
     OutlinedTextField(
         singleLine = maxLines == 1,
         maxLines = maxLines,
@@ -48,7 +50,7 @@ fun OutlinedTextFieldWithErrors(
             if (error != null) {
                 Text(
                     color = Color.Red,
-                    text = mapError(error.code)
+                    text = stringResource(id = mapError(error.code))
                 )
             }
         },

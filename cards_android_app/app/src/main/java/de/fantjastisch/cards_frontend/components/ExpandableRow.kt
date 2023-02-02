@@ -1,6 +1,9 @@
 package de.fantjastisch.cards_frontend.components
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
@@ -27,10 +30,18 @@ fun ExpandableRow(
     val rotate by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f
     )
+
     Row(
-        modifier = Modifier.clickable {
-            onClick()
-        },
+        modifier = Modifier
+            .animateContentSize(
+                animationSpec = tween(
+                    durationMillis = 300,
+                    easing = LinearOutSlowInEasing
+                )
+            )
+            .clickable {
+                onClick()
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

@@ -102,5 +102,19 @@
   <string name="error_unexpected">Ein unbekannter Fehler ist aufgetreten.</string>
   <string name="allgemein_card_label">Allgemeine Kartendaten</string>
   <string name="allgemein_learningobject_label">Allgemeine Lernobjekt-Felder</string>
+  <string name="error_check_input">Überprüfe deine Eingabe</string>
+  <string name="error_not_empty">Feld darf nicht leer sein.</string>
+  <string name="error_not_null">Feld darf nicht null sein.</string>
+  <string name="error_label_taken">Label ist bereits vergeben.</string>
+  <string name="error_category_does_not_exist">Kategorie existiert nicht.</string>
+  <string name="error_no_category">Es muss eine Kategorie ausgewaehlt werden.</string>
+  <string name="error_no_cycles">Zyklen sind nicht erlaubt.</string>
+  <string name="error_subcategories_not_null">Subkategorien dürfen nicht null sein.</string>
+  <string name="error_entity_does_not_exist">\"Entität exisitert nicht.\"</string>
+  <string name="error_card_already_exists">Karte existiert bereits.</string>
+  <string name="error_box_labels_null">Die Box-Labels dürfen nicht leer sein.</string>
+  <string name="alphabetic">Alphabetisch</string>
+  <string name="random">Zufällig</string>
+  "Feld darf nicht leer sein."
 
 </resources>
