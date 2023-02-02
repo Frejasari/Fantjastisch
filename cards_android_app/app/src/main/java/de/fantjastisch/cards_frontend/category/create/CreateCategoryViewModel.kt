@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
+import de.fantjastisch.cards_frontend.card.create.CreateCardView
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
@@ -11,6 +12,13 @@ import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 
+/**
+ * Stellt die Daten für die [CreateCategoryView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property createCategoryModel Das zugehörige Model, welches die Logik kapselt.
+ *
+ * @author Tamari Bayer, Semjon Nirmann, Freja Sender
+ */
 class CreateCategoryViewModel(
     private val createCategoryModel: CreateCategoryModel = CreateCategoryModel()
 ) : ViewModel() {

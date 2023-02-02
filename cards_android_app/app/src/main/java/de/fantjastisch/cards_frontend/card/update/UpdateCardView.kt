@@ -3,13 +3,17 @@ package de.fantjastisch.cards_frontend.card.update
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import de.fantjastisch.cards_frontend.card.update_and_create.CardEdit
+import de.fantjastisch.cards_frontend.card.update_and_create.CardEditView
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
-
 //TODO Fehler anzeigen.
+/**
+ * Rendert die Seite "Karteikarte bearbeiten".
+ *
+ * @author Freja Sender, Tamari Bayer
+ */
 @Composable
 fun UpdateCardView(
     modifier: Modifier = Modifier,
@@ -20,7 +24,7 @@ fun UpdateCardView(
 
 
     // Componente die ihre Kinder untereinander anzeigt.
-    CardEdit(
+    CardEditView(
         modifier = modifier,
         question = TextFieldState(
             value = viewModel.cardQuestion.value,

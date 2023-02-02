@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category.graph
+package de.fantjastisch.cards_frontend.category.overview
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,13 +24,13 @@ import de.fantjastisch.cards_frontend.category.DeleteCategoryDialog
 @Composable
 fun CategoryOverviewView(modifier: Modifier = Modifier) {
 
-    val viewModel = viewModel { CategoryGraphViewModel() }
+    val viewModel = viewModel { CategoryOverviewViewModel() }
 
     val deletionProgress = viewModel.currentDeleteDialog.value
     if (deletionProgress != null) {
         DeleteCategoryDialog(
             cat = deletionProgress.cat,
-            isDeleteButtonEnabled = deletionProgress is CategoryGraphViewModel.DeletionProgress.ConfirmWithUser,
+            isDeleteButtonEnabled = deletionProgress is CategoryOverviewViewModel.DeletionProgress.ConfirmWithUser,
             onDismissClicked = { viewModel.onDeleteCategoryAborted() },
             onDeleteClicked = {
                 viewModel.onDeleteCategoryClicked()

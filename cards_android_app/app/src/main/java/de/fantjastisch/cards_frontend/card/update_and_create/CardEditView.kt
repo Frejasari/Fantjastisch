@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.card.LinkCardComponent
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
@@ -30,9 +29,30 @@ import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 
+/**
+ * Zeigt das Fenster um eine Karte zu bearbeiten/erstellen.
+ *
+ * @param modifier Modifier für die Seite.
+ * @param question Aktuelle Frage, der Karte.
+ * @param answer Aktuelle Antwort, der Karte.
+ * @param tag Aktuelles Schlagwort, der Karte.
+ * @param categories Aktuelle Kategorien, der Karte.
+ * @param linkName Aktueller Name eines Links, der Karte.
+ * @param cards Aktuell selektierte Karten.
+ * @param links Aktuelle Links, der Karte.
+ * @param onCategorySelected Funktion, mit der eine Kategorie ausgewäht wird.
+ * @param onUpdateCardClicked Funktion, mit der eine Karte geupdated wird.
+ * @param onCardSelected Funktion, mit der eine Karte ausgewählt wird.
+ * @param onCreateLinkClicked Funktion, mit der eine Karte erzeugt wird.
+ * @param onDeleteLinkClicked Funktion, mit der ein Link gelöscht wird.
+ * @param toast Ob ein Toast angezeigt wird.
+ * @param noCategories Ob Kategorien für die Karte ausgewählt wurden.
+ *
+ * @author Freja Sender, Tamari Bayer
+ */
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun CardEdit(
+fun CardEditView(
     modifier: Modifier = Modifier,
     question: TextFieldState,
     answer: TextFieldState,
@@ -206,7 +226,7 @@ fun CardEdit(
             ) {
                 item {
                     links.forEach {
-                        LinkCardComponent(link = it, onDeleteLinkClicked = onDeleteLinkClicked)
+                        LinkEditView(link = it, onDeleteLinkClicked = onDeleteLinkClicked)
                     }
                 }
             }
@@ -219,7 +239,7 @@ fun CardEdit(
                     errors = linkName.errors,
                     onValueChange = linkName.onValueChange,
                     placeholder = stringResource(id = R.string.create_link_name),
-                    field = "name"
+                    field = "linkName"
                 )
                 LazyColumn(
                     modifier = Modifier

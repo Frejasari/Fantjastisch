@@ -14,7 +14,14 @@ import de.fantjastisch.cards_frontend.category.update.UpdateCategoryFragment
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import java.util.*
 
-
+/**
+ * Zeigt das Kontext-Menü einer Kategorie.
+ *
+ * @param id Id, der ausgewählten Kategorie.
+ * @param onDeleteClicked Funktion, mit der man eine Kategorie löschen kann.
+ *
+ * @author Tamari Bayer, Semjon Nirmann
+ */
 @Composable
 fun CategoryContextMenu(
     id: UUID,

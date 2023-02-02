@@ -9,6 +9,11 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 import java.util.*
 
+/**
+ * Zeigt den Screen um eine Karte zu bearbeiten
+ *
+ * @author Tamari Bayer, Freja Sender
+ */
 data class UpdateCardFragment(val id: UUID) : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable

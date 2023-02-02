@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.category.create.CreateCategoryView
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CategoryEntity
@@ -13,6 +14,15 @@ import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 
+/**
+ * Stellt die Daten für die [UpdateCategoryView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property categoryModel Das zugehörige Model, welches die Logik kapselt.
+ *
+ * @param id Id, der zu bearbeitende Kategorie.
+ *
+ * @author Tamari Bayer, Freja Sender
+ */
 class UpdateCategoryViewModel(
     id: UUID,
     private val categoryModel: UpdateCategoryModel = UpdateCategoryModel(id = id)
@@ -43,7 +53,7 @@ class UpdateCategoryViewModel(
                                 id = category.id,
                                 label = category.label,
                                 isChecked = cat.subCategories.contains(category.id)
-                                    //.firstOrNull { subCatOfCat -> subCatOfCat == cat.id } != null
+                                //.firstOrNull { subCatOfCat -> subCatOfCat == cat.id } != null
                             )
                         }
                     },
@@ -67,14 +77,14 @@ class UpdateCategoryViewModel(
         errors.value = emptyList()
 
         viewModelScope.launch {
-                categoryModel.update(
-                    label = label.value,
-                    subCategories = allCats.value,
-                ).fold(
-                    onSuccess = { isFinished.value = true },
-                    onValidationError = { errors.value = it },
-                    onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
-                )
+            categoryModel.update(
+                label = label.value,
+                subCategories = allCats.value,
+            ).fold(
+                onSuccess = { isFinished.value = true },
+                onValidationError = { errors.value = it },
+                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
+            )
 
         }
     }

@@ -10,8 +10,15 @@ import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
-
 //TODO Fehler anzeigen.
+/**
+ * Rendert die Seite "Kategorie bearbeiten".
+ *
+ * @param modifier Modifier für die Seite.
+ * @param id Id, der Kategorie, welche bearbeitet wird.
+ *
+ * @author Tamari Bayer
+ */
 @Composable
 fun UpdateCategoryView(
     modifier: Modifier = Modifier,

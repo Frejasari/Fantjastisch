@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
  * @param modifier Modifier für die Seite.
  *
  * @author Tamari Bayer, Freja Sender, Jessica Repty, Semjon Nirmann
- * **/
+ */
 @Composable
 @Preview
 fun GlossaryView(

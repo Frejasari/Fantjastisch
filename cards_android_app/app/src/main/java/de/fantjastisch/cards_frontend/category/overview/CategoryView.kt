@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category.graph
+package de.fantjastisch.cards_frontend.category.overview
 
 import android.annotation.SuppressLint
 import android.widget.Toast
@@ -31,7 +31,7 @@ import org.openapitools.client.models.CategoryEntity
 fun CategoryView(
     category: CategoryEntity
 ) {
-    val viewModel = viewModel { CategoryGraphViewModel() }
+    val viewModel = viewModel { CategoryOverviewViewModel() }
     var expanded by remember { mutableStateOf(false) }
 
     FantMainNavigator.current

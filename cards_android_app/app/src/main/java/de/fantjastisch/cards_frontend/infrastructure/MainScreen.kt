@@ -40,7 +40,6 @@ class MainScreen : AndroidScreen() {
                 modifier = Modifier.padding(it),
             ) {
                 CurrentTab()
-
             }
         }
     }

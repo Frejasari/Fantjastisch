@@ -96,8 +96,7 @@ fun LearningDetailsComponent(
                     )
                     Icon(
                         Icons.Outlined.Inventory2,
-                        contentDescription = "Box",
-//                        modifier = Modifier.size(24.dp)
+                        contentDescription = "Box"
                     )
                 }
             }

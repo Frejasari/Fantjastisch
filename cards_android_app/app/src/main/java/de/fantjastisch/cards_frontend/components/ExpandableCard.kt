@@ -13,6 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 
+/**
+ * View, die eine ausklappbare Karte rendert
+ *
+ * @param onClick Callback, bei Click auf die Karte
+ * @param content der Content der Karte.
+ */
 @Composable
 fun ExpandableCard(
     onClick: () -> Unit,
@@ -22,11 +28,7 @@ fun ExpandableCard(
     Surface(
         shadowElevation = 6.dp,
         modifier = Modifier
-            .clickable(
-                onClick = {
-                    onClick()
-                }
-            ),
+            .clickable(onClick = onClick),
     ) {
         Box(
             modifier = Modifier
