@@ -15,6 +15,13 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.components.SaveLayout
 
+/**
+ * Rendert die View zum Filtern im Glossar.
+ *
+ * @property bottomSheetNavigator BottomScreen für die Filteransicht.
+ *
+ * @author Freja Sender, Semjon Nirmann
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : AndroidScreen() {
     // remember -> state nicht neu erzeugen, wenn Funktion neu aufgerufen wird.

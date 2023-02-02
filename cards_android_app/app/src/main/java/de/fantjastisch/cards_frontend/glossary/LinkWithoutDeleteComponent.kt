@@ -11,6 +11,13 @@ import de.fantjastisch.cards_frontend.card.content_overview.CardContentDialogVie
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 
+/**
+ * Zeigt den AssistChip eines Links ohne Delete Option.
+ *
+ * @param link Link, welcher angezeigt werden soll.
+ *
+ * @author Jessica Repty, Tamari Bayer, Freja Sender
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LinkWithoutDeleteComponent(

@@ -9,6 +9,11 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import de.fantjastisch.cards_frontend.infrastructure.MainActivity.*
 
+/**
+ * View, für die Bottombar.
+ *
+ * @author Freja Sender
+ */
 class MainScreen : AndroidScreen() {
 
     @OptIn(ExperimentalMaterial3Api::class)

@@ -10,7 +10,7 @@ import org.openapitools.client.models.CardEntity
  * Rendert die Glossar Seite
  *
  * @author Tamari Bayer, Freja Sender, Jessica Repty, Semjon Nirmann
- * **/
+ */
 @Composable
 fun GlossaryCardView(
     card: CardEntity,

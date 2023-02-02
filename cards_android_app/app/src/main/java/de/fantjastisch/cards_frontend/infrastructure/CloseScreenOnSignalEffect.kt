@@ -4,7 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 
 
-// Component, welche den aktuellen Screen vom MainNavigator popt.
+/**
+ * Component, welche den aktuellen Screen vom MainNavigator popt.
+ *
+ * @param shouldClose Bei Änderung wird der aktuelle Screen gepopt.
+ *
+ * @author Freja Sender
+ */
 @Composable
 fun CloseScreenOnSignalEffect(shouldClose: Boolean) {
     val navigator = FantMainNavigator.current

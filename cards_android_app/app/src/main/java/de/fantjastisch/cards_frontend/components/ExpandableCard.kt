@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
  *
  * @param onClick Callback, bei Click auf die Karte
  * @param content der Content der Karte.
+ *
+ * @author Freja Sender
  */
 @Composable
 fun ExpandableCard(

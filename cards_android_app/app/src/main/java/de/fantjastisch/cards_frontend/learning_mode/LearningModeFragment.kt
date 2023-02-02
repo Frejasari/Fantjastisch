@@ -9,6 +9,15 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 import java.util.*
 
+/**
+ * Zeigt den Screen um Karteikarten zu lernen.
+ *
+ * @property learningBoxId Id, der ausgewählten Lernbox.
+ * @property learningObjectId Id, des ausgewählten Lernobjektes.
+ * @property sort True, wenn Karten alphabetisch sortiert.
+ *
+ * @author Jessica Repty, Freja Sender, Semjon Nirmann
+ */
 data class LearningModeFragment(
     val learningBoxId: UUID,
     val learningObjectId: UUID,
@@ -31,12 +40,9 @@ data class LearningModeFragment(
         {
             LearningModeView(
                 modifier = Modifier.padding(it),
-
-                        learningBoxId = learningBoxId,
-                        learningObjectId = learningObjectId,
-                        sort = sort
-
-
+                learningBoxId = learningBoxId,
+                learningObjectId = learningObjectId,
+                sort = sort
             )
         }
     }

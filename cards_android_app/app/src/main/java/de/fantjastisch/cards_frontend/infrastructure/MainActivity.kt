@@ -32,7 +32,11 @@ fun CardsAppTheme(content: @Composable () -> Unit) {
     Mdc3Theme(content = content)
 }
 
-
+/**
+ * TODO
+ *
+ * @author Freja Sender
+ */
 class MainActivity : AppCompatActivity() {
 
     @OptIn(ExperimentalAnimationApi::class)

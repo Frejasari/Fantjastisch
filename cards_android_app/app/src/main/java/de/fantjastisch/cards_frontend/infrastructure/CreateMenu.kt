@@ -15,6 +15,11 @@ import de.fantjastisch.cards_frontend.learning_object.create.CreateLearningObjec
 import de.fantjastisch.cards_frontend.learning_system.CreateLearningSystemFragment
 
 
+/**
+ * View für das Plus-Button Menü.
+ *
+ * @author Freja Sender, Semjon Nirmann, Tamari Bayer, Jessica Repty
+ */
 @Composable
 fun TobBarCreateMenu() {
     val navigator: Navigator = FantMainNavigator.current

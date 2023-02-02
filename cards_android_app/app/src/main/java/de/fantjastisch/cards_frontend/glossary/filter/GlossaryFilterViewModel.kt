@@ -11,6 +11,13 @@ import de.fantjastisch.cards_frontend.infrastructure.toCategorySelectItems
 import kotlinx.coroutines.launch
 import java.util.*
 
+/**
+ * Stellt die Daten für die [GlossaryFilterView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property glossaryFilterModel Das zugehörige Model, welches die Logik kapselt.
+ *
+ * @author Freja Sender
+ */
 class GlossaryFilterViewModel(
     private val glossaryFilterModel: GlossaryFilterModel = GlossaryFilterModel()
 ) : ViewModel() {
