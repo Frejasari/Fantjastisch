@@ -84,7 +84,8 @@
   <string name="move_cards_text">Move cards</string>
   <string name="number_of_cards_text">Amount of cards</string>
   <string name="remaining_cards_in_box_text">Remaining Cards</string>
-
+  <string name="alphabetic">Alphabetic</string>
+  <string name="random">Shuffled</string>
   <string name="link_name">Link Name TODO</string>
 
   <string name="categories_error">Please choose a category</string>
@@ -99,5 +100,15 @@
   <string name="error_unexpected">An unknown error occurred.</string>
   <string name="allgemein_card_label">General card information</string>
   <string name="allgemein_learningobject_label">General learning object fields</string>
-
+  <string name="error_check_input">Überprüfe deine Eingabe</string>
+  <string name="error_not_empty">Field must not be empty.</string>
+  <string name="error_not_null">Field must not be null.</string>
+  <string name="error_label_taken">This label is already taken.</string>
+  <string name="error_category_does_not_exist">The category does not exist.</string>
+  <string name="error_no_category">Please choose a category.</string>
+  <string name="error_no_cycles">Cycles are not allowed.</string>
+  <string name="error_subcategories_not_null">Sub-categories must not be null.</string>
+  <string name="error_entity_does_not_exist">Entity does not exist.</string>
+  <string name="error_card_already_exists">Card already exists.</string>
+  <string name="error_box_labels_null">Box labels must not be empty.</string>
 </resources>

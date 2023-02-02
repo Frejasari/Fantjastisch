@@ -84,9 +84,8 @@
   <string name="move_cards_text">Karten verschieben</string>
   <string name="number_of_cards_text">Anzahl Karten</string>
   <string name="remaining_cards_in_box_text">Anzahl Karten verbleibend</string>
-
-  <!-- ? -->
-  <string name="overview">Übersicht</string>
+  <string name="alphabetic">Alphabetisch</string>
+  <string name="random">Zufällig</string>
 
   <string name="link_name">Link Name TODO</string>
 
@@ -113,8 +112,7 @@
   <string name="error_entity_does_not_exist">\"Entität exisitert nicht.\"</string>
   <string name="error_card_already_exists">Karte existiert bereits.</string>
   <string name="error_box_labels_null">Die Box-Labels dürfen nicht leer sein.</string>
-  <string name="alphabetic">Alphabetisch</string>
-  <string name="random">Zufällig</string>
+
   "Feld darf nicht leer sein."
 
 </resources>
