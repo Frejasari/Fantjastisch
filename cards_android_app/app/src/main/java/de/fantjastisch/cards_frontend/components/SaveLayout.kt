@@ -12,6 +12,15 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.CardsAppTheme
 
 //TODO USE!
+/**
+ * View für den Speichern Button.
+ *
+ * @param innerLayout TODO
+ * @param onSave Callback, wenn Click auf Speichern
+ * @param modifier Modifier für die View.
+ *
+ * @author Semjon Nirmann, Freja Sender
+ */
 @Composable
 fun SaveLayout(
     innerLayout: @Composable () -> Unit,
