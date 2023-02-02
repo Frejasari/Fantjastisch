@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category.graph
+package de.fantjastisch.cards_frontend.category.overview
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -7,8 +7,8 @@ import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CategoryEntity
 
-class CategoryGraphViewModel(
-    private val categoryGraphModel: CategoryGraphModel = CategoryGraphModel()
+class CategoryOverviewViewModel(
+    private val categoryGraphModel: CategoryOverviewModel = CategoryOverviewModel()
 ) : ViewModel() {
 
     val categories = mutableStateOf<List<CategoryEntity>>(emptyList())

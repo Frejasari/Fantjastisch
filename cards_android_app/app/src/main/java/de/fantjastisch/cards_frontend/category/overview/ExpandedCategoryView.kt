@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category.graph
+package de.fantjastisch.cards_frontend.category.overview
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,7 +28,7 @@ import org.openapitools.client.models.CategoryEntity
 fun ExpandedCategoryView(
     category: CategoryEntity
 ) {
-    val viewModel = viewModel { CategoryGraphViewModel() }
+    val viewModel = viewModel { CategoryOverviewViewModel() }
     if (category.subCategories.isEmpty()) {
         Row(
             modifier = Modifier

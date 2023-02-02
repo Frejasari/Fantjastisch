@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category.graph
+package de.fantjastisch.cards_frontend.category.overview
 
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
@@ -7,7 +7,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import java.util.*
 
-class CategoryGraphModel(
+class CategoryOverviewModel(
     private val categoryRepository: CategoryRepository = CategoryRepository(),
 ) {
     suspend fun getCategories() = categoryRepository.getPage()
