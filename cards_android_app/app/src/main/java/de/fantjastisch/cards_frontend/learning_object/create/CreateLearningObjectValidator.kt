@@ -4,6 +4,11 @@ import de.fantjastisch.cards_frontend.components.SingleSelectItem
 import de.fantjastisch.cards_frontend.util.mapError
 import org.openapitools.client.models.ErrorEntryEntity
 
+/**
+ * Validiert, die Eingabewerte, wenn ein neues Lernobjekt erstellt wird.
+ *
+ * @author Semjon Nirmann
+ */
 class CreateLearningObjectValidator {
 
     fun validate(

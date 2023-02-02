@@ -18,6 +18,20 @@ import kotlinx.coroutines.coroutineScope
 import org.openapitools.client.models.*
 import java.util.*
 
+/**
+ * Kapselt die Logik für das [CreateLearningObjectViewModel].
+ * Fungiert als Vermittler zwischen Repository und ViewModel.
+ *
+ * @property learningObjectRepository Repository Lernobjekte.
+ * @property learningSystemRepository Repository Lernsysteme.
+ * @property learningBoxRepository Repository Lernboxen.
+ * @property cardToLearningBoxRepository Repository Karten in Lernboxen.
+ * @property categoryRepository Repository Kategorien.
+ * @property cardRepository Repository Karten.
+ * @property validator Validator, zum validieren der Eingabewerte.
+ *
+ * @author Semjon Nirmann, Jessica Repty, Freja Sender
+ */
 class CreateLearningObjectModel(
     private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository(),
     private val learningSystemRepository: LearningSystemRepository = LearningSystemRepository(),

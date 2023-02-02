@@ -12,6 +12,13 @@ import kotlinx.coroutines.launch
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
+/**
+ * Stellt die Daten für die [LearningObjectView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property model Das zugehörige Model, welches die Logik kapselt.
+ *
+ * @author Semjon Nirmann, Jessica Repty, Freja Sender
+ */
 class CreateLearningObjectViewModel(
     private val model: CreateLearningObjectModel = CreateLearningObjectModel()
 //= extends ViewModel
