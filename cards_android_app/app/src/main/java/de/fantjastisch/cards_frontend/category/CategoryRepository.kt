@@ -11,6 +11,11 @@ import org.openapitools.client.models.UpdateCategoryEntity
 import retrofit2.awaitResponse
 import java.util.*
 
+/**
+ * Repository kommuniziert mit dem CardBackend.
+ *
+ * @author Semjon Nirmann, Freja Sender
+ */
 class CategoryRepository {
 
     private val service = client.createService(CategoryApi::class.java)

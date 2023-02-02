@@ -14,6 +14,10 @@ import java.util.*
  * Kapselt die Logik für das [UpdateCardViewModel].
  * Fungiert als Vermittler zwischen Repository und ViewModel.
  *
+ * @property id Id, der Karte die bearbeitet wird.
+ * @property cardRepository Karten Repository.
+ * @property categoryRepository Kategorie Repository.
+ *
  * @author Freja Sender, Tamari Bayer
  */
 class UpdateCardModel(

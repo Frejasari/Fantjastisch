@@ -8,7 +8,16 @@ import androidx.compose.ui.res.stringResource
 import de.fantjastisch.cards.R
 import org.openapitools.client.models.CategoryEntity
 
-
+/**
+ * Zeigt Nachfrage Delete Category in einem Dialog an.
+ *
+ * @param cat Zu löschende Kategorie
+ * @param isDeleteButtonEnabled Enabled den DeleteButton, nach einmaligem Auslösen
+ * @param onDismissClicked Callback, welches ausgelöst, wenn man den Dialog schließen möchte
+ * @param onDeleteClicked Funktion, mit der die Karte gelöscht wird
+ *
+ * @author Tamari Bayer, Semjon Nirmann
+ */
 @Composable
 fun DeleteCategoryDialog(
     cat: CategoryEntity,

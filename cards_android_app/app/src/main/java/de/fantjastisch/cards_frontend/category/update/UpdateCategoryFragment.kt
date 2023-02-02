@@ -9,6 +9,13 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 import java.util.*
 
+/**
+ * Zeigt den Screen um eine Kategorie zu bearbeiten
+ *
+ * @property id Id, der Kategorie, welche bearbeitet wird.
+ *
+ * @author Tamari Bayer, Freja Sender
+ */
 data class UpdateCategoryFragment(val id: UUID) : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
