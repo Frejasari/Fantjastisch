@@ -28,10 +28,6 @@ fun LearningModeSortDialog(
     val navigator = FantMainNavigator.current
     val viewModel = viewModel(key = learningBox.id.toString()) { LearningModeSortViewModel() }
 
-    val label =
-        remember { mutableStateOf(if (viewModel.sort.value) "Alphabetisch" else "Zufällig") }
-
-
     if (isOpen) {
         AlertDialog(
             modifier = Modifier.padding(16.dp),
@@ -50,16 +46,12 @@ fun LearningModeSortDialog(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = label.value, modifier = Modifier.weight(5f),
+                            text = viewModel.label.value, modifier = Modifier.weight(5f),
                             style = MaterialTheme.typography.titleMedium
                         )
                         Spacer(modifier = Modifier.padding(start = 8.dp))
                         Switch(
-                            checked = viewModel.sort.value, onCheckedChange = {
-                                viewModel.sort.value = !viewModel.sort.value
-                                label.value =
-                                    if (viewModel.sort.value) "Alphabetisch" else "Zufällig"
-                            },
+                            checked = viewModel.sort.value, onCheckedChange = viewModel::onSliderChange,
                             modifier = Modifier.weight(2f)
                         )
                     }
