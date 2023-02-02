@@ -11,6 +11,11 @@ import de.fantjastisch.cards_frontend.glossary.filter.GlossaryFilterView
 import org.openapitools.client.models.CategoryEntity
 import java.util.*
 
+/**
+ * TODO
+ *
+ * @author Freja Sender
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FantTopBar(

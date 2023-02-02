@@ -5,7 +5,13 @@ import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import java.util.*
 
-
+/**
+ * Repository, welches Karten in Lernboxen speichert.
+ *
+ * @property repository Das entsprechende InternalRepository.
+ *
+ * @author Semjon Nirmann, Jessica Repty, Freja Sender
+ */
 class CardToLearningBoxRepository(
     private val repository: InternalCardToLearningBoxRepository
     = InternalCardToLearningBoxRepository(AppDatabase.database.cardToLearningBoxDao())

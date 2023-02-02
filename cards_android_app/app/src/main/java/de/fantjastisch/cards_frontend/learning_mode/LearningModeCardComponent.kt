@@ -13,6 +13,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 
+/**
+ * View für eine Karteikarte im Lernmodus.
+ *
+ * @param content Frage bzw. Antwort der Karteikarte.
+ * @param modifier Modifier für die View.
+ * @param onClick Callback, wenn Klick auf Karte.
+ *
+ * @author Jessica Repty, Freja Sender, Semjon Nirmann
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LearningModeCardComponent(
