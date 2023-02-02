@@ -10,6 +10,13 @@ import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 
 
 //TODO Fehler anzeigen.
+/**
+ * Rendert die Seite "Kategorie erstellen".
+ *
+ * @param modifier Modifier für die Seite.
+ *
+ * @author Tamari Bayer, Semjon Nirmann
+ */
 @Composable
 fun CreateCategoryView(
     modifier: Modifier = Modifier

@@ -13,6 +13,8 @@ import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
  * Rendert die Seite "Karteikarte erstellen".
  *
  * @author Freja Sender, Tamari Bayer
+ *
+ * @param modifier Modifier für die Seite.
  */
 @Composable
 fun CreateCardView(

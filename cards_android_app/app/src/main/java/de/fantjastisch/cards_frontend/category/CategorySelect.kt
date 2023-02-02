@@ -12,6 +12,15 @@ import java.util.*
 
 data class CategorySelectItem(val label: String, val id: UUID, val isChecked: Boolean)
 
+/**
+ * Rendert eine Liste von Kategorien, die selektiert werden können.
+ *
+ * @param modifier Modifier für die Seite.
+ * @param categories Die Kategorien, die angezeigt werden sollen.
+ * @param onCategorySelected Callback, wenn eine Kategorie ausgewählt wurde.
+ *
+ * @author Freja Sender, Semjon Nirmann
+ */
 @Composable
 fun CategorySelect(
     modifier: Modifier = Modifier,
