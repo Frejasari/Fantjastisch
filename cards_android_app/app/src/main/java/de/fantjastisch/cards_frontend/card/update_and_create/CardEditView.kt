@@ -85,7 +85,7 @@ fun CardEditView(
                 expandedForLinks = false
                 expandedForCat = false
             },
-            headline = stringResource(id = R.string.allgemein_label),
+            headline = stringResource(id = R.string.allgemein_card_label),
         ) {
             OutlinedTextFieldWithErrors(
                 maxLines = 3,

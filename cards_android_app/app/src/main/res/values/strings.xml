@@ -100,6 +100,7 @@
   <string name="error_network">Ein Netzwerkfehler ist aufgetreten.</string>
   <string name="error_link_no_card">Bitte eine Ziel-Karte auswählen</string>
   <string name="error_unexpected">Ein unbekannter Fehler ist aufgetreten.</string>
-  <string name="allgemein_label">Allgemeine Kartendaten</string>
+  <string name="allgemein_card_label">Allgemeine Kartendaten</string>
+  <string name="allgemein_learningobject_label">Allgemeine Lernobjekt-Felder</string>
 
 </resources>

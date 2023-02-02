@@ -26,7 +26,7 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 18.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
 
             Row(

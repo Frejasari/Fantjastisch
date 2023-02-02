@@ -1,140 +1,118 @@
 package de.fantjastisch.cards_frontend.learning_object.create
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material3.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.category.CategorySelect
+import de.fantjastisch.cards_frontend.components.ExpandableRow
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import de.fantjastisch.cards_frontend.components.SingleSelect
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
-import java.util.*
 
 //TODO Fehler anzeigen.
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateLearningObjectView(
     modifier: Modifier = Modifier
 ) {
     val viewModel = viewModel { CreateLearningObjectViewModel() }
 
-    var expanded by remember { mutableStateOf(false) }
-    var expandedForCat by remember { mutableStateOf(false) }
-    val rotate by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f
-    )
-    val rotateForCat by animateFloatAsState(
-        targetValue = if (expandedForCat) 180f else 0f
-    )
+    var expanded by remember { mutableStateOf(true) }
+    var expandedForCards by remember { mutableStateOf(false) }
+    var expandedForCategories by remember { mutableStateOf(false) }
 
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+//            contentPadding = PaddingValues(all = 16.dp),
+    ) {
         // Componente die ihre Kinder untereinander anzeigt.
-        LazyColumn(
-            modifier = modifier
-                .background(MaterialTheme.colorScheme.background)
-                .weight(1f),
-            contentPadding = PaddingValues(all = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            item {
-                Column() {
-                    OutlinedTextFieldWithErrors(
-                        maxLines = 1,
-                        value = viewModel.learningObjectLabel.value,
-                        onValueChange = viewModel::setLearningObjectLabel,
-                        placeholder = stringResource(id = R.string.label_label),
-                        errors = viewModel.errors.value,
-                        field = "label"
-                    )
-                    SingleSelect(
-                        items = viewModel.learningSystems.value,
-                        selectedItem = viewModel.selectedSystem.value,
-                        onItemSelected = viewModel::onLearningSystemSelected,
-                        placeholder = stringResource(R.string.learning_system_label),
-                        field = "learningsystem",
-                        errors = viewModel.errors.value
-                    )
-                    Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.add_categories_label),
-                            modifier = Modifier.weight(4.25f),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        IconButton(
-                            modifier = Modifier
-                                .rotate(rotateForCat),
-                            onClick = {
-                                expandedForCat = !expandedForCat
-                                if (expanded) {
-                                    expanded = false
-                                }
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowDropDown,
-                                contentDescription = "drop-down arrow"
-                            )
-                        }
-                    }
-                    if (expandedForCat) {
-                        CategorySelect(
-                            categories = viewModel.allCategories.value,
-                            onCategorySelected = viewModel::onCategorySelected
-                        )
-                    }
-                }
+        Column(modifier = Modifier.weight(1f)) {
 
 
-                Divider(Modifier.padding(horizontal = 20.dp, vertical = 20.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.select_cards_label),
-                        modifier = Modifier.weight(4.25f),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    IconButton(
-                        modifier = Modifier
-                            .rotate(rotate),
-                        onClick = {
-                            expanded = !expanded
-                            if (expandedForCat) {
-                                expandedForCat = false
-                            }
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowDropDown,
-                            contentDescription = "drop-down arrow"
-                        )
-                    }
-                }
+            ExpandableRow(
+                expanded = expanded,
+                onClick = {
+                    expanded = !expanded
+                    expandedForCards = false
+                    expandedForCategories = false
+                },
+                headline = stringResource(id = R.string.allgemein_learningobject_label),
+            ) {
+                OutlinedTextFieldWithErrors(
+                    maxLines = 1,
+                    value = viewModel.learningObjectLabel.value,
+                    onValueChange = viewModel::setLearningObjectLabel,
+                    placeholder = stringResource(id = R.string.label_label),
+                    errors = viewModel.errors.value,
+                    field = "label"
+                )
+                SingleSelect(
+                    items = viewModel.learningSystems.value,
+                    selectedItem = viewModel.selectedSystem.value,
+                    onItemSelected = viewModel::onLearningSystemSelected,
+                    placeholder = stringResource(R.string.learning_system_label),
+                    field = "learningsystem",
+                    errors = viewModel.errors.value
+                )
             }
-            if (expanded) {
-                CardSelect(
-                    cards = viewModel.allCards.value,
-                    onCardSelected = viewModel::onCardSelected
+            Divider()
+
+            ExpandableRow(
+                expanded = expandedForCategories,
+                onClick = {
+                    expandedForCategories = !expandedForCategories
+                    expandedForCards = false
+                    expanded = false
+                },
+                headline = stringResource(id = R.string.add_categories_label),
+            ) {
+                CategorySelect(
+                    categories = viewModel.allCategories.value,
+                    onCategorySelected = viewModel::onCategorySelected
                 )
             }
 
+            Divider()
+
+            ExpandableRow(
+                expanded = expandedForCards,
+                onClick = {
+                    expandedForCards = !expandedForCards
+                    expandedForCategories = false
+                    expanded = false
+                },
+                headline = stringResource(id = R.string.select_cards_label),
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    CardSelect(
+                        cards = viewModel.allCards.value,
+                        onCardSelected = viewModel::onCardSelected
+                    )
+                }
+            }
         }
         FilledTonalButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),

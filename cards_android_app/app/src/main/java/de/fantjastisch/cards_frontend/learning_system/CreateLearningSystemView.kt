@@ -33,7 +33,7 @@ fun CreateLearningSystemView(
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
             .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         OutlinedTextFieldWithErrors(
             value = viewModel.learningSystemLabel.value,

@@ -1,10 +1,14 @@
 package de.fantjastisch.cards_frontend.category.update_and_create
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,8 +20,6 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import java.util.*
 
-
-<<<<<<< HEAD
 /**
  * Zeigt das Fenster um eine Kategorie zu bearbeiten.
  *
@@ -29,9 +31,6 @@ import java.util.*
  *
  * @author Tamari Bayer, Freja Sender
  */
-=======
->>>>>>> f889dfb (refactor create/edit card view)
-@SuppressLint("UnrememberedMutableState")
 @Composable
 fun CategoryEdit(
     modifier: Modifier = Modifier,
