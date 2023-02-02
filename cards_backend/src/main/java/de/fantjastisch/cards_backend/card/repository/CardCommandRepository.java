@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -34,8 +36,8 @@ public class CardCommandRepository {
      */
     @Transactional
     public void create(Card card) {
-        updateCategoriesOfCard(card);
-        updateLinksOfCard(card);
+        updateCategoriesOfCard(card.getId(), card.getCategories());
+        updateLinksOfCard(card.getId(), card.getLinks());
 
         String command = "INSERT INTO public.cards (id, question, answer, tag) VALUES (:id, :question, :answer, :tag);";
 
@@ -50,8 +52,8 @@ public class CardCommandRepository {
      */
     @Transactional
     public void update(final Card card) {
-        updateCategoriesOfCard(card);
-        updateLinksOfCard(card);
+        updateCategoriesOfCard(card.getId(), card.getCategories());
+        updateLinksOfCard(card.getId(), card.getLinks());
         String command = "UPDATE public.cards SET question = :question, answer = :answer, tag = :tag WHERE id = :id";
         namedParameterJdbcTemplate.update(command, toParameterSource(card));
     }
@@ -62,11 +64,13 @@ public class CardCommandRepository {
      * @param cardId Die Id der Karteikarte, welche aus der Datenbank gelöscht werden soll.
      */
     public void delete(final UUID cardId) {
+        updateCategoriesOfCard(cardId, Collections.emptySet());
+        updateLinksOfCard(cardId, Collections.emptySet());
         String command = "DELETE FROM public.cards WHERE id = :id";
         namedParameterJdbcTemplate.update(command, new MapSqlParameterSource().addValue("id", cardId));
     }
 
-    private SqlParameterSource toParameterSource(Card card) {
+    private SqlParameterSource toParameterSource(final Card card) {
         return new MapSqlParameterSource()
                 .addValue("id", card.getId())
                 .addValue("question", card.getQuestion())
@@ -76,31 +80,31 @@ public class CardCommandRepository {
     }
 
     @Transactional
-    private void updateLinksOfCard(Card card) {
+    private void updateLinksOfCard(final UUID cardId, final Set<Link> links) {
         String command = "DELETE FROM public.links WHERE source=:source;";
         namedParameterJdbcTemplate.update(command, new MapSqlParameterSource()
-                .addValue("source", card.getId())
+                .addValue("source", cardId)
         );
-        for (Link link : card.getLinks()) {
+        for (Link link : links) {
             String commandCat = "INSERT INTO public.links (label, source, target) VALUES (:label, :source, :target);";
             namedParameterJdbcTemplate.update(commandCat, new MapSqlParameterSource()
                     .addValue("label", link.getLabel())
-                    .addValue("source", card.getId())
+                    .addValue("source", cardId)
                     .addValue("target", link.getTarget()));
         }
     }
 
     @Transactional
-    private void updateCategoriesOfCard(Card card) {
+    private void updateCategoriesOfCard(final UUID cardId, final Set<UUID> categories) {
         namedParameterJdbcTemplate.update("delete from public.categories_to_cards cc where cc.card_id = :card_id",
                 new MapSqlParameterSource()
-                        .addValue("card_id", card.getId())
+                        .addValue("card_id", cardId)
         );
 
-        for (UUID categoryId : card.getCategories()) {
+        for (UUID categoryId : categories) {
             String commandCat = "INSERT INTO public.categories_to_cards (category_ID, card_ID) VALUES (:category_id, :card_id)";
             namedParameterJdbcTemplate.update(commandCat, new MapSqlParameterSource()
-                    .addValue("card_id", card.getId())
+                    .addValue("card_id", cardId)
                     .addValue("category_id", categoryId));
         }
     }
