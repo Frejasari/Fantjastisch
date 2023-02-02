@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.util.LoadingIcon
 
 
 @Composable
@@ -39,7 +40,9 @@ fun MoveCardsToBoxView(
         )
         item {
             Column {
-                if (viewModel.cards.value.isEmpty()) {
+                if (viewModel.isLoading.value) {
+                    LoadingIcon()
+                } else if (viewModel.cards.value.isEmpty()) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
