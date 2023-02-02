@@ -13,10 +13,10 @@
   <string name="links_label">Links</string>
 
   <!-- Floating Add Button -->
-  <string name="menu_create_card">New Card</string>
-  <string name="menu_create_category">New Category</string>
-  <string name="menu_create_learningsystem">New Learning System</string>
-  <string name="menu_create_learningobject">New Learning Object</string>
+  <string name="menu_create_card">New card</string>
+  <string name="menu_create_category">New category</string>
+  <string name="menu_create_learningsystem">New learning system</string>
+  <string name="menu_create_learningobject">New learning object</string>
 
   <!-- Common Options -->
   <string name="save_button_text">Save</string>
