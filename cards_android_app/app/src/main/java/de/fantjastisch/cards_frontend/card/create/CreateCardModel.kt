@@ -14,6 +14,9 @@ import org.openapitools.client.models.LinkEntity
  * Kapselt die Logik für das [CreateCardViewModel].
  * Fungiert als Vermittler zwischen Repository und ViewModel.
  *
+ * @property cardRepository Karten Repository
+ * @property categoryRepository Kategorie Repository
+ *
  * @author Freja Sender, Tamari Bayer
  */
 class CreateCardModel(

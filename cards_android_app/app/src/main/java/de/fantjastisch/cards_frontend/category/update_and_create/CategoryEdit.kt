@@ -18,7 +18,17 @@ import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import java.util.*
 
 
-
+/**
+ * Zeigt das Fenster um eine Kategorie zu bearbeiten.
+ *
+ * @param modifier Modifier für die Seite.
+ * @param label Aktuelles Label der Kategorie.
+ * @param categories Aktuelle Unterkategorien der Kategorie.
+ * @param onCategorySelected Callback, wenn eine Kategorie ausgewählt wurde.
+ * @param onUpdateCategoryClicked Funktion, mit der man die Kategorie bearbeitet.
+ *
+ * @author Tamari Bayer, Freja Sender
+ */
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun CategoryEdit(

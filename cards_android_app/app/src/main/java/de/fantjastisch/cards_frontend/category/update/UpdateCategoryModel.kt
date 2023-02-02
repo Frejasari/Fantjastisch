@@ -2,6 +2,7 @@ package de.fantjastisch.cards_frontend.category.update
 
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
+import de.fantjastisch.cards_frontend.card.update.UpdateCardViewModel
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
@@ -9,6 +10,15 @@ import kotlinx.coroutines.*
 import org.openapitools.client.models.*
 import java.util.*
 
+/**
+ * Kapselt die Logik für das [UpdateCardViewModel].
+ * Fungiert als Vermittler zwischen Repository und ViewModel.
+ *
+ * @property id Id, der Kategorie, welche bearbeitet wird.
+ * @property categoryRepository Kategorie Repository
+ *
+ * @author Tamari Bayer, Freja Sender
+ */
 class UpdateCategoryModel(
     private val id: UUID,
     private val categoryRepository: CategoryRepository = CategoryRepository()

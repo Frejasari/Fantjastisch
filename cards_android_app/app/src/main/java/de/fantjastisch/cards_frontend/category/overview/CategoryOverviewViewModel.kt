@@ -3,10 +3,18 @@ package de.fantjastisch.cards_frontend.category.overview
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.fantjastisch.cards_frontend.card.update.UpdateCardView
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CategoryEntity
 
+/**
+ * Stellt die Daten für die [CategoryOverviewView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property categoryGraphModel Das zugehörige Model, welches die Logik kapselt.
+ *
+ * @author Tamari Bayer, Freja Sender
+ */
 class CategoryOverviewViewModel(
     private val categoryGraphModel: CategoryOverviewModel = CategoryOverviewModel()
 ) : ViewModel() {

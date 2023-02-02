@@ -8,6 +8,11 @@ import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 
+/**
+ * Zeigt den Screen um eine Kategorie zu erstellen
+ *
+ * @author Tamari Bayer, Freja Sender
+*/
 class CreateCategoryFragment : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable

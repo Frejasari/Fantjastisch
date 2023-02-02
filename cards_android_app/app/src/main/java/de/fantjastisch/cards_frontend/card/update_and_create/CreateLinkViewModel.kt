@@ -3,10 +3,16 @@ package de.fantjastisch.cards_frontend.card.update_and_create
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.card.CardSelectItem
+import de.fantjastisch.cards_frontend.card.update.UpdateCardView
 import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 
+/**
+ * Stellt die Daten für die [] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @author Freja Sender
+ */
 open class CreateLinkViewModel : ViewModel() {
 
     val linkName = mutableStateOf("")
