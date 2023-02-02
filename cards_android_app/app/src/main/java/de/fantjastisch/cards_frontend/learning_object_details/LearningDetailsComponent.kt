@@ -2,6 +2,8 @@ package de.fantjastisch.cards_frontend.learning_object_details
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -11,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -94,8 +95,9 @@ fun LearningDetailsComponent(
                         text = String.format("Box-Nr. %d", (learningBox.boxNumber + 1))
                     )
                     Icon(
-                        painter = painterResource(id = R.drawable.inventory_2),
+                        Icons.Outlined.Inventory2,
                         contentDescription = "Box",
+//                        modifier = Modifier.size(24.dp)
                     )
                 }
             }

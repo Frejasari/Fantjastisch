@@ -20,8 +20,13 @@ fun CardContextMenu(
     val navigator = FantMainNavigator.current
     val isMenuOpen = remember { mutableStateOf(false) }
 
-    IconButton(onClick = { isMenuOpen.value = !isMenuOpen.value }) {
-        Icon(Icons.Outlined.MoreVert, contentDescription = "context actions")
+    IconButton(
+        onClick = { isMenuOpen.value = !isMenuOpen.value }
+    ) {
+        Icon(
+            Icons.Outlined.MoreVert,
+            contentDescription = "context actions"
+        )
 
         DropdownMenu(
             expanded = isMenuOpen.value,

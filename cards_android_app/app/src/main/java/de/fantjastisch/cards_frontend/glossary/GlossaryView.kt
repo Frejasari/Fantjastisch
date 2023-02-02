@@ -1,27 +1,28 @@
 package de.fantjastisch.cards_frontend.glossary
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
-import de.fantjastisch.cards_frontend.components.ExpandableCard
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
-import de.fantjastisch.cards_frontend.glossary.card.CollapsedCardView
-import de.fantjastisch.cards_frontend.glossary.card.ExpandedCardView
+import de.fantjastisch.cards_frontend.glossary.card.GlossaryCardView
 import kotlinx.coroutines.launch
-import org.openapitools.client.models.CardEntity
-import java.util.*
 
 /**
  * Rendert die Glossar Seite
+ *
+ * @param modifier Modifier für die Seite.
  *
  * @author Tamari Bayer, Freja Sender, Jessica Repty, Semjon Nirmann
  * **/
@@ -73,34 +74,6 @@ fun GlossaryView(
                     // Animate scroll to the 10th item
                     listState.animateScrollToItem(index = index)
                 }
-            }
-        }
-    }
-}
-
-/**
- * Rendert die Glossar Seite
- *
- * @author Tamari Bayer, Freja Sender, Jessica Repty, Semjon Nirmann
- * **/
-@SuppressLint("UnrememberedMutableState")
-@Composable
-private fun GlossaryCardView(
-    card: CardEntity,
-    onItemExpanded: () -> Unit
-) {
-
-    var expanded by remember { mutableStateOf(false) }
-    ExpandableCard(onClick = {
-        expanded = !expanded
-        onItemExpanded()
-    }) {
-        Column {
-            if (!expanded) {
-                CollapsedCardView(card)
-
-            } else {
-                ExpandedCardView(card)
             }
         }
     }
