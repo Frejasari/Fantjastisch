@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.learning_object
+package de.fantjastisch.cards_frontend.learning_object.create
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.learning_object
+package de.fantjastisch.cards_frontend.learning_object.create
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,6 +8,7 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.infrastructure.fold
+import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import kotlinx.coroutines.launch
 import java.util.*
 
