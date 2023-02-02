@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class DeleteLearningObjectViewModel(
-    private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository(),
-    private val learningObjectId: UUID
+    private val learningObjectId: UUID,
+    private val model: DeleteLearningObjectModel = DeleteLearningObjectModel()
 ) : ViewModel() {
 
     val error = mutableStateOf<String?>(null)
@@ -20,8 +20,7 @@ class DeleteLearningObjectViewModel(
     fun onDeleteClicked() {
         error.value = null
         viewModelScope.launch {
-            learningObjectRepository.delete(
-                id = learningObjectId).fold(
+            model.deleteLearningObject(learningObjectId = learningObjectId).fold(
                 onSuccess = {
                     isFinished.value = true
                 },
