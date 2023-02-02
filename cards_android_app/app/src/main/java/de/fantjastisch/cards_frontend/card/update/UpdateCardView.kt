@@ -10,8 +10,12 @@ import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
-
 //TODO Fehler anzeigen.
+/**
+ * Rendert die Seite "Karteikarte bearbeiten".
+ *
+ * @author Freja Sender, Tamari Bayer
+ */
 @Composable
 fun UpdateCardView(
     modifier: Modifier = Modifier,

@@ -9,10 +9,13 @@ import org.openapitools.client.models.CardEntity
 import java.util.*
 
 /**
- * Zeigt eine ausgeklappte Karte im Glossar an.
+ * Stellt die Daten für die [CardContentView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property id Die Id von der ausgeklappten Karte.
+ * @property cardContentModel Das zugehörige Model, welches die Logik kapselt.
  *
  * @author Tamari Bayer, Freja Sender, Jessica Repty, Semjon Nirmann
- * **/
+ */
 class CardContentViewModel(
     private val id: UUID,
     private val cardContentModel: CardContentModel = CardContentModel(id = id)
