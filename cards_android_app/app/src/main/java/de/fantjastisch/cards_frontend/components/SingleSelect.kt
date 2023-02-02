@@ -16,8 +16,22 @@ import androidx.compose.ui.unit.toSize
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
+/**
+ * Hält die auswählbaren Elemente, für SingleSelect.
+ *
+ * @property label Label, des Elements.
+ * @property id Id, des Elements.
+ */
 data class SingleSelectItem(val label: String, val id: UUID)
 
+/**
+ * View für ein Drop-Down-Menü und Auswählen eines Elementes.
+ *
+ * @param items Alle auswählbaren Elemente.
+ * @param onItemSelected Callback, wenn Click auf ein Element.
+ * @param selectedItem Ausgewähltes Element.
+ * @param placeholder Label, welches angezeigt wird, wenn noch kein Element ausgewählt.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SingleSelect(

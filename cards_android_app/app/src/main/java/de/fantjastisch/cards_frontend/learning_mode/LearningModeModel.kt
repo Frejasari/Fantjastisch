@@ -12,6 +12,16 @@ import kotlinx.coroutines.coroutineScope
 import org.openapitools.client.models.CardEntity
 import java.util.*
 
+/**
+ * Kapselt die Logik für das [LearningModeViewModel].
+ * Fungiert als Vermittler zwischen Repository und ViewModel.
+ *
+ * @property cardToLearningBoxRepository Repository Karten in Lernboxen.
+ * @property learningBoxRepository Repository Lernboxen.
+ * @property cardRepository Repository Karten.
+ *
+ * @author Semjon Nirmann, Jessica Repty
+ */
 class LearningModeModel(
     private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(),
     private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(),

@@ -9,6 +9,16 @@ import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
 
+/**
+ * Stellt die Daten für die [LearningModeView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property learningObjectId Id, des ausgewählten Lernobjektes.
+ * @property learningBoxId Id, der ausgewählten Lernbox.
+ * @property sort True, wenn Karten alphabetisch sortiert.
+ * @property model Das zugehörige Model, welches die Logik kapselt.
+ *
+ * @author Jessica Repty, Freja Sender, Semjon Nirmann
+ */
 class LearningModeViewModel(
     private val learningObjectId: UUID,
     private val learningBoxId: UUID,

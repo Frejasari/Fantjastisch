@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
 
+
 object CardsFilters {
     val filters = MutableStateFlow(
         CardFilters(
@@ -22,6 +23,14 @@ object CardsFilters {
     )
 }
 
+/**
+ * Hält die Informationen über gewünschtes Filtern.
+ *
+ * @property search Zu suchender Begriff.
+ * @property tag Zu suchendes Schlagwort.
+ * @property categories Zu filternde Kategorien.
+ * @property sort Wenn true alphabetisch sortiert.
+ */
 data class CardFilters(
     val search: String,
     val tag: String,
@@ -29,6 +38,13 @@ data class CardFilters(
     val sort: Boolean
 )
 
+/**
+ * Stellt die Daten für die [GlossaryView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property glossaryModel Das zugehörige Model, welches die Logik kapselt.
+ *
+ * @author Freja Sender, Tamari Bayer, Jessica Repty, Semjon Nirmann
+ */
 class GlossaryViewModel(
     private val glossaryModel: GlossaryModel = GlossaryModel()
 ) : ViewModel() {

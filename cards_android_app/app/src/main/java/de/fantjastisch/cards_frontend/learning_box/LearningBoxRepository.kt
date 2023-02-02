@@ -5,6 +5,13 @@ import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
+/**
+ * Repository, welches Lernboxen speichert.
+ *
+ * @property repository Das entsprechende InternalRepository.
+ *
+ * @author Semjon Nirmann, Jessica Repty, Freja Sender
+ */
 class LearningBoxRepository(
     private val repository: InternalLearningBoxRepository = InternalLearningBoxRepository(
         AppDatabase.database.learningBoxDao()
