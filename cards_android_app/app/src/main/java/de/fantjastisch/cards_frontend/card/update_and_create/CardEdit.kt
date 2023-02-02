@@ -1,8 +1,6 @@
 package de.fantjastisch.cards_frontend.card.update_and_create
 
 import android.annotation.SuppressLint
-import android.graphics.Color.RED
-import android.provider.CalendarContract
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -24,15 +22,13 @@ import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.card.create.LinkCardComponent
+import de.fantjastisch.cards_frontend.card.LinkCardComponent
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import org.openapitools.client.models.LinkEntity
 import java.util.*
-
-
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -100,7 +96,7 @@ fun CardEdit(
             modifier = Modifier.weight(1f)
         ) {
             Divider()
-            if(noCategories) {
+            if (noCategories) {
                 expandedForCat = true
                 var categoriesError by remember { mutableStateOf(noCategories) }
                 if (categoriesError) {

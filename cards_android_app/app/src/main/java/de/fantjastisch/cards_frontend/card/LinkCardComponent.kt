@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card.create;
+package de.fantjastisch.cards_frontend.card;
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -27,7 +27,7 @@ fun LinkCardComponent(
         label = {
             Text(
                 modifier = Modifier,
-                text = link.label!!
+                text = link.label
             )
         },
         trailingIcon = {

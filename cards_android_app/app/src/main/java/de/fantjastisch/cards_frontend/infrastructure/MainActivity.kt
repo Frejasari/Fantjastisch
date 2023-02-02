@@ -22,7 +22,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.FadeTransition
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.category.cat_glossary.CatGlossaryView
+import de.fantjastisch.cards_frontend.category.graph.CategoryGraphView
 import de.fantjastisch.cards_frontend.glossary.GlossaryView
 import de.fantjastisch.cards_frontend.learning_overview.LearningOverviewScreen
 import java.util.*
@@ -106,7 +106,7 @@ object CategoriesTab : Tab {
     @Composable
     override fun Content() {
         Scaffold(topBar = { FantTopBar() }) {
-            CatGlossaryView(
+            CategoryGraphView(
                 modifier = Modifier.padding(it)
             )
         }

@@ -1,7 +1,6 @@
 package de.fantjastisch.cards_frontend.glossary
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -13,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
+import de.fantjastisch.cards_frontend.components.ExpandableCard
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
 import de.fantjastisch.cards_frontend.glossary.card.CollapsedCardView
 import de.fantjastisch.cards_frontend.glossary.card.ExpandedCardView
@@ -89,23 +89,13 @@ private fun GlossaryCardView(
     card: CardEntity,
     onItemExpanded: () -> Unit
 ) {
+
     var expanded by remember { mutableStateOf(false) }
-
-    Surface(
-        modifier = Modifier.clickable(
-            onClick = {
-                expanded = !expanded
-                onItemExpanded()
-            }
-        ),
-        shadowElevation = 6.dp,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp, horizontal = 16.dp),
-
-            ) {
+    ExpandableCard(onClick = {
+        expanded = !expanded
+        onItemExpanded()
+    }) {
+        Column {
             if (!expanded) {
                 CollapsedCardView(card)
 
@@ -115,4 +105,3 @@ private fun GlossaryCardView(
         }
     }
 }
-

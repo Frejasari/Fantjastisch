@@ -12,7 +12,6 @@ import de.fantjastisch.cards_frontend.card.update.UpdateCardFragment
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import java.util.*
 
-
 @Composable
 fun CardContextMenu(
     cardId: UUID,

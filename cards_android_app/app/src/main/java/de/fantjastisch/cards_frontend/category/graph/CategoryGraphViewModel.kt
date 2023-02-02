@@ -1,32 +1,28 @@
-package de.fantjastisch.cards_frontend.category.cat_glossary
+package de.fantjastisch.cards_frontend.category.graph
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
-import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CategoryEntity
 
-class CatGlossaryViewModel(
-    private val catGlossaryModel: CatGlossaryModel = CatGlossaryModel()
+class CategoryGraphViewModel(
+    private val categoryGraphModel: CategoryGraphModel = CategoryGraphModel()
 ) : ViewModel() {
 
     val categories = mutableStateOf<List<CategoryEntity>>(emptyList())
     val error = mutableStateOf<String?>(null)
     val currentDeleteDialog = mutableStateOf<DeletionProgress?>(null)
 
-
     fun onPageLoaded() {
         viewModelScope.launch {
-            when (val result = catGlossaryModel.getCategories()) {
+            when (val result = categoryGraphModel.getCategories()) {
                 is RepoResult.Success -> {
                     categories.value = result.result
                 }
                 is RepoResult.Error -> Unit
                 is RepoResult.ServerError -> Unit
-
             }
         }
     }
@@ -40,7 +36,7 @@ class CatGlossaryViewModel(
         currentDeleteDialog.value = DeletionProgress.Deleting(cat)
         error.value = null
         viewModelScope.launch {
-            val result = catGlossaryModel.deleteCategory(
+            val result = categoryGraphModel.deleteCategory(
                 id = cat.id
             )
             when (result) {

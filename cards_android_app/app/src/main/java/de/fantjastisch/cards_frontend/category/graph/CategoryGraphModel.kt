@@ -1,18 +1,15 @@
-package de.fantjastisch.cards_frontend.category.cat_glossary
+package de.fantjastisch.cards_frontend.category.graph
 
-import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import java.util.*
 
-class CatGlossaryModel(
+class CategoryGraphModel(
     private val categoryRepository: CategoryRepository = CategoryRepository(),
 ) {
-
     suspend fun getCategories() = categoryRepository.getPage()
 
     suspend fun deleteCategory(id: UUID): RepoResult<Unit> = coroutineScope {

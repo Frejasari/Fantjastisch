@@ -1,17 +1,12 @@
 package de.fantjastisch.cards_frontend.card.create
 
 
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.card.update_and_create.CardEdit
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
-
 
 //TODO Fehler anzeigen.
 @Composable
