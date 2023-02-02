@@ -20,11 +20,12 @@ import org.openapitools.client.models.CardEntity
 
 /**
  * Zeigt eine ausgeklappte Karte im Glossar an.
+ * @param card: Die Angezeigte Karte
  *
  * @author Tamari Bayer, Freja Sender, Jessica Repty, Semjon Nirmann
  * **/
 @Composable
-fun ExpandedCard(
+fun ExpandedCardView(
     card: CardEntity
 ) {
     val viewModel = viewModel { GlossaryViewModel() }

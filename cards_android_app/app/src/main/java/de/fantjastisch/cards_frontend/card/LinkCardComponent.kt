@@ -9,7 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import de.fantjastisch.cards_frontend.card.content_overview.CardContentDialog
+import de.fantjastisch.cards_frontend.card.content_overview.CardContentDialogView
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 
@@ -44,7 +44,7 @@ fun LinkCardComponent(
         }
     )
 
-    CardContentDialog(
+    CardContentDialogView(
         id = link.target!!,
         isOpen = dialogOpen.value,
         setIsOpen = { dialogOpen.value = it }

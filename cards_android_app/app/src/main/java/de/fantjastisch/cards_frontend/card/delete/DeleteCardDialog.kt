@@ -8,7 +8,6 @@ import androidx.compose.ui.res.stringResource
 import de.fantjastisch.cards.R
 import org.openapitools.client.models.CardEntity
 
-
 @Composable
 fun DeleteCardDialog(
     card: CardEntity,

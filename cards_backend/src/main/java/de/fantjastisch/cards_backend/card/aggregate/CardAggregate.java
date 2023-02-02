@@ -74,7 +74,7 @@ public class CardAggregate {
                 .build();
         cardCommandRepository.update(card);
     }
-    
+
     /**
      * Diese Funktion validiert und vermittelt eine Anfrage zum Lesen einer Karteikarte.
      *

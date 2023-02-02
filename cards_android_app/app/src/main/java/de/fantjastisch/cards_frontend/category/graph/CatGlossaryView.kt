@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category.cat_glossary
+package de.fantjastisch.cards_frontend.category.graph
 
 import android.annotation.SuppressLint
 import android.widget.Toast
@@ -35,7 +35,7 @@ import org.openapitools.client.models.CategoryEntity
 
 @Composable
 @Preview
-fun CatGlossaryView(modifier: Modifier = Modifier) {
+fun CategoryGraphView(modifier: Modifier = Modifier) {
 
     val viewModel = viewModel { CatGlossaryViewModel() }
 

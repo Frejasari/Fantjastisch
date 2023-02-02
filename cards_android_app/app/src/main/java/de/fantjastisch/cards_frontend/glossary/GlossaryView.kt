@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
-import de.fantjastisch.cards_frontend.glossary.card.ContractedCard
-import de.fantjastisch.cards_frontend.glossary.card.ExpandedCard
+import de.fantjastisch.cards_frontend.glossary.card.CollapsedCardView
+import de.fantjastisch.cards_frontend.glossary.card.ExpandedCardView
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
@@ -107,10 +107,10 @@ private fun GlossaryCardView(
 
             ) {
             if (!expanded) {
-                ContractedCard(card)
+                CollapsedCardView(card)
 
             } else {
-                ExpandedCard(card)
+                ExpandedCardView(card)
             }
         }
     }
