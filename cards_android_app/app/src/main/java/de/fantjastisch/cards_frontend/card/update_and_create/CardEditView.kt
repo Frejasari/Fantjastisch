@@ -52,7 +52,7 @@ import java.util.*
  */
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun CardEdit(
+fun CardEditView(
     modifier: Modifier = Modifier,
     question: TextFieldState,
     answer: TextFieldState,
@@ -239,7 +239,7 @@ fun CardEdit(
                     errors = linkName.errors,
                     onValueChange = linkName.onValueChange,
                     placeholder = stringResource(id = R.string.create_link_name),
-                    field = "name"
+                    field = "linkName"
                 )
                 LazyColumn(
                     modifier = Modifier

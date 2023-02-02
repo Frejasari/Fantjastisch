@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
-import de.fantjastisch.cards_frontend.card.update_and_create.CardEdit
+import de.fantjastisch.cards_frontend.card.update_and_create.CardEditView
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 
 //TODO Fehler anzeigen.
@@ -21,7 +21,7 @@ fun CreateCardView(
 
     val viewModel = viewModel { CreateCardViewModel() }
 
-    CardEdit(
+    CardEditView(
         modifier = modifier,
         question = TextFieldState(
             value = viewModel.cardQuestion.value,

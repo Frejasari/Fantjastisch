@@ -3,9 +3,7 @@ package de.fantjastisch.cards_frontend.card.update
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
-import de.fantjastisch.cards_frontend.card.update_and_create.CardEdit
-import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
+import de.fantjastisch.cards_frontend.card.update_and_create.CardEditView
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
@@ -24,9 +22,8 @@ fun UpdateCardView(
 
     val viewModel = viewModel { UpdateCardViewModel(id = id) }
 
-
     // Componente die ihre Kinder untereinander anzeigt.
-    CardEdit(
+    CardEditView(
         modifier = modifier,
         question = TextFieldState(
             value = viewModel.cardQuestion.value,
