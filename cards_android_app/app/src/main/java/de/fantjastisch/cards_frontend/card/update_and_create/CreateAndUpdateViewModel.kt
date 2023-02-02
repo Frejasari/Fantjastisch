@@ -3,19 +3,20 @@ package de.fantjastisch.cards_frontend.card.update_and_create
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.infrastructure.ErrorTexts
+import de.fantjastisch.cards_frontend.infrastructure.ErrorsEnum
 import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
 import java.util.*
+
 /**
- * Stellt die Daten für die [] bereit und nimmt seine Anfragen entgegen.
- *TODO
+ * Parent Class, die gemeinsame Daten  & Funktionen zum Erzeugen und Bearbeiten von Karten bereitstellt
+ *
  * @author Freja Sender
  */
 open class CreateAndUpdateViewModel : ViewModel() {
 
     val linkLabel = mutableStateOf("")
-    val error = mutableStateOf(ErrorTexts.NO_ERROR)
+    val error = mutableStateOf(ErrorsEnum.NO_ERROR)
     val cards = mutableStateOf(listOf<CardSelectItem>())
     val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
 
@@ -48,7 +49,7 @@ open class CreateAndUpdateViewModel : ViewModel() {
     }
 
     fun onToastShown() {
-        error.value = ErrorTexts.NO_ERROR
+        error.value = ErrorsEnum.NO_ERROR
     }
 
     fun onCreateLinkClicked() {
@@ -64,7 +65,7 @@ open class CreateAndUpdateViewModel : ViewModel() {
                         field = "linkName"
                     )
         } else if (target == null) {
-            error.value = ErrorTexts.LINK_ERROR
+            error.value = ErrorsEnum.LINK_ERROR
         } else {
             cardLinks.value = cardLinks.value + LinkEntity(
                 label = linkLabel.value,

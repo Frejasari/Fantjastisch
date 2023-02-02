@@ -1,17 +1,14 @@
 package de.fantjastisch.cards_frontend.card.update_and_create
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
@@ -19,7 +16,8 @@ import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.ExpandableRow
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
-import de.fantjastisch.cards_frontend.infrastructure.ErrorTexts
+import de.fantjastisch.cards_frontend.components.SaveLayout
+import de.fantjastisch.cards_frontend.infrastructure.ErrorsEnum
 import de.fantjastisch.cards_frontend.infrastructure.ShowErrorOnSignalEffect
 import org.openapitools.client.models.LinkEntity
 import java.util.*
@@ -61,7 +59,7 @@ fun CardEditView(
     onCardSelected: (UUID) -> Unit,
     onCreateLinkClicked: () -> Unit,
     onDeleteLinkClicked: (LinkEntity) -> Unit,
-    toast: ErrorTexts,
+    toast: ErrorsEnum,
     onToastShown: () -> Unit
 ) {
 
@@ -71,12 +69,9 @@ fun CardEditView(
 
     ShowErrorOnSignalEffect(toast, onToastShown)
 
-    Column(
+    SaveLayout(
+        onSaveClicked = onUpdateCardClicked,
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         ExpandableRow(
             expanded = expanded,
@@ -87,30 +82,7 @@ fun CardEditView(
             },
             headline = stringResource(id = R.string.allgemein_card_label),
         ) {
-            OutlinedTextFieldWithErrors(
-                maxLines = 3,
-                value = question.value,
-                errors = question.errors,
-                onValueChange = question.onValueChange,
-                placeholder = stringResource(id = R.string.question_label),
-                field = "question"
-            )
-            OutlinedTextFieldWithErrors(
-                maxLines = 5,
-                value = answer.value,
-                errors = answer.errors,
-                onValueChange = answer.onValueChange,
-                placeholder = stringResource(id = R.string.answer_label),
-                field = "answer"
-            )
-            OutlinedTextFieldWithErrors(
-                maxLines = 1,
-                value = tag.value,
-                errors = tag.errors,
-                onValueChange = tag.onValueChange,
-                placeholder = stringResource(id = R.string.tag_label),
-                field = "tag"
-            )
+            GeneralCardEditFieldsView(question, answer, tag)
         }
 
         Divider()
@@ -163,12 +135,37 @@ fun CardEditView(
                 }
             })
         { LinkCreate(linkName, cards, onCardSelected) }
-
-        FilledTonalButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = onUpdateCardClicked
-        ) {
-            Text(text = stringResource(R.string.save_button_text))
-        }
     }
+}
+
+@Composable
+private fun GeneralCardEditFieldsView(
+    question: TextFieldState,
+    answer: TextFieldState,
+    tag: TextFieldState
+) {
+    OutlinedTextFieldWithErrors(
+        maxLines = 3,
+        value = question.value,
+        errors = question.errors,
+        onValueChange = question.onValueChange,
+        placeholder = stringResource(id = R.string.question_label),
+        field = "question"
+    )
+    OutlinedTextFieldWithErrors(
+        maxLines = 5,
+        value = answer.value,
+        errors = answer.errors,
+        onValueChange = answer.onValueChange,
+        placeholder = stringResource(id = R.string.answer_label),
+        field = "answer"
+    )
+    OutlinedTextFieldWithErrors(
+        maxLines = 1,
+        value = tag.value,
+        errors = tag.errors,
+        onValueChange = tag.onValueChange,
+        placeholder = stringResource(id = R.string.tag_label),
+        field = "tag"
+    )
 }

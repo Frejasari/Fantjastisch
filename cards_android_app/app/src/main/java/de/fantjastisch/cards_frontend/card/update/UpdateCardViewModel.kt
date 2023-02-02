@@ -3,7 +3,7 @@ package de.fantjastisch.cards_frontend.card.update
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.CreateAndUpdateViewModel
-import de.fantjastisch.cards_frontend.infrastructure.ErrorTexts
+import de.fantjastisch.cards_frontend.infrastructure.ErrorsEnum
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
@@ -66,13 +66,13 @@ class UpdateCardViewModel(
                     onValidationError = { errorResult ->
                         errors.value = errorResult
                     },
-                    onUnexpectedError = { error.value = ErrorTexts.NETWORK },
+                    onUnexpectedError = { error.value = ErrorsEnum.NETWORK },
                 )
 
             val resultCards = cardModel.getCards()
 
             if (resultCards == null) {
-                error.value = ErrorTexts.NETWORK
+                error.value = ErrorsEnum.NETWORK
             } else {
                 errors.value = emptyList()
                 cards.value = resultCards
@@ -96,7 +96,7 @@ class UpdateCardViewModel(
                 ).fold(
                     onSuccess = { isFinished.value = true },
                     onValidationError = { errors.value = it },
-                    onUnexpectedError = { error.value = ErrorTexts.UNEXPECTED }
+                    onUnexpectedError = { error.value = ErrorsEnum.UNEXPECTED }
                 )
             }
         }

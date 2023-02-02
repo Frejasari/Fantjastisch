@@ -2,8 +2,10 @@ package de.fantjastisch.cards_frontend.category.overview
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,7 +19,6 @@ import de.fantjastisch.cards_frontend.category.CategoryContextMenu
 import de.fantjastisch.cards_frontend.components.ExpandableCard
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import org.openapitools.client.models.CategoryEntity
-
 
 /**
  * Rendert eine Kategorie Karte
@@ -40,12 +41,13 @@ fun CategoryView(
     ExpandableCard(onClick = { expanded = !expanded }) {
         Column {
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    modifier = Modifier.weight(5f),
                     text = category.label,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Medium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

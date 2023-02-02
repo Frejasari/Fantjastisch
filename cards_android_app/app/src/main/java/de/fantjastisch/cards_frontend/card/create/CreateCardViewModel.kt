@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.card.update_and_create.CreateAndUpdateViewModel
-import de.fantjastisch.cards_frontend.infrastructure.ErrorTexts
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.infrastructure.ErrorsEnum
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.launch
 import java.util.*
@@ -32,7 +32,6 @@ class CreateCardViewModel(
     val cardAnswer = mutableStateOf("")
     val cardTag = mutableStateOf("")
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
-    val noCategories = mutableStateOf(false)
 
     init {
         viewModelScope.launch {
@@ -41,7 +40,7 @@ class CreateCardViewModel(
             val resultCards = createCardModel.getCards()
 
             if (result == null || resultCards == null) {
-                error.value = ErrorTexts.NETWORK
+                error.value = ErrorsEnum.NETWORK
             } else {
                 errors.value = emptyList()
                 cardCategories.value = result
@@ -70,16 +69,13 @@ class CreateCardViewModel(
                 it
             }
         }
-        noCategories.value = false
     }
 
     fun onCreateCardClicked() {
         errors.value = emptyList()
 
         // check for categories -> if no then wait till yes
-        if (cardCategories.value.none { cat -> cat.isChecked }) {
-            noCategories.value = true
-        } else {
+        if (!cardCategories.value.none { cat -> cat.isChecked }) {
             viewModelScope.launch {
                 val result = createCardModel.createCard(
                     question = cardQuestion.value,
@@ -92,7 +88,7 @@ class CreateCardViewModel(
                 when (result) {
                     is RepoResult.Success -> isFinished.value = true
                     is RepoResult.Error -> errors.value = result.errors
-                    is RepoResult.ServerError -> error.value = ErrorTexts.NETWORK
+                    is RepoResult.ServerError -> error.value = ErrorsEnum.NETWORK
                 }
             }
         }

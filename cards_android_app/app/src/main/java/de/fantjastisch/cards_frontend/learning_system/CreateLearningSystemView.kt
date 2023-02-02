@@ -1,21 +1,17 @@
 package de.fantjastisch.cards_frontend.learning_system
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
+import de.fantjastisch.cards_frontend.components.SaveLayout
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import java.util.*
 
@@ -25,15 +21,12 @@ fun CreateLearningSystemView(
     modifier: Modifier = Modifier
 ) {
     val viewModel = viewModel { CreateLearningSystemViewModel() }
+    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 
     // Componente die ihre Kinder untereinander anzeigt.
-    Column(
+    SaveLayout(
+        onSaveClicked = viewModel::onAddLearningSystemClicked,
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         OutlinedTextFieldWithErrors(
             value = viewModel.learningSystemLabel.value,
@@ -65,14 +58,6 @@ fun CreateLearningSystemView(
                 field = "boxLabels",
             )
         }
-        FilledTonalButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = viewModel::onAddLearningSystemClicked
-        ) {
-            Text(text = stringResource(R.string.save_button_text))
-        }
     }
-    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 
 }
-

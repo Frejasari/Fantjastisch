@@ -75,7 +75,7 @@ fun LearningModeView(
                 text = stringResource(R.string.remaining_cards_in_box_text)
                     .formatToInlineLabel() + viewModel.numberOfCardsRemaining.value.toString(),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight(350)
+                fontWeight = FontWeight.Medium
             )
             Divider(
                 Modifier.padding(horizontal = 7.dp, vertical = 10.dp)

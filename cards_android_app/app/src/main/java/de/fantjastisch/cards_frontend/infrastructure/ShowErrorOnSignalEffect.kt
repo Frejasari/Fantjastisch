@@ -7,7 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun ShowErrorOnSignalEffect(
-    toast: ErrorTexts,
+    toast: ErrorsEnum,
     onToastShown: () -> Unit
 ) {
     val context = LocalContext.current
@@ -16,7 +16,7 @@ fun ShowErrorOnSignalEffect(
         key1 = toast,
         // dann wird dieses Lambda ausgeführt.
         block = {
-            if (toast != ErrorTexts.NO_ERROR) {
+            if (toast != ErrorsEnum.NO_ERROR) {
                 Toast.makeText(context, toast.text, Toast.LENGTH_SHORT).show()
                 onToastShown()
             }

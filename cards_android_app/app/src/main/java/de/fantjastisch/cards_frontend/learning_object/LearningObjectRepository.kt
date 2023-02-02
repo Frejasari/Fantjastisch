@@ -2,7 +2,6 @@ package de.fantjastisch.cards_frontend.learning_object
 
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
 
@@ -12,7 +11,7 @@ class LearningObjectRepository(
     )
 ) {
 
-    suspend fun getAll() : RepoResult<List<LearningObject>> {
+    suspend fun getAll(): RepoResult<List<LearningObject>> {
         return try {
             val learningObjects = repository.getAll()
             RepoResult.Success(learningObjects)
@@ -23,7 +22,7 @@ class LearningObjectRepository(
 
     suspend fun findById(
         id: UUID
-    ) : RepoResult<LearningObject> {
+    ): RepoResult<LearningObject> {
         return try {
             val found = repository.findById(id)
             RepoResult.Success(found)
@@ -34,7 +33,7 @@ class LearningObjectRepository(
 
     suspend fun insert(
         learningObject: LearningObject
-    ) : RepoResult<Unit> {
+    ): RepoResult<Unit> {
         return try {
             repository.insert(learningObject)
             RepoResult.Success(Unit)
@@ -45,7 +44,7 @@ class LearningObjectRepository(
 
     suspend fun delete(
         id: UUID
-    ) : RepoResult<Unit> {
+    ): RepoResult<Unit> {
         return try {
             repository.delete(id)
             RepoResult.Success(Unit)

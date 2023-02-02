@@ -1,50 +1,72 @@
 package de.fantjastisch.cards_frontend.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.infrastructure.CardsAppTheme
 
 //TODO USE!
 @Composable
 fun SaveLayout(
-    innerLayout: @Composable () -> Unit,
-    onSave: () -> Unit,
-    modifier: Modifier = Modifier,
+    onSaveClicked: () -> Unit,
+    modifier: Modifier,
+    buttonText: String = stringResource(R.string.save_button_text),
+    content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(all = 16.dp),
     ) {
-        Box(
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
         ) {
-            innerLayout()
+            content()
         }
         ElevatedButton(
-            modifier = Modifier.fillMaxWidth(), onClick = onSave
+            modifier = Modifier.fillMaxWidth(),
+            onClick = onSaveClicked
+        ) {
+            Text(text = buttonText)
+        }
+    }
+}
+
+@Composable
+fun LayoutWithSave(modifier: Modifier, onSaveClicked: () -> Unit, content: @Composable () -> Unit) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+//            contentPadding = PaddingValues(all = 16.dp),
+    ) {
+        // Componente die ihre Kinder untereinander anzeigt.
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
+        ) {
+            content()
+        }
+
+        FilledTonalButton(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onClick = onSaveClicked
         ) {
             Text(text = stringResource(R.string.save_button_text))
         }
     }
 }
 
-@Preview
-@Composable
-fun SaveLayoutPreview() {
-    CardsAppTheme {
-        SaveLayout(
-            innerLayout = { },
-            onSave = { },
-        )
-    }
-}
