@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Karten</string>
+  <string name="app_name">SmartStack</string>
   <!--    MENU TAB NAMES -->
   <string name="menu_learning_object_overview_label">Learn</string>
   <string name="menu_glossar_label">Glossary</string>
