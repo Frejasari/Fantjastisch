@@ -24,6 +24,11 @@ class CreateCardModel(
     private val categoryRepository: CategoryRepository = CategoryRepository()
 ) : ViewModel() {
 
+    /**
+     * Sendet eine Anfrage an das Backend-Repository für Kategorien und kriegt alle Kategorien zurück.
+     *
+     * @return Eine Liste aller Kategorien.
+     */
     suspend fun getCategories(): List<CategorySelectItem>? {
         val result = categoryRepository.getPage()
         return when (result) {
@@ -40,6 +45,11 @@ class CreateCardModel(
         }
     }
 
+    /**
+     * Sendet eine Anfrage an das Backend-Repository für Karten und kriegt alle Karten zurück.
+     *
+     * @return Eine Liste aller Karten.
+     */
     suspend fun getCards(): List<CardSelectItem>? {
         return when (val result = cardRepository.getPage(null,null,null,false)) {
             is RepoResult.Success -> result.result.map { card ->
@@ -53,6 +63,15 @@ class CreateCardModel(
         }
     }
 
+    /**
+     * Sendet eine Anfrage für das Erstellen einer Karte an das Backend-Repository für Karten.
+     *
+     * @param answer Inhalt der Antwort der zu erstellenden Karte.
+     * @param question Inhalt der Frage der zu erstellenden Karte.
+     * @param tag Inhalt des Schlagwortes der zu erstellenden Karte.
+     * @param categories Zugehörige Kategorien der zu erstellenden Karte.
+     * @param links Links der zu erstellenden Karte.
+     */
     suspend fun createCard(
         answer: String,
         question: String,

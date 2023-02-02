@@ -25,6 +25,15 @@ class UpdateCardModel(
     private val categoryRepository: CategoryRepository = CategoryRepository()
 ) {
 
+    /**
+     * Sendet eine Anfrage für das Updaten einer bestehenden Karte an das Backend-Repository für Karten.
+     *
+     * @param answer Neuer Inhalt der Antwort der zu erstellenden Karte.
+     * @param question Neuer Inhalt der Frage der zu erstellenden Karte.
+     * @param tag Neuer Inhalt des Schlagwortes der zu erstellenden Karte.
+     * @param categories Neue Zugehörigen Kategorien der zu erstellenden Karte.
+     * @param links Neue Links der zu erstellenden Karte.
+     */
     suspend fun update(
         question: String,
         answer: String,
@@ -52,6 +61,11 @@ class UpdateCardModel(
         val links: List<LinkEntity>
     )
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(): RepoResult<UpdateCard> = coroutineScope {
         // Runs coroutines in parallel and waits until all of them are done
@@ -81,6 +95,11 @@ class UpdateCardModel(
         }
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     suspend fun getCards(): List<CardSelectItem>? {
         return when (val result = cardRepository.getPage(null,null,null,false)) {
             is RepoResult.Success -> result.result

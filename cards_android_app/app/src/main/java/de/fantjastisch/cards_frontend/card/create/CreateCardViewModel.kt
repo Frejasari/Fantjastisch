@@ -49,18 +49,38 @@ class CreateCardViewModel(
         }
     }
 
+    /**
+     * Setzt die Frage der Karte auf den übergebenen Wert.
+     *
+     * @param value Neue Frage der Karte.
+     */
     fun setCardQuestion(value: String) {
         cardQuestion.value = value
     }
 
+    /**
+     * Setzt die Antwort der Karte auf den übergebenen Wert.
+     *
+     * @param value Neue Antwort der Karte.
+     */
     fun setCardAnswer(value: String) {
         cardAnswer.value = value
     }
 
+    /**
+     * Setzt das Schlagwort der Karte auf den übergebenen Wert.
+     *
+     * @param value Neues Schlagwort der Karte.
+     */
     fun setCardTag(value: String) {
         cardTag.value = value
     }
 
+    /**
+     * Weist der Karte die übergebene Kategorie zu.
+     *
+     * @param id Id der Kategorie, welche ausgewählt wurde.
+     */
     fun onCategorySelected(id: UUID) {
         cardCategories.value = cardCategories.value.map {
             if (it.id == id) {
@@ -71,6 +91,10 @@ class CreateCardViewModel(
         }
     }
 
+    /**
+     * Wenn Karte gespeichert wird -> [CreateCardModel] erstellt die Karte und sendet eine
+     * Anfrage an die Datenbank.
+     */
     fun onCreateCardClicked() {
         errors.value = emptyList()
 

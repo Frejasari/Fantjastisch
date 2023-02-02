@@ -2,6 +2,7 @@ package de.fantjastisch.cards_frontend.card.update
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import de.fantjastisch.cards_frontend.card.create.CreateCardModel
 import de.fantjastisch.cards_frontend.card.update_and_create.CreateAndUpdateViewModel
 import de.fantjastisch.cards_frontend.infrastructure.ErrorsEnum
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
@@ -80,6 +81,12 @@ class UpdateCardViewModel(
         }
     }
 
+    /**
+     * Wird aufgerufen, wenn auf den Speichern-Button geklickt wurde.
+     * -> [UpdateCardModel] updated die Karte und sendet eine
+     * Anfrage an die Datenbank.
+     *
+     */
     fun onUpdateCardClicked() {
         errors.value = emptyList()
 
@@ -102,6 +109,11 @@ class UpdateCardViewModel(
         }
     }
 
+    /**
+     * Weist der Karte die übergebene Kategorie zu.
+     *
+     * @param id Id der Kategorie, welche ausgewählt wurde.
+     */
     fun onCategorySelected(id: UUID) {
         cardCategories.value = cardCategories.value.map {
             if (it.id == id) {
