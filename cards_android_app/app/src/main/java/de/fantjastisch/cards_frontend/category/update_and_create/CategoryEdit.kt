@@ -47,18 +47,20 @@ fun CategoryEdit(
             .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        OutlinedTextFieldWithErrors(
-            maxLines = 3,
-            value = label.value,
-            errors = label.errors,
-            onValueChange = label.onValueChange,
-            placeholder = stringResource(id = R.string.label_label),
-            field = "label"
-        )
-        CategorySelect(
-            categories = categories,
-            onCategorySelected = onCategorySelected
-        )
+        Column(modifier = Modifier.weight(1f)) {
+            OutlinedTextFieldWithErrors(
+                maxLines = 3,
+                value = label.value,
+                errors = label.errors,
+                onValueChange = label.onValueChange,
+                placeholder = stringResource(id = R.string.label_label),
+                field = "label"
+            )
+            CategorySelect(
+                categories = categories,
+                onCategorySelected = onCategorySelected
+            )
+        }
         FilledTonalButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = onUpdateCategoryClicked

@@ -24,7 +24,7 @@ class CreateCategoryFragment : AndroidScreen() {
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                title = { Text(text = stringResource(id = R.string.create_card_headline)) },
+                title = { Text(text = stringResource(id = R.string.create_category_headline)) },
             )
         })
         {
