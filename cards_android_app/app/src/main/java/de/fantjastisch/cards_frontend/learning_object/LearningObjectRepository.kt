@@ -12,27 +12,23 @@ class LearningObjectRepository(
     )
 ) {
 
-    suspend fun getAll(
-        onSuccess: (List<LearningObject>) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) {
-        try {
+    suspend fun getAll() : RepoResult<List<LearningObject>> {
+        return try {
             val learningObjects = repository.getAll()
-            onSuccess(learningObjects)
+            RepoResult.Success(learningObjects)
         } catch (ex: Throwable) {
-            onFailure(null)
+            RepoResult.ServerError()
         }
     }
 
     suspend fun findById(
-        id: UUID,
-        onSuccess: (LearningObject) -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) {
-        try {
-            onSuccess(repository.findById(id))
+        id: UUID
+    ) : RepoResult<LearningObject> {
+        return try {
+            val found = repository.findById(id)
+            RepoResult.Success(found)
         } catch (ex: Throwable) {
-            onFailure(null)
+            RepoResult.ServerError()
         }
     }
 
@@ -48,15 +44,13 @@ class LearningObjectRepository(
     }
 
     suspend fun delete(
-        id: UUID,
-        onSuccess: () -> Unit,
-        onFailure: (errors: ErrorResponseEntity?) -> Unit
-    ) {
-        try {
+        id: UUID
+    ) : RepoResult<Unit> {
+        return try {
             repository.delete(id)
-            onSuccess()
+            RepoResult.Success(Unit)
         } catch (ex: Throwable) {
-            onFailure(null)
+            RepoResult.ServerError()
         }
     }
 }

@@ -30,9 +30,10 @@ class LearningDetailsViewModel(
                     onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
                     onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
                 )
-            learningObjectRepository.findById(learningObjectId,
+            learningObjectRepository.findById(learningObjectId).fold(
                 onSuccess = { learningObjectLabel = it.label },
-                onFailure = { error.value = "Ein Netzwerkfehler ist aufgetreten." }
+                onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
             )
         }
     }

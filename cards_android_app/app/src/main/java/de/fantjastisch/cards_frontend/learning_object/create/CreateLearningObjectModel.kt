@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.learning_object
+package de.fantjastisch.cards_frontend.learning_object.create
 
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
@@ -9,6 +9,8 @@ import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
+import de.fantjastisch.cards_frontend.learning_object.LearningObject
+import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
 import de.fantjastisch.cards_frontend.learning_system.LearningSystemRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
