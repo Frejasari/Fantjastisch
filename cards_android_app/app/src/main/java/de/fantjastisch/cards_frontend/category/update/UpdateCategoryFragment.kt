@@ -27,7 +27,7 @@ data class UpdateCategoryFragment(val id: UUID) : AndroidScreen() {
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                title = { Text(text = stringResource(id = R.string.update_card_headline)) },
+                title = { Text(text = stringResource(id = R.string.update_category_headline)) },
             )
         })
         {
