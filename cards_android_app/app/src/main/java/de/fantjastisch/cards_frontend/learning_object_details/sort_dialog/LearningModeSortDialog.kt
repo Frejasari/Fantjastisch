@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.learning_object_details
+package de.fantjastisch.cards_frontend.learning_object_details.sort_dialog
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

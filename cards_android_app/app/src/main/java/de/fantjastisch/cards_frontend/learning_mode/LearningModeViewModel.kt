@@ -3,14 +3,8 @@ package de.fantjastisch.cards_frontend.learning_mode
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.fantjastisch.cards_frontend.card.CardRepository
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.infrastructure.fold
-import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
-import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
@@ -19,33 +13,52 @@ class LearningModeViewModel(
     private val learningObjectId: UUID,
     private val learningBoxId: UUID,
     private val sort: Boolean,
-    private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(),
-    private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(),
-    private val cardRepository: CardRepository = CardRepository()
+    private val model: LearningModeModel = LearningModeModel()
 ) : ViewModel() {
 
     val error = mutableStateOf("")
     val isFinished = mutableStateOf(false)
     val isShowingAnswer = mutableStateOf(false)
-    private var nextCards: Queue<CardEntity> = LinkedList()
-    private var learningBoxesInObject: List<LearningBoxWitNrOfCards> = listOf()
     val currentCard = mutableStateOf<CardEntity?>(null)
-    val learningBox = mutableStateOf<LearningBoxWitNrOfCards?>(null)
-
     var isLoading = mutableStateOf(true)
-
     var numberOfCardsRemaining = mutableStateOf(0)
+    private var nextCards: Queue<CardEntity> = LinkedList()
+
+    val learningBox = mutableStateOf<LearningBoxWitNrOfCards?>(null)
     var isLastBox = false
     var isFirstBox = false
+    private var learningBoxesInObject: List<LearningBoxWitNrOfCards> = listOf()
+
+    fun onPageLoaded() {
+        viewModelScope.launch {
+            model.initializePage(
+                learningObjectId = learningObjectId,
+                learningBoxId = learningBoxId,
+                sort = sort
+            ).fold(
+                onSuccess = {
+                    learningBoxesInObject = it.learningBoxesInObject
+                    isFirstBox = it.isFirstBox
+                    isLastBox = it.isLastBox
+                    nextCards = it.nextCards
+                    learningBox.value = it.learningBox
+                    nextCard()
+                    isLoading.value = false
+                },
+                onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
+                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
+            )
+        }
+    }
 
     fun onFlipCardClicked() {
         isShowingAnswer.value = !isShowingAnswer.value
     }
 
+
     fun onCardStaysInBoxClicked() {
         nextCard()
     }
-
 
     fun onCardGoesToNextBoxClicked() {
         isShowingAnswer.value = false
@@ -54,10 +67,10 @@ class LearningModeViewModel(
             val nextBoxId = learningBoxesInObject[nextBoxNum].id
 
             viewModelScope.launch {
-                cardToLearningBoxRepository.moveCards(
-                    from = learningBoxId,
-                    to = nextBoxId,
-                    cardIds = listOf(currentCard.value!!.id)
+                model.moveCard(
+                    fromBoxId = learningBoxId,
+                    toBoxId = nextBoxId,
+                    currentCardId = currentCard.value!!.id
                 ).fold(
                     onSuccess = { nextCard() },
                     onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
@@ -73,74 +86,16 @@ class LearningModeViewModel(
             val nextBoxId = learningBoxesInObject[previousBoxNr].id
 
             viewModelScope.launch {
-                cardToLearningBoxRepository.moveCards(
-                    from = learningBoxId,
-                    to = nextBoxId,
-                    cardIds = listOf(currentCard.value!!.id)
+                model.moveCard(
+                    fromBoxId = learningBoxId,
+                    toBoxId = nextBoxId,
+                    currentCardId = currentCard.value!!.id
                 ).fold(
                     onSuccess = { nextCard() },
                     onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
                     onUnexpectedError = {
                         error.value = "Ein unbekannter Fehler ist aufgetreten."
                     })
-            }
-        }
-    }
-
-    fun onPageLoaded() {
-
-        viewModelScope.launch {
-            val (cardResult, learningBoxResult, cardsInLearningBoxResult) = awaitAll(
-                async {
-                    cardRepository.getPage(
-                        categoryIds = null,
-                        search = null,
-                        tag = null,
-                        sort = sort
-                    )
-                },
-                async {
-                    learningBoxRepository.getAllBoxesForLearningObject(
-                        learningObjectId = learningObjectId
-                    )
-                },
-                async {
-                    cardToLearningBoxRepository
-                        .getCardIdsForBox(learningBoxId = learningBoxId)
-                }
-            )
-
-            @Suppress("UNCHECKED_CAST")
-            when {
-                cardResult is RepoResult.Success
-                        && learningBoxResult is RepoResult.Success
-                        && cardsInLearningBoxResult is RepoResult.Success -> {
-                    val allCards =
-                        (if (!sort) cardResult.result.shuffled() else cardResult.result) as List<CardEntity>
-                    val learningBoxes = learningBoxResult.result as List<LearningBoxWitNrOfCards>
-                    val cardsInLearningBox = cardsInLearningBoxResult.result as List<UUID>
-
-                    learningBoxesInObject = learningBoxes
-
-                    val box = learningBoxes.firstOrNull { it.id == learningBoxId }
-
-
-                    if (box == null) {
-                        error.value = "Ein Netzwerkfehler ist aufgetreten."
-                    } else {
-                        learningBox.value = box
-                        isFirstBox = box.boxNumber == 0
-                        isLastBox = box.boxNumber == learningBoxes.size - 1
-                        nextCards = LinkedList(allCards.filter { card ->
-                            cardsInLearningBox.contains(
-                                card.id
-                            )
-                        })
-                        nextCard() // land here 2nd time
-                    }
-                    isLoading.value = false
-                }
-                else -> error.value = "Ein Netzwerkfehler ist aufgetreten."
             }
         }
     }
