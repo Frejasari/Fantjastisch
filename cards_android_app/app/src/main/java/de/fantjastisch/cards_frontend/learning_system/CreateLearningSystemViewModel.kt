@@ -6,19 +6,17 @@ import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
-import org.openapitools.client.models.CreateLearningSystemEntity
 import org.openapitools.client.models.ErrorEntryEntity
 
 class CreateLearningSystemViewModel(
-    private val learningSystemRepository: LearningSystemRepository = LearningSystemRepository()
-//= extends ViewModel
+    private val model: CreateLearningSystemModel = CreateLearningSystemModel()
 ) : ViewModel() {
 
     // states, die vom view gelesen werden können -> automatisches Update vom View.
 
     val categories = mutableStateOf(listOf<CategorySelectItem>())
     val error = mutableStateOf<String?>(null)
-    val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
+    val errors = mutableStateOf<List<ErrorEntryEntity>>(mutableListOf())
     val isFinished = mutableStateOf(false)
 
     val learningSystemLabel = mutableStateOf("")
@@ -26,18 +24,13 @@ class CreateLearningSystemViewModel(
     val numBoxes = mutableStateOf(0)
 
     fun onAddLearningSystemClicked() {
-        errors.value = emptyList()
         viewModelScope.launch {
-
-            learningSystemRepository.createLearningsystem(
-                learningSystem = CreateLearningSystemEntity(
-                    label = learningSystemLabel.value,
-                    boxLabels = learningSystemBoxLabels.value,
-                )
+            model.addLearningSystem(
+                learningSystemLabel = learningSystemLabel.value,
+                learningSystemBoxLabels = learningSystemBoxLabels.value
             ).fold(
                 onSuccess = {
                     isFinished.value = true
-                    // on Success -> dialog schliessen, zur Category  übersicht?
                 },
                 onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
                 onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." },
@@ -46,16 +39,7 @@ class CreateLearningSystemViewModel(
     }
 
     fun onBoxesSelected(numString: String) {
-        val pattern = Regex("^\\d+\$")
-        if (numString.isEmpty()) {
-            numBoxes.value = 0
-        } else if (numString.matches(pattern)) {
-            numBoxes.value = numString.toInt()
-            if (numBoxes.value > 10) {
-                numBoxes.value = 10
-            }
-
-        }
+        numBoxes.value = model.getNumOfBoxes(numString)
         learningSystemBoxLabels.value = List(numBoxes.value) { "" }
     }
 

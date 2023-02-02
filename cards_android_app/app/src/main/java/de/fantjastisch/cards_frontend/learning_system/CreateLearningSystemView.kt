@@ -19,7 +19,6 @@ import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import java.util.*
 
-//TODO Fehler anzeigen.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateLearningSystemView(
