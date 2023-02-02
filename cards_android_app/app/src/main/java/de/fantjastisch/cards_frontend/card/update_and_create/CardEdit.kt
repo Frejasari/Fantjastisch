@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.card.LinkCardComponent
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
@@ -206,7 +205,7 @@ fun CardEdit(
             ) {
                 item {
                     links.forEach {
-                        LinkCardComponent(link = it, onDeleteLinkClicked = onDeleteLinkClicked)
+                        LinkEditView(link = it, onDeleteLinkClicked = onDeleteLinkClicked)
                     }
                 }
             }

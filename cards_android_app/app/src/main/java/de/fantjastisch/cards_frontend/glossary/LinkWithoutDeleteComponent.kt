@@ -19,7 +19,7 @@ fun LinkWithoutDeleteComponent(
     val dialogOpen = remember { mutableStateOf(false) }
 
     AssistChip(
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier.padding(6.dp),
         onClick = { dialogOpen.value = true },
         label = {
             Text(

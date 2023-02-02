@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.glossary.LinkWithoutDeleteComponent
-import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import de.fantjastisch.cards_frontend.util.LoadingIcon
 import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import java.util.*
@@ -29,7 +29,6 @@ fun LearningModeView(
     learningObjectId: UUID,
     sort: Boolean
 ) {
-    val navigator = FantMainNavigator.current
 
     val viewModel = viewModel {
         LearningModeViewModel(
@@ -45,16 +44,7 @@ fun LearningModeView(
             viewModel.onPageLoaded()
         })
 
-    // einmaliger Effekt
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = viewModel.isFinished.value,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            if (viewModel.isFinished.value) {
-                navigator.pop()
-            }
-        })
+    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 
     if (viewModel.isLoading.value) {
         LoadingIcon()
@@ -66,7 +56,6 @@ fun LearningModeView(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-
             Text(
                 text = String.format(
                     "%s Nr. %d - %s",
@@ -105,7 +94,7 @@ fun LearningModeView(
                 }
             }
             Spacer(
-                modifier = modifier
+                modifier = Modifier
                     .weight(1f)
             )
             if (!viewModel.isFirstBox) {
@@ -140,6 +129,8 @@ fun LearningModeView(
         }
     }
 }
+
+
 
 
 

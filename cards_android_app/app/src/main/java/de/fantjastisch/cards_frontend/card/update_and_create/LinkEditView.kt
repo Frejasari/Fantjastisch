@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.card;
+package de.fantjastisch.cards_frontend.card.update_and_create
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -15,14 +15,14 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LinkCardComponent(
+fun LinkEditView(
     link: LinkEntity,
     onDeleteLinkClicked: (LinkEntity) -> Unit
 ) {
     val dialogOpen = remember { mutableStateOf(false) }
 
     AssistChip(
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier.padding(6.dp),
         onClick = { dialogOpen.value = true },
         label = {
             Text(
@@ -45,7 +45,7 @@ fun LinkCardComponent(
     )
 
     CardContentDialogView(
-        id = link.target!!,
+        id = link.target,
         isOpen = dialogOpen.value,
         setIsOpen = { dialogOpen.value = it }
     )
