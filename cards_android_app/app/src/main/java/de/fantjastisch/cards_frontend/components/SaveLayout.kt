@@ -41,7 +41,9 @@ fun SaveLayout(
             content()
         }
         ElevatedButton(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth(),
             onClick = onSaveClicked
         ) {
             Text(text = stringResource(R.string.save_button_text))

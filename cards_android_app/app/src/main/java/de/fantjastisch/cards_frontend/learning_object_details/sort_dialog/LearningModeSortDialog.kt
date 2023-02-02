@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_frontend.learning_object_details.sort_dialog
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,7 +31,6 @@ fun LearningModeSortDialog(
 
     if (isOpen) {
         AlertDialog(
-//            modifier = Modifier.padding(16.dp),
             onDismissRequest = { setIsOpen(false) },
             title = {
                 Text(
@@ -49,6 +50,9 @@ fun LearningModeSortDialog(
                                 viewModel.onSortSelected(isAlphabetic = true)
                             })
                         Text(
+                            modifier = Modifier.clickable {
+                                viewModel.onSortSelected(isAlphabetic = true)
+                            },
                             text = stringResource(id = R.string.alphabetic),
                             style = MaterialTheme.typography.bodyLarge
                         )
@@ -65,6 +69,9 @@ fun LearningModeSortDialog(
                                 )
                             })
                         Text(
+                            modifier = Modifier.clickable {
+                                viewModel.onSortSelected(isAlphabetic = false)
+                            },
                             text = stringResource(id = R.string.random),
                             style = MaterialTheme.typography.bodyLarge
                         )
