@@ -50,9 +50,9 @@ class CategoryOverviewViewModel(
     }
 
     /**
-     * TODO
+     * Kontrolliert das Ausklappen einer Subkategorie
      *
-     * @param catId
+     * @param catId UUID von der Subkategorie, die beim Klicken ausgeklappt werden soll
      */
     fun manageState(catId: UUID?) {
         manageStateOfCat.value = catId
@@ -69,7 +69,7 @@ class CategoryOverviewViewModel(
     }
 
     /**
-     * TODO
+     * Setzt alle Fehler zurück, nachdem ein Fehler angezeigt wurde
      *
      */
     fun onToastShown() {
