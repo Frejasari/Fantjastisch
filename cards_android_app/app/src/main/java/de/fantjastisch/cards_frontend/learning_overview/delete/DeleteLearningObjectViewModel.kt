@@ -7,6 +7,12 @@ import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
+/**
+ * Stellt die Daten für die [DeleteLearningObjectDialog] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property learningObjectId Die UUID des zu löschenden Lernobjekts.
+ * @property model Das dazugehörige Model, welches die Logik kapselt.
+ */
 class DeleteLearningObjectViewModel(
     private val learningObjectId: UUID,
     private val model: DeleteLearningObjectModel = DeleteLearningObjectModel()
@@ -15,6 +21,10 @@ class DeleteLearningObjectViewModel(
     val error = mutableStateOf<String?>(null)
     val isFinished = mutableStateOf(false)
 
+    /**
+     * Löscht ein Lernobjekt, indem [DeleteLearningObjectModel] angefragt wird.
+     *
+     */
     fun onDeleteClicked() {
         error.value = null
         viewModelScope.launch {
