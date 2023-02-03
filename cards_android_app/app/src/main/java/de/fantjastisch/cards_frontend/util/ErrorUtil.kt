@@ -25,8 +25,9 @@ fun mapError(code: ErrorEntryEntity.Code): Int {
 enum class ErrorsEnum(val text: Int) {
     NO_ERROR(0),
     LINK_ERROR(R.string.error_link_no_card),
-    CATEGORY_NOT_EMPTY_ERROR(R.string.error_no_category),
+    CATEGORY_NOT_EMPTY_ERROR(R.string.categories_not_empty_error),
     NETWORK(R.string.error_network),
     UNEXPECTED(R.string.error_unexpected),
-    CHECK_INPUT(R.string.error_check_input)
+    CHECK_INPUT(R.string.error_check_input),
+
 }
