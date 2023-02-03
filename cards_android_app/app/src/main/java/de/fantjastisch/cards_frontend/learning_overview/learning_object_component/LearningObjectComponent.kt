@@ -22,6 +22,15 @@ import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsFra
 import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObjectDialog
 import de.fantjastisch.cards_frontend.util.LoadingWrapper
 
+
+/**
+ * Rendert die Darstellung einzelner Lernobjekten.
+ *
+ * @param learningObject Das Lernobjekt, das dargestellt werden soll.
+ * @param onDeleteSuccessful Funktion, mit der ein [LearningObject] gelöscht wird.
+ *
+ * @author
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LearningObjectComponent(

@@ -18,6 +18,11 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantTopBar
 import de.fantjastisch.cards_frontend.learning_overview.learning_object_component.LearningObjectComponent
 
+/**
+ * Zeigt den Screen für alle Lernobjekten
+ *
+ * @author
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 class LearningOverviewScreen : AndroidScreen() {
     @Composable
@@ -30,6 +35,13 @@ class LearningOverviewScreen : AndroidScreen() {
     }
 }
 
+/**
+ * Rendert die Lernobjekt Overview Seite
+ *
+ * @param modifier Modifier für die Seite
+ *
+ * @author
+ */
 @Composable
 @Preview
 fun LearningOverview(

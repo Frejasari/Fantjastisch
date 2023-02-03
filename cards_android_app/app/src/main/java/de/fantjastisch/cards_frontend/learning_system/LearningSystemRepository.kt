@@ -37,7 +37,7 @@ class LearningSystemRepository {
      * vorhandenen Lernsysteme zurück.
      *
      * @return RepoResult<List<LearningSystemEntity>> OnSuccess: Liste an
-     *         Lernsystemen als [LearningSystemEntity]-Entitäten.
+     *   Lernsystemen als [LearningSystemEntity]-Entität.
      */
     suspend fun getPage() = service.getLearningSystemList()
         .awaitResponse()
@@ -47,7 +47,7 @@ class LearningSystemRepository {
      * Sendet eine Anfrage an das Backend, um ein Lernsystem in die Datenbank zu speichern.
      *
      * @param learningSystem Lernsystem, welches erzeugt werden soll.
-     * @return RepoResponse<String> OnSuccess: die ID der eingefügten Entität
+     * @return RepoResponse<String> OnSuccess: die ID der eingefügten [CreateLearningSystemEntity]-Entität
      */
     suspend fun createLearningsystem(
         learningSystem: CreateLearningSystemEntity,
