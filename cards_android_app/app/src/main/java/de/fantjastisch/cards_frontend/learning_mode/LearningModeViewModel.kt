@@ -39,6 +39,10 @@ class LearningModeViewModel(
     var isFirstBox = false
     private var learningBoxesInObject: List<LearningBoxWitNrOfCards> = listOf()
 
+    /**
+     * TODO
+     *
+     */
     fun onPageLoaded() {
         viewModelScope.launch {
             model.initializePage(
@@ -61,15 +65,27 @@ class LearningModeViewModel(
         }
     }
 
+    /**
+     * Zeige andere Seite der Karte.
+     *
+     */
     fun onFlipCardClicked() {
         isShowingAnswer.value = !isShowingAnswer.value
     }
 
-
+    /**
+     * Karte wird nicht verschoben und nächste Karte anzeigen.
+     *
+     */
     fun onCardStaysInBoxClicked() {
         nextCard()
     }
 
+    /**
+     * Karte wird in die nächste Lernbox des Lernobjektes geschoben, dann wird
+     * die nächste Karte angezeigt.
+     *
+     */
     fun onCardGoesToNextBoxClicked() {
         isShowingAnswer.value = false
         val nextBoxNum = learningBox.value!!.boxNumber + 1
@@ -89,6 +105,11 @@ class LearningModeViewModel(
         }
     }
 
+    /**
+     * Karte wird in die vorherige Lernbox des Lernobjektes geschoben, dann wird
+     * die nächste Karte angezeigt.
+     *
+     */
     fun onCardGoesToPreviousBoxClicked() {
         isShowingAnswer.value = false
         val previousBoxNr = learningBox.value!!.boxNumber - 1
@@ -110,6 +131,10 @@ class LearningModeViewModel(
         }
     }
 
+    /**
+     * Nächste zu lernende Karte wird in [currentCard] gespeichert.
+     *
+     */
     private fun nextCard() {
         if (nextCards.size > 0) {
             isShowingAnswer.value = false

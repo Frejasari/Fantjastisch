@@ -36,6 +36,15 @@ class LearningModeModel(
         val learningBox: LearningBoxWitNrOfCards
     )
 
+    /**
+     * Holt durch Anfragen an das [learningBoxRepository], [cardRepository] und [cardToLearningBoxRepository]
+     * die notwendigen Karten in gewünschter Reihenfolge der Lernbox.
+     *
+     * @param learningObjectId Id, des Lernobjektes, welches gelernt wird.
+     * @param learningBoxId Id, der Lernbox, welche gelernt werden soll.
+     * @param sort True, wenn Karten in alphabetisch sortierter Reihenfolge.
+     * @return [LearningMode]-Entität
+     */
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(
         learningObjectId: UUID,
@@ -91,6 +100,15 @@ class LearningModeModel(
         }
     }
 
+    /**
+     * Sendet eine Anfrage an [cardToLearningBoxRepository] um die übergebenen Karten-Id's
+     * von eine Lernbox in eine andere Lernbox zu schieben.
+     *
+     * @param fromBoxId Id, der Lernbox aus welcher die Karten kommen.
+     * @param toBoxId Id, der Lernbox in welche die Karten verschoben werden.
+     * @param currentCardId Liste an Karten-Id's, welche verschoben werden sollen.
+     * @return RepoResponse<Unit> (OnSuccess, OnUnexpectedError, ...)
+     */
     suspend fun moveCard(fromBoxId: UUID, toBoxId: UUID, currentCardId: UUID): RepoResult<Unit> = cardToLearningBoxRepository.moveCards(
         from = fromBoxId,
         to = toBoxId,
