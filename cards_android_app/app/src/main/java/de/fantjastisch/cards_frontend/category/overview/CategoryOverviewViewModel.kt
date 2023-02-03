@@ -49,21 +49,38 @@ class CategoryOverviewViewModel(
         }
     }
 
+    /**
+     * TODO
+     *
+     * @param catId
+     */
     fun manageState(catId: UUID?) {
         manageStateOfCat.value = catId
         isParentOpen.value = catId == null
     }
 
-
+    /**
+     * Wenn Kategorie gelöscht werden soll -> Dialog öffnen, zum Bestätigen des Löschens.
+     *
+     * @param cat Kategorie, welche gelöscht werden soll.
+     */
     fun onTryDeleteCategory(cat: CategoryEntity) {
         currentDeleteDialog.value = DeletionProgress.ConfirmWithUser(cat)
     }
 
+    /**
+     * TODO
+     *
+     */
     fun onToastShown() {
         error.value = ErrorsEnum.NO_ERROR
     }
 
-
+    /**
+     * Kategorie soll gelöscht werden -> [categoryGraphModel] löscht die Kategorie, indem Sie die
+     * Anfrage weitergibt.
+     *
+     */
     fun onDeleteCategoryClicked() {
         val cat = currentDeleteDialog.value!!.cat
         currentDeleteDialog.value = DeletionProgress.Deleting(cat)
