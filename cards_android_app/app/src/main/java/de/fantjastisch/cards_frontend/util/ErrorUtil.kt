@@ -3,6 +3,12 @@ package de.fantjastisch.cards_frontend.util
 import de.fantjastisch.cards.R
 import org.openapitools.client.models.ErrorEntryEntity
 
+/**
+ * Mappt die Fehlermeldungen aus dem Backend
+ *
+ * @param code die Fehlermeldung aus dem Backend
+ * @return Die ID der Fehlermeldung
+ */
 fun mapError(code: ErrorEntryEntity.Code): Int {
     return when (code) {
         ErrorEntryEntity.Code.cONSTRAINTVIOLATION -> R.string.error_not_empty
@@ -22,6 +28,11 @@ fun mapError(code: ErrorEntryEntity.Code): Int {
 
 }
 
+/**
+ * Stellt vordefinierte Konstanten für die Fehlermeldungen
+ *
+ * @property text Die ID der Fehlermeldung
+ */
 enum class ErrorsEnum(val text: Int) {
     NO_ERROR(0),
     LINK_ERROR(R.string.error_link_no_card),
