@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.category.create.CreateCategoryModel
 import de.fantjastisch.cards_frontend.category.create.CreateCategoryView
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
@@ -36,9 +37,15 @@ class UpdateCategoryViewModel(
     val allCats = mutableStateOf(listOf<CategorySelectItem>())
     val cats = mutableStateOf(listOf<CategorySelectItem>())
 
+    /**
+     * Speichert das übergebene Label der Katgegorie in [label].
+     *
+     * @param value Name der Kategorie.
+     */
     fun setLabel(value: String) {
         label.value = value
     }
+
 
     init {
         viewModelScope.launch {
@@ -72,7 +79,11 @@ class UpdateCategoryViewModel(
         }
     }
 
-
+    /**
+     * Wenn Kategorie geupdated wird -> [UpdateCategoryModel] updated die Kategorie mit den in den Variablen
+     * gespeicherten Daten, indem Sie die Anfrage weiterleitet.
+     *
+     */
     fun onUpdateCategoryClicked() {
         errors.value = emptyList()
 
@@ -90,6 +101,11 @@ class UpdateCategoryViewModel(
     }
 
 
+    /**
+     * Speichert die ausgewählten Unterkategorien als isChecked = true in [allCats]
+     *
+     * @param id Id der Kategorie, welche neu ausgewählt wurde.
+     */
     fun onCategorySelected(id: UUID) {
         allCats.value = allCats.value.map {
             if (it.id == id) {
@@ -99,7 +115,6 @@ class UpdateCategoryViewModel(
             }
         }
     }
-
 
 }
 

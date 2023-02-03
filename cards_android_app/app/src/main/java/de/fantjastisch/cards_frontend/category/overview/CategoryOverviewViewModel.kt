@@ -23,6 +23,10 @@ class CategoryOverviewViewModel(
     val error = mutableStateOf<String?>(null)
     val currentDeleteDialog = mutableStateOf<DeletionProgress?>(null)
 
+    /**
+     * Holt alle Kategorien ein, indem Sie diese beim [categoryGraphModel] anfragt.
+     *
+     */
     fun onPageLoaded() {
         viewModelScope.launch {
             when (val result = categoryGraphModel.getCategories()) {
@@ -35,10 +39,20 @@ class CategoryOverviewViewModel(
         }
     }
 
+    /**
+     * Wenn Kategorie gelöscht werden soll -> Dialog öffnen, zum Bestätigen des Löschens.
+     *
+     * @param cat Kategorie, welche gelöscht werden soll.
+     */
     fun onTryDeleteCategory(cat: CategoryEntity) {
         currentDeleteDialog.value = DeletionProgress.ConfirmWithUser(cat)
     }
 
+    /**
+     * Kategorie soll gelöscht werden -> [categoryGraphModel] löscht die Kategorie, indem Sie die
+     * Anfrage weitergibt.
+     *
+     */
     fun onDeleteCategoryClicked() {
         val cat = currentDeleteDialog.value!!.cat
         currentDeleteDialog.value = DeletionProgress.Deleting(cat)
@@ -61,10 +75,18 @@ class CategoryOverviewViewModel(
         }
     }
 
+    /**
+     * Kategorie Löschvorgang wurde durch Nutzer abgebrochen. Dialogfenster schließen.
+     *
+     */
     fun onDeleteCategoryAborted() {
         currentDeleteDialog.value = null
     }
 
+    /**
+     * Dialog Fenster für das Bestätigen des Löschens einer Kategorie.
+     *
+     */
     sealed class DeletionProgress {
         abstract val cat: CategoryEntity
 

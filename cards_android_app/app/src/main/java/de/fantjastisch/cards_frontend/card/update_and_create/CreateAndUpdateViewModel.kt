@@ -9,7 +9,7 @@ import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 /**
- * Parent Class, die gemeinsame Daten  & Funktionen zum Erzeugen und Bearbeiten von Karten bereitstellt
+ * Parent Class, die gemeinsame Daten & Funktionen zum Erzeugen und Bearbeiten von Karten bereitstellt.
  *
  * @author Freja Sender
  */
@@ -22,10 +22,20 @@ open class CreateAndUpdateViewModel : ViewModel() {
 
     val cardLinks = mutableStateOf<List<LinkEntity>>(listOf())
 
+    /**
+     * Speichert das übergebene Linklabel in [linkLabel].
+     *
+     * @param value Label des Links.
+     */
     fun setLinkName(value: String) {
         linkLabel.value = value
     }
 
+    /**
+     * Speichert für die ausgewählten Karten isChecked = true in [cards].
+     *
+     * @param id Id, der Karte die ausgewählt wurde.
+     */
     fun onCardSelected(id: UUID) {
         val selectedCards = cards.value.filter { card -> card.isChecked }
 
@@ -41,17 +51,31 @@ open class CreateAndUpdateViewModel : ViewModel() {
                 it
             }
         }
-
     }
 
+    /**
+     * Löscht den Link, welcher in der Bearbeiten/Erstellen View erzeugt wurde und
+     * welcher zum Löschen angeklickt wurde.
+     *
+     * @param link Link, welcher gelöscht wird.
+     */
     fun onDeleteLinkClicked(link: LinkEntity) {
         cardLinks.value = cardLinks.value.filter { l -> link != l } as ArrayList<LinkEntity>
     }
 
+    /**
+     * Zeigt eine Fehlermeldung.
+     *
+     */
     fun onToastShown() {
         error.value = ErrorsEnum.NO_ERROR
     }
 
+    /**
+     * Wenn Link gespeichert wird -> erstellt den Link mit den in [linkLabel]
+     * gespeicherten Label und dem in [cards] gespeicherten Target.
+     *
+     */
     fun onCreateLinkClicked() {
         errors.value = emptyList()
 

@@ -18,6 +18,12 @@ class LearningBoxRepository(
     )
 ) {
 
+    /**
+     * Holt alle Lernboxen eines Lernobjektes aus der Datenbank.
+     *
+     * @param learningObjectId Id des Lernobjektes, zu welchem die Lernboxen geholt werden.
+     * @return Liste von Lernboxen inkl. der Anzahl an Karten enthalten.
+     */
     suspend fun getAllBoxesForLearningObject(
         learningObjectId: UUID
     ): RepoResult<List<LearningBoxWitNrOfCards>> {
@@ -30,6 +36,12 @@ class LearningBoxRepository(
         }
     }
 
+    /**
+     * Holt die Anzahl an Karten von den Lernboxen des Lernobjektes aus der Datenbank.
+     *
+     * @param learningObjectId Id des Lernobjektes, zu welchem die Anzahl der Karten geholt werden.
+     * @return Liste von Integern, die die Anzahl der Karten in der jeweiligen Lernbox widerspiegeln.
+     */
     suspend fun getCardsFromLearningBoxInLearningObject(
         learningObjectId: UUID
     ): RepoResult<List<Int>> {
@@ -54,6 +66,12 @@ class LearningBoxRepository(
 //        }
 //    }
 
+    /**
+     * Fügt eine Lernbox in die Datenbank ein.
+     *
+     * @param learningBox Lernbox, welche eingefügt werden soll.
+     * @return RepoResult Succes/ServerError.
+     */
     suspend fun insert(
         learningBox: LearningBox,
     ) : RepoResult<Unit> {
@@ -65,6 +83,12 @@ class LearningBoxRepository(
         }
     }
 
+    /**
+     * Löscht eine Lernbox aus der Datenbank.
+     *
+     * @param boxNumber Nummer der zu löschenden Lernbox.
+     * @param learningObjectId Id des zugehörigen Lernobjektes, der Lernbox.
+     */
     suspend fun delete(boxNumber: Int, learningObjectId: UUID) {
         return repository.delete(boxNumber, learningObjectId)
     }
