@@ -19,7 +19,7 @@ class LearningBoxRepository(
 ) {
 
     /**
-     * Holt alle Lernboxen eines Lernobjektes aus der Datenbank.
+     * Holt alle Lernboxen eines Lernobjektes mit der Anzahl an Karten aus der Datenbank.
      *
      * @param learningObjectId Id des Lernobjektes, zu welchem die Lernboxen geholt werden.
      * @return Liste von Lernboxen inkl. der Anzahl an Karten enthalten.
