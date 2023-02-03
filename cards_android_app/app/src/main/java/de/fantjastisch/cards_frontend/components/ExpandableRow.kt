@@ -17,7 +17,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 
-
+/**
+ * View, die ein erweiterbares Element rendert.
+ *
+ * @param expanded True, wenn Element erweitert.
+ * @param onClick Callback, wenn auf Element geklickt.
+ * @param headline Überschrift, des Elementes.
+ * @param additionalActions TODO
+ * @param additionalContent TODO
+ * @param expandedContent TODO
+ */
 @Composable
 fun ExpandableRow(
     expanded: Boolean,
