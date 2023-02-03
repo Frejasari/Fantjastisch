@@ -6,6 +6,7 @@ import java.util.*
 
 /**
  * Repository, welches Lernobjekte speichert.
+ * Kommuniziert mit [InternalLearningObjectRepository]
  *
  * @property repository Das entsprechende InternalRepository.
  *

@@ -42,12 +42,25 @@ class CreateLearningObjectModel(
     private val validator: CreateLearningObjectValidator = CreateLearningObjectValidator()
 ) {
 
+    /**
+     * Hält Daten für das hinzufügende Lernobjekt.
+     *
+     * @property cardSelectItems Alle Karten.
+     * @property categorySelectItems Alle Kategorien.
+     * @property learningSystems Alle Lernsysteme.
+     */
     data class CreateLearningObject(
         val cardSelectItems: List<CardSelectItem>,
         val categorySelectItems: List<CategorySelectItem>,
         val learningSystems: List<SingleSelectItem>
     )
 
+    /**
+     * Erstellt eine Instanz der [CreateLearningObject].
+     *
+     * @return RepoResult<CreateLearningObject> OnSuccess: Eine Instanz der [CreateLearningObject],
+     *  die alle Karten, Kategorien und Lernsysteme hält.
+     */
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(): RepoResult<CreateLearningObject> = coroutineScope {
         // Runs coroutines in parallel and waits until all of them are done
@@ -108,6 +121,12 @@ class CreateLearningObjectModel(
         }
     }
 
+    /**
+     * Ermittelt, ob das ausgewählte Lernsystem in der Datenbank vorhanden ist.
+     *
+     * @param selectedSystemId Die UUID des Lernsystems, das ausgewählt wurde.
+     * @return LearningSystemEntity? Wenn die Eingabe valide ist dann [LearningSystemEntity]-Entität, sonst null
+     */
     private suspend fun getLearningSystemFromInput(selectedSystemId: UUID): LearningSystemEntity? {
         return when (val response = learningSystemRepository.getLearningSystem(selectedSystemId)) {
             is RepoResult.Success -> response.result
@@ -115,6 +134,14 @@ class CreateLearningObjectModel(
         }
     }
 
+    /**
+     * Holt alle Karten, die zu der asugewählten Kategorien gehören, indem die Anfrage,
+     * an das Repository weitergeleitet wird.
+     *
+     * @param categories Kategorien, deren Karten geholt werden.
+     * @return List<CardEntity>? Wenn es Karten zu Kategorien gibt dann eine Liste von [CardEntity]
+     *  sonst null
+     */
     private suspend fun getCardsFromCategories(
         categories: List<CategorySelectItem>
     ): List<CardEntity>? {
@@ -134,6 +161,15 @@ class CreateLearningObjectModel(
         }
     }
 
+    /**
+     * Fügt die Lernboxen und die ausgewählte Karten in die
+     * entsprechenden Datenbanken ein.
+     *
+     * @param learningSystem Das Lernsystem des zu erstellenden Lernobjekts.
+     * @param learningObject Das Lernobjekt, zu dem die Lernboxen und Karten gehören.
+     * @param cardsToInsert Die Karten, die eingefügt werden sollen.
+     * @return RepoResult<Unit> TODO
+     */
     private suspend fun insertLearningBoxesWithCards(
         learningSystem: LearningSystemEntity,
         learningObject: LearningObject,
@@ -165,17 +201,46 @@ class CreateLearningObjectModel(
         return RepoResult.Success(Unit)
     }
 
+    /**
+     * Fügt eine Lernbox in die Datenbank ein, indem die Anfrage an das Repository weitergeleitet wird.
+     *
+     * @param learningBox Die hinzufügende Lernbox.
+     * @return RepoResult<Unit> TODO
+     */
     private suspend fun insertLearningBox(learningBox: LearningBox): RepoResult<Unit> =
         learningBoxRepository.insert(learningBox = learningBox)
 
+    /**
+     * Fügt Karten zu einer Lernbox hinzu, indem die Anfrage an das Repository weitergeleitet wird.
+     *
+     * @param learningBox Die Lernbox, zu der die Karten hinzugefügt werden sollen.
+     * @param cardIds Die Liste der UUIDs von Karten, die zu einer Lernbox hinzugefügt werden sollen.
+     * @return RepoResult<Unit> TODO
+     */
     private suspend fun insertCardsIntoBox(
         learningBox: LearningBox, cardIds: MutableList<UUID>
     ): RepoResult<Unit> = cardToLearningBoxRepository.insertCards(cardIds, learningBox.id)
 
+
+    /**
+     * Fügt ein Lernobjekt in die Datenbank ein, indem die Anfrage an das Repository weitergeleitet wird.
+     *
+     * @param learningObject Das Lernobjekt, welches hinzugefügt wird.
+     * @return RepoResult<Unit> TODO
+     */
     private suspend fun insertLearningObject(
         learningObject: LearningObject,
     ): RepoResult<Unit> = learningObjectRepository.insert(learningObject = learningObject)
 
+    /**
+     * Sammelt Daten für ein Lernobjekt und fügt dies in die Datenbank ein.
+     *
+     * @param learningObjectLabel Die Bezeichnung des Lernobjekts.
+     * @param selectedSystem Das ausgewählte Lernsystem.
+     * @param categories Die Liste von [CategorySelectItem]. Wenn isChecked = true, dann werden die Karten der Kategorie hinzugefügt.
+     * @param cards Die Liste von [CardSelectItem]. Wenn isChecked = true, dann werden die Karten hinzugefügt.
+     * @return RepoResult<Unit> TODO
+     */
     suspend fun addLearningObject(
         learningObjectLabel: String,
         selectedSystem: SingleSelectItem?,
