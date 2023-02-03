@@ -20,7 +20,7 @@ class EditCardsInBoxViewModel(
     val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
     val error = mutableStateOf<String?>(null)
     val isFinished = mutableStateOf(false)
-    var isLoading = mutableStateOf(true)
+    val isLoading = mutableStateOf(true)
 
     init {
         onPageLoaded()

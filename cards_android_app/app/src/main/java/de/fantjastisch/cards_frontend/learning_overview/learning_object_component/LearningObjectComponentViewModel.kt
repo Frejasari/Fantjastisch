@@ -15,8 +15,8 @@ class LearningObjectComponentViewModel(
 
     val error = mutableStateOf("")
     val progress = mutableStateOf(0)
-    val learningSystemLabel = mutableStateOf("Loading")
-
+    val learningSystemLabel = mutableStateOf("")
+    val isLoading = mutableStateOf(true)
     init {
         onPageLoaded()
     }
@@ -34,6 +34,7 @@ class LearningObjectComponentViewModel(
                 onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
                 onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
             )
+            isLoading.value = false
         }
 
     }

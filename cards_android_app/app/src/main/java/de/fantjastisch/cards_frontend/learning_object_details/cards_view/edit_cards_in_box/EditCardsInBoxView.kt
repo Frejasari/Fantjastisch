@@ -10,6 +10,7 @@ import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.components.SaveLayout
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import de.fantjastisch.cards_frontend.util.LoadingIcon
+import de.fantjastisch.cards_frontend.util.LoadingWrapper
 
 
 @Composable
@@ -25,9 +26,7 @@ fun EditCardsInBoxView(
             viewModel.onPageLoaded()
         })
 
-    if (viewModel.isLoading.value) {
-        LoadingIcon()
-    } else {
+    LoadingWrapper(isLoading=viewModel.isLoading.value) {
         SaveLayout(onSaveClicked = viewModel::onAddCardsClicked, modifier = modifier) {
             LazyColumn(
                 modifier = Modifier.weight(1f),

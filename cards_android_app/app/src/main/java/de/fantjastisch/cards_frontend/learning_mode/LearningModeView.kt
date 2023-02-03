@@ -22,6 +22,7 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.glossary.LinkWithoutDeleteComponent
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import de.fantjastisch.cards_frontend.util.LoadingIcon
+import de.fantjastisch.cards_frontend.util.LoadingWrapper
 import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import java.util.*
 
@@ -60,9 +61,7 @@ fun LearningModeView(
 
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 
-    if (viewModel.isLoading.value) {
-        LoadingIcon()
-    } else {
+    LoadingWrapper(isLoading=viewModel.isLoading.value) {
         Column(
             modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
