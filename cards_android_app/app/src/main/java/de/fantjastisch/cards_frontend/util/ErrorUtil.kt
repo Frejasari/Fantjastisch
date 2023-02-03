@@ -1,21 +1,32 @@
 package de.fantjastisch.cards_frontend.util
 
+import de.fantjastisch.cards.R
 import org.openapitools.client.models.ErrorEntryEntity
 
-fun mapError(code: ErrorEntryEntity.Code): String {
+fun mapError(code: ErrorEntryEntity.Code): Int {
     return when (code) {
-        ErrorEntryEntity.Code.cONSTRAINTVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.nOCATEGORIESVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.nOTNULLVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.nOTBLANKVIOLATION -> "Feld darf nicht leer sein."
-        ErrorEntryEntity.Code.lABELTAKENVIOLATION -> "Label ist bereits vergeben."
-        ErrorEntryEntity.Code.cATEGORYDOESNTEXISTVIOLATION -> "Kategorie existiert nicht."
-        ErrorEntryEntity.Code.sUBCATEGORYDOESNTEXISTVIOLATION -> "Kategorie existiert nicht."
-        ErrorEntryEntity.Code.cATEGORYNOTEMPTYVIOLATION -> "Es muss eine Kategorie ausgewaehlt werden."
-        ErrorEntryEntity.Code.cYCLICSUBCATEGORYRELATIONVIOLATION -> "Zyklen sind nicht erlaubt."
-        ErrorEntryEntity.Code.sUBCATEGORYISNULLVIOLATION -> "Subkategorien dürfen nicht null sein."
-        ErrorEntryEntity.Code.eNTITYDOESNOTEXIST -> "Entität exisitert nicht."
-        ErrorEntryEntity.Code.cARDDUPLICATEVIOLATION -> "Karte existiert bereits."
-        ErrorEntryEntity.Code.bOXLABELSISNULLVIOLATION -> "Die Box-Labels dürfen nicht leer sein."
+        ErrorEntryEntity.Code.cONSTRAINTVIOLATION -> R.string.error_not_empty
+        ErrorEntryEntity.Code.nOCATEGORIESVIOLATION -> R.string.error_not_empty
+        ErrorEntryEntity.Code.nOTNULLVIOLATION -> R.string.error_not_null
+        ErrorEntryEntity.Code.nOTBLANKVIOLATION -> R.string.error_not_empty
+        ErrorEntryEntity.Code.lABELTAKENVIOLATION -> R.string.error_label_taken
+        ErrorEntryEntity.Code.cATEGORYDOESNTEXISTVIOLATION,
+        ErrorEntryEntity.Code.sUBCATEGORYDOESNTEXISTVIOLATION -> R.string.error_category_does_not_exist
+        ErrorEntryEntity.Code.cATEGORYNOTEMPTYVIOLATION -> R.string.error_no_category
+        ErrorEntryEntity.Code.cYCLICSUBCATEGORYRELATIONVIOLATION -> R.string.error_no_cycles
+        ErrorEntryEntity.Code.sUBCATEGORYISNULLVIOLATION -> R.string.error_subcategories_not_null
+        ErrorEntryEntity.Code.eNTITYDOESNOTEXIST -> R.string.error_entity_does_not_exist
+        ErrorEntryEntity.Code.cARDDUPLICATEVIOLATION -> R.string.error_card_already_exists
+        ErrorEntryEntity.Code.bOXLABELSISNULLVIOLATION -> R.string.error_box_labels_null
     }
+
+}
+
+enum class ErrorsEnum(val text: Int) {
+    NO_ERROR(0),
+    LINK_ERROR(R.string.error_link_no_card),
+    CATEGORY_NOT_EMPTY_ERROR(R.string.error_no_category),
+    NETWORK(R.string.error_network),
+    UNEXPECTED(R.string.error_unexpected),
+    CHECK_INPUT(R.string.error_check_input)
 }

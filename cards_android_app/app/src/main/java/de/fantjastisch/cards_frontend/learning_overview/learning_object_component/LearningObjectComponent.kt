@@ -15,12 +15,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import cafe.adriel.voyager.navigator.LocalNavigator
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsFragment
 import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObjectDialog
+import de.fantjastisch.cards_frontend.util.LoadingWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,88 +37,90 @@ fun LearningObjectComponent(
     }
     val isDeleteDialogOpen = remember { mutableStateOf(false) }
     // Ein RecyclerView -> Eine lange liste von Eintraegen
-    Box(
-        Modifier
-            .clickable(
-                onClick = {
-                    navigator.push(LearningDetailsFragment(learningObject.id))
-                })
-    ) {
-        Surface(
-            modifier = Modifier,
-            shadowElevation = 6.dp,
+    LoadingWrapper(isLoading = viewModel.isLoading.value)
+    {
+        Box(
+            Modifier
+                .clickable(
+                    onClick = {
+                        navigator.push(LearningDetailsFragment(learningObject.id))
+                    })
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 16.dp),
-
-                ) {
-                Row(
+            Surface(
+                modifier = Modifier,
+                shadowElevation = 6.dp,
+            ) {
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp, horizontal = 16.dp),
+
+                    ) {
+                    Row(
                         modifier = Modifier
-                            .weight(weight = 6f, fill = false),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        text = learningObject.label
-                    )
-                    IconButton(
-                        modifier = Modifier
-                            .weight(1f),
-                        onClick = {
-                            isDeleteDialogOpen.value = !isDeleteDialogOpen.value
-                        }) {
-                        Icon(
-                            imageVector = Icons.Default.DeleteOutline,
-                            contentDescription = "delete icon"
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .weight(weight = 6f, fill = false),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            text = learningObject.label
                         )
-                    }
-                    DeleteLearningObjectDialog(
-                        learningObjectId = learningObject.id,
-                        isOpen = isDeleteDialogOpen.value,
-                        setIsOpen = { isDeleteDialogOpen.value = it },
-                        onDeleteSuccessful = onDeleteSuccessful
-                    )
-                }
-
-                Divider(
-                    modifier = Modifier
-                        .padding(vertical = 6.dp)
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = viewModel.learningSystemLabel.value
-                    )
-                    SuggestionChip(
-                        modifier = Modifier,
-                        onClick = { },
-                        label = {
-                            Text(
-                                modifier = Modifier,
-                                color = if (viewModel.progress.value < 33) Color(
-                                    0xFFC53030
-                                )
-                                else if (viewModel.progress.value < 66)
-                                    Color(0xFFFF8707)
-                                else Color(0xFF2B990D),
-                                text = if (viewModel.progress.value == -1) {
-                                    stringResource(R.string.fetching_data_text)
-                                } else {
-                                    String.format("%s %%", viewModel.progress.value.toString())
-                                }
+                        IconButton(
+                            modifier = Modifier
+                                .weight(1f),
+                            onClick = {
+                                isDeleteDialogOpen.value = !isDeleteDialogOpen.value
+                            }) {
+                            Icon(
+                                imageVector = Icons.Default.DeleteOutline,
+                                contentDescription = "delete icon"
                             )
                         }
+                        DeleteLearningObjectDialog(
+                            learningObjectId = learningObject.id,
+                            isOpen = isDeleteDialogOpen.value,
+                            setIsOpen = { isDeleteDialogOpen.value = it },
+                            onDeleteSuccessful = onDeleteSuccessful
+                        )
+                    }
+
+                    Divider(
+                        modifier = Modifier
+                            .padding(vertical = 6.dp)
                     )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = viewModel.learningSystemLabel.value
+                        )
+                        val isInverted = remember { mutableStateOf(false) }
+                        SuggestionChip(
+                            modifier = Modifier,
+                            onClick = { isInverted.value = !isInverted.value },
+                            label = {
+                                Text(
+                                    modifier = Modifier,
+                                    color = if (isInverted.value) Color.White else viewModel.getColor(),
+                                    text = if (viewModel.progress.value == -1) {
+                                        stringResource(R.string.fetching_data_text)
+                                    } else {
+                                        String.format("%s %%", viewModel.progress.value.toString())
+                                    }
+                                )
+                            },
+                            colors = SuggestionChipDefaults.suggestionChipColors(
+                                containerColor = if (isInverted.value) viewModel.getColor() else Color.White
+                            )
+                        )
+                    }
                 }
             }
         }

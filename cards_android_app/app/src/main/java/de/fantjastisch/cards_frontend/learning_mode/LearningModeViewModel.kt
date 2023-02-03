@@ -30,7 +30,7 @@ class LearningModeViewModel(
     val isFinished = mutableStateOf(false)
     val isShowingAnswer = mutableStateOf(false)
     val currentCard = mutableStateOf<CardEntity?>(null)
-    var isLoading = mutableStateOf(true)
+    val isLoading = mutableStateOf(true)
     var numberOfCardsRemaining = mutableStateOf(0)
     private var nextCards: Queue<CardEntity> = LinkedList()
 

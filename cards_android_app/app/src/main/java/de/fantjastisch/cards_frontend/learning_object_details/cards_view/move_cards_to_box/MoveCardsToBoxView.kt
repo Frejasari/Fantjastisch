@@ -13,6 +13,7 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import de.fantjastisch.cards_frontend.util.LoadingIcon
+import de.fantjastisch.cards_frontend.util.LoadingWrapper
 
 
 @Composable
@@ -42,16 +43,16 @@ fun MoveCardsToBoxView(
             )
             item {
                 Column {
-                    if (viewModel.isLoading.value) {
-                        LoadingIcon()
-                    } else if (viewModel.cards.value.isEmpty()) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Text(
-                                text = stringResource(R.string.no_content_text)
-                            )
+                    LoadingWrapper(isLoading=viewModel.isLoading.value) {
+                        if (viewModel.cards.value.isEmpty()) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.no_content_text)
+                                )
+                            }
                         }
                     }
                 }

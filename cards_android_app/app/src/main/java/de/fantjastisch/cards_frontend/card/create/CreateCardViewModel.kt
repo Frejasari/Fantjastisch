@@ -5,8 +5,9 @@ import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.card.update_and_create.CreateAndUpdateViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.infrastructure.ErrorsEnum
+
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.util.ErrorsEnum
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -35,7 +36,6 @@ class CreateCardViewModel(
 
     init {
         viewModelScope.launch {
-
             val result = createCardModel.getCategories()
             val resultCards = createCardModel.getCards()
 
@@ -99,21 +99,26 @@ class CreateCardViewModel(
         errors.value = emptyList()
 
         // check for categories -> if no then wait till yes
-        if (!cardCategories.value.none { cat -> cat.isChecked }) {
-            viewModelScope.launch {
-                val result = createCardModel.createCard(
-                    question = cardQuestion.value,
-                    answer = cardAnswer.value,
-                    tag = cardTag.value.replaceFirstChar { letter -> letter.uppercaseChar() },
-                    links = cardLinks.value,
-                    categories = cardCategories.value
-                )
+        viewModelScope.launch {
+            val result = createCardModel.createCard(
+                question = cardQuestion.value,
+                answer = cardAnswer.value,
+                tag = cardTag.value.replaceFirstChar { letter -> letter.uppercaseChar() },
+                links = cardLinks.value,
+                categories = cardCategories.value
+            )
 
-                when (result) {
-                    is RepoResult.Success -> isFinished.value = true
-                    is RepoResult.Error -> errors.value = result.errors
-                    is RepoResult.ServerError -> error.value = ErrorsEnum.NETWORK
+            when (result) {
+                is RepoResult.Success -> isFinished.value = true
+                is RepoResult.Error -> {
+                    errors.value = result.errors
+                    if (result.errors.map { it.field }.contains("categories")) {
+                        error.value = ErrorsEnum.CATEGORY_NOT_EMPTY_ERROR
+                    } else {
+                        error.value = ErrorsEnum.CHECK_INPUT
+                    }
                 }
+                is RepoResult.ServerError -> error.value = ErrorsEnum.NETWORK
             }
         }
     }

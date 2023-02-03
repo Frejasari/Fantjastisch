@@ -4,9 +4,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.create.CreateCardModel
 import de.fantjastisch.cards_frontend.card.update_and_create.CreateAndUpdateViewModel
-import de.fantjastisch.cards_frontend.infrastructure.ErrorsEnum
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.fold
+import de.fantjastisch.cards_frontend.util.ErrorsEnum
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.LinkEntity
 import java.util.*
@@ -30,8 +30,6 @@ class UpdateCardViewModel(
     val cardAnswer = mutableStateOf("")
     val cardTag = mutableStateOf("")
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
-
-    val noCategories = mutableStateOf(false)
 
     fun setCardQuestion(value: String) {
         cardQuestion.value = value
@@ -90,22 +88,18 @@ class UpdateCardViewModel(
     fun onUpdateCardClicked() {
         errors.value = emptyList()
 
-        if (cardCategories.value.none { cat -> cat.isChecked }) {
-            noCategories.value = true
-        } else {
-            viewModelScope.launch {
-                cardModel.update(
-                    question = cardQuestion.value,
-                    answer = cardAnswer.value,
-                    tag = cardTag.value,
-                    categories = cardCategories.value,
-                    links = cardLinks.value
-                ).fold(
-                    onSuccess = { isFinished.value = true },
-                    onValidationError = { errors.value = it },
-                    onUnexpectedError = { error.value = ErrorsEnum.UNEXPECTED }
-                )
-            }
+        viewModelScope.launch {
+            cardModel.update(
+                question = cardQuestion.value,
+                answer = cardAnswer.value,
+                tag = cardTag.value,
+                categories = cardCategories.value,
+                links = cardLinks.value
+            ).fold(
+                onSuccess = { isFinished.value = true },
+                onValidationError = { errors.value = it },
+                onUnexpectedError = { error.value = ErrorsEnum.UNEXPECTED }
+            )
         }
     }
 
@@ -122,7 +116,6 @@ class UpdateCardViewModel(
                 it
             }
         }
-        noCategories.value = false
     }
 
 }

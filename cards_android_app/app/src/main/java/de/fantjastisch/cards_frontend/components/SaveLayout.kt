@@ -24,23 +24,26 @@ import de.fantjastisch.cards.R
 fun SaveLayout(
     onSaveClicked: () -> Unit,
     modifier: Modifier,
-    content: @Composable ColumnScope.() -> Unit
+    isInBottomSheet: Boolean = false,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize()
+            .run { if (!isInBottomSheet) fillMaxSize() else this }
             .padding(all = 16.dp),
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
-                .weight(1f)
+                .run { if (!isInBottomSheet) weight(1f) else this }
                 .verticalScroll(rememberScrollState())
         ) {
             content()
         }
         ElevatedButton(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth(),
             onClick = onSaveClicked
         ) {
             Text(text = stringResource(R.string.save_button_text))

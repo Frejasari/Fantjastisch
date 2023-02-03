@@ -31,7 +31,7 @@ fun DeleteCategoryDialog(
             Text(text = stringResource(R.string.delete_category_dialog_title))
         },
         text = {
-            Text(cat.label)
+            Text(text  = cat.label)
         },
         confirmButton = {
             Button(

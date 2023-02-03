@@ -1,6 +1,7 @@
 package de.fantjastisch.cards_frontend.learning_overview.learning_object_component
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.infrastructure.fold
@@ -15,8 +16,8 @@ class LearningObjectComponentViewModel(
 
     val error = mutableStateOf("")
     val progress = mutableStateOf(0)
-    val learningSystemLabel = mutableStateOf("Loading")
-
+    val learningSystemLabel = mutableStateOf("")
+    val isLoading = mutableStateOf(true)
     init {
         onPageLoaded()
     }
@@ -34,7 +35,17 @@ class LearningObjectComponentViewModel(
                 onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
                 onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
             )
+            isLoading.value = false
         }
 
+    }
+    fun getColor() : Color {
+        val color : Color
+        when {
+            progress.value < 33 -> color = Color(0xFFC53030)
+            progress.value < 66 -> color = Color(0xFFFF8707)
+            else -> color = Color(0xFF2B990D)
+        }
+        return color
     }
 }

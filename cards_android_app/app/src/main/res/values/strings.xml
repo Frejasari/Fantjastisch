@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Karten</string>
+  <string name="app_name">SmartStack</string>
   <!--    MENU TAB NAMES -->
   <string name="menu_learning_object_overview_label">Lernen</string>
   <string name="menu_glossar_label">Glossar</string>
@@ -32,6 +32,7 @@
   <string name="search_tag_placeholder">Nach Tag suchen</string>
   <string name="sort_label">Sortieren</string>
   <string name="filter_label">Filter</string>
+  <string name="select_category_label">Kategorien auswählen</string>
 
   <!-- Delete Dialogs -->
   <string name="delete_learningobject_dialog_title">Möchtest du dieses Lernobjekt wirklich löschen?</string>
@@ -40,7 +41,6 @@
   <string name="delete_link_dialog_title">Möchtest du diesen Link wirklich löschen?</string>
 
   <!-- Kategorien -->
-  <string name="select_category_label">Kategorie auswählen</string>
   <string name="create_category_headline">Kategorie erstellen</string>
   <string name="card_category_select_button">Select Categories</string>
   <string name="update_category_headline">Kategorie bearbeiten</string>
@@ -56,7 +56,7 @@
   <!-- Links -->
   <string name="create_link_headline">Link erstellen</string>
   <string name="update_link_headline">Link bearbeiten</string>
-  <string name="create_link_name">zu verknüpfendes Wort</string>
+  <string name="create_link_name">Link-Bezeichnung</string>
 
   <!-- Lernen -->
   <string name="create_learningobject_headline">Lernobjekt erstellen</string>
@@ -84,15 +84,14 @@
   <string name="move_cards_text">Karten verschieben</string>
   <string name="number_of_cards_text">Anzahl Karten</string>
   <string name="remaining_cards_in_box_text">Anzahl Karten verbleibend</string>
-
-  <!-- ? -->
-  <string name="overview">Übersicht</string>
+  <string name="alphabetic">Alphabetisch</string>
+  <string name="random">Zufällig</string>
 
   <string name="link_name">Link Name TODO</string>
 
   <string name="categories_error">Bitte wählen Sie eine Kategorie aus</string>
   <string name="categories_delete_error">Die Kategorie hat Unterkategorien</string>
-  <string name="create_link">Karte verlinken</string>
+  <string name="create_link">Kartenverknüpfungen</string>
 
   <string name="sort_cards_in_box_dialog_title">Anordnung der Karten</string>
 
@@ -101,6 +100,19 @@
   <string name="error_link_no_card">Bitte eine Ziel-Karte auswählen</string>
   <string name="error_unexpected">Ein unbekannter Fehler ist aufgetreten.</string>
   <string name="allgemein_card_label">Allgemeine Kartendaten</string>
-  <string name="allgemein_learningobject_label">Allgemeine Lernobjekt-Felder</string>
+  <string name="allgemein_learningobject_label">Allgemeine Lernobjektdaten</string>
+  <string name="error_check_input">Überprüfe deine Eingabe</string>
+  <string name="error_not_empty">Feld darf nicht leer sein.</string>
+  <string name="error_not_null">Feld darf nicht null sein.</string>
+  <string name="error_label_taken">Label ist bereits vergeben.</string>
+  <string name="error_category_does_not_exist">Kategorie existiert nicht.</string>
+  <string name="error_no_category">Es muss eine Kategorie ausgewaehlt werden.</string>
+  <string name="error_no_cycles">Zyklen sind nicht erlaubt.</string>
+  <string name="error_subcategories_not_null">Subkategorien dürfen nicht null sein.</string>
+  <string name="error_entity_does_not_exist">\"Entität exisitert nicht.\"</string>
+  <string name="error_card_already_exists">Karte existiert bereits.</string>
+  <string name="error_box_labels_null">Die Box-Labels dürfen nicht leer sein.</string>
+
+  "Feld darf nicht leer sein."
 
 </resources>

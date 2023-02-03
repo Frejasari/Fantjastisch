@@ -1,7 +1,6 @@
 package de.fantjastisch.cards_frontend.learning_object.create
 
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
-import de.fantjastisch.cards_frontend.util.mapError
 import org.openapitools.client.models.ErrorEntryEntity
 
 /**
@@ -23,12 +22,18 @@ class CreateLearningObjectValidator {
                 ErrorEntryEntity(
                     code = code,
                     field = "learningsystem",
-                    message = mapError(code)
+                    message = "Darf nicht null sein"
                 )
             )
         }
         if (selectedSystem == null || learningObjectLabel.isEmpty()) {
-            errors.add(ErrorEntryEntity(code = code, field = "label", message = mapError(code)))
+            errors.add(
+                ErrorEntryEntity(
+                    code = code,
+                    field = "label",
+                    message = "Darf nicht null sein"
+                )
+            )
         }
         return errors
     }

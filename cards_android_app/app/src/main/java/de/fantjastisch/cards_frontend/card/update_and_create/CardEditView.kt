@@ -17,8 +17,8 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.ExpandableRow
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import de.fantjastisch.cards_frontend.components.SaveLayout
-import de.fantjastisch.cards_frontend.infrastructure.ErrorsEnum
 import de.fantjastisch.cards_frontend.infrastructure.ShowErrorOnSignalEffect
+import de.fantjastisch.cards_frontend.util.ErrorsEnum
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 

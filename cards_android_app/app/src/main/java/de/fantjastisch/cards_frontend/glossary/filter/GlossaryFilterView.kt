@@ -29,9 +29,11 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
     @Composable
     override fun Content() {
         val viewModel = viewModel { GlossaryFilterViewModel() }
+
         SaveLayout(
             onSaveClicked = viewModel::onLoadPageClicked,
-            modifier = Modifier
+            modifier = Modifier,
+            isInBottomSheet = true
         ) {
 
             Row(
@@ -43,7 +45,10 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
                     text = stringResource(R.string.sort_label),
                     fontWeight = FontWeight.Medium,
                 )
-                Switch(checked = viewModel.sort.value, onCheckedChange = viewModel::onSortClicked)
+                Switch(
+                    checked = viewModel.sort.value,
+                    onCheckedChange = viewModel::onSortClicked
+                )
             }
             Divider()
             Text(

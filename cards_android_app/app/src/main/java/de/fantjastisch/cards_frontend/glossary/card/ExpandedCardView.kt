@@ -59,7 +59,7 @@ fun ExpandedCardView(
     )
 
     TwoTextsWithDivider(
-        headline = stringResource(R.string.answer_label),
+        headline = stringResource(R.string.tag_label),
         text = card.tag
     )
 

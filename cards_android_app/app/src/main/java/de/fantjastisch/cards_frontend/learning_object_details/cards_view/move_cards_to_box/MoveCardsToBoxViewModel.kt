@@ -24,7 +24,7 @@ class MoveCardsToBoxViewModel(
     val learningBoxNum = mutableStateOf(-1)
     var isLastBox = false
     var isFirstBox = false
-    var isLoading = mutableStateOf(true)
+    val isLoading = mutableStateOf(true)
 
     init {
         onPageLoaded()
