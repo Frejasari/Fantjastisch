@@ -1,6 +1,7 @@
 package de.fantjastisch.cards_frontend.glossary
 
 import de.fantjastisch.cards_frontend.card.CardRepository
+import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import kotlinx.coroutines.async
@@ -22,6 +23,14 @@ class GlossaryModel(
     private val cardRepository: CardRepository = CardRepository(),
 ) {
 
+    /**
+     * Sendet eine Anfrage für das Holen aller Karten an das Backend-Repository für Karten.
+     *
+     * @param categoryIds Die Liste der Kategorien-UUIDs, wonach alle Karten gefiltert werden sollen.
+     * @param search Ein (Teil-)String, wonach entweder in der Frage oder Antwort gesucht wird.
+     * @param tag Das Schlagwort, wonach gesucht wird.
+     * @param sort Alphabetische Sortierung von Tags.
+     */
     suspend fun getCards(
         categoryIds: List<UUID>,
         search: String,
@@ -35,6 +44,13 @@ class GlossaryModel(
     )
 
 
+    /**
+     * Sendet eine Anfrage an das Backend-Repository für Karten.
+     * Im Erfolgsfall wird eine Karte gelöscht.
+     *
+     * @param cardId UUID von der Karte, die gelöscht werden soll.
+     * @return RepoResult<Unit> (OnSuccess, OnUnexpectedError, ...)
+     */
     suspend fun deleteCard(cardId: UUID): RepoResult<Unit> = coroutineScope {
         val (apiResult, dbResult) = awaitAll(
             async { cardRepository.deleteCard(cardId = cardId) },

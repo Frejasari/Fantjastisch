@@ -53,18 +53,39 @@ class GlossaryFilterViewModel(
         }
     }
 
+    /**
+     * Speichert den übergebenen Suchbegriff in [search].
+     *
+     * @param query der Suchbegriff, wonach es gesucht wird.
+     */
     fun onSearchInput(query: String) {
         search.value = query
     }
 
+    /**
+     * Speichert das übergebene Schlagwort in [tag].
+     *
+     * @param query das Schlagwort, wonach es gesucht wird.
+     */
     fun onTagInput(query: String) {
         tag.value = query
     }
 
+    /**
+     * Speichert, ob die Karten alphabetisch nach Tags sorteirt werden müssen in [sort]
+     *
+     * @param sort true - die Karten sind alphabetisch nach Tags sortiert
+     *             false - die Karten sind nicht sortiert
+     */
     fun onSortClicked(sort: Boolean) {
         this.sort.value = sort
     }
 
+    /**
+     * Speichert die ausgewählten Kategorien als isChecked = true in [categories].
+     *
+     * @param categoryId Id der Kategorie, welche neu ausgewählt wurde.
+     */
     fun onCategorySelected(categoryId: UUID) {
         categories.value = categories.value.map {
             if (it.id == categoryId) {
@@ -75,6 +96,10 @@ class GlossaryFilterViewModel(
         }
     }
 
+    /**
+     * Setzt die Werte für das Filtern/Sortieren aller Karten
+     *
+     */
     fun onLoadPageClicked() {
         CardsFilters.filters.value = CardFilters(
             search = search.value,
