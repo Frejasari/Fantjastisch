@@ -3,6 +3,11 @@ package de.fantjastisch.cards_frontend.learning_object
 import androidx.room.*
 import java.util.*
 
+/**
+ * Internal Repository für Lernboxen. Enthält die Datenbankanfragen.
+ *
+ * @author Semjon Nirmann, Jessica Repty
+ */
 class InternalLearningObjectRepository(private val dao: LearningObjectDao) :
     LearningObjectDao by dao
 

@@ -36,6 +36,5 @@ fun CreateCategoryView(
         onUpdateCategoryClicked = viewModel::onCreateCategoryClicked,
     )
 
-
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 }

@@ -18,7 +18,6 @@ data class CardSelectItem(
     val isChecked: Boolean
 )
 
-
 /**
  * Rendert eine Liste an von Karten, die selektiert werden können.
  *

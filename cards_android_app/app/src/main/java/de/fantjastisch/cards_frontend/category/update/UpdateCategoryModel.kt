@@ -22,6 +22,13 @@ class UpdateCategoryModel(
     private val categoryRepository: CategoryRepository = CategoryRepository()
 ) {
 
+    /**
+     * Sendet eine Anfrage an das [categoryRepository] für das Updaten einer Kategorie.
+     *
+     * @param label Neues Label der Kategorie.
+     * @param subCategories Neue Unterkategorien der Kategorie.
+     * @return RepoResult<Unit> (OnSuccess, OnUnexpectedError, ...)
+     */
     suspend fun update(
         label: String,
         subCategories: List<CategorySelectItem>
@@ -33,6 +40,14 @@ class UpdateCategoryModel(
         )
     )
 
+    /**
+     * Hält die Informationen für eine [UpdateCategoryEntity].
+     *
+     * @property id Id der Kategorie.
+     * @property label Label der Kategorie.
+     * @property allCategories Alle Kategorien.
+     * @property subCategories Unterkategorien der Kategorie.
+     */
     data class UpdateCategory(
         val id: UUID,
         val label: String,
@@ -40,6 +55,12 @@ class UpdateCategoryModel(
         val subCategories: List<UUID>,
     )
 
+    /**
+     * Sendet eine Anfrage an das [categoryRepository] und kriegt im Erfolgsfall die zu bearbeitende
+     * Kategorie, sowie alle Kategorien zurück.
+     *
+     * @return RepoResult<UpdateCategory> OnSuccess: Eine [UpdateCategoryEntity]-Entität.
+     */
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(): RepoResult<UpdateCategory> = coroutineScope {
         // Runs coroutines in parallel and waits until all of them are done
@@ -66,6 +87,11 @@ class UpdateCategoryModel(
         }
     }
 
+    /**
+     * Sendet eine Anfrage an das [categoryRepository] und kriegt im Erfolgsfall alle Kategorien zurück.
+     *
+     * @return Eine Liste aller Kategorien, jeweils als [CategorySelectItem]-Entität.
+     */
     suspend fun getCategories(): List<CategorySelectItem>? {
         return when (val result = categoryRepository.getPage()) {
             is RepoResult.Success -> result.result

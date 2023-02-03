@@ -138,6 +138,13 @@ fun CardEditView(
     }
 }
 
+/**
+ * View die Textfeler für Frage, Antwort und Schlagwort beim Bearbeiten einer Karte.
+ *
+ * @param question Aktuelle Frage, der Karte.
+ * @param answer Aktuelle Antwort, der Karte.
+ * @param tag Aktuelles Schlagwort, der Karte.
+ */
 @Composable
 private fun GeneralCardEditFieldsView(
     question: TextFieldState,

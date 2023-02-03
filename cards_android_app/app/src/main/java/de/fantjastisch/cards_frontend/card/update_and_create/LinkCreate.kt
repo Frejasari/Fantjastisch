@@ -16,7 +16,15 @@ import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import java.util.*
 
-
+/**
+ * Zeigt, den Bereich in dem ein Link erstellt werden kann.
+ *
+ * @param linkName Label, des Links.
+ * @param cards Liste von allen Karten als [CardSelectItem]-Entitäten.
+ * @param onCardSelected Callback, wenn Karte angekreuzt.
+ *
+ * @author Freja Sender, Tamari Bayer, Jessica Repty
+ */
 @Composable
 fun ColumnScope.LinkCreate(
     linkName: TextFieldState,

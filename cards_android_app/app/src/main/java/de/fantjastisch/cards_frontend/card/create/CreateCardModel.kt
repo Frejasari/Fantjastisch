@@ -3,7 +3,6 @@ package de.fantjastisch.cards_frontend.card.create
 import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.card.content_overview.CardContentViewModel
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
@@ -24,6 +23,11 @@ class CreateCardModel(
     private val categoryRepository: CategoryRepository = CategoryRepository()
 ) : ViewModel() {
 
+    /**
+     * Sendet eine Anfrage an das [CategoryRepository] und kriegt alle Kategorien zurück.
+     *
+     * @return Eine Liste aller Kategorien.
+     */
     suspend fun getCategories(): List<CategorySelectItem>? {
         val result = categoryRepository.getPage()
         return when (result) {
@@ -40,6 +44,11 @@ class CreateCardModel(
         }
     }
 
+    /**
+     * Sendet eine Anfrage an das [CardRepository] und kriegt alle Karten zurück.
+     *
+     * @return Eine Liste aller Karten.
+     */
     suspend fun getCards(): List<CardSelectItem>? {
         return when (val result = cardRepository.getPage(null,null,null,false)) {
             is RepoResult.Success -> result.result.map { card ->
@@ -53,6 +62,15 @@ class CreateCardModel(
         }
     }
 
+    /**
+     * Sendet eine Anfrage an das [CardRepository] für das Erstellen einer Karte.
+     *
+     * @param answer Antwort der zu erstellenden Karte.
+     * @param question Frage der zu erstellenden Karte.
+     * @param tag Schlagwortes der zu erstellenden Karte.
+     * @param categories Zugehörige Kategorien der zu erstellenden Karte.
+     * @param links Links der zu erstellenden Karte.
+     */
     suspend fun createCard(
         answer: String,
         question: String,
