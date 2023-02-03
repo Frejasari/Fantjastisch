@@ -17,6 +17,12 @@ class CardContentModel(
     private val id: UUID
 ) {
 
+    /**
+     * Holt eine Karte
+     *
+     * @return RepoResult<CardEntity> Falls die Karte mit der UUID existiert, dann die Karte als [CardEntity]
+     *  sonst null
+     */
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(): RepoResult<CardEntity> = coroutineScope {
         // Runs coroutines in parallel and waits until all of them are done
