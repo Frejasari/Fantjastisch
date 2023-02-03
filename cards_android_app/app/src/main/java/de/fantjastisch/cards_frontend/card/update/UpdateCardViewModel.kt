@@ -14,10 +14,10 @@ import java.util.*
 /**
  * Stellt die Daten für die [UpdateCardView] bereit und nimmt seine Anfragen entgegen.
  *
+ * @author Freja Sender, Tamari Bayer, Jessica Repty
+ *
  * @property cardModel Das zugehörige Model, welches die Logik kapselt.
  * @param id Id, der zu bearbeitende Karte
- *
- * @author Freja Sender, Tamari Bayer, Jessica Repty
  */
 class UpdateCardViewModel(
     id: UUID,
@@ -31,14 +31,29 @@ class UpdateCardViewModel(
     val cardTag = mutableStateOf("")
     val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
 
+    /**
+     * Setzt die Frage der Karte auf den übergebenen Wert.
+     *
+     * @param value Neue Frage der Karte.
+     */
     fun setCardQuestion(value: String) {
         cardQuestion.value = value
     }
 
+    /**
+     * Setzt die Antwort der Karte auf den übergebenen Wert.
+     *
+     * @param value Neue Antwort der Karte.
+     */
     fun setCardAnswer(value: String) {
         cardAnswer.value = value
     }
 
+    /**
+     * Setzt das Schlagwort der Karte auf den übergebenen Wert.
+     *
+     * @param value Neues Schlagwort der Karte.
+     */
     fun setCardTag(value: String) {
         cardTag.value = value
     }

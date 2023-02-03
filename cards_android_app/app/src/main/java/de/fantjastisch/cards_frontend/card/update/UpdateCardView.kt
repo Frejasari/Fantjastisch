@@ -10,6 +10,14 @@ import java.util.*
 
 
 //TODO Fehler anzeigen.
+/**
+ * Rendert die Seite "Karteikarte bearbeiten".
+ *
+ * @author Freja Sender, Tamari Bayer
+ *
+ * @param modifier Modifier für die Seite.
+ * @param id Id der zu bearbeitende Karte.
+ */
 @Composable
 fun UpdateCardView(
     modifier: Modifier = Modifier,

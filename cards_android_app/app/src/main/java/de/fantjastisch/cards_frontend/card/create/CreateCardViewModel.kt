@@ -24,8 +24,6 @@ class CreateCardViewModel(
 
     // states, die vom View gelesen werden können -> automatisches Update vom View.
     val card = mutableStateOf(listOf<CardSelectItem>())
-
-    // states, die vom view gelesen werden können -> automatisches Update vom View.
     val cardId = mutableStateOf<UUID?>(null)
     val isFinished = mutableStateOf(false)
 
@@ -50,7 +48,7 @@ class CreateCardViewModel(
     }
 
     /**
-     * Setzt die Frage der Karte auf den übergebenen Wert.
+     * Speichert die übergebene Frage der Karte in [cardQuestion].
      *
      * @param value Neue Frage der Karte.
      */
@@ -59,7 +57,7 @@ class CreateCardViewModel(
     }
 
     /**
-     * Setzt die Antwort der Karte auf den übergebenen Wert.
+     * Speichert die übergebene Antwort der Karte in [cardAnswer].
      *
      * @param value Neue Antwort der Karte.
      */
@@ -68,7 +66,7 @@ class CreateCardViewModel(
     }
 
     /**
-     * Setzt das Schlagwort der Karte auf den übergebenen Wert.
+     * Speichert das eingegebene Schlagwort der Karte in [cardTag].
      *
      * @param value Neues Schlagwort der Karte.
      */
@@ -77,9 +75,9 @@ class CreateCardViewModel(
     }
 
     /**
-     * Weist der Karte die übergebene Kategorie zu.
+     * Speichert die ausgewählten Kategorien als isChecked = true in [cardCategories].
      *
-     * @param id Id der Kategorie, welche ausgewählt wurde.
+     * @param id Id der Kategorie, welche neu ausgewählt wurde.
      */
     fun onCategorySelected(id: UUID) {
         cardCategories.value = cardCategories.value.map {
@@ -92,8 +90,9 @@ class CreateCardViewModel(
     }
 
     /**
-     * Wenn Karte gespeichert wird -> [CreateCardModel] erstellt die Karte und sendet eine
-     * Anfrage an die Datenbank.
+     * Wenn Karte gespeichert wird -> [CreateCardModel] erstellt die Karte mit den in den Variablen
+     * gespeicherten Daten und sendet eine Anfrage an die Datenbank.
+     *
      */
     fun onCreateCardClicked() {
         errors.value = emptyList()

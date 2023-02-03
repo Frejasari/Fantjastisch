@@ -96,9 +96,9 @@ class UpdateCardModel(
     }
 
     /**
-     * TODO
+     * Sendet eine Anfrage an das Backend-Repository für Karten und kriegt im Erfolgsfall alle Karten zurück.
      *
-     * @return
+     * @return Eine Liste aller Karten als [CardSelectItem]-Entitäten.
      */
     suspend fun getCards(): List<CardSelectItem>? {
         return when (val result = cardRepository.getPage(null,null,null,false)) {
