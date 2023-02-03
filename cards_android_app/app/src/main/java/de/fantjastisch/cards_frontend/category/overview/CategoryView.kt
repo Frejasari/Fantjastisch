@@ -30,7 +30,9 @@ import org.openapitools.client.models.CategoryEntity
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun CategoryView(
-    category: CategoryEntity
+    category: CategoryEntity,
+    categoryExpanded: Boolean,
+    onItemExpanded: () -> Unit
 ) {
     val viewModel = viewModel { CategoryOverviewViewModel() }
     var expanded by remember { mutableStateOf(false) }
@@ -38,7 +40,15 @@ fun CategoryView(
     FantMainNavigator.current
     val context = LocalContext.current
 
-    ExpandableCard(onClick = { expanded = !expanded }) {
+    expanded = categoryExpanded && !viewModel.isParentOpen.value
+
+
+    ExpandableCard(
+        onClick = {
+            expanded = !expanded
+            onItemExpanded()
+            viewModel.manageState(null)
+        }) {
         Column {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -53,23 +63,16 @@ fun CategoryView(
                 )
                 CategoryContextMenu(
                     id = category.id,
-                    onDeleteClicked = {
-                        if (category.subCategories.isNotEmpty()) {
-                            Toast.makeText(
-                                context,
-                                R.string.categories_delete_error,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            viewModel.onTryDeleteCategory(category)
-                        }
+                    onDeleteClicked = { viewModel.onTryDeleteCategory(category)
                     }
                 )
             }
-
             if (expanded) {
                 ExpandedCategoryView(category)
+                viewModel.isParentOpen.value = false
             }
         }
     }
 }
+
+

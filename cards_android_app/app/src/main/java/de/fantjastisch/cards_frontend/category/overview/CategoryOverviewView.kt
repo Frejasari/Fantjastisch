@@ -7,12 +7,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.category.DeleteCategoryDialog
+import de.fantjastisch.cards_frontend.infrastructure.ShowErrorOnSignalEffect
+import kotlinx.coroutines.launch
 
 /**
  * Rendert die Category Overview Seite
@@ -47,8 +48,9 @@ fun CategoryOverviewView(modifier: Modifier = Modifier) {
             viewModel.onPageLoaded()
         })
 
+    ShowErrorOnSignalEffect(viewModel.error.value, viewModel::onToastShown)
     val listState = rememberLazyListState()
-
+    val coroutineScope = rememberCoroutineScope()
 
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     LazyColumn(
@@ -59,8 +61,17 @@ fun CategoryOverviewView(modifier: Modifier = Modifier) {
         contentPadding = PaddingValues(vertical = 16.dp),
         state = listState
     ) {
-        itemsIndexed(viewModel.categories.value) { _, category ->
-            CategoryView(category)
+        itemsIndexed(viewModel.categories.value) { index, category ->
+            CategoryView(
+                category = category,
+                categoryExpanded = viewModel.manageStateOfCat.value != null
+                        && category.id == viewModel.manageStateOfCat.value
+                        && !viewModel.isParentOpen.value
+            ) {
+                coroutineScope.launch {
+                        listState.animateScrollToItem(index = index, scrollOffset = 1)
+                }
+            }
         }
     }
 }
