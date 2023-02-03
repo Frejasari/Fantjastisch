@@ -91,7 +91,10 @@
 
   <string name="categories_error">Bitte wählen Sie eine Kategorie aus</string>
   <string name="categories_delete_error">Die Kategorie hat Unterkategorien</string>
+
+  <string name="categories_not_empty_error">Es gibt Karten zu der Kategorie</string>
   <string name="create_link">Kartenverknüpfungen</string>
+
 
   <string name="sort_cards_in_box_dialog_title">Anordnung der Karten</string>
 

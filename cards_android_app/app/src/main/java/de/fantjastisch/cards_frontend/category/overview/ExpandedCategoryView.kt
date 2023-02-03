@@ -1,5 +1,6 @@
 package de.fantjastisch.cards_frontend.category.overview
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,7 +27,7 @@ import org.openapitools.client.models.CategoryEntity
  */
 @Composable
 fun ExpandedCategoryView(
-    category: CategoryEntity
+    category: CategoryEntity,
 ) {
     val viewModel = viewModel { CategoryOverviewViewModel() }
     if (category.subCategories.isEmpty()) {
@@ -51,17 +52,19 @@ fun ExpandedCategoryView(
                 viewModel.categories.value.filter { category -> category.id == it }
                     .map { category -> category.label }.first()
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clickable {
+                        viewModel.manageState(it)
+                    }
+                    .padding(10.dp)
+
             ) {
                 Text(
                     modifier = Modifier
                         .weight(6f)
                         .padding(start = 16.dp),
                     text = nameOfSubcategory.value
-                )
-                CategoryContextMenu(
-                    id = category.id,
-                    onDeleteClicked = { viewModel.onTryDeleteCategory(category) }
                 )
             }
         }
