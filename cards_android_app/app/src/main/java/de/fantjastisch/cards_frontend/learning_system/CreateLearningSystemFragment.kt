@@ -8,6 +8,12 @@ import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 
+
+/**
+ * Zeigt den Screen um ein Lernsystem zu erstellen.
+ *
+ * @author
+ */
 class CreateLearningSystemFragment : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable

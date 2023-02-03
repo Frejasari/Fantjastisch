@@ -5,27 +5,50 @@ import de.fantjastisch.cards_frontend.infrastructure.client
 import de.fantjastisch.cards_frontend.infrastructure.enqueue
 import de.fantjastisch.cards_frontend.infrastructure.toRepoResponse
 import org.openapitools.client.apis.LearningSystemApi
-import org.openapitools.client.models.CreateLearningSystemEntity
-import org.openapitools.client.models.ErrorResponseEntity
-import org.openapitools.client.models.LearningSystemEntity
-import org.openapitools.client.models.UpdateLearningSystemEntity
+import org.openapitools.client.models.*
 import retrofit2.awaitResponse
 import java.util.*
 
+
+/**
+ * Repository kommuniziert mit LearningSystemBackend
+ *
+ * @author
+ */
 class LearningSystemRepository {
 
     private val service = client.createService(LearningSystemApi::class.java)
 
+    /**
+     * Sendet eine Datenbankanfrage an das Backend und kriegt im Erfolgsfall für die
+     * übergebene Id, das passende Lernsystem.
+     *
+     * @param id Id, des gesuchten Lernsystems.
+     * @return RepoResponse<LearningSystemEntity> OnSuccess: Lernsystem als [LearningSystemEntity]-Entität.
+     */
     suspend fun getLearningSystem(
         id: UUID,
     ): RepoResult<LearningSystemEntity> = service.getLearningSystem(id)
         .awaitResponse()
         .toRepoResponse()
 
+    /**
+     * Sendet eine Anfrage an das Backend und kriegt im Erfolgsfall alle
+     * vorhandenen Lernsysteme zurück.
+     *
+     * @return RepoResult<List<LearningSystemEntity>> OnSuccess: Liste an
+     *         Lernsystemen als [LearningSystemEntity]-Entitäten.
+     */
     suspend fun getPage() = service.getLearningSystemList()
         .awaitResponse()
         .toRepoResponse()
 
+    /**
+     * Sendet eine Anfrage an das Backend, um ein Lernsystem in die Datenbank zu speichern.
+     *
+     * @param learningSystem Lernsystem, welches erzeugt werden soll.
+     * @return RepoResponse<String> OnSuccess: die ID der eingefügten Entität
+     */
     suspend fun createLearningsystem(
         learningSystem: CreateLearningSystemEntity,
     ) = service.createLearningSystem(learningSystem)
