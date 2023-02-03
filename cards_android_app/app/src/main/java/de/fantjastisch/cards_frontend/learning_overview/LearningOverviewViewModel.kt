@@ -22,7 +22,7 @@ class LearningOverviewViewModel(
     val error = mutableStateOf("")
 
     /**
-     * Ladet alle existierende Lernobjekte, indem [LearningOverviewModel] angefragt wird.
+     * Lädt alle existierende Lernobjekte, indem [LearningOverviewModel] angefragt wird.
      *
      */
     fun onPageLoaded() {

@@ -15,7 +15,14 @@ import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import de.fantjastisch.cards_frontend.util.LoadingIcon
 import de.fantjastisch.cards_frontend.util.LoadingWrapper
 
-
+/**
+ * Rendert die Seite Karten im Lernobjekt verschieben.
+ *
+ * @param modifier Modifier für die Seite.
+ * @param viewModel ViewModel, die die benötigten Daten zur Verfügung stellt.
+ *
+ * @author
+ */
 @Composable
 fun MoveCardsToBoxView(
     modifier: Modifier = Modifier,

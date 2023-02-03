@@ -18,9 +18,9 @@ import java.util.*
 /**
  * Rendert die Seite "Lernsystem erstellen".
  *
- * @author
- *
  * @param modifier Modifier für die Seite.
+ *
+ * @author
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

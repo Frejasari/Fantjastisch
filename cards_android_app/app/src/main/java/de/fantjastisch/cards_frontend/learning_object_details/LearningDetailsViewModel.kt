@@ -5,9 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
+import de.fantjastisch.cards_frontend.learning_overview.LearningOverview
 import kotlinx.coroutines.launch
 import java.util.*
 
+/**
+ * Stellt die Daten für die [LearningDetailsView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property learningObjectId Die UUID des Lernobjekts, welches dargestellt werden soll.
+ * @property model Das dazugehörige Model, welches die Logik kapselt.
+ *
+ * @author
+ */
 class LearningDetailsViewModel(
     val learningObjectId: UUID,
     val model: LearningDetailsModel = LearningDetailsModel()
@@ -17,6 +26,11 @@ class LearningDetailsViewModel(
     val error = mutableStateOf("")
 
 
+    /**
+     * Lädt die interne Daten (Liste von Lernboxen mit Anzahl an Karten und die Bezeichnung)
+     * eines Lernobjekts.
+     *
+     */
     fun onPageLoaded() {
         viewModelScope.launch() {
             model.initializePage(learningObjectId = learningObjectId).fold(

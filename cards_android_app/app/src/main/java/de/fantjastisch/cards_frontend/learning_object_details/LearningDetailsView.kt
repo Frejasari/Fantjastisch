@@ -15,7 +15,13 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import java.util.*
 
-
+/**
+ * Rendert die Seite Lernobjektansicht.
+ *
+ * @param modifier Modifier für die Seite.
+ * @param learningObjectId Die UUID des Lernobjekts, welches geöffnet werden soll.
+ * @param screenKey TODO
+ */
 @Composable
 fun LearningDetailsView(
     modifier: Modifier = Modifier,

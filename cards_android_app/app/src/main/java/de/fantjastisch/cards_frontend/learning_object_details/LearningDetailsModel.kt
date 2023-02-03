@@ -11,16 +11,37 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import java.util.*
 
+/**
+ * Kapselt die Logik für [LearningDetailsViewModel]
+ * Fungiert als Vermittler zwischen Repository und ViewModel
+ *
+ * @property learningBoxRepository Lernbox Repository
+ * @property learningObjectRepository Lernobjekt Repository
+ *
+ * @author
+ */
 class LearningDetailsModel(
     private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(),
     private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository()
 ) : ViewModel() {
 
+    /**
+     * Hält die interne Daten eines Lernobjekts
+     *
+     * @property learningBoxes Liste der Anzahl an Karten pro Lernbox
+     * @property learningObjectLabel Die Bezeichnung des Lernobjekts
+     */
     data class LearningDetails(
         val learningBoxes: List<LearningBoxWitNrOfCards>,
         val learningObjectLabel: String
     )
 
+    /**
+     * Holt das entsprechende Lernobjekt und dessen Lernboxen.
+     *
+     * @param learningObjectId Die UUID des Lernobjekts, das geholt werden muss.
+     * @return RepoResult<LearningDetails> OnSuccess: Das Lernobjekt als [LearningDetails]
+     */
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(learningObjectId: UUID): RepoResult<LearningDetails> =
         coroutineScope {

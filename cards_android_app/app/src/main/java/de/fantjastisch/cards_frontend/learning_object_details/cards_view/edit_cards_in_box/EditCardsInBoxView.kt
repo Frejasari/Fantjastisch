@@ -12,7 +12,14 @@ import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
 import de.fantjastisch.cards_frontend.util.LoadingIcon
 import de.fantjastisch.cards_frontend.util.LoadingWrapper
 
-
+/**
+ * Rendert die Seite Karten in dieser Box.
+ *
+ * @param modifier Modifier für die Seite.
+ * @param viewModel Die ViewModel, die die Daten zur Verfügung stellt.
+ *
+ * @author
+ */
 @Composable
 fun EditCardsInBoxView(
     modifier: Modifier = Modifier,
