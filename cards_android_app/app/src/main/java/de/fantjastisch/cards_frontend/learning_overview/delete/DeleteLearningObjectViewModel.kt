@@ -1,8 +1,8 @@
 package de.fantjastisch.cards_frontend.learning_overview.delete
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
 import java.util.*
@@ -16,9 +16,8 @@ import java.util.*
 class DeleteLearningObjectViewModel(
     private val learningObjectId: UUID,
     private val model: DeleteLearningObjectModel = DeleteLearningObjectModel()
-) : ViewModel() {
+) : ErrorHandlingViewModel() {
 
-    val error = mutableStateOf<String?>(null)
     val isFinished = mutableStateOf(false)
 
     /**
@@ -26,15 +25,15 @@ class DeleteLearningObjectViewModel(
      *
      */
     fun onDeleteClicked() {
-        error.value = null
         viewModelScope.launch {
-            model.deleteLearningObject(learningObjectId = learningObjectId).fold(
-                onSuccess = {
-                    isFinished.value = true
-                },
-                onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
-                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
-            )
+            model.deleteLearningObject(learningObjectId = learningObjectId)
+                .fold(
+                    onSuccess = {
+                        isFinished.value = true
+                    },
+                    onValidationError = ::setValidationErrors,
+                    onUnexpectedError = ::setUnexpectedErrors,
+                )
         }
     }
 }

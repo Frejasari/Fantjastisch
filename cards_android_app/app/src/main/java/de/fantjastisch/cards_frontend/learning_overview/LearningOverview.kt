@@ -7,7 +7,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,7 +15,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantTopBar
-import de.fantjastisch.cards_frontend.learning_overview.learning_object_component.LearningObjectComponent
+import de.fantjastisch.cards_frontend.infrastructure.effects.OnFirstLoadedSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
+import de.fantjastisch.cards_frontend.learning_overview.learning_object_component.LearningObjectView
 
 /**
  * Zeigt den Screen für alle Lernobjekten
@@ -48,13 +49,9 @@ fun LearningOverview(
     modifier: Modifier = Modifier
 ) {
     val viewModel = viewModel { LearningOverviewViewModel() }
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = Unit,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            viewModel.onPageLoaded()
-        })
+    OnFirstLoadedSignalEffect(onPageLoaded = viewModel::onPageLoaded)
+    ShowErrorOnSignalEffect(viewModel = viewModel)
+
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     if (viewModel.learningObjects.value.isEmpty()) {
         Row(
@@ -74,7 +71,7 @@ fun LearningOverview(
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             items(viewModel.learningObjects.value) { learningObject ->
-                LearningObjectComponent(
+                LearningObjectView(
                     learningObject = learningObject,
                     onDeleteSuccessful = viewModel::onPageLoaded
                 )

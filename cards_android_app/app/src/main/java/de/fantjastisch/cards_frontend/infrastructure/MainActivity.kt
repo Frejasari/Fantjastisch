@@ -5,24 +5,19 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.TipsAndUpdates
-import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
@@ -56,29 +51,31 @@ class MainActivity : AppCompatActivity() {
             CardsAppTheme {
                 val snackbarHostState = remember { SnackbarHostState() }
                 Box {
-                    TabNavigator(tab = mainScreenTabs.first()) { tabNavigator ->
-                        BottomSheetNavigator(sheetShape = MaterialTheme.shapes.medium) { bottomSheetNavigator ->
-                            // Der app Navigator, laesst sich ueberall in
-                            // Compose mit LocalNavigator.currentOrThrow ansprechen
-                            Navigator(screen = MainScreen()) { navigator ->
-                                CompositionLocalProvider(
-                                    FantMainNavigator provides navigator,
-                                    FantTabNavigator provides tabNavigator,
-                                    FantBottomSheetNavigator provides bottomSheetNavigator,
-                                    SnackbarProvider provides snackbarHostState
-                                ) {
-                                    // Rendert den derzeitigen Screen und die Uebergaenge
-                                    FadeTransition(navigator = navigator)
+                    CompositionLocalProvider(
+                        SnackbarProvider provides snackbarHostState,
+                    ) {
+                        TabNavigator(tab = mainScreenTabs.first()) { tabNavigator ->
+                            BottomSheetNavigator(sheetShape = MaterialTheme.shapes.medium) { bottomSheetNavigator ->
+                                // Der app Navigator, laesst sich ueberall in
+                                // Compose mit LocalNavigator.currentOrThrow ansprechen
+                                Navigator(screen = MainScreen()) { navigator ->
+                                    CompositionLocalProvider(
+                                        FantMainNavigator provides navigator,
+                                        FantTabNavigator provides tabNavigator,
+                                        FantBottomSheetNavigator provides bottomSheetNavigator,
+                                    ) {
+                                        // Rendert den derzeitigen Screen und die Uebergaenge
+                                        FadeTransition(navigator = navigator)
+                                    }
                                 }
                             }
                         }
-                    }
-
-                    SnackbarHost(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        hostState = snackbarHostState
-                    ) { snackbarData: SnackbarData ->
-                        CustomSnackBar(snackbarData)
+                        SnackbarHost(
+                            modifier = Modifier.align(Alignment.TopCenter),
+                            hostState = snackbarHostState
+                        ) { snackbarData: SnackbarData ->
+                            CustomSnackBar(snackbarData)
+                        }
                     }
                 }
             }

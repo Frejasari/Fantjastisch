@@ -1,18 +1,15 @@
 package de.fantjastisch.cards_frontend.category.overview
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.fantjastisch.cards_frontend.card.update.UpdateCardView
+import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.util.ErrorsEnum
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CategoryEntity
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Stellt die Daten für die [CategoryOverviewView] bereit und nimmt seine Anfragen entgegen.
@@ -23,11 +20,10 @@ import kotlin.collections.ArrayList
  */
 class CategoryOverviewViewModel(
     private val categoryGraphModel: CategoryOverviewModel = CategoryOverviewModel()
-) : ViewModel() {
+) : ErrorHandlingViewModel() {
 
     val categories = mutableStateOf<List<CategoryEntity>>(emptyList())
     val cards = mutableStateOf<List<CardEntity>>(emptyList())
-    val error = mutableStateOf<ErrorsEnum>(ErrorsEnum.NO_ERROR)
     val currentDeleteDialog = mutableStateOf<DeletionProgress?>(null)
     val isParentOpen = mutableStateOf(false)
     val manageStateOfCat = mutableStateOf<UUID?>(null)
@@ -44,7 +40,7 @@ class CategoryOverviewViewModel(
                     categories.value = result.result
                 }
                 is RepoResult.Error -> Unit
-                is RepoResult.ServerError -> Unit
+                is RepoResult.ServerError -> error.value = ErrorsEnum.NETWORK
             }
         }
     }
@@ -68,13 +64,15 @@ class CategoryOverviewViewModel(
         currentDeleteDialog.value = DeletionProgress.ConfirmWithUser(cat)
     }
 
-    /**
+  /*  /**
      * Setzt alle Fehler zurück, nachdem ein Fehler angezeigt wurde
      *
      */
-    fun onToastShown() {
+     fun onToastShown() {
         error.value = ErrorsEnum.NO_ERROR
     }
+    */
+
 
     /**
      * Kategorie soll gelöscht werden -> [categoryGraphModel] löscht die Kategorie, indem Sie die
@@ -95,33 +93,31 @@ class CategoryOverviewViewModel(
                     currentDeleteDialog.value = null
                 }
                 is RepoResult.Error -> {
+                    errors.value = result.errors
                     val empty = result.errors.map {
                         it.code
-                    }.firstOrNull() { it == ErrorEntryEntity.Code.cATEGORYNOTEMPTYVIOLATION }
+                    }.firstOrNull { it == ErrorEntryEntity.Code.cATEGORYNOTEMPTYVIOLATION }
                     if (empty != null) {
                         error.value = ErrorsEnum.CATEGORY_NOT_EMPTY_ERROR
                     } else {
-                        error.value = ErrorsEnum.CHECK_INPUT
+                        setValidationErrors(result.errors)
+
                     }
                 }
-                is RepoResult.ServerError -> {
-                    // Fehler anzeigen:
-                    error.value = ErrorsEnum.NETWORK
-                }
+                is RepoResult.ServerError -> setUnexpectedErrors()
             }
         }
     }
 
     /**
      * Kategorie Löschvorgang wurde durch Nutzer abgebrochen. Dialogfenster schließen.
-     *
      */
     fun onDeleteCategoryAborted() {
         currentDeleteDialog.value = null
     }
 
     /**
-     * Dialog Fenster für das Bestätigen des Löschens einer Kategorie.
+     * Klasse, die den State für das Dialog Fenster für das Bestätigen des Löschens einer Kategorie hält.
      *
      */
     sealed class DeletionProgress {

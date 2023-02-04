@@ -17,8 +17,6 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.ExpandableRow
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import de.fantjastisch.cards_frontend.components.SaveLayout
-import de.fantjastisch.cards_frontend.infrastructure.ShowErrorOnSignalEffect
-import de.fantjastisch.cards_frontend.util.ErrorsEnum
 import org.openapitools.client.models.LinkEntity
 import java.util.*
 
@@ -38,8 +36,6 @@ import java.util.*
  * @param onCardSelected Funktion, mit der eine Karte ausgewählt wird.
  * @param onCreateLinkClicked Funktion, mit der eine Karte erzeugt wird.
  * @param onDeleteLinkClicked Funktion, mit der ein Link gelöscht wird.
- * @param toast Text von dem Toast
- * @param onToastShown Callback, sobald der Toast angezeigt wurde.
  *
  * @author Freja Sender, Tamari Bayer
  */
@@ -58,16 +54,14 @@ fun CardEditView(
     onUpdateCardClicked: () -> Unit,
     onCardSelected: (UUID) -> Unit,
     onCreateLinkClicked: () -> Unit,
-    onDeleteLinkClicked: (LinkEntity) -> Unit,
-    toast: ErrorsEnum,
-    onToastShown: () -> Unit
+    onDeleteLinkClicked: (LinkEntity) -> Unit
+
 ) {
 
     var expanded by remember { mutableStateOf(true) }
     var expandedForLinks by remember { mutableStateOf(false) }
     var expandedForCat by remember { mutableStateOf(false) }
 
-    ShowErrorOnSignalEffect(toast, onToastShown)
 
     SaveLayout(
         onSaveClicked = onUpdateCardClicked,

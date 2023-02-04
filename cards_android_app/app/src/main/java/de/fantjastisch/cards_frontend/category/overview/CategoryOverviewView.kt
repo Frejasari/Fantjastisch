@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.category.DeleteCategoryDialog
-import de.fantjastisch.cards_frontend.infrastructure.ShowErrorOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.OnFirstLoadedSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import kotlinx.coroutines.launch
 
 /**
@@ -26,6 +28,9 @@ import kotlinx.coroutines.launch
 fun CategoryOverviewView(modifier: Modifier = Modifier) {
 
     val viewModel = viewModel { CategoryOverviewViewModel() }
+    // Lädt die Cards neu, wenn wir aus einem anderen Tab wieder hier rein kommen.
+    OnFirstLoadedSignalEffect(onPageLoaded = viewModel::onPageLoaded)
+    ShowErrorOnSignalEffect(viewModel = viewModel)
 
     val deletionProgress = viewModel.currentDeleteDialog.value
     if (deletionProgress != null) {
@@ -39,16 +44,6 @@ fun CategoryOverviewView(modifier: Modifier = Modifier) {
         )
     }
 
-    // Lädt die Cards neu, wenn wir aus einem anderen Tab wieder hier rein kommen.
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = Unit,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            viewModel.onPageLoaded()
-        })
-
-    ShowErrorOnSignalEffect(viewModel.error.value, viewModel::onToastShown)
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -69,7 +64,7 @@ fun CategoryOverviewView(modifier: Modifier = Modifier) {
                         && !viewModel.isParentOpen.value
             ) {
                 coroutineScope.launch {
-                        listState.animateScrollToItem(index = index, scrollOffset = 1)
+                    listState.animateScrollToItem(index = index, scrollOffset = 1)
                 }
             }
         }

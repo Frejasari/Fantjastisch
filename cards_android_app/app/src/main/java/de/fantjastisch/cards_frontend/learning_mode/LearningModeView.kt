@@ -9,19 +9,18 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.accompanist.flowlayout.MainAxisAlignment
-import com.google.accompanist.flowlayout.SizeMode
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.components.TwoTextsWithDivider
 import de.fantjastisch.cards_frontend.glossary.LinkWithoutDeleteComponent
-import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
-import de.fantjastisch.cards_frontend.util.LoadingIcon
+import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.OnFirstLoadedSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import de.fantjastisch.cards_frontend.util.LoadingWrapper
 import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import java.util.*
@@ -52,16 +51,12 @@ fun LearningModeView(
             sort = sort
         )
     }
-
-    LaunchedEffect(
-        key1 = Unit,
-        block = {
-            viewModel.onPageLoaded()
-        })
-
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
+    ShowErrorOnSignalEffect(viewModel = viewModel)
+    OnFirstLoadedSignalEffect(onPageLoaded = viewModel::onPageLoaded)
 
-    LoadingWrapper(isLoading=viewModel.isLoading.value) {
+
+    LoadingWrapper(isLoading = viewModel.isLoading.value) {
         Column(
             modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
@@ -89,6 +84,10 @@ fun LearningModeView(
             Divider(
                 Modifier.padding(horizontal = 7.dp, vertical = 10.dp)
             )
+            TwoTextsWithDivider(
+                headline = stringResource(R.string.tag_label),
+                text = viewModel.currentCard.value!!.tag
+            )
             LearningModeCardComponent(
                 content = if (viewModel.isShowingAnswer.value) {
                     viewModel.currentCard.value!!.answer
@@ -97,9 +96,11 @@ fun LearningModeView(
                 },
                 onClick = viewModel::onFlipCardClicked,
             )
-            Column(modifier = Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+            ) {
                 val currentCard = viewModel.currentCard.value
                 if (currentCard != null) {
                     FlowRow(

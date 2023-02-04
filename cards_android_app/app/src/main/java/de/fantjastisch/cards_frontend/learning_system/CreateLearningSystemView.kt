@@ -12,7 +12,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import de.fantjastisch.cards_frontend.components.SaveLayout
-import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import java.util.*
 
 /**
@@ -29,6 +30,7 @@ fun CreateLearningSystemView(
 ) {
     val viewModel = viewModel { CreateLearningSystemViewModel() }
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
+    ShowErrorOnSignalEffect(viewModel = viewModel)
 
     // Componente die ihre Kinder untereinander anzeigt.
     SaveLayout(

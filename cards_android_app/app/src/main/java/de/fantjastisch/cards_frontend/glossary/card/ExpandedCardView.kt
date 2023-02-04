@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardContextMenu
+import de.fantjastisch.cards_frontend.components.TwoTextsWithDivider
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.glossary.LinkWithoutDeleteComponent
 import org.openapitools.client.models.CardEntity
@@ -80,25 +81,4 @@ fun ExpandedCardView(
             }
         }
     }
-}
-
-/**
- * Zeigt 2 Texte übereinander an und darunter einen Divider.
- *
- * @author Freja Sender
- * **/
-@Composable
-private fun TwoTextsWithDivider(headline: String, text: String) {
-    Text(
-        text = headline,
-        fontWeight = FontWeight.Light
-    )
-    Text(
-        text = text
-    )
-
-    Divider(
-        modifier = Modifier
-            .padding(vertical = 10.dp)
-    )
 }

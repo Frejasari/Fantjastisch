@@ -6,10 +6,10 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.category.update_and_create.CategoryEdit
-import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import java.util.*
 
-//TODO Fehler anzeigen.
 /**
  * Rendert die Seite "Kategorie bearbeiten".
  *
@@ -25,6 +25,8 @@ fun UpdateCategoryView(
 ) {
 
     val viewModel = viewModel { UpdateCategoryViewModel(id = id) }
+    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
+    ShowErrorOnSignalEffect(viewModel = viewModel)
 
     CategoryEdit(
         modifier = modifier,
@@ -33,11 +35,10 @@ fun UpdateCategoryView(
             errors = viewModel.errors.value,
             onValueChange = viewModel::setLabel,
         ),
-        categories = viewModel.allCats.value,
+        categories = viewModel.allCategories.value,
         onCategorySelected = viewModel::onCategorySelected,
         onUpdateCategoryClicked = viewModel::onUpdateCategoryClicked,
     )
 
-    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 }
 

@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsFragment
 import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObjectDialog
@@ -33,7 +34,7 @@ import de.fantjastisch.cards_frontend.util.LoadingWrapper
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LearningObjectComponent(
+fun LearningObjectView(
     learningObject: LearningObject,
     onDeleteSuccessful: () -> Unit
 ) {
@@ -44,6 +45,8 @@ fun LearningObjectComponent(
             learningObjectId = learningObject.id
         )
     }
+    ShowErrorOnSignalEffect(viewModel = viewModel)
+
     val isDeleteDialogOpen = remember { mutableStateOf(false) }
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     LoadingWrapper(isLoading = viewModel.isLoading.value)

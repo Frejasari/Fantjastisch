@@ -1,9 +1,10 @@
 package de.fantjastisch.cards_frontend.card.content_overview
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.infrastructure.fold
+import de.fantjastisch.cards_frontend.util.ErrorsEnum
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
@@ -19,10 +20,9 @@ import java.util.*
 class CardContentViewModel(
     private val id: UUID,
     private val cardContentModel: CardContentModel = CardContentModel(id = id)
-) : ViewModel() {
+) : ErrorHandlingViewModel() {
     val card = mutableStateOf<CardEntity?>(null)
 
-    val error = mutableStateOf<String?>(null)
     val isFinished = mutableStateOf(false)
 
     init {
@@ -33,8 +33,8 @@ class CardContentViewModel(
                     onSuccess = { cardResponse ->
                         card.value = cardResponse
                     },
-                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
-                    onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." },
+                    onValidationError = ::setValidationErrors,
+                    onUnexpectedError = ::setUnexpectedErrors,
                 )
         }
     }

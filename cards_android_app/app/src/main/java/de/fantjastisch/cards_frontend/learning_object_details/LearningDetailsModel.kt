@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_frontend.learning_object_details
 
-import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
@@ -23,7 +22,7 @@ import java.util.*
 class LearningDetailsModel(
     private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(),
     private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository()
-) : ViewModel() {
+) {
 
     /**
      * Hält die interne Daten eines Lernobjekts

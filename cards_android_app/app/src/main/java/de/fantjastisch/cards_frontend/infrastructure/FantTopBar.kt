@@ -1,12 +1,22 @@
 package de.fantjastisch.cards_frontend.infrastructure
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.glossary.CardsFilters
 import de.fantjastisch.cards_frontend.glossary.filter.GlossaryFilterView
 import org.openapitools.client.models.CategoryEntity
 import java.util.*
@@ -33,7 +43,6 @@ fun FantTopBar(
         actions = {
 
             AnimatedVisibility(visible = tabNavigator.current == GlossaryTab) {
-//                TODO
                 IconButton(
                     onClick = {
                         bottomSheetNavigator.show(
@@ -41,7 +50,22 @@ fun FantTopBar(
                         )
                     }
                 ) {
-                    Icon(Icons.Default.Tune, contentDescription = "more")
+                    Box {
+                        Icon(Icons.Default.Tune, contentDescription = "more")
+                        val filters by CardsFilters.filters.collectAsState()
+                        if (filters.tag.isNotBlank() || filters.search.isNotBlank() || filters.categories.isNotEmpty()) {
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .size(10.dp)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.tertiaryContainer,
+                                        shape = RoundedCornerShape(50)
+                                    )
+                            )
+
+                        }
+                    }
                 }
             }
 

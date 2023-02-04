@@ -1,13 +1,11 @@
 package de.fantjastisch.cards_frontend.learning_system
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.fold
-import de.fantjastisch.cards_frontend.util.ErrorsEnum
 import kotlinx.coroutines.launch
-import org.openapitools.client.models.ErrorEntryEntity
 
 
 /**
@@ -19,13 +17,11 @@ import org.openapitools.client.models.ErrorEntryEntity
  */
 class CreateLearningSystemViewModel(
     private val model: CreateLearningSystemModel = CreateLearningSystemModel()
-) : ViewModel() {
+) : ErrorHandlingViewModel() {
 
     // states, die vom view gelesen werden können -> automatisches Update vom View.
 
     val categories = mutableStateOf(listOf<CategorySelectItem>())
-    val error = mutableStateOf(ErrorsEnum.NO_ERROR)
-    val errors = mutableStateOf<List<ErrorEntryEntity>>(mutableListOf())
     val isFinished = mutableStateOf(false)
 
     val learningSystemLabel = mutableStateOf("")
@@ -46,8 +42,8 @@ class CreateLearningSystemViewModel(
                 onSuccess = {
                     isFinished.value = true
                 },
-                onValidationError = { resultErrors -> errors.value = resultErrors },
-                onUnexpectedError = { error.value = ErrorsEnum.UNEXPECTED },
+                onValidationError = ::setValidationErrors,
+                onUnexpectedError = ::setUnexpectedErrors,
             )
         }
     }

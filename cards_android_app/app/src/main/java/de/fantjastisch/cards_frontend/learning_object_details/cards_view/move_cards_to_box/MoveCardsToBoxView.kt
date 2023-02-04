@@ -5,14 +5,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
-import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
-import de.fantjastisch.cards_frontend.util.LoadingIcon
+import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.OnFirstLoadedSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import de.fantjastisch.cards_frontend.util.LoadingWrapper
 
 /**
@@ -28,15 +28,12 @@ fun MoveCardsToBoxView(
     modifier: Modifier = Modifier,
     viewModel: MoveCardsToBoxViewModel
 ) {
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = Unit,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            viewModel.onPageLoaded()
-        })
 
-    Column() {
+    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
+    ShowErrorOnSignalEffect(viewModel = viewModel)
+    OnFirstLoadedSignalEffect(onPageLoaded = viewModel::onPageLoaded)
+
+    Column {
         LazyColumn(
             modifier = modifier
                 .fillMaxWidth()
@@ -50,7 +47,7 @@ fun MoveCardsToBoxView(
             )
             item {
                 Column {
-                    LoadingWrapper(isLoading=viewModel.isLoading.value) {
+                    LoadingWrapper(isLoading = viewModel.isLoading.value) {
                         if (viewModel.cards.value.isEmpty()) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -73,11 +70,11 @@ fun MoveCardsToBoxView(
             ) {
                 FilledTonalButton(
                     onClick = viewModel::onMoveToPreviousBox,
-                    enabled = !viewModel.isFirstBox
+                    enabled = !viewModel.isFirstBox.value
                 ) {
                     Text(
                         text =
-                        if (viewModel.isFirstBox) {
+                        if (viewModel.isFirstBox.value) {
                             "                 "
                         } else {
                             String.format(
@@ -91,11 +88,11 @@ fun MoveCardsToBoxView(
 
                 FilledTonalButton(
                     onClick = viewModel::onMoveToNextBox, //viewModel::onAddCardsClicked
-                    enabled = !viewModel.isLastBox
+                    enabled = !viewModel.isLastBox.value
                 ) {
                     Text(
                         text =
-                        if (viewModel.isLastBox) {
+                        if (viewModel.isLastBox.value) {
                             "               "
                         } else {
                             String.format(
@@ -110,7 +107,6 @@ fun MoveCardsToBoxView(
         }
     }
 
-    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 }
 
 

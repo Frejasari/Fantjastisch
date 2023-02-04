@@ -1,8 +1,8 @@
 package de.fantjastisch.cards_frontend.glossary.filter
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.glossary.CardFilters
 import de.fantjastisch.cards_frontend.glossary.CardsFilters
@@ -20,7 +20,7 @@ import java.util.*
  */
 class GlossaryFilterViewModel(
     private val glossaryFilterModel: GlossaryFilterModel = GlossaryFilterModel()
-) : ViewModel() {
+) : ErrorHandlingViewModel() {
 
     val isFinished = mutableStateOf(false)
     val search = mutableStateOf(CardsFilters.filters.value.search)
@@ -45,10 +45,8 @@ class GlossaryFilterViewModel(
                             }
                         }
                 },
-                onValidationError = {},
-                onUnexpectedError = {
-                    // TODO TOAST
-                }
+                onValidationError = ::setValidationErrors,
+                onUnexpectedError = ::setUnexpectedErrors,
             )
         }
     }

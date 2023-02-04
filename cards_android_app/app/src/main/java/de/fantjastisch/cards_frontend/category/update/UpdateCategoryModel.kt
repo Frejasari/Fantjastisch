@@ -51,8 +51,8 @@ class UpdateCategoryModel(
     data class UpdateCategory(
         val id: UUID,
         val label: String,
-        val allCategories: List<CategoryEntity>,
         val subCategories: List<UUID>,
+        val allCategories: List<CategorySelectItem>
     )
 
     /**
@@ -74,37 +74,25 @@ class UpdateCategoryModel(
                     && allCategoriesResult is RepoResult.Success -> {
                 val category = categoryResult.result as CategoryEntity
                 val categories = allCategoriesResult.result as List<CategoryEntity>
+                val categorySelectItems = categories
+                    .filter { cat -> cat.id != id }
+                    .map { cat ->
+                        CategorySelectItem(
+                            label = cat.label,
+                            id = cat.id,
+                            isChecked = false
+                        )
+                    }
                 RepoResult.Success(
                     UpdateCategory(
                         id = category.id,
                         label = category.label,
-                        allCategories = categories,
                         subCategories = category.subCategories,
+                        allCategories = categorySelectItems
                     )
                 )
             }
             else -> RepoResult.Error(emptyList())
-        }
-    }
-
-    /**
-     * Sendet eine Anfrage an das [categoryRepository] und kriegt im Erfolgsfall alle Kategorien zurück.
-     *
-     * @return Eine Liste aller Kategorien, jeweils als [CategorySelectItem]-Entität.
-     */
-    suspend fun getCategories(): List<CategorySelectItem>? {
-        return when (val result = categoryRepository.getPage()) {
-            is RepoResult.Success -> result.result
-                .filter { cat -> cat.id != id }
-                .map { cat ->
-                    CategorySelectItem(
-                        label = cat.label,
-                        id = cat.id,
-                        isChecked = false
-                    )
-                }
-            is RepoResult.Error,
-            is RepoResult.ServerError -> null // TODO
         }
     }
 }

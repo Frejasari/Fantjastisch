@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box
 
-import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
@@ -24,7 +23,7 @@ class MoveCardsToBoxModel(
     private val cardRepository: CardRepository = CardRepository(),
     private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(),
     private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(),
-) : ViewModel() {
+) {
 
     /**
      * Hält Daten über Karten, die in andere Lernbox verschoben werden können.
@@ -115,6 +114,7 @@ class MoveCardsToBoxModel(
     private suspend fun getAllLearningBoxes(learningObjectId: UUID): RepoResult<List<LearningBoxWitNrOfCards>> =
         learningBoxRepository.getAllBoxesForLearningObject(learningObjectId = learningObjectId)
 
+
     /**
      * Bestimmt der Index einer Lernbox in einem Lernobjekt.
      *
@@ -122,9 +122,13 @@ class MoveCardsToBoxModel(
      * @param learningBoxId Die UUID der Lernbox, deren Index gesucht wird.
      * @return Der Index der Lernbox.
      */
-    private fun getLearningBoxNum(learningBoxes: List<LearningBoxWitNrOfCards>, learningBoxId: UUID): Int {
+    private fun getLearningBoxNum(
+        learningBoxes: List<LearningBoxWitNrOfCards>,
+        learningBoxId: UUID
+    ): Int {
         return learningBoxes.first { box -> box.id == learningBoxId }.boxNumber
     }
+
 
     /**
      * Holt alle Karten, die in einer Lernbox sind, bzw. in eine andere Lernbox verschoben werden können.
@@ -137,7 +141,8 @@ class MoveCardsToBoxModel(
         allCards: List<CardEntity>,
         learningBoxId: UUID
     ): RepoResult<List<CardSelectItem>> {
-        return when (val result = cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId)) {
+        return when (val result =
+            cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId)) {
             is RepoResult.Success -> {
                 val selectItems = allCards
                     .filter { card -> result.result.contains(card.id) }

@@ -58,7 +58,8 @@ class UpdateCardModel(
         val tag: String,
         val allCategories: List<CategoryEntity>,
         val categoriesOfCard: List<CategoryOfCardEntity>,
-        val links: List<LinkEntity>
+        val links: List<LinkEntity>,
+        val cards: List<CardSelectItem>
     )
 
     /**
@@ -69,16 +70,27 @@ class UpdateCardModel(
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(): RepoResult<UpdateCard> = coroutineScope {
         // Runs coroutines in parallel and waits until all of them are done
-        val (cardResult, categoryResult) = awaitAll(
+        val (cardResult, categoryResult, allCardsResult) = awaitAll(
             async { cardRepository.getCard(id = id) },
             async { categoryRepository.getPage() },
+            async { cardRepository.getPage(null, null, null, false) }
         )
 
         when {
             cardResult is RepoResult.Success
-                    && categoryResult is RepoResult.Success -> {
+                    && categoryResult is RepoResult.Success
+                    && allCardsResult is RepoResult.Success -> {
                 val card = cardResult.result as CardEntity
                 val categories = categoryResult.result as List<CategoryEntity>
+                val cards = allCardsResult.result as List<CardEntity>
+                val cardSelectItems = cards
+                    .filter { card -> card.id != id }
+                    .map { card ->
+                        CardSelectItem(
+                            card = card,
+                            isChecked = false
+                        )
+                    }
                 RepoResult.Success(
                     UpdateCard(
                         id = card.id,
@@ -87,31 +99,12 @@ class UpdateCardModel(
                         allCategories = categories,
                         categoriesOfCard = card.categories,
                         tag = card.tag,
-                        links = card.links
+                        links = card.links,
+                        cards = cardSelectItems
                     )
                 )
             }
             else -> RepoResult.Error(emptyList())
-        }
-    }
-
-    /**
-     * Sendet eine Anfrage an das Backend-Repository für Karten und kriegt im Erfolgsfall alle Karten zurück.
-     *
-     * @return Eine Liste aller Karten als [CardSelectItem]-Entitäten.
-     */
-    suspend fun getCards(): List<CardSelectItem>? {
-        return when (val result = cardRepository.getPage(null,null,null,false)) {
-            is RepoResult.Success -> result.result
-                .filter { card -> card.id != id }
-                .map { card ->
-                CardSelectItem(
-                    card = card,
-                    isChecked = false
-                )
-            }
-            is RepoResult.Error,
-            is RepoResult.ServerError -> null // TODO
         }
     }
 }

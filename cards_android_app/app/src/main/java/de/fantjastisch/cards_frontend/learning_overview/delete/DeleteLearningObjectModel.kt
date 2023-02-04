@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_frontend.learning_overview.delete
 
-import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
@@ -15,7 +14,9 @@ import java.util.*
  */
 class DeleteLearningObjectModel(
     private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository(),
-) : ViewModel() {
+    private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(),
+) {
+
 
     /**
      * Löscht ein Lernobjekt, indem eine Anfrage an das Repository gesendet wird.

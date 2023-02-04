@@ -1,18 +1,11 @@
 package de.fantjastisch.cards_frontend.category.update
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.fantjastisch.cards_frontend.card.CardSelectItem
+import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.category.create.CreateCategoryModel
-import de.fantjastisch.cards_frontend.category.create.CreateCategoryView
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
-import org.openapitools.client.models.CategoryEntity
-import org.openapitools.client.models.ErrorEntryEntity
-import org.openapitools.client.models.LinkEntity
 import java.util.*
 
 /**
@@ -27,15 +20,12 @@ import java.util.*
 class UpdateCategoryViewModel(
     id: UUID,
     private val categoryModel: UpdateCategoryModel = UpdateCategoryModel(id = id)
-) : ViewModel() {
+) : ErrorHandlingViewModel() {
 
-    val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
-    val error = mutableStateOf<String?>(null)
     val isFinished = mutableStateOf(false)
 
     val label = mutableStateOf("")
-    val allCats = mutableStateOf(listOf<CategorySelectItem>())
-    val cats = mutableStateOf(listOf<CategorySelectItem>())
+    val allCategories = mutableStateOf(listOf<CategorySelectItem>())
 
     /**
      * Speichert das übergebene Label der Katgegorie in [label].
@@ -55,27 +45,11 @@ class UpdateCategoryViewModel(
                     onSuccess = { cat ->
                         errors.value = emptyList()
                         label.value = cat.label
-                        allCats.value = cat.allCategories.map { category ->
-                            CategorySelectItem(
-                                id = category.id,
-                                label = category.label,
-                                isChecked = cat.subCategories.contains(category.id)
-                                //.firstOrNull { subCatOfCat -> subCatOfCat == cat.id } != null
-                            )
-                        }
+                        allCategories.value = cat.allCategories
                     },
-                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
-                    onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." },
+                    onValidationError = ::setValidationErrors,
+                    onUnexpectedError = ::setUnexpectedErrors,
                 )
-
-            val resultCategories = categoryModel.getCategories()
-
-            if (resultCategories == null) {
-                error.value = "Ein Netzwerkfehler ist aufgetreten."
-            } else {
-                errors.value = emptyList()
-                cats.value = resultCategories
-            }
         }
     }
 
@@ -90,11 +64,11 @@ class UpdateCategoryViewModel(
         viewModelScope.launch {
             categoryModel.update(
                 label = label.value,
-                subCategories = allCats.value,
+                subCategories = allCategories.value,
             ).fold(
                 onSuccess = { isFinished.value = true },
-                onValidationError = { errors.value = it },
-                onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
+                onValidationError = ::setValidationErrors,
+                onUnexpectedError = ::setUnexpectedErrors
             )
 
         }
@@ -102,12 +76,12 @@ class UpdateCategoryViewModel(
 
 
     /**
-     * Speichert die ausgewählten Unterkategorien als isChecked = true in [allCats]
+     * Speichert die ausgewählten Unterkategorien als isChecked = true in [allCategories]
      *
      * @param id Id der Kategorie, welche neu ausgewählt wurde.
      */
     fun onCategorySelected(id: UUID) {
-        allCats.value = allCats.value.map {
+        allCategories.value = allCategories.value.map {
             if (it.id == id) {
                 it.copy(isChecked = !it.isChecked)
             } else {
