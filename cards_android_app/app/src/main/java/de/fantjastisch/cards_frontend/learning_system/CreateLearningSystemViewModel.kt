@@ -36,8 +36,8 @@ class CreateLearningSystemViewModel(
     fun onAddLearningSystemClicked() {
         viewModelScope.launch {
             model.addLearningSystem(
-                learningSystemLabel = learningSystemLabel.value,
-                learningSystemBoxLabels = learningSystemBoxLabels.value
+                learningSystemLabel = learningSystemLabel.value.trim(),
+                learningSystemBoxLabels = learningSystemBoxLabels.value.map{it.trim()}
             ).fold(
                 onSuccess = {
                     isFinished.value = true

@@ -63,9 +63,9 @@ class UpdateCardViewModel(
 
         viewModelScope.launch {
             cardModel.update(
-                question = cardQuestion.value,
-                answer = cardAnswer.value,
-                tag = cardTag.value,
+                question = cardQuestion.value.trim(),
+                answer = cardAnswer.value.trim(),
+                tag = cardTag.value.trim(),
                 categories = categories.value,
                 links = cardLinks.value
             ).fold(

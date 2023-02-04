@@ -63,7 +63,7 @@ class UpdateCategoryViewModel(
 
         viewModelScope.launch {
             categoryModel.update(
-                label = label.value,
+                label = label.value.trim(),
                 subCategories = allCategories.value,
             ).fold(
                 onSuccess = { isFinished.value = true },

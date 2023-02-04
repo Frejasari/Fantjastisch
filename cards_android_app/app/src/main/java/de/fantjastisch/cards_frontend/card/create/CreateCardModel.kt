@@ -87,9 +87,9 @@ class CreateCardModel(
         links: List<LinkEntity>
     ) = cardRepository.createCard(
         card = CreateCardEntity(
-            question = question,
-            answer = answer,
-            tag = tag,
+            question = question.trim(),
+            answer = answer.trim(),
+            tag = tag.trim(),
             links = links,
             categories = categories
                 .filter { it.isChecked }

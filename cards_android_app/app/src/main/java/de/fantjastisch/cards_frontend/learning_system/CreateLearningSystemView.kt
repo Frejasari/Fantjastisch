@@ -39,7 +39,7 @@ fun CreateLearningSystemView(
     ) {
         OutlinedTextFieldWithErrors(
             value = viewModel.learningSystemLabel.value,
-            onValueChange = { viewModel.learningSystemLabel.value = it },
+            onValueChange = { viewModel.learningSystemLabel.value = it.filter{char -> char.isDigit() || char.isLetter() || char == ' '} },
             placeholder = stringResource(id = R.string.label_label),
             errors = viewModel.errors.value,
             field = "label",

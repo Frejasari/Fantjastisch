@@ -104,7 +104,7 @@ class CreateLearningObjectViewModel(
     fun onAddLearningObjectClicked() {
         viewModelScope.launch {
             val response = model.addLearningObject(
-                learningObjectLabel = learningObjectLabel.value,
+                learningObjectLabel = learningObjectLabel.value.trim(),
                 selectedSystem = selectedSystem.value,
                 categories = allCategories.value,
                 cards = allCards.value

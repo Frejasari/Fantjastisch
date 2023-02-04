@@ -119,7 +119,7 @@ open class CreateAndUpdateViewModel : ErrorHandlingViewModel() {
 
         val target = cards.value.firstOrNull() { card -> card.isChecked }
 
-        if (linkLabel.value.isBlank()) {
+        if (linkLabel.value.trim().isBlank()) {
             errors.value = errors.value +
                     ErrorEntryEntity(
                         code = ErrorEntryEntity.Code.nOTBLANKVIOLATION,
@@ -130,7 +130,7 @@ open class CreateAndUpdateViewModel : ErrorHandlingViewModel() {
             error.value = ErrorsEnum.LINK_ERROR
         } else {
             cardLinks.value = cardLinks.value + LinkEntity(
-                label = linkLabel.value,
+                label = linkLabel.value.trim(),
                 target = target.card.id
             )
             linkLabel.value = ""

@@ -72,7 +72,7 @@ class CreateCategoryViewModel(
 
         viewModelScope.launch {
             val result = createCategoryModel.createCategory(
-                label = label.value,
+                label = label.value.trim(),
                 subCategories = allCategories.value,
             )
 

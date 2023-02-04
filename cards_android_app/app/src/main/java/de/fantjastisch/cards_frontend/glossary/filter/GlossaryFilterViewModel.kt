@@ -100,8 +100,8 @@ class GlossaryFilterViewModel(
      */
     fun onConfirmClicked() {
         CardsFilters.filters.value = CardFilters(
-            search = search.value,
-            tag = tag.value,
+            search = search.value.trim(),
+            tag = tag.value.trim(),
             categories = categories.value.filter { it.isChecked }.map { it.id },
             sort = sort.value
         )
