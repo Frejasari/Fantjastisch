@@ -10,7 +10,6 @@ import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
 
-//TODO Fehler anzeigen.
 /**
  * Rendert die Seite "Karteikarte bearbeiten".
  *

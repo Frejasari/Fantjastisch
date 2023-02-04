@@ -31,7 +31,6 @@ class CardToLearningBoxRepository(
             val cardIdsForBox = repository.getCardIdsForBox(learningBoxId)
             RepoResult.Success(cardIdsForBox)
         } catch (ex: Throwable) {
-            // TODO wo sind Validatoren, die den input validieren?
             RepoResult.ServerError()
         }
     }
@@ -58,7 +57,6 @@ class CardToLearningBoxRepository(
                 })
             RepoResult.Success(Unit)
         } catch (ex: Throwable) {
-            // TODO wo sind Validatoren, die den input validieren?
             RepoResult.ServerError()
         }
     }
@@ -105,7 +103,6 @@ class CardToLearningBoxRepository(
                 repository.getAllCardsForLearningObject(learningObjectId = learningObjectId)
             RepoResult.Success(allCardsForLearningObject)
         } catch (ex: Throwable) {
-            // TODO wo sind Validatoren, die den input validieren?
             RepoResult.ServerError()
         }
     }

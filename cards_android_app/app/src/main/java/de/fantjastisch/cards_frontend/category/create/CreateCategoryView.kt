@@ -10,7 +10,6 @@ import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignal
 import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 
 
-//TODO Fehler anzeigen.
 /**
  * Rendert die Seite "Kategorie erstellen".
  *
