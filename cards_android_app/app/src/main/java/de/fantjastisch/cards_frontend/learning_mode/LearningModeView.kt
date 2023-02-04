@@ -16,7 +16,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.components.TwoTextsWithDivider
 import de.fantjastisch.cards_frontend.glossary.LinkWithoutDeleteComponent
 import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
 import de.fantjastisch.cards_frontend.infrastructure.effects.OnFirstLoadedSignalEffect
@@ -84,16 +83,20 @@ fun LearningModeView(
             Divider(
                 Modifier.padding(horizontal = 7.dp, vertical = 10.dp)
             )
-            TwoTextsWithDivider(
-                headline = stringResource(R.string.tag_label),
-                text = viewModel.currentCard.value!!.tag
-            )
+            Row {
+                Text(
+                    text = stringResource(R.string.tag_label).formatToInlineLabel(),
+                    fontWeight = FontWeight.Medium,
+                )
+                Text(
+                    modifier = Modifier,
+                    text = viewModel.currentCard.value!!.tag,
+                )
+            }
             LearningModeCardComponent(
-                content = if (viewModel.isShowingAnswer.value) {
-                    viewModel.currentCard.value!!.answer
-                } else {
-                    viewModel.currentCard.value!!.question
-                },
+                isAnswer = viewModel.isShowingAnswer.value,
+                answer = viewModel.currentCard.value!!.answer,
+                question = viewModel.currentCard.value!!.question,
                 onClick = viewModel::onFlipCardClicked,
             )
             Column(
