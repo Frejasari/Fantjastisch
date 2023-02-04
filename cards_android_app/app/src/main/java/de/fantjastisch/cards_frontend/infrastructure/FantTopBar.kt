@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterAltOff
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -42,6 +43,22 @@ fun FantTopBar(
         title = { Text(text = tabNavigator.current.options.title) },
         actions = {
 
+            val filters by CardsFilters.filters.collectAsState()
+            val hasFilters =
+                filters.tag.isNotBlank() || filters.search.isNotBlank() || filters.categories.isNotEmpty()
+
+            AnimatedVisibility(hasFilters) {
+                IconButton(
+                    onClick = {
+                        CardsFilters.reset()
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.FilterAltOff,
+                        contentDescription = "clear filters"
+                    )
+                }
+            }
             AnimatedVisibility(visible = tabNavigator.current == GlossaryTab) {
                 IconButton(
                     onClick = {
@@ -51,9 +68,8 @@ fun FantTopBar(
                     }
                 ) {
                     Box {
-                        Icon(Icons.Default.Tune, contentDescription = "more")
-                        val filters by CardsFilters.filters.collectAsState()
-                        if (filters.tag.isNotBlank() || filters.search.isNotBlank() || filters.categories.isNotEmpty()) {
+                        Icon(imageVector = Icons.Default.Tune, contentDescription = "more")
+                        if (hasFilters) {
                             Box(
                                 modifier = Modifier
                                     .align(Alignment.TopEnd)
@@ -68,7 +84,6 @@ fun FantTopBar(
                     }
                 }
             }
-
             TobBarCreateMenu()
         }
     )

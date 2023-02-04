@@ -16,14 +16,17 @@ import java.util.*
  * Globales Objekt, welches die aktuellen Filteroptionen speichert
  */
 object CardsFilters {
-    val filters = MutableStateFlow(
-        CardFilters(
-            search = "",
-            tag = "",
-            categories = emptyList(),
-            sort = false
-        )
+    private val initialFilters = CardFilters(
+        search = "",
+        tag = "",
+        categories = emptyList(),
+        sort = false
     )
+    val filters = MutableStateFlow(initialFilters)
+
+    fun reset() {
+        filters.value = initialFilters
+    }
 }
 
 /**

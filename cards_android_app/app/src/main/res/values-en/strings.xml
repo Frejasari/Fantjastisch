@@ -96,10 +96,6 @@
   <string name="sort_cards_in_box_dialog_title">Card Arrangement</string>
 
 
-
-
-
-
   <!--  errors-->
   <string name="error_network">A Network Error Occurred.</string>
   <string name="error_link_no_card">Please Choose a Target Card.</string>
@@ -119,4 +115,5 @@
   <string name="error_card_already_exists">Card Already Exists.</string>
   <string name="error_box_labels_null">Box Labels Must Not Be Empty.</string>
   <string name="categories_not_empty_error">Category Must Not Have Cards</string>
+  <string name="no_cards_found">Could not find cards that match your filter settings.</string>
 </resources>

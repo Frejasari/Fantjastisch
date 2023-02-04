@@ -1,19 +1,21 @@
 package de.fantjastisch.cards_frontend.glossary.filter
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategorySelect
-import de.fantjastisch.cards_frontend.components.SaveLayout
+import de.fantjastisch.cards_frontend.components.ExpandableRow
 import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 
 /**
@@ -46,55 +48,76 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
                 }
             })
 
-        SaveLayout(
-            onSaveClicked = viewModel::onLoadPageClicked,
-            modifier = Modifier,
-            isInBottomSheet = true
-        ) {
+        var expanded by remember { mutableStateOf(false) }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier
+                .padding(all = 16.dp),
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .weight(1f)
             ) {
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.sort_label),
+                        fontWeight = FontWeight.Medium,
+                    )
+                    Switch(
+                        checked = viewModel.sort.value,
+                        onCheckedChange = viewModel::onSortClicked
+                    )
+                }
+                Divider()
                 Text(
-                    text = stringResource(R.string.sort_label),
+                    text = stringResource(R.string.filter_label),
                     fontWeight = FontWeight.Medium,
                 )
-                Switch(
-                    checked = viewModel.sort.value,
-                    onCheckedChange = viewModel::onSortClicked
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    value = viewModel.search.value,
+                    onValueChange = viewModel::onSearchInput,
+                    placeholder = { Text(text = stringResource(R.string.search_card_placeholder)) },
                 )
-            }
-            Divider()
-            Text(
-                text = stringResource(R.string.filter_label),
-                fontWeight = FontWeight.Medium,
-            )
-            OutlinedTextField(
-                maxLines = 2,
-                modifier = Modifier.fillMaxWidth(),
-                value = viewModel.search.value,
-                onValueChange = viewModel::onSearchInput,
-                placeholder = { Text(text = stringResource(R.string.search_card_placeholder)) },
-            )
-            OutlinedTextField(
-                maxLines = 2,
-                modifier = Modifier.fillMaxWidth(),
-                value = viewModel.tag.value,
-                onValueChange = viewModel::onTagInput,
-                placeholder = { Text(text = stringResource(R.string.search_tag_placeholder)) },
-            )
-            Text(
-                text = stringResource(R.string.select_category_label),
-                fontWeight = FontWeight.Medium,
-            )
-            CategorySelect(
-                categories = viewModel.categories.value,
-                onCategorySelected = viewModel::onCategorySelected
-            )
-        }
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    value = viewModel.tag.value,
+                    onValueChange = viewModel::onTagInput,
+                    placeholder = { Text(text = stringResource(R.string.search_tag_placeholder)) },
+                )
 
+                ExpandableRow(
+                    expanded = expanded,
+                    onClick = {
+                        expanded = !expanded
+                    },
+                    headline = stringResource(id = R.string.select_category_label),
+                ) {
+                    CategorySelect(
+                        categories = viewModel.categories.value,
+                        onCategorySelected = viewModel::onCategorySelected
+                    )
+                }
+            }
+
+            ElevatedButton(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(),
+                onClick = viewModel::onConfirmClicked
+            ) {
+                Text(text = stringResource(R.string.save_button_text))
+            }
+        }
 
     }
 }

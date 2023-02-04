@@ -98,7 +98,7 @@ class GlossaryFilterViewModel(
      * Setzt die Werte für das Filtern/Sortieren aller Karten
      *
      */
-    fun onLoadPageClicked() {
+    fun onConfirmClicked() {
         CardsFilters.filters.value = CardFilters(
             search = search.value,
             tag = tag.value,

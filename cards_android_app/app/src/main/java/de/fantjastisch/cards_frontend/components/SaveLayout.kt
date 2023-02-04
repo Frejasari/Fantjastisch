@@ -24,18 +24,17 @@ import de.fantjastisch.cards.R
 fun SaveLayout(
     onSaveClicked: () -> Unit,
     modifier: Modifier,
-    isInBottomSheet: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
         modifier = modifier
-            .run { if (!isInBottomSheet) fillMaxSize() else this }
+            .fillMaxSize()
             .padding(all = 16.dp),
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
-                .run { if (!isInBottomSheet) weight(1f) else this }
+                .weight(1f)
                 .verticalScroll(rememberScrollState())
         ) {
             content()
