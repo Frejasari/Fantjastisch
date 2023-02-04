@@ -20,7 +20,7 @@ object CardsFilters {
         search = "",
         tag = "",
         categories = emptyList(),
-        sort = false
+        sort = true
     )
     val filters = MutableStateFlow(initialFilters)
 

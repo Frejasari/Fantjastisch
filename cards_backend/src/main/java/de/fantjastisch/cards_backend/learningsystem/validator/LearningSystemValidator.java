@@ -94,7 +94,8 @@ public class LearningSystemValidator extends Validator {
 
     private List<ErrorEntry> checkIfBoxLabelsContainNull(List<String> labels) {
         List<ErrorEntry> errors = new ArrayList<>();
-        if (labels.contains(null) || labels.contains("")) {
+        boolean containsNullOrBlank = labels.stream().anyMatch(s -> (s == null || s.isBlank()));
+        if (containsNullOrBlank) {
             errors.add(
                     ErrorEntry.builder()
                             .code(BOX_LABELS_IS_NULL_VIOLATION)

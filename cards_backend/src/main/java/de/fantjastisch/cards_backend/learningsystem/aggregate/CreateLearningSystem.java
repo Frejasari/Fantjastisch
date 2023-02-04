@@ -26,7 +26,6 @@ import java.util.List;
 public class CreateLearningSystem implements Commandable {
 
     @NotBlank
-    @NotNull
     @Schema(
             description = "The learning system's label",
             required = true,

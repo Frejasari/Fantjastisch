@@ -46,9 +46,9 @@ public class CardAggregate {
 
         de.fantjastisch.cards_backend.card.repository.Card newCard = de.fantjastisch.cards_backend.card.repository.Card.builder()
                 .id(uuidGenerator.randomUUID())
-                .question(command.getQuestion())
-                .answer(command.getAnswer())
-                .tag(command.getTag())
+                .question(command.getQuestion().trim())
+                .answer(command.getAnswer().trim())
+                .tag(command.getTag().trim())
                 .links(command.getLinks())
                 .categories(command.getCategories())
                 .build();
@@ -65,12 +65,12 @@ public class CardAggregate {
 
         cardValidator.validate(command);
         final de.fantjastisch.cards_backend.card.repository.Card card = de.fantjastisch.cards_backend.card.repository.Card.builder()
-                .tag(command.getTag())
-                .answer(command.getAnswer())
                 .id(command.getId())
+                .tag(command.getTag().trim())
+                .question(command.getQuestion().trim())
+                .answer(command.getAnswer().trim())
                 .categories(command.getCategories())
                 .links(command.getLinks())
-                .question(command.getQuestion())
                 .build();
         cardCommandRepository.update(card);
     }
@@ -98,7 +98,7 @@ public class CardAggregate {
      * @return Eine Liste der Instanzen der Klasse {@link Card}
      */
     public List<Card> handle(List<UUID> categoryFilter, String search, String tag, boolean sort) {
-        return cardQueryRepository.getPage(categoryFilter, search, tag, sort);
+        return cardQueryRepository.getPage(categoryFilter, search.trim(), tag.trim(), sort);
     }
 
     /**

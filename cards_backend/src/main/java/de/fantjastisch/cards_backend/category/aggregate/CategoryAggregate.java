@@ -49,7 +49,7 @@ public class CategoryAggregate {
 
         Category category = Category.builder()
                 .id(uuidGenerator.randomUUID())
-                .label(command.getLabel())
+                .label(command.getLabel().trim())
                 .subCategories(command.getSubCategories())
                 .build();
         categoryCommandRepository.create(category);
@@ -68,7 +68,7 @@ public class CategoryAggregate {
         subCategories.remove(null);
         final Category updatedCategory = Category.builder()
                 .id(command.getId())
-                .label(command.getLabel())
+                .label(command.getLabel().trim())
                 .subCategories(subCategories)
                 .build();
 

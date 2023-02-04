@@ -21,7 +21,7 @@ import java.util.UUID;
 public class LearningSystemAggregate {
     private final LearningSystemCommandRepository learningSystemCommandRepository;
     private final LearningSystemValidator learningSystemValidator;
-    private LearningSystemQueryRepository learningSystemQueryRepository;
+    private final LearningSystemQueryRepository learningSystemQueryRepository;
     private final UUIDGenerator uuidGenerator;
 
     @Autowired
@@ -47,8 +47,8 @@ public class LearningSystemAggregate {
         LearningSystem learningSystem =
                 LearningSystem.builder()
                         .id(uuidGenerator.randomUUID())
-                        .label(command.getLabel())
-                        .boxLabels(command.getBoxLabels())
+                        .label(command.getLabel().trim())
+                        .boxLabels(command.getBoxLabels().stream().map(String::trim).toList())
                         .build();
         learningSystemCommandRepository.save(learningSystem);
         return learningSystem.getId();
@@ -65,8 +65,8 @@ public class LearningSystemAggregate {
         learningSystemCommandRepository.update(
                 LearningSystem.builder()
                         .id(command.getId())
-                        .label(command.getLabel())
-                        .boxLabels(command.getBoxLabels())
+                        .label(command.getLabel().trim())
+                        .boxLabels(command.getBoxLabels().stream().map(String::trim).toList())
                         .build());
     }
 
