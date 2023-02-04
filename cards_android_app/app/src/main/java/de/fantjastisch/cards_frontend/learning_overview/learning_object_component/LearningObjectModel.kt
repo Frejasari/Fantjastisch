@@ -17,9 +17,9 @@ import kotlin.math.roundToInt
  * @property learningSystemRepository Lernsystem Repository
  * @property learningBoxRepository Lernbox Repository
  *
- * @author
+ * @author Freja Sender, Semjon Nirmann
  */
-class LearningObjectComponentModel(
+class LearningObjectModel(
     private val learningSystemRepository: LearningSystemRepository = LearningSystemRepository(),
     private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository()
 ) {
@@ -29,25 +29,25 @@ class LearningObjectComponentModel(
      * @property progress
      * @property learningSystemLabel Die Bezeichnung des Lernsystems, welches das LearningObject hat
      */
-    data class LearningObjectComponent(
+    data class LearningObjectView(
         val progress: Int,
         val learningSystemLabel: String
     )
 
     /**
-     * Stellt ein [LearningObjectComponent] zusammen, in dem ein Lernsystem aus der Datenbank
+     * Stellt ein [LearningObjectView] zusammen, in dem ein Lernsystem aus der Datenbank
      * und die Anzahl an Karten in Boxen eines Lernobjekts geholt werden.
      * Setzt den Lernfortschritt eines Lernobjekts.
      *
-     * @param learningSystemId UUID des Lernsystems, welches zu dem [LearningObject] gehört.
-     * @param learningObjectId UUID des zugrundeliegende Lernobjekts für [LearningObjectComponent]
-     * @return RepoResult<LearningObjectComponent> OnSuccess: der neu erstellte [LearningObjectComponent]
+     * @param learningSystemId UUID des Lernsystems, welches zu dem [LearningObjectView] gehört.
+     * @param learningObjectId UUID des zugrundeliegende Lernobjekts für [LearningObjectView]
+     * @return RepoResult<LearningObjectComponent> OnSuccess: der neu erstellte [LearningObjectView]
      */
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(
         learningSystemId: UUID,
         learningObjectId: UUID
-    ): RepoResult<LearningObjectComponent> = coroutineScope {
+    ): RepoResult<LearningObjectView> = coroutineScope {
         // Runs coroutines in parallel and waits until all of them are done
         val (learningSystemResult, progressResult) = awaitAll(
             async { learningSystemRepository.getLearningSystem(learningSystemId) },
@@ -65,7 +65,7 @@ class LearningObjectComponentModel(
                     calculateProgress(listOfCardAmountsInBoxes = listOfCardAmountsInBoxes)
                 val learningSystem = learningSystemResult.result as LearningSystemEntity
                 RepoResult.Success(
-                    LearningObjectComponent(
+                    LearningObjectView(
                         progress = progress,
                         learningSystemLabel = learningSystem.label
                     )

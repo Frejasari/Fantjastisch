@@ -20,7 +20,7 @@ import java.util.*
  * @param onDeleteSuccessful Die Funktion, die ausgeführt wird,
  *   wenn ein Lernobjekt erfolgreich gelöscht wird.
  *
- * @author
+ * @author Semjon Nirmann, Jessica Repty
  */
 @Composable
 fun DeleteLearningObjectDialog(

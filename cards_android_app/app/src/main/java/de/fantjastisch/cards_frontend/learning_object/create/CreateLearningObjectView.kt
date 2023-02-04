@@ -101,7 +101,7 @@ fun CreateLearningObjectView(
 /**
  * Rendert die Eingabefelder für die Erstellung eines Lernobjekts.
  *
- * @author
+ * @author Semjon Nirmann, Jessica Repty, Freja Sender
  */
 @Composable
 private fun GeneralCreateLearningObjectFieldsView() {

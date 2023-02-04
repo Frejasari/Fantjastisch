@@ -20,23 +20,6 @@ import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEf
 import de.fantjastisch.cards_frontend.learning_overview.learning_object_component.LearningObjectView
 
 /**
- * Zeigt den Screen für alle Lernobjekten
- *
- * @author Freja Sender
- */
-@OptIn(ExperimentalMaterial3Api::class)
-class LearningOverviewScreen : AndroidScreen() {
-    @Composable
-    override fun Content() {
-        Scaffold(topBar = { FantTopBar() }) {
-            LearningOverview(
-                modifier = Modifier.padding(it)
-            )
-        }
-    }
-}
-
-/**
  * Rendert die Lernobjekt Overview Seite
  *
  * @param modifier Modifier für die Seite
@@ -45,7 +28,7 @@ class LearningOverviewScreen : AndroidScreen() {
  */
 @Composable
 @Preview
-fun LearningOverview(
+fun LearningOverviewView(
     modifier: Modifier = Modifier
 ) {
     val viewModel = viewModel { LearningOverviewViewModel() }

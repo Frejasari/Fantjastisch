@@ -13,7 +13,7 @@ import java.util.*
 /**
  * Repository kommuniziert mit LearningSystemBackend
  *
- * @author
+ * @author Jessica Repty, Semjon Nirmann, Freja Sender
  */
 class LearningSystemRepository {
 

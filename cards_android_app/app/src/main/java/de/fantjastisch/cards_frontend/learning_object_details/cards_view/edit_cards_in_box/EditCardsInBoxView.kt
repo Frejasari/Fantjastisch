@@ -17,7 +17,7 @@ import de.fantjastisch.cards_frontend.util.LoadingWrapper
  * @param modifier Modifier für die Seite.
  * @param viewModel Die ViewModel, die die Daten zur Verfügung stellt.
  *
- * @author
+ * @author Jessica Repty, Semjon Nirmann
  */
 @Composable
 fun EditCardsInBoxView(

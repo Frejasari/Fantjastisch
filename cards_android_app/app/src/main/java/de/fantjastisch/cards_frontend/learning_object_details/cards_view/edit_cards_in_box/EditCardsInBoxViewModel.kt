@@ -17,7 +17,7 @@ import java.util.*
  * @property learningObjectId Die UUID des Lernobjekts, zu dem die Lernbox gehört.
  * @property model Das zugehörige Model, welches die Logik kapselt.
  *
- * @author
+ * @author Jessica Repty, Semjon Nirmann, Freja Sender
  */
 class EditCardsInBoxViewModel(
     private val learningBoxId: UUID,

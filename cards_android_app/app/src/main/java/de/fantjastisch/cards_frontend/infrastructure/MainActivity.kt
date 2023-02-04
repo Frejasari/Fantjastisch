@@ -28,23 +28,28 @@ import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.overview.CategoryOverviewView
 import de.fantjastisch.cards_frontend.glossary.GlossaryView
-import de.fantjastisch.cards_frontend.learning_overview.LearningOverviewScreen
+import de.fantjastisch.cards_frontend.learning_overview.LearningOverviewView
 import java.util.*
 
+/**
+ * App Theme, dass die Farben aus der Themes.xml lädt
+ *
+ * @param content der Content der App
+ */
 @Composable
 fun CardsAppTheme(content: @Composable () -> Unit) {
     Mdc3Theme(content = content)
 }
 
 /**
- * TODO
+ * Einstiegspunkt für die App, stellt einen Navigations- und Snackbar-Context bereit, in dem die App sich befindet.
  *
  * @author Freja Sender
  */
 class MainActivity : AppCompatActivity() {
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -56,8 +61,7 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         TabNavigator(tab = mainScreenTabs.first()) { tabNavigator ->
                             BottomSheetNavigator(sheetShape = MaterialTheme.shapes.medium) { bottomSheetNavigator ->
-                                // Der app Navigator, laesst sich ueberall in
-                                // Compose mit LocalNavigator.currentOrThrow ansprechen
+                                // Der app Navigator, laesst sich ueberall verwenden
                                 Navigator(screen = MainScreen()) { navigator ->
                                     CompositionLocalProvider(
                                         FantMainNavigator provides navigator,
@@ -83,13 +87,20 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-
-@OptIn(ExperimentalAnimationApi::class)
+/**
+ * 1. Tab, der den [LearningOverviewView] anzeigt
+ *
+ * @author Freja Sender
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 object LearningTab : Tab {
+
     @Composable
     override fun Content() {
-        Navigator(LearningOverviewScreen()) {
-            FadeTransition(navigator = it)
+        Scaffold(topBar = { FantTopBar() }) {
+            LearningOverviewView(
+                modifier = Modifier.padding(it)
+            )
         }
     }
 
@@ -102,7 +113,11 @@ object LearningTab : Tab {
         )
 }
 
-
+/**
+ * 2. Tab, der den [GlossaryView] anzeigt
+ *
+ * @author Freja Sender
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 object GlossaryTab : Tab {
     @Composable
@@ -123,8 +138,12 @@ object GlossaryTab : Tab {
         )
 }
 
+/**
+ * 2. Tab, der den [CategoryOverviewView] anzeigt
+ *
+ * @author Freja Sender
+ */
 @OptIn(ExperimentalMaterial3Api::class)
-
 object CategoriesTab : Tab {
     @Composable
     override fun Content() {

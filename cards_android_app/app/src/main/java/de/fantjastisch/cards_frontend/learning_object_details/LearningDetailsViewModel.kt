@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
-import de.fantjastisch.cards_frontend.learning_overview.LearningOverview
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -15,7 +14,7 @@ import java.util.*
  * @property learningObjectId Die UUID des Lernobjekts, welches dargestellt werden soll.
  * @property model Das dazugehörige Model, welches die Logik kapselt.
  *
- * @author
+ * @author Jessica Repty, Semjon Nirmann, Freja Sender
  */
 class LearningDetailsViewModel(
     val learningObjectId: UUID,

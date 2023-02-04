@@ -16,7 +16,7 @@ import java.util.*
  * @property learningBoxId Die UUID der Lernbox, deren Karten angezeigt werden sollen.
  * @property learningObjectId Die UUID des Lernobjekts, zu dem die Lernbox gehört.
  *
- * @author
+ * @author Jessica Repty, Semjon Nirmann, Freja Sender
  */
 data class EditCardsInBoxFragment(
     val learningBoxId: UUID,

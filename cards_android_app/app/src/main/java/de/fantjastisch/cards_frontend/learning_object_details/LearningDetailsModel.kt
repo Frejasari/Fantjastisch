@@ -17,7 +17,7 @@ import java.util.*
  * @property learningBoxRepository Lernbox Repository
  * @property learningObjectRepository Lernobjekt Repository
  *
- * @author
+ * @author Semjon Nirmann,  Freja Sender
  */
 class LearningDetailsModel(
     private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(),

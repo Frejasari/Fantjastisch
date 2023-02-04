@@ -8,11 +8,11 @@ import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import kotlinx.coroutines.launch
 
 /**
- * Stellt die Daten für die [LearningOverview] bereit und nimmt seine Anfragen entgegen.
+ * Stellt die Daten für die [LearningOverviewView] bereit und nimmt seine Anfragen entgegen.
  *
  * @property model Das dazugehörige Model, welches die Logik kapselt.
  *
- * @author
+ * @author Freja Sender, Semjon Nirmann, Jessica Repty
  */
 class LearningOverviewViewModel(
     private val model: LearningOverviewModel = LearningOverviewModel()

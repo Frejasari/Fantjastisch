@@ -12,7 +12,7 @@ import de.fantjastisch.cards.R
 /**
  * Zeigt den Screen um ein Lernsystem zu erstellen.
  *
- * @author
+ * @author Semjon Nirmann, Jessica Repty, Freja Sender
  */
 class CreateLearningSystemFragment : AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)

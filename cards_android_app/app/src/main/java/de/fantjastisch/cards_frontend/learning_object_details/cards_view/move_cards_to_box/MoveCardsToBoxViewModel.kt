@@ -16,7 +16,7 @@ import java.util.*
  * @property learningObjectId Die UUID des Lernobjekts, zu dem die Lernbox gehört.
  * @property model Das zugehörige Model, welches die Logik kapselt.
  *
- * @author
+ * @author Jessica Repty, Semjon Nirmann, Freja Sender
  */
 class MoveCardsToBoxViewModel(
     private val learningBoxId: UUID,
@@ -26,11 +26,10 @@ class MoveCardsToBoxViewModel(
 
     val cards = mutableStateOf<List<CardSelectItem>>(mutableListOf())
     val isFinished = mutableStateOf(false)
-    private val learningBoxesInObject =
-        mutableStateOf<List<LearningBoxWitNrOfCards>>(mutableListOf())
+    private var learningBoxesInObject: List<LearningBoxWitNrOfCards> = listOf()
     val learningBoxNum = mutableStateOf(-1)
-    var isLastBox = mutableStateOf(false)
-    var isFirstBox = mutableStateOf(false)
+    val isLastBox = mutableStateOf(false)
+    val isFirstBox = mutableStateOf(false)
     val isLoading = mutableStateOf(true)
 
     init {
@@ -50,7 +49,7 @@ class MoveCardsToBoxViewModel(
                 .fold(
                     onSuccess = {
                         cards.value = it.cards
-                        learningBoxesInObject.value = it.learningBoxes
+                        learningBoxesInObject = it.learningBoxes
                         learningBoxNum.value = it.learningBoxNum
                         isFirstBox.value = it.isFirstBox
                         isLastBox.value = it.isLastBox
@@ -84,7 +83,7 @@ class MoveCardsToBoxViewModel(
      *
      */
     fun onMoveToPreviousBox() {
-        val previousBoxId = learningBoxesInObject.value[learningBoxNum.value - 1].id
+        val previousBoxId = learningBoxesInObject[learningBoxNum.value - 1].id
 
         viewModelScope.launch {
             model.moveToPreviousBox(
@@ -106,7 +105,7 @@ class MoveCardsToBoxViewModel(
      *
      */
     fun onMoveToNextBox() {
-        val nextBoxId = learningBoxesInObject.value[learningBoxNum.value + 1].id
+        val nextBoxId = learningBoxesInObject[learningBoxNum.value + 1].id
         viewModelScope.launch {
             model.moveToNextBox(
                 cards = cards.value,

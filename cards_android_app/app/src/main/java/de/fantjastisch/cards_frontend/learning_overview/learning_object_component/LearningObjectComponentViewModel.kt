@@ -15,12 +15,12 @@ import java.util.*
  * @property learningObjectId Die UUID eines Lernobjekts, welches [LearningObjectComponent] darstellen will.
  * @property model Das dazugehörige Model, welches die Logik kapselt.
  *
- * @author
+ * @author Jessica Repty, Freja Sender, Semjon Nirmann
  */
 class LearningObjectComponentViewModel(
     private val learningSystemId: UUID,
     private val learningObjectId: UUID,
-    private val model: LearningObjectComponentModel = LearningObjectComponentModel()
+    private val model: LearningObjectModel = LearningObjectModel()
 ) : ErrorHandlingViewModel() {
 
     val progress = mutableStateOf(0)

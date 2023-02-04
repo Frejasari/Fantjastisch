@@ -4,7 +4,6 @@ import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
-import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -18,7 +17,7 @@ import java.util.*
  * @property cardRepository Karte Repository
  * @property cardToLearningBoxRepository Karte zu Lernbox Repository
  *
- * @author
+ * @author Semjon Nirmann, Freja Sender
  */
 class EditCardsInBoxModel(
     private val cardRepository: CardRepository = CardRepository(),

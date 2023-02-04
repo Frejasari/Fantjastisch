@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_frontend.learning_system
 
-import de.fantjastisch.cards_frontend.card.create.CreateCardViewModel
 import org.openapitools.client.models.CreateLearningSystemEntity
 
 /**
@@ -9,7 +8,7 @@ import org.openapitools.client.models.CreateLearningSystemEntity
  *
  * @property learningSystemRepository Lernsystem Repository
  *
- * @author
+ * @author  Semjon Nirmann, Freja Sender, Tamari Bayer
  */
 class CreateLearningSystemModel(
     private val learningSystemRepository: LearningSystemRepository = LearningSystemRepository()

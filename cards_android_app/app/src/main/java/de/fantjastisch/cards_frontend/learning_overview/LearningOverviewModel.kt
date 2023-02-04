@@ -11,7 +11,7 @@ import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
  *
  * @property learningObjectRepository Lernobjekt Repository
  *
- * @author
+ * @author Freja Sender, Semjon Nirmann
  */
 class LearningOverviewModel(
     private val learningObjectRepository: LearningObjectRepository = LearningObjectRepository()
