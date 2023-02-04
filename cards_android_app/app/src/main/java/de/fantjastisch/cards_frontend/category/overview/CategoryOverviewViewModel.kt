@@ -80,7 +80,7 @@ class CategoryOverviewViewModel(
             when (result) {
                 is RepoResult.Success -> {
                     onPageLoaded()
-                    currentDeleteDialog.value = null
+                    closeDialog()
                 }
                 is RepoResult.Error -> {
                     errors.value = result.errors
@@ -89,14 +89,19 @@ class CategoryOverviewViewModel(
                     }.firstOrNull { it == ErrorEntryEntity.Code.cATEGORYNOTEMPTYVIOLATION }
                     if (empty != null) {
                         error.value = ErrorsEnum.CATEGORY_NOT_EMPTY_ERROR
+                        closeDialog()
                     } else {
                         setValidationErrors(result.errors)
-
                     }
+
                 }
                 is RepoResult.ServerError -> setUnexpectedError()
             }
         }
+    }
+
+    private fun closeDialog() {
+        currentDeleteDialog.value = null
     }
 
     /**
