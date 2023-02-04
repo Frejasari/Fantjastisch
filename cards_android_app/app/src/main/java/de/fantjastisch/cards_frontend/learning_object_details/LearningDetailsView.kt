@@ -23,6 +23,8 @@ import java.util.*
  * @param learningObjectId Die UUID des Lernobjekts, welches geöffnet werden soll.
  * @param screenKey Ein Key (String-Alias) welcher übergeben wird, um das Laden der Seite
  * hervorzurufen.
+ *
+ * @author Jessica Repty, Semjon Nirmann, Freja Sender
  */
 @Composable
 fun LearningDetailsView(

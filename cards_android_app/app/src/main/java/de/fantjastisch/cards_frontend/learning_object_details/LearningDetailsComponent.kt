@@ -26,6 +26,8 @@ import java.util.*
  *
  * @param learningBox Die Lernbox, die dargestellt werden soll.
  * @param learningObjectId Die UUID des Lernobjekts, zu dem die zu darstellende Lernbox gehört.
+ *
+ * @author Jessica Repty, Semjon Nirmann, Freja Sender
  */
 @Composable
 fun LearningDetailsComponent(
@@ -67,13 +69,12 @@ fun LearningDetailsComponent(
                         overflow = TextOverflow.Ellipsis,
                         text = learningBox.label,
                     )
-                    if (learningBox.nrOfCards != 0) {
                         LearningDetailsContextMenu(
+                            hasCards = learningBox.nrOfCards != 0,
                             learningBoxId = learningBox.id,
                             learningObjectId = learningObjectId,
                             onStartLearningClicked = { dialogOpen.value = true }
                         )
-                    }
                 }
                 Divider(
                     modifier = Modifier

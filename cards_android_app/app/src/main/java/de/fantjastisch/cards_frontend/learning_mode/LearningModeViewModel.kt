@@ -88,6 +88,7 @@ class LearningModeViewModel(
      */
     fun onCardGoesToNextBoxClicked() {
         isShowingAnswer.value = false
+
         val nextBoxNum = learningBox.value!!.boxNumber + 1
         if (nextBoxNum < learningBoxesInObject.size) {
             val nextBoxId = learningBoxesInObject[nextBoxNum].id

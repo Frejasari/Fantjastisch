@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_backend.category;
 
-import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.category.aggregate.CategoryAggregate;
 import de.fantjastisch.cards_backend.category.aggregate.CreateCategory;
 import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
@@ -210,36 +209,6 @@ public class CategoryAggregateTest {
                 .field("subCategories")
                 .build();
         assertTrue(exception.getErrors().contains(cyclicSubcategoryError));
-
-    }
-
-    @Test
-    public void shouldThrowWhenSubcategoryIsNull() {
-        // create
-        CreateCategory cat = CreateCategory
-                .builder()
-                .label("cat")
-                .subCategories(Collections.emptySet())
-                .build();
-        CommandValidationException exception = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(cat));
-        ErrorEntry nullSubcategoryError = ErrorEntry.builder()
-                .code(SUBCATEGORY_IS_NULL_VIOLATION)
-                .field("subCategories")
-                .build();
-        assertTrue(exception.getErrors().contains(nullSubcategoryError));
-
-        // update
-        final UUID id = UUID.fromString("9db2d0a7-6733-4678-9c1d-4defbe9b425f");
-
-        UpdateCategory updateNewCat = UpdateCategory.builder()
-                .id(id)
-                .label("cat")
-                .subCategories(Collections.emptySet())
-                .build();
-
-        CommandValidationException exception2 = assertThrows(CommandValidationException.class, () -> categoryAggregate.handle(updateNewCat));
-
-        assertTrue(exception2.getErrors().contains(nullSubcategoryError));
 
     }
 

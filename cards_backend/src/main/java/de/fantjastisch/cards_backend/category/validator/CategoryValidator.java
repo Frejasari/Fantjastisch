@@ -44,7 +44,6 @@ public class CategoryValidator extends Validator {
      */
     public void validate(CreateCategory command) {
         throwIfNeeded(validateConstraints(command));
-        throwIfNeeded(checkIfSubcategoriesContainNull(command.getSubCategories()));
         List<ErrorEntry> errors = new ArrayList<>();
         final List<Category> allCategories = categoryQueryRepository.getPage();
         errors.addAll(checkIfLabelTaken(command.getLabel(), allCategories));
@@ -69,7 +68,6 @@ public class CategoryValidator extends Validator {
     public void validate(UpdateCategory command) {
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(validateConstraints(command));
-        errors.addAll(checkIfSubcategoriesContainNull(command.getSubCategories()));
         throwIfNeeded(errors);
 
         throwIfCategoryDoesNotExist(command.getId());
@@ -133,8 +131,7 @@ public class CategoryValidator extends Validator {
 
     private List<ErrorEntry> checkIfSubcategoryExists(Set<UUID> subCategories, List<Category> allCategories) {
         for (UUID subCategoryId : subCategories) {
-
-            if (allCategories.stream().noneMatch(category -> category.getId().equals(subCategoryId))) {
+            if (subCategoryId != null && allCategories.stream().noneMatch(category -> category.getId().equals(subCategoryId))) {
                 return Collections.singletonList(
                         ErrorEntry.builder()
                                 .code(SUBCATEGORY_DOESNT_EXIST_VIOLATION)
@@ -143,19 +140,6 @@ public class CategoryValidator extends Validator {
             }
         }
         return Collections.emptyList();
-    }
-
-    private List<ErrorEntry> checkIfSubcategoriesContainNull(Set<UUID> uuids) {
-        List<ErrorEntry> errors = new ArrayList<>();
-        if (uuids.contains(null)) {
-            errors.add(
-                    ErrorEntry.builder()
-                            .code(SUBCATEGORY_IS_NULL_VIOLATION)
-                            .field("subCategories")
-                            .build());
-
-        }
-        return errors;
     }
 
     private List<ErrorEntry> checkIfCycleInSubCategoriesFound

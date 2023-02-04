@@ -30,7 +30,7 @@ import de.fantjastisch.cards_frontend.util.LoadingWrapper
  * @param learningObject Das Lernobjekt, das dargestellt werden soll.
  * @param onDeleteSuccessful Funktion, mit der ein [LearningObject] gelöscht wird.
  *
- * @author
+ * @author Jessica Repty, Semjon Nirmann, Freja Sender
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

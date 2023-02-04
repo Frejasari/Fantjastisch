@@ -48,7 +48,7 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
                 }
             })
 
-        var expanded by remember { mutableStateOf(false) }
+        var expanded by remember { mutableStateOf(true) }
 
         Column(
             modifier = Modifier

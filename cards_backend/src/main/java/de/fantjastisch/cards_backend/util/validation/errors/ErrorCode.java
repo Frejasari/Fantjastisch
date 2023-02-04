@@ -20,7 +20,6 @@ public enum ErrorCode {
     SUBCATEGORY_DOESNT_EXIST_VIOLATION("Subcategory does not exist"),
     CATEGORY_NOT_EMPTY_VIOLATION("Cannot delete non-empty category"),
     CYCLIC_SUBCATEGORY_RELATION_VIOLATION("Cycle detected in subcategory hierarchy - cannot add parent as child"),
-    SUBCATEGORY_IS_NULL_VIOLATION("Cannot pass empty or null-valued subcategories"),
     BOX_LABELS_IS_NULL_VIOLATION("Cannot pass empty or null-valued boxlabels"),
     CARD_DUPLICATE_VIOLATION("Another card with equivalent attributes already exists");
 

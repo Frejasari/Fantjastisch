@@ -20,13 +20,14 @@ import java.util.*
  * @param learningObjectId Die UUID des Lernobjekts, zu dem die Lernbox gehört.
  * @param onStartLearningClicked Die Funktion, die dann aufgerufen wird, wenn die Box sich in Lernmodus befindet.
  *
- * @author
+ * @author Jessica Repty, Semjon Nirmann, Freja Sender
  */
 @Composable
 fun LearningDetailsContextMenu(
     learningBoxId: UUID,
     learningObjectId: UUID,
-    onStartLearningClicked: () -> Unit
+    onStartLearningClicked: () -> Unit,
+    hasCards: Boolean
 ) {
     val navigator = FantMainNavigator.current
     val isMenuOpen = remember { mutableStateOf(false) }
@@ -37,12 +38,14 @@ fun LearningDetailsContextMenu(
             expanded = isMenuOpen.value,
             onDismissRequest = { isMenuOpen.value = false }
         ) {
-            DropdownMenuItem(
-                text = { Text(text = stringResource(R.string.start_learning)) },
-                onClick = {
-                    isMenuOpen.value = false
-                    onStartLearningClicked()
-                })
+            if (hasCards) {
+                DropdownMenuItem(
+                    text = { Text(text = stringResource(R.string.start_learning)) },
+                    onClick = {
+                        isMenuOpen.value = false
+                        onStartLearningClicked()
+                    })
+            }
             DropdownMenuItem(
                 text = { Text(text = stringResource(R.string.show_cards_in_learning_box)) },
                 onClick = {
@@ -54,17 +57,19 @@ fun LearningDetailsContextMenu(
                         )
                     )
                 })
-            DropdownMenuItem(
-                text = { Text(text = stringResource(R.string.move_cards_text)) },
-                onClick = {
-                    isMenuOpen.value = false
-                    navigator.push(
-                        MoveCardsToBoxFragment(
-                            learningBoxId = learningBoxId,
-                            learningObjectId = learningObjectId
+            if (hasCards) {
+                DropdownMenuItem(
+                    text = { Text(text = stringResource(R.string.move_cards_text)) },
+                    onClick = {
+                        isMenuOpen.value = false
+                        navigator.push(
+                            MoveCardsToBoxFragment(
+                                learningBoxId = learningBoxId,
+                                learningObjectId = learningObjectId
+                            )
                         )
-                    )
-                })
+                    })
+            }
         }
     }
 }

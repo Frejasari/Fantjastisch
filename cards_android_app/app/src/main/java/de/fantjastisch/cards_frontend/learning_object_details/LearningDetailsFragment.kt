@@ -15,7 +15,7 @@ import java.util.*
  *
  * @property learningObjectId Die UUID des Lernobjekts, dessen Inhalte angesehen werden.
  *
- * @author
+ * @author Jessica Repty, Semjon Nirmann, Freja Sender
  */
 data class LearningDetailsFragment(val learningObjectId: UUID) :
     AndroidScreen() {
