@@ -28,7 +28,7 @@ class CategoryOverviewModel(
      * Sendet eine Anfrage an das [CategoryRepository] um eine Kategorie zu löschen.
      *
      * @param id Id der Kategorie, welche gelöscht werden soll.
-     * @return RepoResult<Unit> (OnSuccess, OnUnexpectedError, ...)
+     * @return RepoResult<Unit>
      */
     suspend fun deleteCategory(id: UUID): RepoResult<Unit> =
         categoryRepository.deleteCategory(categoryId = id)

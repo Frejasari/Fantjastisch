@@ -3,7 +3,6 @@ package de.fantjastisch.cards_frontend.category.overview
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.fantjastisch.cards_frontend.card.update.UpdateCardView
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.util.ErrorsEnum
@@ -121,7 +120,7 @@ class CategoryOverviewViewModel(
     }
 
     /**
-     * Dialog Fenster für das Bestätigen des Löschens einer Kategorie.
+     * Klasse, die den State für das Dialog Fenster für das Bestätigen des Löschens einer Kategorie hält.
      *
      */
     sealed class DeletionProgress {
