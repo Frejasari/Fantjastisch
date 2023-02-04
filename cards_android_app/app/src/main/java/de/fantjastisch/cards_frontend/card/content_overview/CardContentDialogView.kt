@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
-import de.fantjastisch.cards_frontend.glossary.card.ExpandedCardView
+import de.fantjastisch.cards_frontend.card.ExpandedCardView
 import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
-import de.fantjastisch.cards_frontend.util.LoadingIcon
+import de.fantjastisch.cards_frontend.components.LoadingIcon
 import java.util.*
 
 /**

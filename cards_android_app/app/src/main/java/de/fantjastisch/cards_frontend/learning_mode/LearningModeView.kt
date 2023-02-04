@@ -20,7 +20,7 @@ import de.fantjastisch.cards_frontend.glossary.LinkWithoutDeleteComponent
 import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
 import de.fantjastisch.cards_frontend.infrastructure.effects.OnFirstLoadedSignalEffect
 import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
-import de.fantjastisch.cards_frontend.util.LoadingWrapper
+import de.fantjastisch.cards_frontend.components.LoadingWrapper
 import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import java.util.*
 

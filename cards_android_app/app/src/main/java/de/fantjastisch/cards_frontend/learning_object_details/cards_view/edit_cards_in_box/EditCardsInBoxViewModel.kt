@@ -3,10 +3,8 @@ package de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_c
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-
-import de.fantjastisch.cards_frontend.infrastructure.fold
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -46,7 +44,7 @@ class EditCardsInBoxViewModel(
                         isLoading.value = false
                     },
                     onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedErrors
+                    onUnexpectedError = ::setUnexpectedError
                 )
         }
     }
@@ -83,7 +81,7 @@ class EditCardsInBoxViewModel(
             ).fold(
                 onSuccess = { isFinished.value = true },
                 onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedErrors,
+                onUnexpectedError = ::setUnexpectedError,
             )
         }
     }

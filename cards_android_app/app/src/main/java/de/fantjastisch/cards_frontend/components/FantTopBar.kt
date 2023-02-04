@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.infrastructure
+package de.fantjastisch.cards_frontend.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -16,10 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.glossary.CardsFilters
 import de.fantjastisch.cards_frontend.glossary.filter.GlossaryFilterView
-import org.openapitools.client.models.CategoryEntity
+import de.fantjastisch.cards_frontend.infrastructure.FantTabNavigator
+import de.fantjastisch.cards_frontend.infrastructure.GlossaryTab
 import java.util.*
 
 /**
@@ -87,13 +87,5 @@ fun FantTopBar(
             }
             TobBarCreateMenu()
         }
-    )
-}
-
-fun List<CategoryEntity>.toCategorySelectItems() = map { cat ->
-    CategorySelectItem(
-        id = cat.id,
-        label = cat.label,
-        isChecked = false
     )
 }

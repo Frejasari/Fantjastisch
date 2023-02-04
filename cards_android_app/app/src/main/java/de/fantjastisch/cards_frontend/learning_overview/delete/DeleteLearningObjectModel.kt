@@ -1,10 +1,9 @@
 package de.fantjastisch.cards_frontend.learning_overview.delete
 
 import androidx.room.Transaction
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
-import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBox
 import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
+import de.fantjastisch.cards_frontend.util.RepoResult
 import java.util.*
 
 /**

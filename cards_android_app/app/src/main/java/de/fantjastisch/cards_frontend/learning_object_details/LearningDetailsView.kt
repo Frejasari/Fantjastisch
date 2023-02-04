@@ -38,7 +38,7 @@ fun LearningDetailsView(
 
     val navigator = FantMainNavigator.current
     LaunchedEffect(navigator.items) {
-        // screen wurde gepoppt -> items hat sich veraendert, dieser effekt wird neu getriggert
+        // screen wurde gepoppt -> items hat sich veraendert, dieser Effekt wird neu getriggert
         if (navigator.lastItem.key == screenKey) {
             viewModel.onPageLoaded()
         }

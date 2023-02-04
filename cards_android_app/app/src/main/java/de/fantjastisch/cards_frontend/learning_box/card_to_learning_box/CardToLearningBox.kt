@@ -6,6 +6,14 @@ import androidx.room.ForeignKey
 import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import java.util.*
 
+/**
+ * Tabellen-Beschreibung von CardToLEarningBox
+ *
+ * @property learningBoxId Id der Lernbox
+ * @property cardId Id der Karteikarte
+ *
+ * @author Semjon Nirmann, Jessica Repty
+ */
 @Entity(
     tableName = "card_to_learning_box",
     primaryKeys = ["learning_box_id", "card_id"],

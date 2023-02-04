@@ -7,6 +7,7 @@ import org.openapitools.client.models.ErrorEntryEntity
  * Mappt die Fehlermeldungen aus dem Backend
  *
  * @param code die Fehlermeldung aus dem Backend
+ *
  * @return Die ID der Fehlermeldung
  */
 fun mapError(code: ErrorEntryEntity.Code): Int {

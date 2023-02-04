@@ -9,7 +9,7 @@ import de.fantjastisch.cards_frontend.card.CardSelect
 import de.fantjastisch.cards_frontend.components.SaveLayout
 import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
 import de.fantjastisch.cards_frontend.infrastructure.effects.OnFirstLoadedSignalEffect
-import de.fantjastisch.cards_frontend.util.LoadingWrapper
+import de.fantjastisch.cards_frontend.components.LoadingWrapper
 
 /**
  * Rendert die Seite Karten in dieser Box.

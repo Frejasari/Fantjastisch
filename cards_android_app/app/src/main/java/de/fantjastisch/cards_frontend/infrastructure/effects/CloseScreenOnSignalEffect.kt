@@ -7,7 +7,7 @@ import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 /**
  * Component, welche den aktuellen Screen vom MainNavigator popt.
  *
- * @param shouldClose Bei Änderung wird der aktuelle Screen gepopt.
+ * @param shouldClose Wenn dies wahr wird, wird der aktuelle Screen gepopt.
  *
  * @author Freja Sender
  */

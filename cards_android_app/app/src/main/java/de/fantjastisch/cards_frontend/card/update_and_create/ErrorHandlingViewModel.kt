@@ -6,7 +6,7 @@ import de.fantjastisch.cards_frontend.util.ErrorsEnum
 import org.openapitools.client.models.ErrorEntryEntity
 
 /**
- * Parent Class, die Errors enthält und Basis-Funkt
+ * Parent Class, die Errors enthält und Basis-Funktionalität bereitstellt. Bindeglied zu unserer Error-Snackbar
  *
  * @author Freja Sender
  */
@@ -25,7 +25,7 @@ abstract class ErrorHandlingViewModel : ViewModel() {
         this.errors.value = errors
     }
 
-    protected fun setUnexpectedErrors() {
+    protected fun setUnexpectedError() {
         error.value = ErrorsEnum.UNEXPECTED
     }
 }

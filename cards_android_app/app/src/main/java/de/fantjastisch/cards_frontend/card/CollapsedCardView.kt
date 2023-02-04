@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.glossary.card
+package de.fantjastisch.cards_frontend.card
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
@@ -12,7 +12,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.card.CardContextMenu
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel
 import de.fantjastisch.cards_frontend.util.formatToInlineLabel
 import org.openapitools.client.models.CardEntity

@@ -3,8 +3,8 @@ package de.fantjastisch.cards_frontend.learning_mode
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
@@ -60,7 +60,7 @@ class LearningModeViewModel(
                     isLoading.value = false
                 },
                 onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedErrors,
+                onUnexpectedError = ::setUnexpectedError,
             )
         }
     }
@@ -101,7 +101,7 @@ class LearningModeViewModel(
                 ).fold(
                     onSuccess = { nextCard() },
                     onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedErrors,
+                    onUnexpectedError = ::setUnexpectedError,
                 )
             }
         }
@@ -126,7 +126,7 @@ class LearningModeViewModel(
                 ).fold(
                     onSuccess = { nextCard() },
                     onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedErrors,
+                    onUnexpectedError = ::setUnexpectedError,
                 )
             }
         }

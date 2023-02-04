@@ -1,8 +1,8 @@
 package de.fantjastisch.cards_frontend.card
 
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.infrastructure.client
-import de.fantjastisch.cards_frontend.infrastructure.toRepoResponse
+import de.fantjastisch.cards_frontend.config.client
+import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.toRepoResult
 import org.openapitools.client.apis.CardApi
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CreateCardEntity
@@ -28,7 +28,7 @@ class CardRepository {
      */
     suspend fun getCard(
         id: UUID,
-    ): RepoResult<CardEntity> = service.getCard(id).awaitResponse().toRepoResponse()
+    ): RepoResult<CardEntity> = service.getCard(id).awaitResponse().toRepoResult()
 
     /**
      * Sendet eine Anfrage an das Backend und kriegt im Erfolgsfall alle
@@ -51,7 +51,7 @@ class CardRepository {
         search = search,
         tag = tag,
         sort = sort
-    ).awaitResponse().toRepoResponse()
+    ).awaitResponse().toRepoResult()
 
     /**
      * Sendet eine Anfrage an das Backend, um eine Karte in die Datenbank zu speichern.
@@ -61,7 +61,7 @@ class CardRepository {
      */
     suspend fun createCard(
         card: CreateCardEntity,
-    ): RepoResult<String> = service.createCard(card).awaitResponse().toRepoResponse()
+    ): RepoResult<String> = service.createCard(card).awaitResponse().toRepoResult()
 
     /**
      * Sendet eine Anfrage an das Backend, um eine bestehende Karte in der Datenbank zu überschreiben.
@@ -71,7 +71,7 @@ class CardRepository {
      */
     suspend fun updateCard(
         card: UpdateCardEntity,
-    ): RepoResult<Unit> = service.updateCard(card).awaitResponse().toRepoResponse()
+    ): RepoResult<Unit> = service.updateCard(card).awaitResponse().toRepoResult()
 
     /**
      * Sendet eine Anfrage an das Backend, um eine bestehende Karte aus der Datenbank zu löschen.
@@ -81,5 +81,5 @@ class CardRepository {
      */
     suspend fun deleteCard(
         cardId: UUID,
-    ): RepoResult<Unit> = service.deleteCard(cardId).awaitResponse().toRepoResponse()
+    ): RepoResult<Unit> = service.deleteCard(cardId).awaitResponse().toRepoResult()
 }

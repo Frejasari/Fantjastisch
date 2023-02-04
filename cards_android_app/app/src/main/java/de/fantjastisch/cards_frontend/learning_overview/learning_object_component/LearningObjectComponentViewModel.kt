@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-import de.fantjastisch.cards_frontend.infrastructure.fold
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -46,7 +46,7 @@ class LearningObjectComponentViewModel(
                     progress.value = it.progress
                 },
                 onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedErrors,
+                onUnexpectedError = ::setUnexpectedError,
             )
             isLoading.value = false
         }

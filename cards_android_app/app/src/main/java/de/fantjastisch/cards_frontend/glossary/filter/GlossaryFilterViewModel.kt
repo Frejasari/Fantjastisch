@@ -6,8 +6,8 @@ import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewMo
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.glossary.CardFilters
 import de.fantjastisch.cards_frontend.glossary.CardsFilters
-import de.fantjastisch.cards_frontend.infrastructure.fold
-import de.fantjastisch.cards_frontend.infrastructure.toCategorySelectItems
+import de.fantjastisch.cards_frontend.util.fold
+import de.fantjastisch.cards_frontend.util.toUnselectedCategorySelectItems
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -30,24 +30,28 @@ class GlossaryFilterViewModel(
 
     init {
         viewModelScope.launch {
-            glossaryFilterModel.getCategories().fold(
-                onSuccess = {
-                    categories.value = it.toCategorySelectItems()
-                        .map { categorySelectItem ->
-                            if (CardsFilters.filters.value.categories.contains(categorySelectItem.id)) {
-                                CategorySelectItem(
-                                    label = categorySelectItem.label,
-                                    id = categorySelectItem.id,
-                                    isChecked = true
-                                )
-                            } else {
-                                categorySelectItem
+            glossaryFilterModel.getCategories()
+                .fold(
+                    onSuccess = {
+                        categories.value = it.toUnselectedCategorySelectItems()
+                            .map { categorySelectItem ->
+                                if (CardsFilters.filters.value.categories.contains(
+                                        categorySelectItem.id
+                                    )
+                                ) {
+                                    CategorySelectItem(
+                                        label = categorySelectItem.label,
+                                        id = categorySelectItem.id,
+                                        isChecked = true
+                                    )
+                                } else {
+                                    categorySelectItem
+                                }
                             }
-                        }
-                },
-                onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedErrors,
-            )
+                    },
+                    onValidationError = ::setValidationErrors,
+                    onUnexpectedError = ::setUnexpectedError,
+                )
         }
     }
 

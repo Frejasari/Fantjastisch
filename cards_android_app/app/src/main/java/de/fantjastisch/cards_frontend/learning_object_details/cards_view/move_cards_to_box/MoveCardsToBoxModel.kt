@@ -2,11 +2,10 @@ package de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_c
 
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
-import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsViewModel
+import de.fantjastisch.cards_frontend.util.RepoResult
 import kotlinx.coroutines.*
 import org.openapitools.client.models.CardEntity
 import java.util.*
@@ -59,6 +58,7 @@ class MoveCardsToBoxModel(
     ): RepoResult<MoveCardsToBox> = coroutineScope {
         val (learningBoxes, cards) = awaitAll(
             async { getAllLearningBoxes(learningObjectId = learningObjectId) },
+
             async {
                 cardRepository.getPage(
                     categoryIds = null,

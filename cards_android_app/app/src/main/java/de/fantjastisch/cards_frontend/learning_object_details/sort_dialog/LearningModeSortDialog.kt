@@ -59,8 +59,7 @@ fun LearningModeSortDialog(
                 )
             },
             text = {
-                Column(
-                ) {
+                Column {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)

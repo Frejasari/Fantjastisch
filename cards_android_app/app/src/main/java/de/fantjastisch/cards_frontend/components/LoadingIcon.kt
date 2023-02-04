@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.util
+package de.fantjastisch.cards_frontend.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 /**
  * Die View, die während des Ladens gezeigt wird.
  *
+ * @author Semjon Nirmann
  */
 @Composable
 fun LoadingIcon() {

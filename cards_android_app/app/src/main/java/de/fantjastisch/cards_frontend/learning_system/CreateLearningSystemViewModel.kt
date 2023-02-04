@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.infrastructure.fold
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 
 
@@ -37,13 +37,13 @@ class CreateLearningSystemViewModel(
         viewModelScope.launch {
             model.addLearningSystem(
                 learningSystemLabel = learningSystemLabel.value.trim(),
-                learningSystemBoxLabels = learningSystemBoxLabels.value.map{it.trim()}
+                learningSystemBoxLabels = learningSystemBoxLabels.value.map { it.trim() }
             ).fold(
                 onSuccess = {
                     isFinished.value = true
                 },
                 onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedErrors,
+                onUnexpectedError = ::setUnexpectedError,
             )
         }
     }

@@ -4,7 +4,8 @@ import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.toUnselectedCategorySelectItems
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -32,8 +33,10 @@ class CreateCardModel(
         val allCategories: List<CategorySelectItem>,
     )
 
-    suspend fun initializePage() = coroutineScope {
 
+    @Suppress("UNCHECKED_CAST")
+    suspend fun initializePage() = coroutineScope {
+//
         val (categoryResult, allCardsResult) = awaitAll(
             async { categoryRepository.getPage() },
             async { cardRepository.getPage(null, null, null, false) }
@@ -51,14 +54,8 @@ class CreateCardModel(
                             isChecked = false
                         )
                     }
-                val categorySelectItems = categories
-                    .map { categoryEntity ->
-                        CategorySelectItem(
-                            label = categoryEntity.label,
-                            id = categoryEntity.id,
-                            isChecked = false
-                        )
-                    }
+                val categorySelectItems = categories.toUnselectedCategorySelectItems()
+
                 RepoResult.Success(
                     CreateCard(
                         allCategories = categorySelectItems,

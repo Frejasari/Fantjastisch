@@ -3,8 +3,8 @@ package de.fantjastisch.cards_frontend.card.create
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.CreateAndUpdateViewModel
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.util.ErrorsEnum
+import de.fantjastisch.cards_frontend.util.RepoResult
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -25,16 +25,15 @@ class CreateCardViewModel(
 
     init {
         viewModelScope.launch {
-            val result = createCardModel.initializePage()
 
-            when (result) {
+            when (val result = createCardModel.initializePage()) {
                 is RepoResult.Success -> {
                     cards.value = result.result.cards
                     categories.value = result.result.allCategories
                 }
 
                 is RepoResult.Error -> setValidationErrors(result.errors)
-                is RepoResult.ServerError -> error.value = ErrorsEnum.NETWORK
+                is RepoResult.ServerError -> setUnexpectedError()
             }
         }
     }

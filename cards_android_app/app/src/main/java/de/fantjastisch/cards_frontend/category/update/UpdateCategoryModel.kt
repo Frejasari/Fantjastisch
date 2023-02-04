@@ -3,7 +3,8 @@ package de.fantjastisch.cards_frontend.category.update
 import de.fantjastisch.cards_frontend.card.update.UpdateCardViewModel
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.toUnselectedCategorySelectItems
 import kotlinx.coroutines.*
 import org.openapitools.client.models.*
 import java.util.*
@@ -76,13 +77,7 @@ class UpdateCategoryModel(
                 val categories = allCategoriesResult.result as List<CategoryEntity>
                 val categorySelectItems = categories
                     .filter { cat -> cat.id != id }
-                    .map { cat ->
-                        CategorySelectItem(
-                            label = cat.label,
-                            id = cat.id,
-                            isChecked = false
-                        )
-                    }
+                    .toUnselectedCategorySelectItems()
                 RepoResult.Success(
                     UpdateCategory(
                         id = category.id,

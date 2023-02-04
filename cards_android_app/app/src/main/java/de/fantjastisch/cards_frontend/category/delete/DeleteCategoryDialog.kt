@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.category
+package de.fantjastisch.cards_frontend.category.delete
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -31,7 +31,7 @@ fun DeleteCategoryDialog(
             Text(text = stringResource(R.string.delete_category_dialog_title))
         },
         text = {
-            Text(text  = cat.label)
+            Text(text = cat.label)
         },
         confirmButton = {
             Button(

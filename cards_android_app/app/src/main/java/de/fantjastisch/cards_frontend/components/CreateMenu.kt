@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.infrastructure
+package de.fantjastisch.cards_frontend.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddCircle
@@ -11,6 +11,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.create.CreateCardFragment
 import de.fantjastisch.cards_frontend.category.create.CreateCategoryFragment
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.learning_object.create.CreateLearningObjectFragment
 import de.fantjastisch.cards_frontend.learning_system.CreateLearningSystemFragment
 
@@ -45,13 +46,13 @@ fun TobBarCreateMenu() {
                     navigator.push(CreateCategoryFragment())
                 })
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_create_learningsystem)) },
+                text = { Text(stringResource(id = R.string.menu_create_learningsystem)) },
                 onClick = {
                     isCreateMenuOpen.value = false
                     navigator.push(CreateLearningSystemFragment())
                 })
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_create_learningobject)) },
+                text = { Text(text = stringResource(R.string.menu_create_learningobject)) },
                 onClick = {
                     isCreateMenuOpen.value = false
                     navigator.push(CreateLearningObjectFragment())

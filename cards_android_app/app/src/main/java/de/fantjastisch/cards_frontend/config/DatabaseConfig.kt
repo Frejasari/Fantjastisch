@@ -9,7 +9,6 @@ import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLe
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object.LearningObjectDao
 
-
 object AppDatabase {
     lateinit var database: Repository
         internal set

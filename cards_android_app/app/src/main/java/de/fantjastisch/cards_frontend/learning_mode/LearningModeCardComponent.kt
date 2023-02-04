@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 
 /**
- * View für eine Karteikarte im Lernmodus.
+ * View für eine Karteikarte im Lernmodus, insbesondere ist hier die Animation beschrieben.
  *
  * @param onClick Callback, wenn Klick auf Karte.
  * @param question Die Frage der Karteikarte.
@@ -73,7 +73,7 @@ fun LearningModeCardComponent(
  * @param content Die Frage der Karteikarte.
  * @param modifier der Modifier dieses Composables
  *
- * @author Jessica Repty, Freja Sender, Semjon Nirmann
+ * @author Freja Sender, Semjon Nirmann, Jessica Repty
  */
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

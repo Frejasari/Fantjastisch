@@ -3,14 +3,13 @@ package de.fantjastisch.cards_frontend.card.content_overview
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-import de.fantjastisch.cards_frontend.infrastructure.fold
-import de.fantjastisch.cards_frontend.util.ErrorsEnum
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
 
 /**
- * Stellt die Daten für die [CardContentView] bereit und nimmt seine Anfragen entgegen.
+ * Stellt die Daten für die [CardContentDialogView] bereit und nimmt seine Anfragen entgegen.
  *
  * @property id Die Id von der ausgeklappten Karte.
  * @property cardContentModel Das zugehörige Model, welches die Logik kapselt.
@@ -34,7 +33,7 @@ class CardContentViewModel(
                         card.value = cardResponse
                     },
                     onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedErrors,
+                    onUnexpectedError = ::setUnexpectedError,
                 )
         }
     }

@@ -1,8 +1,8 @@
 package de.fantjastisch.cards_frontend.learning_overview.learning_object_component
 
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_system.LearningSystemRepository
+import de.fantjastisch.cards_frontend.util.RepoResult
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

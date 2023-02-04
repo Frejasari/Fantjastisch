@@ -1,11 +1,12 @@
 package de.fantjastisch.cards_frontend.learning_system
 
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.infrastructure.client
-import de.fantjastisch.cards_frontend.infrastructure.enqueue
-import de.fantjastisch.cards_frontend.infrastructure.toRepoResponse
+import de.fantjastisch.cards_frontend.config.client
+import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.toRepoResult
 import org.openapitools.client.apis.LearningSystemApi
-import org.openapitools.client.models.*
+import org.openapitools.client.models.CreateLearningSystemEntity
+import org.openapitools.client.models.LearningSystemEntity
+import org.openapitools.client.models.UpdateLearningSystemEntity
 import retrofit2.awaitResponse
 import java.util.*
 
@@ -30,7 +31,7 @@ class LearningSystemRepository {
         id: UUID,
     ): RepoResult<LearningSystemEntity> = service.getLearningSystem(id)
         .awaitResponse()
-        .toRepoResponse()
+        .toRepoResult()
 
     /**
      * Sendet eine Anfrage an das Backend und kriegt im Erfolgsfall alle
@@ -41,7 +42,7 @@ class LearningSystemRepository {
      */
     suspend fun getPage() = service.getLearningSystemList()
         .awaitResponse()
-        .toRepoResponse()
+        .toRepoResult()
 
     /**
      * Sendet eine Anfrage an das Backend, um ein Lernsystem in die Datenbank zu speichern.
@@ -53,10 +54,11 @@ class LearningSystemRepository {
         learningSystem: CreateLearningSystemEntity,
     ) = service.createLearningSystem(learningSystem)
         .awaitResponse()
-        .toRepoResponse()
+        .toRepoResult()
 
     suspend fun updateLearningSystem(
-        learningSystem: UpdateLearningSystemEntity) = service.updateLearningSystem(learningSystem)
+        learningSystem: UpdateLearningSystemEntity
+    ) = service.updateLearningSystem(learningSystem)
         .awaitResponse()
-        .toRepoResponse()
+        .toRepoResult()
 }

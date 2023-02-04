@@ -2,7 +2,7 @@ package de.fantjastisch.cards_frontend.learning_box.card_to_learning_box
 
 import androidx.room.Transaction
 import de.fantjastisch.cards_frontend.config.AppDatabase
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult
 import java.util.*
 
 /**

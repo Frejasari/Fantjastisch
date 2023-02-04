@@ -1,7 +1,7 @@
 package de.fantjastisch.cards_frontend.learning_box
 
 import de.fantjastisch.cards_frontend.config.AppDatabase
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult
 import java.util.*
 
 /**
@@ -53,18 +53,6 @@ class LearningBoxRepository(
     }
 
 
-//    suspend fun findByBoxId(
-//        learningBoxId: UUID,
-//        onSuccess: (LearningBox) -> Unit,
-//        onFailure: (errors: ErrorResponseEntity?) -> Unit
-//    ) {
-//        try {
-//            onSuccess(repository.findById(learningBoxId))
-//        } catch (ex: Throwable) {
-//            onFailure(null)
-//        }
-//    }
-
     /**
      * Fügt eine Lernbox in die Datenbank ein.
      *
@@ -73,7 +61,7 @@ class LearningBoxRepository(
      */
     suspend fun insert(
         learningBox: LearningBox,
-    ) : RepoResult<Unit> {
+    ): RepoResult<Unit> {
         return try {
             repository.insert(learningBox)
             RepoResult.Success(Unit)
@@ -83,10 +71,9 @@ class LearningBoxRepository(
     }
 
     /**
-     * Löscht eine Lernbox aus der Datenbank.
+     * Löscht alle Lernboxen zu einem Lernobjekt
      *
-     * @param boxNumber Nummer der zu löschenden Lernbox.
-     * @param learningObjectId Id des zugehörigen Lernobjektes, der Lernbox.
+     * @param learningObjectId Id des zugehörigen Lernobjektes
      */
     suspend fun deleteAllBoxesForObject(learningObjectId: UUID) {
         return repository.deleteAllBoxesForObject(learningObjectId = learningObjectId)

@@ -1,13 +1,11 @@
 package de.fantjastisch.cards_frontend.category
 
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.infrastructure.client
-import de.fantjastisch.cards_frontend.infrastructure.enqueue
-import de.fantjastisch.cards_frontend.infrastructure.toRepoResponse
+import de.fantjastisch.cards_frontend.config.client
+import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.toRepoResult
 import org.openapitools.client.apis.CategoryApi
 import org.openapitools.client.models.CategoryEntity
 import org.openapitools.client.models.CreateCategoryEntity
-import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.UpdateCategoryEntity
 import retrofit2.awaitResponse
 import java.util.*
@@ -30,7 +28,7 @@ class CategoryRepository {
      */
     suspend fun getCategory(
         id: UUID
-    ): RepoResult<CategoryEntity> = service.getCategory(id).awaitResponse().toRepoResponse()
+    ): RepoResult<CategoryEntity> = service.getCategory(id).awaitResponse().toRepoResult()
 
     /**
      * Sendet eine Anfrage an das Backend und kriegt im Erfolgsfall alle
@@ -39,7 +37,7 @@ class CategoryRepository {
      * @return RepoResult<List<CategoryEntity>> OnSuccess: Liste an Kategorien.
      */
     suspend fun getPage(
-    ): RepoResult<List<CategoryEntity>> = service.getCategoryPage().awaitResponse().toRepoResponse()
+    ): RepoResult<List<CategoryEntity>> = service.getCategoryPage().awaitResponse().toRepoResult()
 
     /**
      * Sendet eine Anfrage an das Backend, um eine Kategorie in die Datenbank zu speichern.
@@ -49,7 +47,7 @@ class CategoryRepository {
      */
     suspend fun createCategory(
         category: CreateCategoryEntity
-    ): RepoResult<String> = service.createCategory(category).awaitResponse().toRepoResponse()
+    ): RepoResult<String> = service.createCategory(category).awaitResponse().toRepoResult()
 
     /**
      * Sendet eine Anfrage an das Backend, um eine bestehende Kategorie in der Datenbank zu überschreiben.
@@ -59,7 +57,7 @@ class CategoryRepository {
      */
     suspend fun updateCategory(
         category: UpdateCategoryEntity
-    ): RepoResult<Unit> = service.updateCategory(category).awaitResponse().toRepoResponse()
+    ): RepoResult<Unit> = service.updateCategory(category).awaitResponse().toRepoResult()
 
     /**
      * Sendet eine Anfrage an das Backend, um eine bestehende Kategorie aus der Datenbank zu löschen.
@@ -69,5 +67,5 @@ class CategoryRepository {
      */
     suspend fun deleteCategory(
         categoryId: UUID
-    ): RepoResult<Unit> = service.deleteCategory(categoryId).awaitResponse().toRepoResponse()
+    ): RepoResult<Unit> = service.deleteCategory(categoryId).awaitResponse().toRepoResult()
 }

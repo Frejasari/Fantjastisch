@@ -1,8 +1,5 @@
-@file:SuppressLint("CompositionLocalNaming")
+package de.fantjastisch.cards_frontend.components
 
-package de.fantjastisch.cards_frontend.infrastructure
-
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,13 +8,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 
-val SnackbarProvider = compositionLocalOf<SnackbarHostState> { error("SnackbarProvider not set") }
-
+/**
+ * TODO
+ *
+ * @param snackbarData vom Framework zur Verfuügung gestellte Daten fuür die Snackbar
+ *
+ * @author Freja Sender
+ */
 @Composable
 fun CustomSnackBar(snackbarData: SnackbarData) {
     Box(

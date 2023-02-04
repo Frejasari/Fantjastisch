@@ -3,8 +3,8 @@ package de.fantjastisch.cards_frontend.learning_object_details
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -37,7 +37,7 @@ class LearningDetailsViewModel(
                     learningObjectLabel = it.learningObjectLabel
                 },
                 onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedErrors,
+                onUnexpectedError = ::setUnexpectedError,
             )
         }
     }

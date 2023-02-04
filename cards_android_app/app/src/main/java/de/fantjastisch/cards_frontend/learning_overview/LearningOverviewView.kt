@@ -3,20 +3,21 @@ package de.fantjastisch.cards_frontend.learning_overview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.infrastructure.FantTopBar
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.infrastructure.effects.OnFirstLoadedSignalEffect
 import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
+import de.fantjastisch.cards_frontend.learning_object.create.CreateLearningObjectFragment
 import de.fantjastisch.cards_frontend.learning_overview.learning_object_component.LearningObjectView
 
 /**
@@ -31,19 +32,25 @@ import de.fantjastisch.cards_frontend.learning_overview.learning_object_componen
 fun LearningOverviewView(
     modifier: Modifier = Modifier
 ) {
+    val navigator = FantMainNavigator.current
     val viewModel = viewModel { LearningOverviewViewModel() }
     OnFirstLoadedSignalEffect(onPageLoaded = viewModel::onPageLoaded)
     ShowErrorOnSignalEffect(viewModel = viewModel)
 
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     if (viewModel.learningObjects.value.isEmpty()) {
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = stringResource(R.string.no_content_text)
-            )
+            ElevatedButton(
+                modifier = Modifier.aspectRatio(1f),
+                shape = RoundedCornerShape(50),
+                onClick = { navigator.push(CreateLearningObjectFragment()) }) {
+                Text(text = stringResource(R.string.menu_create_learningobject))
+            }
         }
     } else {
         LazyColumn(

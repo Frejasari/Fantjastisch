@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.infrastructure.fold
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -42,13 +42,13 @@ class UpdateCategoryViewModel(
             categoryModel
                 .initializePage()
                 .fold(
-                    onSuccess = { cat ->
+                    onSuccess = { category ->
                         errors.value = emptyList()
-                        label.value = cat.label
-                        allCategories.value = cat.allCategories
+                        label.value = category.label
+                        allCategories.value = category.allCategories
                     },
                     onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedErrors,
+                    onUnexpectedError = ::setUnexpectedError,
                 )
         }
     }
@@ -68,7 +68,7 @@ class UpdateCategoryViewModel(
             ).fold(
                 onSuccess = { isFinished.value = true },
                 onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedErrors
+                onUnexpectedError = ::setUnexpectedError
             )
 
         }

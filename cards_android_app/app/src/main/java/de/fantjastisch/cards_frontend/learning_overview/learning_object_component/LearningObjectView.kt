@@ -21,7 +21,7 @@ import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEf
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object_details.LearningDetailsFragment
 import de.fantjastisch.cards_frontend.learning_overview.delete.DeleteLearningObjectDialog
-import de.fantjastisch.cards_frontend.util.LoadingWrapper
+import de.fantjastisch.cards_frontend.components.LoadingWrapper
 
 
 /**

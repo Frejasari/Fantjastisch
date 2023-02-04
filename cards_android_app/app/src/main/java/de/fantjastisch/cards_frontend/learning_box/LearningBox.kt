@@ -8,6 +8,16 @@ import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object.generateId
 import java.util.*
 
+/**
+ * Tabellen-Beschreibung von LearningBox
+ *
+ * @property id die Id der Lernbox
+ * @property learningObjectId die Id des Lernobjektes
+ * @property boxNumber die Nr der Lernbox
+ * @property label das Label der Lernbox
+ *
+ * @author Semjon Nirmann, Jessica Repty
+ */
 @Entity(
     tableName = "learning_box",
     foreignKeys = [ForeignKey(
@@ -26,6 +36,17 @@ data class LearningBox(
     @ColumnInfo(name = "label") val label: String
 )
 
+/**
+ * Data Transfer Object, um Learning Boxes mit der Anzahl ihrer Karten zu laden
+ *
+ * @property id die Id der Lernbox
+ * @property learningObjectId die Id des Lernobjektes
+ * @property boxNumber die Nr der Lernbox
+ * @property label das Label der Lernbox
+ * @property nrOfCards Anzahl der Karten in der Box
+ *
+ * * @author Freja Sender
+ */
 data class LearningBoxWitNrOfCards(
     @ColumnInfo val id: UUID = generateId(),
     @ColumnInfo(name = "learning_object_id") val learningObjectId: UUID,

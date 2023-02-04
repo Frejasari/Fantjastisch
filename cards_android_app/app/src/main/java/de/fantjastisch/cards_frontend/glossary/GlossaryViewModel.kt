@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -84,7 +84,7 @@ class GlossaryViewModel(
                     Log.v("CardsFilter", "Received ${result.result.size} cards")
                 }
                 is RepoResult.Error -> setValidationErrors(result.errors)
-                is RepoResult.ServerError -> setUnexpectedErrors()
+                is RepoResult.ServerError -> setUnexpectedError()
 
             }
         }
@@ -116,7 +116,7 @@ class GlossaryViewModel(
                     currentDeleteDialog.value = null
                 }
                 is RepoResult.Error -> setValidationErrors(result.errors)
-                is RepoResult.ServerError -> setUnexpectedErrors()
+                is RepoResult.ServerError -> setUnexpectedError()
             }
         }
     }

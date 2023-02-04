@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.util.ErrorsEnum
+import de.fantjastisch.cards_frontend.util.RepoResult
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -28,11 +28,10 @@ class CreateCategoryViewModel(
     init {
         viewModelScope.launch {
 
-            val result = createCategoryModel.getCategories()
-            when (result) {
+            when (val result = createCategoryModel.getCategories()) {
                 is RepoResult.Success -> allCategories.value = result.result
                 is RepoResult.Error -> setValidationErrors(result.errors)
-                is RepoResult.ServerError -> setUnexpectedErrors()
+                is RepoResult.ServerError -> setUnexpectedError()
             }
         }
     }
@@ -79,7 +78,7 @@ class CreateCategoryViewModel(
             when (result) {
                 is RepoResult.Success -> isFinished.value = true
                 is RepoResult.Error -> setValidationErrors(result.errors)
-                is RepoResult.ServerError -> setUnexpectedErrors()
+                is RepoResult.ServerError -> setUnexpectedError()
             }
         }
     }

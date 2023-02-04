@@ -9,10 +9,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import de.fantjastisch.cards_frontend.glossary.card.CollapsedCardView
 import org.openapitools.client.models.CardEntity
 import java.util.*
 
+/**
+ * Data Class, die die Select-Items für Karten beschreibt
+ *
+ *
+ * @author Semjon Nirmann, Freja Sender
+ */
 data class CardSelectItem(
     val card: CardEntity,
     val isChecked: Boolean
@@ -26,6 +31,7 @@ data class CardSelectItem(
  *
  * @author Semjon Nirmann, Freja Sender
  */
+@Suppress("FunctionName")
 fun LazyListScope.CardSelect(
     cards: List<CardSelectItem>,
     onCardSelected: (UUID) -> Unit = {},

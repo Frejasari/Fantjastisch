@@ -38,9 +38,8 @@ interface LearningBoxDao {
     suspend fun insert(learningBox: LearningBox)
 
     /**
-     * Löscht die Lernbox aus der Datenbank.
+     * Löscht
      *
-     * @param boxNumber Nummer der Lernbox.
      * @param learningObjectId Id, des zugehörigen Lernobjektes.
      */
     @Query("DELETE FROM learning_box WHERE learning_object_id = :learningObjectId")

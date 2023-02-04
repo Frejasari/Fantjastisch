@@ -1,7 +1,7 @@
 package de.fantjastisch.cards_frontend.learning_object
 
 import de.fantjastisch.cards_frontend.config.AppDatabase
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult
 import java.util.*
 
 /**

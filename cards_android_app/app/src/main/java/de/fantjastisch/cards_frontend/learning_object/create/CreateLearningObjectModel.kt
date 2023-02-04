@@ -5,13 +5,14 @@ import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
 import de.fantjastisch.cards_frontend.learning_system.LearningSystemRepository
+import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.toUnselectedCategorySelectItems
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -92,13 +93,7 @@ class CreateLearningObjectModel(
                     )
                 }
 
-                val categorySelectItems = categories.map { category ->
-                    CategorySelectItem(
-                        id = category.id,
-                        label = category.label,
-                        isChecked = false,
-                    )
-                }
+                val categorySelectItems = categories.toUnselectedCategorySelectItems()
 
                 val learningSystemSelectItems = learningSystems.map { learningSystem ->
                     SingleSelectItem(
@@ -157,7 +152,8 @@ class CreateLearningObjectModel(
                 sort = null,
             )) {
                 is RepoResult.Success -> response
-                is RepoResult.Error, is RepoResult.ServerError -> RepoResult.ServerError()
+                is RepoResult.Error,
+                is RepoResult.ServerError -> RepoResult.ServerError()
             }
         }
     }
@@ -268,16 +264,20 @@ class CreateLearningObjectModel(
         // Hole Lernsystem und Karten aus angekreuzten Kategorien aus DB
         return when {
             learningSystem is RepoResult.Success
-            && cardsFromSelectedCategories is RepoResult.Success -> {
+                    && cardsFromSelectedCategories is RepoResult.Success -> {
                 // Sammle einzeln hinzugefügte Karten
                 val cardsToInsert: MutableList<UUID> =
-                    cards.filter { card -> card.isChecked }.map { card -> card.card.id }.toMutableList()
+                    cards.filter { card -> card.isChecked }.map { card -> card.card.id }
+                        .toMutableList()
 
                 // Füge Karten aus angekreuzten Kategorien hinzu zu allen einzusetzenden Karten
                 cardsToInsert.addAll(cardsFromSelectedCategories.result.map { it.id })
 
                 val learningObject =
-                    LearningObject(label = learningObjectLabel, learningSystemId = selectedSystem.id)
+                    LearningObject(
+                        label = learningObjectLabel,
+                        learningSystemId = selectedSystem.id
+                    )
                 // Füge Lernobjekt in DB ein
                 val insertLearningObjectResponse = insertLearningObject(learningObject)
 

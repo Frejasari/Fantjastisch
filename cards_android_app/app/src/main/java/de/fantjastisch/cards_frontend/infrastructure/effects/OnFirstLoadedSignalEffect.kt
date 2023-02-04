@@ -7,7 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 /**
  * Component, welche die onPageLoaded Funktion beim ersten Laden der Seite aufruft.
  *
- * @param onPageLoaded Funktion die aufgerufen wird.
+ * @param onPageLoaded Funktion die aufgerufen wird, wenn die Seite zum ersten Mal geladen wird.
  *
  * @author Freja Sender
  */

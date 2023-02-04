@@ -10,10 +10,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.card.CardSelect
+import de.fantjastisch.cards_frontend.components.LoadingWrapper
 import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
 import de.fantjastisch.cards_frontend.infrastructure.effects.OnFirstLoadedSignalEffect
 import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
-import de.fantjastisch.cards_frontend.util.LoadingWrapper
 
 /**
  * Rendert die Seite Karten im Lernobjekt verschieben.

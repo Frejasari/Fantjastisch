@@ -6,9 +6,9 @@ import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.util.ErrorsEnum
+import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -43,7 +43,7 @@ class CreateLearningObjectViewModel(
                         learningSystems.value = learningObject.learningSystems
                     },
                     onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedErrors,
+                    onUnexpectedError = ::setUnexpectedError,
                 )
         }
     }

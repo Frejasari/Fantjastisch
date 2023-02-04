@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
  *
  * @author
  */
-class LearningModeSortViewModel() : ViewModel() {
+class LearningModeSortViewModel : ViewModel() {
 
     val isFinished = mutableStateOf(false)
     val sort = mutableStateOf(false)

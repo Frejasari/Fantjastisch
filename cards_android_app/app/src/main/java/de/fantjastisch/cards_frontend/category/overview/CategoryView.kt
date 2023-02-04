@@ -1,7 +1,6 @@
 package de.fantjastisch.cards_frontend.category.overview
 
 import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,11 +9,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.viewmodel.compose.viewModel
-import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategoryContextMenu
 import de.fantjastisch.cards_frontend.components.ExpandableCard
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
@@ -62,7 +59,8 @@ fun CategoryView(
                 )
                 CategoryContextMenu(
                     id = category.id,
-                    onDeleteClicked = { viewModel.onTryDeleteCategory(category)
+                    onDeleteClicked = {
+                        viewModel.onTryDeleteCategory(category)
                     }
                 )
             }

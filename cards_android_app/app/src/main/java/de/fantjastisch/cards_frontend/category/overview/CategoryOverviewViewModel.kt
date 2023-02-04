@@ -3,8 +3,8 @@ package de.fantjastisch.cards_frontend.category.overview
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.util.ErrorsEnum
+import de.fantjastisch.cards_frontend.util.RepoResult
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CategoryEntity
@@ -39,8 +39,8 @@ class CategoryOverviewViewModel(
                 is RepoResult.Success -> {
                     categories.value = result.result
                 }
-                is RepoResult.Error -> Unit
-                is RepoResult.ServerError -> error.value = ErrorsEnum.NETWORK
+                is RepoResult.Error -> setValidationErrors(result.errors)
+                is RepoResult.ServerError -> setUnexpectedError()
             }
         }
     }
@@ -63,16 +63,6 @@ class CategoryOverviewViewModel(
     fun onTryDeleteCategory(cat: CategoryEntity) {
         currentDeleteDialog.value = DeletionProgress.ConfirmWithUser(cat)
     }
-
-  /*  /**
-     * Setzt alle Fehler zurück, nachdem ein Fehler angezeigt wurde
-     *
-     */
-     fun onToastShown() {
-        error.value = ErrorsEnum.NO_ERROR
-    }
-    */
-
 
     /**
      * Kategorie soll gelöscht werden -> [categoryGraphModel] löscht die Kategorie, indem Sie die
@@ -104,7 +94,7 @@ class CategoryOverviewViewModel(
 
                     }
                 }
-                is RepoResult.ServerError -> setUnexpectedErrors()
+                is RepoResult.ServerError -> setUnexpectedError()
             }
         }
     }

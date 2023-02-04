@@ -4,7 +4,7 @@ import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult
 import kotlinx.coroutines.*
 import org.openapitools.client.models.*
 import java.util.*
@@ -89,10 +89,10 @@ class UpdateCardModel(
                 val categories = categoryResult.result as List<CategoryEntity>
                 val cards = allCardsResult.result as List<CardEntity>
                 val cardSelectItems = cards
-                    .filter { card -> card.id != id }
-                    .map { card ->
+                    .filter { cardEntity -> cardEntity.id != id }
+                    .map { cardEntity ->
                         CardSelectItem(
-                            card = card,
+                            card = cardEntity,
                             isChecked = false
                         )
                     }

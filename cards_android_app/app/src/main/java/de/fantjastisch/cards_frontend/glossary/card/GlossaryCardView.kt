@@ -2,6 +2,8 @@ package de.fantjastisch.cards_frontend.glossary.card
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.*
+import de.fantjastisch.cards_frontend.card.CollapsedCardView
+import de.fantjastisch.cards_frontend.card.ExpandedCardView
 import de.fantjastisch.cards_frontend.components.ExpandableCard
 import org.openapitools.client.models.CardEntity
 

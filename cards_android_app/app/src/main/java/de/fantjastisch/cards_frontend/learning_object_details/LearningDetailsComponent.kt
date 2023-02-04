@@ -69,12 +69,12 @@ fun LearningDetailsComponent(
                         overflow = TextOverflow.Ellipsis,
                         text = learningBox.label,
                     )
-                        LearningDetailsContextMenu(
-                            hasCards = learningBox.nrOfCards != 0,
-                            learningBoxId = learningBox.id,
-                            learningObjectId = learningObjectId,
-                            onStartLearningClicked = { dialogOpen.value = true }
-                        )
+                    LearningDetailsContextMenu(
+                        hasCards = learningBox.nrOfCards != 0,
+                        learningBoxId = learningBox.id,
+                        learningObjectId = learningObjectId,
+                        onStartLearningClicked = { dialogOpen.value = true }
+                    )
                 }
                 Divider(
                     modifier = Modifier

@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -55,7 +55,7 @@ class MoveCardsToBoxViewModel(
                         isLastBox.value = it.isLastBox
                     },
                     onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedErrors
+                    onUnexpectedError = ::setUnexpectedError
                 )
             isLoading.value = false
         }
@@ -93,7 +93,7 @@ class MoveCardsToBoxViewModel(
             ).fold(
                 onSuccess = { onPageLoaded() },
                 onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedErrors
+                onUnexpectedError = ::setUnexpectedError
             )
         }
     }
@@ -114,7 +114,7 @@ class MoveCardsToBoxViewModel(
             ).fold(
                 onSuccess = { onPageLoaded() },
                 onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedErrors,
+                onUnexpectedError = ::setUnexpectedError,
             )
         }
     }

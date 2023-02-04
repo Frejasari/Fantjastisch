@@ -14,7 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.category.CategoryContextMenu
 import org.openapitools.client.models.CategoryEntity
 
 

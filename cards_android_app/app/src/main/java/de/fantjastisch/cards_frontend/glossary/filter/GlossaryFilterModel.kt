@@ -1,7 +1,7 @@
 package de.fantjastisch.cards_frontend.glossary.filter
 
 import de.fantjastisch.cards_frontend.category.CategoryRepository
-import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult
 import org.openapitools.client.models.CategoryEntity
 
 /**

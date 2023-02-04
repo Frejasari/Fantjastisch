@@ -11,7 +11,7 @@ import de.fantjastisch.cards_frontend.util.ErrorsEnum
 /**
  * Component, welche eine Snackbar anzeigt, wenn ein Fehler auftaucht.
  *
- * @param viewModel das ViewModel, welches die Fehler hält.
+ * @param viewModel das [ErrorHandlingViewModel], welches die Fehler hält.
  *
  * @author Freja Sender
  */

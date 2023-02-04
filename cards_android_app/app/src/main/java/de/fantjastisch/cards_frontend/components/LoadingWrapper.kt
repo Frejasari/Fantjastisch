@@ -1,4 +1,4 @@
-package de.fantjastisch.cards_frontend.util
+package de.fantjastisch.cards_frontend.components
 
 import androidx.compose.runtime.Composable
 
