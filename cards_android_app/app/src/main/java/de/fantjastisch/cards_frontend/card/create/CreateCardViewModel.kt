@@ -66,7 +66,7 @@ class CreateCardViewModel(
                         setValidationErrors(result.errors)
                     }
                 }
-                is RepoResult.ServerError -> error.value = ErrorsEnum.NETWORK
+                is RepoResult.ServerError -> setUnexpectedError()
             }
         }
     }

@@ -109,11 +109,12 @@
   <string name="error_label_taken">Label ist bereits vergeben.</string>
   <string name="error_category_does_not_exist">Kategorie existiert nicht.</string>
   <string name="error_no_category">Es muss eine Kategorie ausgewaehlt werden.</string>
-  <string name="error_no_cycles">Zyklen sind nicht erlaubt.</string>
+  <string name="error_no_cycles">Zyklen in der Kategorien-Hierarchie sind nicht erlaubt.</string>
   <string name="error_subcategories_not_null">Subkategorien dürfen nicht null sein.</string>
   <string name="error_entity_does_not_exist">"Entität exisitert nicht.</string>
   <string name="error_card_already_exists">Karte existiert bereits.</string>
   <string name="error_box_labels_null">Die Box-Labels dürfen nicht leer sein.</string>
   <string name="no_cards_found">Mit diesen Filtern konnten keine Karten gefunden werden.</string>
+  <string name="sub_categories_label">Kinds-Kategorien</string>
 
 </resources>

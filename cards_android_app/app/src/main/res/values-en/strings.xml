@@ -108,11 +108,12 @@
   <string name="error_label_taken">This Label Is Already Taken.</string>
   <string name="error_category_does_not_exist">The Category Does Not Exist.</string>
   <string name="error_no_category">Please Choose a Category.</string>
-  <string name="error_no_cycles">Cyclic Relationships Are Not Allowed.</string>
+  <string name="error_no_cycles">Cyclic Relationships Of Categories Are Not Allowed.</string>
   <string name="error_subcategories_not_null">Subcategories Must Not Be Null.</string>
   <string name="error_entity_does_not_exist">Entity Does Not Exist.</string>
   <string name="error_card_already_exists">Card Already Exists.</string>
   <string name="error_box_labels_null">Box Labels Must Not Be Empty.</string>
   <string name="categories_not_empty_error">Category Must Not Have Cards</string>
   <string name="no_cards_found">Could not find cards that match your filter settings.</string>
+  <string name="sub_categories_label">Subcategories</string>
 </resources>

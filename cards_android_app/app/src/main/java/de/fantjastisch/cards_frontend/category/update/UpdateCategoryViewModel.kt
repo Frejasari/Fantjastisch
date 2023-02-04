@@ -4,8 +4,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
+import de.fantjastisch.cards_frontend.util.ErrorsEnum
 import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
+import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
 /**
@@ -67,7 +69,14 @@ class UpdateCategoryViewModel(
                 subCategories = allCategories.value,
             ).fold(
                 onSuccess = { isFinished.value = true },
-                onValidationError = ::setValidationErrors,
+                onValidationError = {
+                    if (it.firstOrNull { e -> e.code == ErrorEntryEntity.Code.cYCLICSUBCATEGORYRELATIONVIOLATION } != null) {
+                        errors.value = it
+                        error.value = ErrorsEnum.CYCLIC_CATEGORIE
+                    } else {
+                        setValidationErrors(it)
+                    }
+                },
                 onUnexpectedError = ::setUnexpectedError
             )
 

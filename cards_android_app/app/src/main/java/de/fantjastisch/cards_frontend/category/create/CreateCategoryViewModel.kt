@@ -6,6 +6,7 @@ import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewMo
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.util.ErrorsEnum
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -73,13 +74,11 @@ class CreateCategoryViewModel(
             val result = createCategoryModel.createCategory(
                 label = label.value.trim(),
                 subCategories = allCategories.value,
+            ).fold(
+                onSuccess = { isFinished.value = true },
+                onValidationError = ::setValidationErrors,
+                onUnexpectedError = ::setUnexpectedError
             )
-
-            when (result) {
-                is RepoResult.Success -> isFinished.value = true
-                is RepoResult.Error -> setValidationErrors(result.errors)
-                is RepoResult.ServerError -> setUnexpectedError()
-            }
         }
     }
 }

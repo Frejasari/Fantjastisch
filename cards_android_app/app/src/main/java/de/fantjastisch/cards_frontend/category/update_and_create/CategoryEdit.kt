@@ -65,7 +65,7 @@ fun CategoryEdit(
                 expandedForCat = !expandedForCat
                 expanded = false
             },
-            headline = stringResource(id = R.string.categories_label),
+            headline = stringResource(id = R.string.sub_categories_label),
         ) {
             CategorySelect(
                 categories = categories,

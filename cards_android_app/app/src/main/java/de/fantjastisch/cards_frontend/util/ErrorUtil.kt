@@ -42,5 +42,6 @@ enum class ErrorsEnum(val text: Int) {
     NETWORK(R.string.error_network),
     UNEXPECTED(R.string.error_unexpected),
     CHECK_INPUT(R.string.error_check_input),
+    CYCLIC_CATEGORIE(R.string.error_no_cycles),
 
 }
