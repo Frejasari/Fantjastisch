@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.times
  * @param answer Die Antwort der Karteikarte.
  * @param isAnswer Ein Boolean, der Angibt ob derzeit die Antwort angezeigt wird.
  *
- * @author Jessica Repty, Freja Sender, Semjon Nirmann
+ * @author  Freja Sender, Semjon Nirmann, Jessica Repty
  */
 @Composable
 fun LearningModeCardComponent(
@@ -55,7 +55,7 @@ fun LearningModeCardComponent(
         )
         Card(
             onClick = onClick,
-            content = answer,
+            content = if (isAnswer) answer else "",
             modifier = Modifier.graphicsLayer {
                 rotationY = rotation - 180f
                 alpha = if (rotation in 0f..90f) 0f else 1f
@@ -65,6 +65,16 @@ fun LearningModeCardComponent(
     }
 }
 
+
+/**
+ * View für eine Karteikarte im Lernmodus.
+ *
+ * @param onClick Callback, wenn Klick auf Karte.
+ * @param content Die Frage der Karteikarte.
+ * @param modifier der Modifier dieses Composables
+ *
+ * @author Jessica Repty, Freja Sender, Semjon Nirmann
+ */
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun Card(

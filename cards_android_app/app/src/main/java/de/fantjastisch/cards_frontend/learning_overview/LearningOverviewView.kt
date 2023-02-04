@@ -22,7 +22,7 @@ import de.fantjastisch.cards_frontend.learning_overview.learning_object_componen
 /**
  * Zeigt den Screen für alle Lernobjekten
  *
- * @author
+ * @author Freja Sender
  */
 @OptIn(ExperimentalMaterial3Api::class)
 class LearningOverviewScreen : AndroidScreen() {
@@ -41,7 +41,7 @@ class LearningOverviewScreen : AndroidScreen() {
  *
  * @param modifier Modifier für die Seite
  *
- * @author
+ * @author Semjon Nirmann, Jessica Repty Freja Sender
  */
 @Composable
 @Preview
@@ -55,7 +55,7 @@ fun LearningOverview(
     // Ein RecyclerView -> Eine lange liste von Eintraegen
     if (viewModel.learningObjects.value.isEmpty()) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
