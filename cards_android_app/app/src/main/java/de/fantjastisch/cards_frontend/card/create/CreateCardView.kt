@@ -6,7 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
 import de.fantjastisch.cards_frontend.card.update_and_create.CardEditView
-import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 
 /**
  * Rendert die Seite "Karteikarte erstellen".
@@ -21,6 +22,8 @@ fun CreateCardView(
 ) {
 
     val viewModel = viewModel { CreateCardViewModel() }
+    ShowErrorOnSignalEffect(viewModel = viewModel)
+    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 
     CardEditView(
         modifier = modifier,
@@ -39,7 +42,7 @@ fun CreateCardView(
             errors = viewModel.errors.value,
             onValueChange = viewModel::setCardTag,
         ),
-        categories = viewModel.cardCategories.value,
+        categories = viewModel.categories.value,
         onCategorySelected = viewModel::onCategorySelected,
         linkName = TextFieldState(
             value = viewModel.linkLabel.value,
@@ -52,10 +55,6 @@ fun CreateCardView(
         onCreateLinkClicked = viewModel::onCreateLinkClicked,
         links = viewModel.cardLinks.value,
         onDeleteLinkClicked = viewModel::onDeleteLinkClicked,
-        toast = viewModel.error.value,
-        onToastShown = viewModel::onToastShown
     )
 
-
-    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 }

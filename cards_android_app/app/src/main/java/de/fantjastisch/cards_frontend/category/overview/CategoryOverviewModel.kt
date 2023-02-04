@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_frontend.category.overview
 
-import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import java.util.*
@@ -15,7 +14,7 @@ import java.util.*
  */
 class CategoryOverviewModel(
     private val categoryRepository: CategoryRepository = CategoryRepository(),
-) : ViewModel() {
+) {
 
     /**
      * Sendet eine Anfrage an das [CategoryRepository] und kriegt alle Kategorien zurück.

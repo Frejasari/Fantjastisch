@@ -1,29 +1,27 @@
 package de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
+import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import kotlinx.coroutines.launch
-import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
 class MoveCardsToBoxViewModel(
     private val learningBoxId: UUID,
     private val learningObjectId: UUID,
     private val model: MoveCardsToBoxModel = MoveCardsToBoxModel()
-) : ViewModel() {
+) : ErrorHandlingViewModel() {
 
     val cards = mutableStateOf<List<CardSelectItem>>(mutableListOf())
-    val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
-    val error = mutableStateOf<String?>(null)
     val isFinished = mutableStateOf(false)
-    private val learningBoxesInObject = mutableStateOf<List<LearningBoxWitNrOfCards>>(mutableListOf())
+    private val learningBoxesInObject =
+        mutableStateOf<List<LearningBoxWitNrOfCards>>(mutableListOf())
     val learningBoxNum = mutableStateOf(-1)
-    var isLastBox = false
-    var isFirstBox = false
+    var isLastBox = mutableStateOf(false)
+    var isFirstBox = mutableStateOf(false)
     val isLoading = mutableStateOf(true)
 
     init {
@@ -38,11 +36,11 @@ class MoveCardsToBoxViewModel(
                         cards.value = it.cards
                         learningBoxesInObject.value = it.learningBoxes
                         learningBoxNum.value = it.learningBoxNum
-                        isFirstBox = it.isFirstBox
-                        isLastBox = it.isLastBox
+                        isFirstBox.value = it.isFirstBox
+                        isLastBox.value = it.isLastBox
                     },
-                    onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
-                    onUnexpectedError = { error.value = "Ein unbekannter Fehler ist aufgetreten." }
+                    onValidationError = ::setValidationErrors,
+                    onUnexpectedError = ::setUnexpectedErrors
                 )
             isLoading.value = false
         }
@@ -68,10 +66,9 @@ class MoveCardsToBoxViewModel(
                 learningBoxId = learningBoxId
             ).fold(
                 onSuccess = { onPageLoaded() },
-                onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
-                onUnexpectedError = {
-                    error.value = "Ein unbekannter Fehler ist aufgetreten."
-                })
+                onValidationError = ::setValidationErrors,
+                onUnexpectedError = ::setUnexpectedErrors
+            )
         }
     }
 
@@ -84,10 +81,9 @@ class MoveCardsToBoxViewModel(
                 learningBoxId = learningBoxId
             ).fold(
                 onSuccess = { onPageLoaded() },
-                onValidationError = { error.value = "Fehler bei der Eingabevalidierung." },
-                onUnexpectedError = {
-                    error.value = "Ein unbekannter Fehler ist aufgetreten."
-                })
+                onValidationError = ::setValidationErrors,
+                onUnexpectedError = ::setUnexpectedErrors,
+            )
         }
     }
 }

@@ -14,6 +14,7 @@ import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.category.CategorySelect
 import de.fantjastisch.cards_frontend.components.SaveLayout
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 
 /**
  * Rendert die View zum Filtern im Glossar.
@@ -29,6 +30,17 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
     @Composable
     override fun Content() {
         val viewModel = viewModel { GlossaryFilterViewModel() }
+        ShowErrorOnSignalEffect(viewModel = viewModel)
+        // Effekt, der die filter view wieder ausblendet, sobald daten erfolgreich geladen wurden.
+        LaunchedEffect(
+            // wenn sich diese Variable ändert
+            key1 = viewModel.isFinished.value,
+            // dann wird dieses Lambda ausgeführt.
+            block = {
+                if (viewModel.isFinished.value) {
+                    bottomSheetNavigator.hide()
+                }
+            })
 
         SaveLayout(
             onSaveClicked = viewModel::onLoadPageClicked,
@@ -79,14 +91,6 @@ class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : Andro
             )
         }
 
-        LaunchedEffect(
-            // wenn sich diese Variable ändert
-            key1 = viewModel.isFinished.value,
-            // dann wird dieses Lambda ausgeführt.
-            block = {
-                if (viewModel.isFinished.value) {
-                    bottomSheetNavigator.hide()
-                }
-            })
+
     }
 }

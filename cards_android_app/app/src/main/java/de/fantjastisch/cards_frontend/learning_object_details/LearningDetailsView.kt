@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.ScreenKey
 import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import java.util.*
 
 
@@ -24,6 +25,7 @@ fun LearningDetailsView(
 ) {
     val viewModel =
         viewModel(key = learningObjectId.toString()) { LearningDetailsViewModel(learningObjectId) }
+    ShowErrorOnSignalEffect(viewModel = viewModel)
 
     val navigator = FantMainNavigator.current
     LaunchedEffect(navigator.items) {

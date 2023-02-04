@@ -13,7 +13,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 
@@ -25,7 +24,7 @@ fun CustomSnackBar(snackbarData: SnackbarData) {
         modifier = Modifier.padding(24.dp)
     ) {
         Surface(
-            color = Color.Red,
+            color = MaterialTheme.colorScheme.error,
             shape = MaterialTheme.shapes.medium,
             shadowElevation = 6.dp,
         ) {

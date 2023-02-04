@@ -17,7 +17,8 @@ import de.fantjastisch.cards_frontend.components.ExpandableRow
 import de.fantjastisch.cards_frontend.components.OutlinedTextFieldWithErrors
 import de.fantjastisch.cards_frontend.components.SaveLayout
 import de.fantjastisch.cards_frontend.components.SingleSelect
-import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 
 /**
  * Zeigt die Seite zum Erstellen eines Lernobjektes an
@@ -31,6 +32,8 @@ fun CreateLearningObjectView(
     modifier: Modifier = Modifier
 ) {
     val viewModel = viewModel { CreateLearningObjectViewModel() }
+    CloseScreenOnSignalEffect(viewModel.isFinished.value)
+    ShowErrorOnSignalEffect(viewModel = viewModel)
 
     var expanded by remember { mutableStateOf(true) }
     var expandedForCards by remember { mutableStateOf(false) }
@@ -92,7 +95,6 @@ fun CreateLearningObjectView(
         }
     }
 
-    CloseScreenOnSignalEffect(viewModel.isFinished.value)
 
 }
 

@@ -2,7 +2,6 @@ package de.fantjastisch.cards_frontend.card.update
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import de.fantjastisch.cards_frontend.card.create.CreateCardModel
 import de.fantjastisch.cards_frontend.card.update_and_create.CreateAndUpdateViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.fold
@@ -26,37 +25,6 @@ class UpdateCardViewModel(
 
     val isFinished = mutableStateOf(false)
 
-    val cardQuestion = mutableStateOf("")
-    val cardAnswer = mutableStateOf("")
-    val cardTag = mutableStateOf("")
-    val cardCategories = mutableStateOf(listOf<CategorySelectItem>())
-
-    /**
-     * Setzt die Frage der Karte auf den übergebenen Wert.
-     *
-     * @param value Neue Frage der Karte.
-     */
-    fun setCardQuestion(value: String) {
-        cardQuestion.value = value
-    }
-
-    /**
-     * Setzt die Antwort der Karte auf den übergebenen Wert.
-     *
-     * @param value Neue Antwort der Karte.
-     */
-    fun setCardAnswer(value: String) {
-        cardAnswer.value = value
-    }
-
-    /**
-     * Setzt das Schlagwort der Karte auf den übergebenen Wert.
-     *
-     * @param value Neues Schlagwort der Karte.
-     */
-    fun setCardTag(value: String) {
-        cardTag.value = value
-    }
 
     init {
         viewModelScope.launch {
@@ -68,7 +36,7 @@ class UpdateCardViewModel(
                         cardAnswer.value = card.answer
                         cardQuestion.value = card.question
                         cardTag.value = card.tag
-                        cardCategories.value = card.allCategories.map { cat ->
+                        categories.value = card.allCategories.map { cat ->
                             CategorySelectItem(
                                 id = cat.id,
                                 label = cat.label,
@@ -76,21 +44,11 @@ class UpdateCardViewModel(
                             )
                         }
                         cardLinks.value = card.links as ArrayList<LinkEntity>
+                        cards.value = card.cards
                     },
-                    onValidationError = { errorResult ->
-                        errors.value = errorResult
-                    },
-                    onUnexpectedError = { error.value = ErrorsEnum.NETWORK },
+                    onValidationError = ::setValidationErrors,
+                    onUnexpectedError = ::setUnexpectedErrors,
                 )
-
-            val resultCards = cardModel.getCards()
-
-            if (resultCards == null) {
-                error.value = ErrorsEnum.NETWORK
-            } else {
-                errors.value = emptyList()
-                cards.value = resultCards
-            }
         }
     }
 
@@ -108,28 +66,13 @@ class UpdateCardViewModel(
                 question = cardQuestion.value,
                 answer = cardAnswer.value,
                 tag = cardTag.value,
-                categories = cardCategories.value,
+                categories = categories.value,
                 links = cardLinks.value
             ).fold(
                 onSuccess = { isFinished.value = true },
-                onValidationError = { errors.value = it },
-                onUnexpectedError = { error.value = ErrorsEnum.UNEXPECTED }
+                onValidationError = ::setValidationErrors,
+                onUnexpectedError = ::setUnexpectedErrors,
             )
-        }
-    }
-
-    /**
-     * Weist der Karte die übergebene Kategorie zu.
-     *
-     * @param id Id der Kategorie, welche ausgewählt wurde.
-     */
-    fun onCategorySelected(id: UUID) {
-        cardCategories.value = cardCategories.value.map {
-            if (it.id == id) {
-                it.copy(isChecked = !it.isChecked)
-            } else {
-                it
-            }
         }
     }
 

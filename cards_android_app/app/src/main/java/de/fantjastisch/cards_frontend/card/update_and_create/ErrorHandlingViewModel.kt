@@ -10,7 +10,7 @@ import org.openapitools.client.models.ErrorEntryEntity
  *
  * @author Freja Sender
  */
-open class ErrorHandlingViewModel : ViewModel() {
+abstract class ErrorHandlingViewModel : ViewModel() {
 
     val error = mutableStateOf(ErrorsEnum.NO_ERROR)
 
@@ -18,5 +18,14 @@ open class ErrorHandlingViewModel : ViewModel() {
 
     fun onToastShown() {
         error.value = ErrorsEnum.NO_ERROR
+    }
+
+    protected fun setValidationErrors(errors: List<ErrorEntryEntity>) {
+        error.value = ErrorsEnum.CHECK_INPUT
+        this.errors.value = errors
+    }
+
+    protected fun setUnexpectedErrors() {
+        error.value = ErrorsEnum.UNEXPECTED
     }
 }

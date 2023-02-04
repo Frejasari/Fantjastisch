@@ -1,8 +1,8 @@
-package de.fantjastisch.cards_frontend.infrastructure
+package de.fantjastisch.cards_frontend.infrastructure.effects
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-
+import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 
 /**
  * Component, welche den aktuellen Screen vom MainNavigator popt.
@@ -25,4 +25,3 @@ fun CloseScreenOnSignalEffect(shouldClose: Boolean) {
             }
         })
 }
-

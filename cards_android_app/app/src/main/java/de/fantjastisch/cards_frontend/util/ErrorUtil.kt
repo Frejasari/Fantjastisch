@@ -26,6 +26,7 @@ enum class ErrorsEnum(val text: Int) {
     NO_ERROR(0),
     LINK_ERROR(R.string.error_link_no_card),
     CATEGORY_NOT_EMPTY_ERROR(R.string.categories_not_empty_error),
+    CARD_MUST_HAVE_CATEGORY_ERROR(R.string.categories_error),
     NETWORK(R.string.error_network),
     UNEXPECTED(R.string.error_unexpected),
     CHECK_INPUT(R.string.error_check_input),

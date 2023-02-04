@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.update_and_create.CardEditView
-import de.fantjastisch.cards_frontend.infrastructure.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import org.openapitools.client.models.ErrorEntryEntity
 import java.util.*
 
@@ -25,6 +26,8 @@ fun UpdateCardView(
 ) {
 
     val viewModel = viewModel { UpdateCardViewModel(id = id) }
+    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
+    ShowErrorOnSignalEffect(viewModel = viewModel)
 
 
     // Componente die ihre Kinder untereinander anzeigt.
@@ -45,7 +48,7 @@ fun UpdateCardView(
             errors = viewModel.errors.value,
             onValueChange = viewModel::setCardTag,
         ),
-        categories = viewModel.cardCategories.value,
+        categories = viewModel.categories.value,
         onCategorySelected = viewModel::onCategorySelected,
         onUpdateCardClicked = viewModel::onUpdateCardClicked,
         linkName = TextFieldState(
@@ -57,12 +60,8 @@ fun UpdateCardView(
         onCardSelected = viewModel::onCardSelected,
         onCreateLinkClicked = viewModel::onCreateLinkClicked,
         links = viewModel.cardLinks.value,
-        onDeleteLinkClicked = viewModel::onDeleteLinkClicked,
-        toast = viewModel.error.value,
-        onToastShown = viewModel::onToastShown
+        onDeleteLinkClicked = viewModel::onDeleteLinkClicked
     )
-
-    CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
 }
 
 data class TextFieldState(

@@ -29,6 +29,18 @@ fun LearningModeSortDialog(
     val navigator = FantMainNavigator.current
     val viewModel = viewModel(key = learningBox.id.toString()) { LearningModeSortViewModel() }
 
+    // schließt den Dialog, wenn der User Dismisst.
+    LaunchedEffect(
+        // wenn sich diese Variable ändert
+        key1 = viewModel.isFinished.value,
+        // dann wird dieses Lambda ausgeführt.
+        block = {
+            if (viewModel.isFinished.value) {
+                setIsOpen(false)
+                viewModel.isFinished.value = false
+            }
+        })
+
     if (isOpen) {
         AlertDialog(
             onDismissRequest = { setIsOpen(false) },
@@ -103,15 +115,5 @@ fun LearningModeSortDialog(
             }
         )
     }
-    // einmaliger Effekt
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = viewModel.isFinished.value,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            if (viewModel.isFinished.value) {
-                setIsOpen(false)
-                viewModel.isFinished.value = false
-            }
-        })
+
 }

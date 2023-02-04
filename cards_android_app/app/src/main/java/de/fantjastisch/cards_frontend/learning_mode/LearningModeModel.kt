@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_frontend.learning_mode
 
-import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
@@ -26,7 +25,7 @@ class LearningModeModel(
     private val cardToLearningBoxRepository: CardToLearningBoxRepository = CardToLearningBoxRepository(),
     private val learningBoxRepository: LearningBoxRepository = LearningBoxRepository(),
     private val cardRepository: CardRepository = CardRepository()
-) : ViewModel() {
+) {
 
     data class LearningMode(
         val learningBoxesInObject: List<LearningBoxWitNrOfCards>,
@@ -91,9 +90,10 @@ class LearningModeModel(
         }
     }
 
-    suspend fun moveCard(fromBoxId: UUID, toBoxId: UUID, currentCardId: UUID): RepoResult<Unit> = cardToLearningBoxRepository.moveCards(
-        from = fromBoxId,
-        to = toBoxId,
-        cardIds = listOf(currentCardId)
-    )
+    suspend fun moveCard(fromBoxId: UUID, toBoxId: UUID, currentCardId: UUID): RepoResult<Unit> =
+        cardToLearningBoxRepository.moveCards(
+            from = fromBoxId,
+            to = toBoxId,
+            cardIds = listOf(currentCardId)
+        )
 }

@@ -1,11 +1,15 @@
 package de.fantjastisch.cards_frontend.card.create
 
-import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import org.openapitools.client.models.CardEntity
+import org.openapitools.client.models.CategoryEntity
 import org.openapitools.client.models.CreateCardEntity
 import org.openapitools.client.models.LinkEntity
 
@@ -21,44 +25,48 @@ import org.openapitools.client.models.LinkEntity
 class CreateCardModel(
     private val cardRepository: CardRepository = CardRepository(),
     private val categoryRepository: CategoryRepository = CategoryRepository()
-) : ViewModel() {
+) {
 
-    /**
-     * Sendet eine Anfrage an das [CategoryRepository] und kriegt alle Kategorien zurück.
-     *
-     * @return Eine Liste aller Kategorien.
-     */
-    suspend fun getCategories(): List<CategorySelectItem>? {
-        val result = categoryRepository.getPage()
-        return when (result) {
-            is RepoResult.Success -> result.result.map { cat ->
-                CategorySelectItem(
-                    id = cat.id,
-                    label = cat.label,
-                    isChecked = false
+    data class CreateCard(
+        val cards: List<CardSelectItem>,
+        val allCategories: List<CategorySelectItem>,
+    )
+
+    suspend fun initializePage() = coroutineScope {
+
+        val (categoryResult, allCardsResult) = awaitAll(
+            async { categoryRepository.getPage() },
+            async { cardRepository.getPage(null, null, null, false) }
+        )
+
+        when {
+            allCardsResult is RepoResult.Success
+                    && categoryResult is RepoResult.Success -> {
+                val cards = allCardsResult.result as List<CardEntity>
+                val categories = categoryResult.result as List<CategoryEntity>
+                val cardSelectItems = cards
+                    .map { card ->
+                        CardSelectItem(
+                            card = card,
+                            isChecked = false
+                        )
+                    }
+                val categorySelectItems = categories
+                    .map { categoryEntity ->
+                        CategorySelectItem(
+                            label = categoryEntity.label,
+                            id = categoryEntity.id,
+                            isChecked = false
+                        )
+                    }
+                RepoResult.Success(
+                    CreateCard(
+                        allCategories = categorySelectItems,
+                        cards = cardSelectItems
+                    )
                 )
             }
-            is RepoResult.Error,
-            is RepoResult.ServerError -> null // TODO
-
-        }
-    }
-
-    /**
-     * Sendet eine Anfrage an das [CardRepository] und kriegt alle Karten zurück.
-     *
-     * @return Eine Liste aller Karten.
-     */
-    suspend fun getCards(): List<CardSelectItem>? {
-        return when (val result = cardRepository.getPage(null,null,null,false)) {
-            is RepoResult.Success -> result.result.map { card ->
-                CardSelectItem(
-                    card = card,
-                    isChecked = false
-                )
-            }
-            is RepoResult.Error,
-            is RepoResult.ServerError -> null // TODO
+            else -> RepoResult.ServerError()
         }
     }
 

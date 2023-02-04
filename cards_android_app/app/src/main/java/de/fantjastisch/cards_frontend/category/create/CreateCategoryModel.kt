@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_frontend.category.create
 
-import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
@@ -16,24 +15,27 @@ import org.openapitools.client.models.CreateCategoryEntity
  */
 class CreateCategoryModel(
     private val categoryRepository: CategoryRepository = CategoryRepository()
-) : ViewModel() {
+) {
 
     /**
      * Sendet eine Anfrage an das [categoryRepository] und kriegt im Erfolgsfall alle Kategorien zurück.
      *
      * @return RepoResult<List<CategoryEntity>> OnSuccess: Eine Liste aller Kategorien.
      */
-    suspend fun getCategories(): List<CategorySelectItem>? {
+    suspend fun getCategories(): RepoResult<List<CategorySelectItem>> {
         return when (val result = categoryRepository.getPage()) {
-            is RepoResult.Success -> result.result.map { cat ->
-                CategorySelectItem(
-                    id = cat.id,
-                    label = cat.label,
-                    isChecked = false
-                )
+            is RepoResult.Success -> {
+                val categorySelectItems = result.result.map { cat ->
+                    CategorySelectItem(
+                        id = cat.id,
+                        label = cat.label,
+                        isChecked = false
+                    )
+                }
+                return RepoResult.Success(categorySelectItems)
             }
-            is RepoResult.Error,
-            is RepoResult.ServerError -> null // TODO
+            is RepoResult.Error -> RepoResult.Error(result.errors)
+            is RepoResult.ServerError -> RepoResult.ServerError()
         }
     }
 

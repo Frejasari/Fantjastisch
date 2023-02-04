@@ -2,8 +2,8 @@ package de.fantjastisch.cards_frontend.glossary
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -12,6 +12,9 @@ import org.openapitools.client.models.CardEntity
 import java.util.*
 
 
+/**
+ * Globales Objekt, welches die aktuellen Filteroptionen speichert
+ */
 object CardsFilters {
     val filters = MutableStateFlow(
         CardFilters(
@@ -47,10 +50,9 @@ data class CardFilters(
  */
 class GlossaryViewModel(
     private val glossaryModel: GlossaryModel = GlossaryModel()
-) : ViewModel() {
+) : ErrorHandlingViewModel() {
 
     val cards = mutableStateOf<List<CardEntity>>(emptyList())
-    val error = mutableStateOf<String?>(null)
     val currentDeleteDialog = mutableStateOf<DeletionProgress?>(null)
 
     init {
@@ -74,8 +76,8 @@ class GlossaryViewModel(
                     cards.value = result.result
                     Log.v("CardsFilter", "Received ${result.result.size} cards")
                 }
-                is RepoResult.Error -> Unit
-                is RepoResult.ServerError -> Unit
+                is RepoResult.Error -> setValidationErrors(result.errors)
+                is RepoResult.ServerError -> setUnexpectedErrors()
 
             }
         }
@@ -88,7 +90,6 @@ class GlossaryViewModel(
     fun onDeleteCardClicked() {
         val card = currentDeleteDialog.value!!.card
         currentDeleteDialog.value = DeletionProgress.Deleting(card)
-        error.value = null
         viewModelScope.launch {
             val result = glossaryModel.deleteCard(
                 cardId = card.id
@@ -98,11 +99,8 @@ class GlossaryViewModel(
                     onPageLoaded()
                     currentDeleteDialog.value = null
                 }
-                is RepoResult.Error,
-                is RepoResult.ServerError -> {
-                    // Fehler anzeigen:
-                    error.value = "Ein Netzwerkfehler ist aufgetreten."
-                }
+                is RepoResult.Error -> setValidationErrors(result.errors)
+                is RepoResult.ServerError -> setUnexpectedErrors()
             }
         }
     }

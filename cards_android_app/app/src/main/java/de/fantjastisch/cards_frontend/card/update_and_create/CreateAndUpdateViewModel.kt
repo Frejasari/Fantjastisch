@@ -1,8 +1,8 @@
 package de.fantjastisch.cards_frontend.card.update_and_create
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import de.fantjastisch.cards_frontend.card.CardSelectItem
+import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.util.ErrorsEnum
 import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.LinkEntity
@@ -13,14 +13,17 @@ import java.util.*
  *
  * @author Freja Sender
  */
-open class CreateAndUpdateViewModel : ViewModel() {
+open class CreateAndUpdateViewModel : ErrorHandlingViewModel() {
 
     val linkLabel = mutableStateOf("")
-    val error = mutableStateOf(ErrorsEnum.NO_ERROR)
     val cards = mutableStateOf(listOf<CardSelectItem>())
-    val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
+    val categories = mutableStateOf(listOf<CategorySelectItem>())
 
     val cardLinks = mutableStateOf<List<LinkEntity>>(listOf())
+    val cardQuestion = mutableStateOf("")
+    val cardAnswer = mutableStateOf("")
+    val cardTag = mutableStateOf("")
+
 
     /**
      * Speichert das übergebene Linklabel in [linkLabel].
@@ -29,6 +32,34 @@ open class CreateAndUpdateViewModel : ViewModel() {
      */
     fun setLinkName(value: String) {
         linkLabel.value = value
+    }
+
+
+    /**
+     * Setzt die Frage der Karte auf den übergebenen Wert.
+     *
+     * @param value Neue Frage der Karte.
+     */
+    fun setCardQuestion(value: String) {
+        cardQuestion.value = value
+    }
+
+    /**
+     * Setzt die Antwort der Karte auf den übergebenen Wert.
+     *
+     * @param value Neue Antwort der Karte.
+     */
+    fun setCardAnswer(value: String) {
+        cardAnswer.value = value
+    }
+
+    /**
+     * Setzt das Schlagwort der Karte auf den übergebenen Wert.
+     *
+     * @param value Neues Schlagwort der Karte.
+     */
+    fun setCardTag(value: String) {
+        cardTag.value = value
     }
 
     /**
@@ -54,6 +85,21 @@ open class CreateAndUpdateViewModel : ViewModel() {
     }
 
     /**
+     * Speichert die ausgewählten Kategorien als isChecked = true in [categories].
+     *
+     * @param id Id der Kategorie, welche neu ausgewählt wurde.
+     */
+    fun onCategorySelected(id: UUID) {
+        categories.value = categories.value.map {
+            if (it.id == id) {
+                it.copy(isChecked = !it.isChecked)
+            } else {
+                it
+            }
+        }
+    }
+
+    /**
      * Löscht den Link, welcher in der Bearbeiten/Erstellen View erzeugt wurde und
      * welcher zum Löschen angeklickt wurde.
      *
@@ -61,14 +107,6 @@ open class CreateAndUpdateViewModel : ViewModel() {
      */
     fun onDeleteLinkClicked(link: LinkEntity) {
         cardLinks.value = cardLinks.value.filter { l -> link != l } as ArrayList<LinkEntity>
-    }
-
-    /**
-     * Zeigt eine Fehlermeldung.
-     *
-     */
-    fun onToastShown() {
-        error.value = ErrorsEnum.NO_ERROR
     }
 
     /**

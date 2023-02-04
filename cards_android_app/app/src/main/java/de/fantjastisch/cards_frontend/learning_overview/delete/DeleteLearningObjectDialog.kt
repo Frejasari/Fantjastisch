@@ -8,6 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import java.util.*
 
 
@@ -20,6 +21,8 @@ fun DeleteLearningObjectDialog(
 ) {
     val viewModel = viewModel(key = learningObjectId.toString())
     { DeleteLearningObjectViewModel(learningObjectId = learningObjectId) }
+    ShowErrorOnSignalEffect(viewModel = viewModel)
+
     if (isOpen) {
         AlertDialog(
             onDismissRequest = { setIsOpen(false) },

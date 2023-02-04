@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +16,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.delete.DeleteCardDialog
 import de.fantjastisch.cards_frontend.glossary.GlossaryViewModel.DeletionProgress
 import de.fantjastisch.cards_frontend.glossary.card.GlossaryCardView
+import de.fantjastisch.cards_frontend.infrastructure.effects.OnFirstLoadedSignalEffect
+import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import kotlinx.coroutines.launch
 
 /**
@@ -33,7 +34,8 @@ fun GlossaryView(
 ) {
 
     val viewModel = viewModel { GlossaryViewModel() }
-
+    ShowErrorOnSignalEffect(viewModel = viewModel)
+    OnFirstLoadedSignalEffect(onPageLoaded = viewModel::onPageLoaded)
     val deletionProgress = viewModel.currentDeleteDialog.value
     if (deletionProgress != null) {
         DeleteCardDialog(
@@ -45,15 +47,6 @@ fun GlossaryView(
             }
         )
     }
-
-    // Lädt die Cards neu, wenn wir aus einem anderen Tab wieder hier rein kommen.
-    LaunchedEffect(
-        // wenn sich diese Variable ändert
-        key1 = Unit,
-        // dann wird dieses Lambda ausgeführt.
-        block = {
-            viewModel.onPageLoaded()
-        })
 
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
