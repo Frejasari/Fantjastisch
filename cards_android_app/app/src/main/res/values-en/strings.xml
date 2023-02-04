@@ -106,6 +106,7 @@
   <string name="error_unexpected">An Unknown Error Occurred.</string>
   <string name="allgemein_card_label">General Information</string>
   <string name="allgemein_learningobject_label">General Information</string>
+  <string name="allgemein_category_label">General Information</string>
   <string name="error_check_input">Check Your Entry.</string>
   <string name="error_not_empty">Field Must Not Be Empty.</string>
   <string name="error_not_null">Field Must Not Be Null.</string>

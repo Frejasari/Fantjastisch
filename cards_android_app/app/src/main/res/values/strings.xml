@@ -104,6 +104,7 @@
   <string name="error_unexpected">Ein unbekannter Fehler ist aufgetreten.</string>
   <string name="allgemein_card_label">Allgemeine Kartendaten</string>
   <string name="allgemein_learningobject_label">Allgemeine Lernobjektdaten</string>
+  <string name="allgemein_category_label">Allgemeine Kategoriedaten</string>
   <string name="error_check_input">Überprüfe deine Eingabe</string>
   <string name="error_not_empty">Feld darf nicht leer sein.</string>
   <string name="error_not_null">Feld darf nicht null sein.</string>
