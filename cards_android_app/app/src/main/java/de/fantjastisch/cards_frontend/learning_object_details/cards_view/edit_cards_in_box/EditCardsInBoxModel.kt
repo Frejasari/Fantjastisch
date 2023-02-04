@@ -115,7 +115,8 @@ class EditCardsInBoxModel(
      *
      * @param selectedCardsIds Die Liste der UUIDs von aktualisierten Karten.
      * @param learningBoxId Die UUID der Lernbox, deren Karten aktualisiert werden sollen.
-     * @return RepoResult<Unit> TODO
+     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
+     * werden konnten, oder nicht.
      */
     suspend fun updateCardsInBox(
         selectedCardsIds: List<UUID>,

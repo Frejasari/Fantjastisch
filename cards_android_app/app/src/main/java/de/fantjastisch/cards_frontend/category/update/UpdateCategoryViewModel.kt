@@ -15,7 +15,7 @@ import java.util.*
  *
  * @param id Id, der zu bearbeitende Kategorie.
  *
- * @author Tamari Bayer, Freja Sender
+ * @author Tamari Bayer, Freja Sender, Semjon Nirmann
  */
 class UpdateCategoryViewModel(
     id: UUID,

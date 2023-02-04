@@ -168,7 +168,8 @@ class CreateLearningObjectModel(
      * @param learningSystem Das Lernsystem des zu erstellenden Lernobjekts.
      * @param learningObject Das Lernobjekt, zu dem die Lernboxen und Karten gehören.
      * @param cardsToInsert Die Karten, die eingefügt werden sollen.
-     * @return RepoResult<Unit> TODO
+     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
+     * werden konnten, oder nicht.
      */
     private suspend fun insertLearningBoxesWithCards(
         learningSystem: LearningSystemEntity,
@@ -205,7 +206,8 @@ class CreateLearningObjectModel(
      * Fügt eine Lernbox in die Datenbank ein, indem die Anfrage an das Repository weitergeleitet wird.
      *
      * @param learningBox Die hinzufügende Lernbox.
-     * @return RepoResult<Unit> TODO
+     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
+     * werden konnten, oder nicht.
      */
     private suspend fun insertLearningBox(learningBox: LearningBox): RepoResult<Unit> =
         learningBoxRepository.insert(learningBox = learningBox)
@@ -215,7 +217,8 @@ class CreateLearningObjectModel(
      *
      * @param learningBox Die Lernbox, zu der die Karten hinzugefügt werden sollen.
      * @param cardIds Die Liste der UUIDs von Karten, die zu einer Lernbox hinzugefügt werden sollen.
-     * @return RepoResult<Unit> TODO
+     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
+     * werden konnten, oder nicht.
      */
     private suspend fun insertCardsIntoBox(
         learningBox: LearningBox, cardIds: MutableList<UUID>
@@ -226,7 +229,8 @@ class CreateLearningObjectModel(
      * Fügt ein Lernobjekt in die Datenbank ein, indem die Anfrage an das Repository weitergeleitet wird.
      *
      * @param learningObject Das Lernobjekt, welches hinzugefügt wird.
-     * @return RepoResult<Unit> TODO
+     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
+     * werden konnten, oder nicht.
      */
     private suspend fun insertLearningObject(
         learningObject: LearningObject,
@@ -239,7 +243,8 @@ class CreateLearningObjectModel(
      * @param selectedSystem Das ausgewählte Lernsystem.
      * @param categories Die Liste von [CategorySelectItem]. Wenn isChecked = true, dann werden die Karten der Kategorie hinzugefügt.
      * @param cards Die Liste von [CardSelectItem]. Wenn isChecked = true, dann werden die Karten hinzugefügt.
-     * @return RepoResult<Unit> TODO
+     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
+     * werden konnten, oder nicht.
      */
     suspend fun addLearningObject(
         learningObjectLabel: String,

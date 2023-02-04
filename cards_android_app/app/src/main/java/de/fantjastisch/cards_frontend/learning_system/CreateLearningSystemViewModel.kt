@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
  *
  * @property model Das zugehörige Model, welches die Logik kapselt.
  *
- * @author
+ * @author Freja Sender, Semjon Nirmann
  */
 class CreateLearningSystemViewModel(
     private val model: CreateLearningSystemModel = CreateLearningSystemModel()

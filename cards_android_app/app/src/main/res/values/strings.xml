@@ -87,8 +87,6 @@
   <string name="alphabetic">Alphabetisch</string>
   <string name="random">Zufällig</string>
 
-  <string name="link_name">Link Name TODO</string>
-
   <string name="categories_error">Bitte wählen Sie eine Kategorie aus</string>
   <string name="categories_delete_error">Die Kategorie hat Unterkategorien</string>
 

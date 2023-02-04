@@ -21,7 +21,8 @@ import java.util.*
  *
  * @param modifier Modifier für die Seite.
  * @param learningObjectId Die UUID des Lernobjekts, welches geöffnet werden soll.
- * @param screenKey TODO
+ * @param screenKey Ein Key (String-Alias) welcher übergeben wird, um das Laden der Seite
+ * hervorzurufen.
  */
 @Composable
 fun LearningDetailsView(

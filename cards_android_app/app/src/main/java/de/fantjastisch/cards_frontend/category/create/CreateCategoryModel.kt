@@ -46,7 +46,7 @@ class CreateCategoryModel(
      * @param subCategories Zugehörige Unterkategorien der zu erstellenden Kategorie.
      *
      * @return RepoResult<String> (OnSuccess, OnUnexpectedError, ...)
-     * */
+     */
     suspend fun createCategory(
         label: String,
         subCategories: List<CategorySelectItem>

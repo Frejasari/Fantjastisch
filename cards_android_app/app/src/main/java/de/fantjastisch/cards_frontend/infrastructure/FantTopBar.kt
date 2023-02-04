@@ -23,7 +23,8 @@ import org.openapitools.client.models.CategoryEntity
 import java.util.*
 
 /**
- * TODO
+ * Stellt die TopBar, welche Überschriften, den Hinzufügen-Button, und weitere Elemente enthält,
+ * bereit.
  *
  * @author Freja Sender
  */
@@ -47,7 +48,7 @@ fun FantTopBar(
             val hasFilters =
                 filters.tag.isNotBlank() || filters.search.isNotBlank() || filters.categories.isNotEmpty()
 
-            AnimatedVisibility(hasFilters) {
+            AnimatedVisibility(visible = tabNavigator.current == GlossaryTab && hasFilters) {
                 IconButton(
                     onClick = {
                         CardsFilters.reset()

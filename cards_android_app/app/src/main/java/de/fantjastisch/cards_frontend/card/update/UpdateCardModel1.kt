@@ -63,9 +63,14 @@ class UpdateCardModel(
     )
 
     /**
-     * TODO
+     * Stellt die Daten bereit, die das viewModel beim Laden der Ansicht benötigt.
+     * Die Daten werden asynchron, also parallel eingeholt. Sobald alle Aufrufe ein RepoResult.Success
+     * liefern, also erfolgreich geladen wurden, werden die Daten weiterverarbeitet, gesammelt, und im
+     * Model-eigenen Transportobjekt an das viewModel zurückgegeben. Sonst wird ein RepoResult.Error
+     * zurückgegeben.
      *
-     * @return
+     * @return Ein parametrisiertes RepoResult Objekt, welches darstellt, ob die benötigten Daten
+     * erfolgreich geladen werden konnten, oder nicht.
      */
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(): RepoResult<UpdateCard> = coroutineScope {

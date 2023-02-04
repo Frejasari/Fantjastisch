@@ -166,7 +166,8 @@ class MoveCardsToBoxModel(
      * @param learningBoxId Die UUID der Lernbox, deren Karten verschoben werden.
      * @param previousBoxId Die UUID der Lernbox, in die die Karten verschoben werden.
      * @param cards Die Karten, die verschoben werden.
-     * @return RepoResult<Unit> TODO
+     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
+     * werden konnten, oder nicht.
      */
     suspend fun moveToPreviousBox(
         learningBoxId: UUID,
@@ -186,7 +187,8 @@ class MoveCardsToBoxModel(
      * @param learningBoxId Die UUID der Lernbox, deren Karten verschoben werden.
      * @param nextBoxId Die UUID der Lernbox, in die die Karten verschoben werden.
      * @param cards Die Karten, die verschoben werden.
-     * @return RepoResult<Unit> TODO
+     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
+     * werden konnten, oder nicht.
      */
     suspend fun moveToNextBox(
         learningBoxId: UUID,

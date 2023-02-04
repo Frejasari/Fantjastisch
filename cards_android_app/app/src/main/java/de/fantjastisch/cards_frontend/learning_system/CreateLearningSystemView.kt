@@ -21,7 +21,7 @@ import java.util.*
  *
  * @param modifier Modifier für die Seite.
  *
- * @author
+ * @author Freja Sender, Semjon Nirmann
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

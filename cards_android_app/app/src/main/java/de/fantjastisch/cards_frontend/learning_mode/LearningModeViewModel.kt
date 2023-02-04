@@ -39,7 +39,8 @@ class LearningModeViewModel(
     private var learningBoxesInObject: List<LearningBoxWitNrOfCards> = listOf()
 
     /**
-     * TODO
+     * Initialisiert viewModel Felder basierend auf der Rückmeldung des Models. Die Verarbeitung der Rückgabe vom Model
+     * erfolgt mit Hilfe von Callbacks (onSuccess, ...), basierend auf der entsprechenden Rückgabe: Erfolg oder Fehler.
      *
      */
     fun onPageLoaded() {

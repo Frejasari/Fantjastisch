@@ -16,7 +16,7 @@ import java.util.*
  *
  * @property glossaryFilterModel Das zugehörige Model, welches die Logik kapselt.
  *
- * @author Freja Sender
+ * @author Freja Sender, Semjon Nirmann
  */
 class GlossaryFilterViewModel(
     private val glossaryFilterModel: GlossaryFilterModel = GlossaryFilterModel()

@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
  * Zeigt 2 Texte übereinander an und darunter einen Divider.
  *
  * @author Freja Sender
- * **/
+ */
 @Composable
 fun TwoTextsWithDivider(headline: String, text: String) {
     Text(

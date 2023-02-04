@@ -13,7 +13,7 @@ import java.util.*
 /**
  * Stellt die Daten für die [UpdateCardView] bereit und nimmt seine Anfragen entgegen.
  *
- * @author Freja Sender, Tamari Bayer, Jessica Repty
+ * @author Freja Sender, Tamari Bayer, Jessica Repty, Semjon Nirmann
  *
  * @property cardModel Das zugehörige Model, welches die Logik kapselt.
  * @param id Id, der zu bearbeitende Karte

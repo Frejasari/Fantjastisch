@@ -23,9 +23,9 @@ import androidx.compose.ui.draw.rotate
  * @param expanded True, wenn Element erweitert.
  * @param onClick Callback, wenn auf Element geklickt.
  * @param headline Überschrift, des Elementes.
- * @param additionalActions TODO
- * @param additionalContent TODO
- * @param expandedContent TODO
+ * @param additionalActions Optionale Aktionselemente (wie z.B. IconButtons)
+ * @param additionalContent Optionaler Zusatzinhalt, wie weitere Reihen mit Elementen
+ * @param expandedContent Optionaler Zusatzinhalt für die ausgeklappte Ansicht
  */
 @Composable
 fun ExpandableRow(

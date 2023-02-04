@@ -26,7 +26,7 @@ class LearningDetailsViewModel(
 
 
     /**
-     * Lädt die interne Daten (Liste von Lernboxen mit Anzahl an Karten und die Bezeichnung)
+     * Lädt die internen Daten (Liste von Lernboxen mit Anzahl an Karten und die Bezeichnung)
      * eines Lernobjekts.
      *
      */

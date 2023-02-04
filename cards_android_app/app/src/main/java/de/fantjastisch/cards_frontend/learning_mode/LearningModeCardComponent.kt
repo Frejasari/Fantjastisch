@@ -24,9 +24,10 @@ import androidx.compose.ui.unit.times
 /**
  * View für eine Karteikarte im Lernmodus.
  *
- * TODO
- * @param content Frage bzw. Antwort der Karteikarte.
  * @param onClick Callback, wenn Klick auf Karte.
+ * @param question Die Frage der Karteikarte.
+ * @param answer Die Antwort der Karteikarte.
+ * @param isAnswer Ein Boolean, der Angibt ob derzeit die Antwort angezeigt wird.
  *
  * @author Jessica Repty, Freja Sender, Semjon Nirmann
  */

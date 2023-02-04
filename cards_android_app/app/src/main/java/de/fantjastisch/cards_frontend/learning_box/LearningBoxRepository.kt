@@ -2,7 +2,6 @@ package de.fantjastisch.cards_frontend.learning_box
 
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
-import org.openapitools.client.models.ErrorResponseEntity
 import java.util.*
 
 /**
@@ -89,7 +88,7 @@ class LearningBoxRepository(
      * @param boxNumber Nummer der zu löschenden Lernbox.
      * @param learningObjectId Id des zugehörigen Lernobjektes, der Lernbox.
      */
-    suspend fun delete(boxNumber: Int, learningObjectId: UUID) {
-        return repository.delete(boxNumber, learningObjectId)
+    suspend fun deleteAllBoxesForObject(learningObjectId: UUID) {
+        return repository.deleteAllBoxesForObject(learningObjectId = learningObjectId)
     }
 }

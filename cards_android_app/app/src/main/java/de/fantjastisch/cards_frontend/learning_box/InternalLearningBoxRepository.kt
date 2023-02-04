@@ -13,7 +13,6 @@ class InternalLearningBoxRepository(private val dao: LearningBoxDao) : LearningB
 @Dao
 interface LearningBoxDao {
 
-    // TODO left join will never give 0 -> fix it!
     /**
      * Holt alle Lernboxen eines Lernobjektes mit der Anzahl an Karten aus der Datenbank.
      *
@@ -31,15 +30,6 @@ interface LearningBoxDao {
     suspend fun getAllBoxesForLearningObjectWithNrOfCards(learningObjectId: UUID): List<LearningBoxWitNrOfCards>
 
     /**
-     * TODO not used?
-     *
-     * @param learningObjectId
-     * @return
-     */
-    @Query("SELECT * FROM learning_box where learning_object_id = :learningObjectId ORDER BY box_number ASC")
-    suspend fun getAllBoxesForLearningObject(learningObjectId: UUID): List<LearningBox>
-
-    /**
      * Fügt eine Lernbox in die Datenbank ein.
      *
      * @param learningBox Lernbox, welche eingefügt werden soll.
@@ -53,8 +43,8 @@ interface LearningBoxDao {
      * @param boxNumber Nummer der Lernbox.
      * @param learningObjectId Id, des zugehörigen Lernobjektes.
      */
-    @Query("DELETE FROM learning_box WHERE box_number = :boxNumber and learning_object_id = :learningObjectId")
-    suspend fun delete(boxNumber: Int, learningObjectId: UUID)
+    @Query("DELETE FROM learning_box WHERE learning_object_id = :learningObjectId")
+    suspend fun deleteAllBoxesForObject(learningObjectId: UUID)
 
     /**
      * Holt die Anzahl an Karten eines Lernobjektes pro Lernbox aus der Datenbank.
