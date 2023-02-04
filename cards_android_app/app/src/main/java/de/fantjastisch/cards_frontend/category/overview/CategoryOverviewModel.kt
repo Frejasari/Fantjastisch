@@ -17,7 +17,7 @@ import java.util.*
  */
 class CategoryOverviewModel(
     private val categoryRepository: CategoryRepository = CategoryRepository(),
-) : ViewModel() {
+) {
 
     /**
      * Sendet eine Anfrage an das [CategoryRepository] und kriegt alle Kategorien zurück.
