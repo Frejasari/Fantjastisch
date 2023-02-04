@@ -16,7 +16,13 @@ import de.fantjastisch.cards_frontend.infrastructure.FantMainNavigator
 import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import java.util.*
 
-
+/**
+ * Rendert die Seite Lernobjektansicht.
+ *
+ * @param modifier Modifier für die Seite.
+ * @param learningObjectId Die UUID des Lernobjekts, welches geöffnet werden soll.
+ * @param screenKey TODO
+ */
 @Composable
 fun LearningDetailsView(
     modifier: Modifier = Modifier,

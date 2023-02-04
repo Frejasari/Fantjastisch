@@ -19,6 +19,11 @@ import de.fantjastisch.cards_frontend.infrastructure.effects.OnFirstLoadedSignal
 import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import de.fantjastisch.cards_frontend.learning_overview.learning_object_component.LearningObjectView
 
+/**
+ * Zeigt den Screen für alle Lernobjekten
+ *
+ * @author
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 class LearningOverviewScreen : AndroidScreen() {
     @Composable
@@ -31,6 +36,13 @@ class LearningOverviewScreen : AndroidScreen() {
     }
 }
 
+/**
+ * Rendert die Lernobjekt Overview Seite
+ *
+ * @param modifier Modifier für die Seite
+ *
+ * @author
+ */
 @Composable
 @Preview
 fun LearningOverview(

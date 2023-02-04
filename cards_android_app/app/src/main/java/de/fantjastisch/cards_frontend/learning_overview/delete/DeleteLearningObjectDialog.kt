@@ -11,7 +11,17 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import java.util.*
 
-
+/**
+ * Zeigt Nachfrage Delete LearningObject in einem Dialog an.
+ *
+ * @param learningObjectId Die UUID des zu löschenden Lernobjekts.
+ * @param isOpen Gibt an, ob der Dialog geöffnet ist.
+ * @param setIsOpen Die Funktion, die den Dialog anzeigen lässt.
+ * @param onDeleteSuccessful Die Funktion, die ausgeführt wird,
+ *   wenn ein Lernobjekt erfolgreich gelöscht wird.
+ *
+ * @author
+ */
 @Composable
 fun DeleteLearningObjectDialog(
     learningObjectId: UUID,

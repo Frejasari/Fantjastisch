@@ -13,7 +13,15 @@ import de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_ca
 import de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_cards_to_box.MoveCardsToBoxFragment
 import java.util.*
 
-
+/**
+ * Zeigt das Kontext-Menü einer Lernbox
+ *
+ * @param learningBoxId Die UUID der Lernbox, deren Kontext-Menü angezeigt werden soll.
+ * @param learningObjectId Die UUID des Lernobjekts, zu dem die Lernbox gehört.
+ * @param onStartLearningClicked Die Funktion, die dann aufgerufen wird, wenn die Box sich in Lernmodus befindet.
+ *
+ * @author
+ */
 @Composable
 fun LearningDetailsContextMenu(
     learningBoxId: UUID,

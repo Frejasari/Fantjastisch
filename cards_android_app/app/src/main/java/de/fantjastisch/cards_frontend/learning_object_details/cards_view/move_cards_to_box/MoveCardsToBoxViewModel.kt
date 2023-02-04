@@ -9,6 +9,15 @@ import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import kotlinx.coroutines.launch
 import java.util.*
 
+/**
+ * Stellt die Daten für die [MoveCardsToBoxView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property learningBoxId Die UUID der Lernbox, von der die Karten verschoben werden sollen.
+ * @property learningObjectId Die UUID des Lernobjekts, zu dem die Lernbox gehört.
+ * @property model Das zugehörige Model, welches die Logik kapselt.
+ *
+ * @author
+ */
 class MoveCardsToBoxViewModel(
     private val learningBoxId: UUID,
     private val learningObjectId: UUID,
@@ -28,6 +37,13 @@ class MoveCardsToBoxViewModel(
         onPageLoaded()
     }
 
+    /**
+     * Speichert alle Karten, die verschoben werden können in [cards]
+     * Speichert alle Lernboxen eines Lernobjekts in [learningBoxesInObject]
+     * Speichert den Index der Lernbox, deren Karten verschoben werden soll in [learningBoxNum].
+     * Speichert, ob die Lernbox die erste (in [isFirstBox]) oder die letzte (in [isLastBox]) ist.
+     *
+     */
     fun onPageLoaded() {
         viewModelScope.launch {
             model.initializePage(learningBoxId = learningBoxId, learningObjectId = learningObjectId)
@@ -46,6 +62,11 @@ class MoveCardsToBoxViewModel(
         }
     }
 
+    /**
+     * Speichert die ausgewählten Karten als isChecked = true in [cards].
+     *
+     * @param id Id der Kategorie, welche neu ausgewählt wurde.
+     */
     fun onCardSelected(id: UUID) {
         cards.value = cards.value.map {
             if (it.card.id == id) {
@@ -56,6 +77,12 @@ class MoveCardsToBoxViewModel(
         }
     }
 
+    /**
+     * Verschiebt Karten in die vorherige Lernbox und aktualisiert die Karten
+     * der Lernbox, von der die Karten verschoben wurden.
+     * Für das Verschieben wird die Anfrage an das Repository weitergeleitet.
+     *
+     */
     fun onMoveToPreviousBox() {
         val previousBoxId = learningBoxesInObject.value[learningBoxNum.value - 1].id
 
@@ -72,6 +99,12 @@ class MoveCardsToBoxViewModel(
         }
     }
 
+    /**
+     * Verschiebt Karten in die nächste Lernbox und aktualisiert die Karten
+     * der Lernbox, von der die Karten verschoben wurden.
+     * Für das Verschieben wird die Anfrage an das Repository weitergeleitet.
+     *
+     */
     fun onMoveToNextBox() {
         val nextBoxId = learningBoxesInObject.value[learningBoxNum.value + 1].id
         viewModelScope.launch {

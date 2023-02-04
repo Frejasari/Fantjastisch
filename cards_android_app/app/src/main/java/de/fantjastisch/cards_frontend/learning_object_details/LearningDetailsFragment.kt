@@ -10,6 +10,13 @@ import de.fantjastisch.cards.R
 import de.fantjastisch.cards_frontend.infrastructure.TobBarCreateMenu
 import java.util.*
 
+/**
+ * Zeigt den Screen zum Einsehen der Inhalte eines Lernobjekts an.
+ *
+ * @property learningObjectId Die UUID des Lernobjekts, dessen Inhalte angesehen werden.
+ *
+ * @author
+ */
 data class LearningDetailsFragment(val learningObjectId: UUID) :
     AndroidScreen() {
     @OptIn(ExperimentalMaterial3Api::class)

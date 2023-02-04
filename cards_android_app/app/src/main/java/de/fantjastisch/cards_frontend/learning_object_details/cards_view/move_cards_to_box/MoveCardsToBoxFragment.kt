@@ -10,7 +10,14 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 import java.util.*
 
-
+/**
+ * Zeigt den Screen zum Verschieben der Karten in die vorherige/nächste Lernbox an.
+ *
+ * @property learningBoxId Die UUID der Lernbox, deren Karten verschoben werden sollen.
+ * @property learningObjectId Die UUID des Lernobjekts, zu dem die Lernbox gehört.
+ *
+ * @author
+ */
 data class MoveCardsToBoxFragment(
     val learningBoxId: UUID,
     val learningObjectId: UUID

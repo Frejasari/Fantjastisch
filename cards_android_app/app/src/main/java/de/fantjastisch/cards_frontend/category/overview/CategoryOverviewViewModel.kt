@@ -46,9 +46,9 @@ class CategoryOverviewViewModel(
     }
 
     /**
-     * TODO
+     * Kontrolliert das Ausklappen einer Subkategorie
      *
-     * @param catId
+     * @param catId UUID von der Subkategorie, die beim Klicken ausgeklappt werden soll
      */
     fun manageState(catId: UUID?) {
         manageStateOfCat.value = catId
@@ -63,6 +63,16 @@ class CategoryOverviewViewModel(
     fun onTryDeleteCategory(cat: CategoryEntity) {
         currentDeleteDialog.value = DeletionProgress.ConfirmWithUser(cat)
     }
+
+  /*  /**
+     * Setzt alle Fehler zurück, nachdem ein Fehler angezeigt wurde
+     *
+     */
+     fun onToastShown() {
+        error.value = ErrorsEnum.NO_ERROR
+    }
+    */
+
 
     /**
      * Kategorie soll gelöscht werden -> [categoryGraphModel] löscht die Kategorie, indem Sie die

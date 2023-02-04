@@ -7,12 +7,23 @@ import de.fantjastisch.cards_frontend.infrastructure.fold
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import kotlinx.coroutines.launch
 
+/**
+ * Stellt die Daten für die [LearningOverview] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property model Das dazugehörige Model, welches die Logik kapselt.
+ *
+ * @author
+ */
 class LearningOverviewViewModel(
     private val model: LearningOverviewModel = LearningOverviewModel()
 ) : ErrorHandlingViewModel() {
 
     val learningObjects = mutableStateOf<List<LearningObject>>(emptyList())
 
+    /**
+     * Lädt alle existierende Lernobjekte, indem [LearningOverviewModel] angefragt wird.
+     *
+     */
     fun onPageLoaded() {
         viewModelScope.launch {
             model.initializePage().fold(

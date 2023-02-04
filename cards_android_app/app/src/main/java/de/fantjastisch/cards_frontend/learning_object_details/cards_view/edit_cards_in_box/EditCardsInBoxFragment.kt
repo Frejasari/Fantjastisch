@@ -10,7 +10,14 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
 import java.util.*
 
-
+/**
+ * Zeigt den Screen zum Einsehen der Karten eines Lernobjekts an.
+ *
+ * @property learningBoxId Die UUID der Lernbox, deren Karten angezeigt werden sollen.
+ * @property learningObjectId Die UUID des Lernobjekts, zu dem die Lernbox gehört.
+ *
+ * @author
+ */
 data class EditCardsInBoxFragment(
     val learningBoxId: UUID,
     val learningObjectId: UUID

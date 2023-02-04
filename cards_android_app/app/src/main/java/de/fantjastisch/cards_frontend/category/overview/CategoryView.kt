@@ -38,7 +38,6 @@ fun CategoryView(
     var expanded by remember { mutableStateOf(false) }
 
     FantMainNavigator.current
-    val context = LocalContext.current
 
     expanded = categoryExpanded && !viewModel.isParentOpen.value
 

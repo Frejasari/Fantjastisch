@@ -8,6 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * Die View, die während des Ladens gezeigt wird.
+ *
+ */
 @Composable
 fun LoadingIcon() {
     Column(

@@ -98,6 +98,11 @@ fun CreateLearningObjectView(
 
 }
 
+/**
+ * Rendert die Eingabefelder für die Erstellung eines Lernobjekts.
+ *
+ * @author
+ */
 @Composable
 private fun GeneralCreateLearningObjectFieldsView() {
     val viewModel = viewModel { CreateLearningObjectViewModel() }

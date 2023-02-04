@@ -63,6 +63,10 @@ class GlossaryViewModel(
         }
     }
 
+    /**
+     * Holt alle Karten aus der Datenbank, indem [GlossaryModel] angefragt wird.
+     *
+     */
     fun onPageLoaded() {
         viewModelScope.launch {
             val result = glossaryModel.getCards(
@@ -83,10 +87,19 @@ class GlossaryViewModel(
         }
     }
 
+    /**
+     * Öffnet einen Dialog zum Bestätigen der Eingabe, falls eine Karte entfernt werden soll
+     *
+     * @param card die Karte, die gelöscht werden soll
+     */
     fun onTryDeleteCard(card: CardEntity) {
         currentDeleteDialog.value = DeletionProgress.ConfirmWithUser(card)
     }
 
+    /**
+     * Das Entfernen von der Karte wurde bestätigt -> die Anfrage wird an [glossaryModel] weitergeleitet
+     *
+     */
     fun onDeleteCardClicked() {
         val card = currentDeleteDialog.value!!.card
         currentDeleteDialog.value = DeletionProgress.Deleting(card)
@@ -105,10 +118,19 @@ class GlossaryViewModel(
         }
     }
 
+    /**
+     * Karte Löschvorgang wurde durch Nutzer abgebrochen. Dialogfenster schließen.
+     *
+     */
     fun onDeleteCardAborted() {
         currentDeleteDialog.value = null
     }
 
+
+    /**
+     * Dialog Fenster für das Bestätigen des Löschens einer Karte.
+     *
+     */
     sealed class DeletionProgress {
         abstract val card: CardEntity
 

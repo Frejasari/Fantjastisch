@@ -3,11 +3,22 @@ package de.fantjastisch.cards_frontend.learning_object_details.cards_view.edit_c
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
+
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
+
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
+/**
+ * Stellt die Daten für die [EditCardsInBoxView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property learningBoxId Die UUID der Lernbox, deren Karten editiert werden.
+ * @property learningObjectId Die UUID des Lernobjekts, zu dem die Lernbox gehört.
+ * @property model Das zugehörige Model, welches die Logik kapselt.
+ *
+ * @author
+ */
 class EditCardsInBoxViewModel(
     private val learningBoxId: UUID,
     private val learningObjectId: UUID,
@@ -22,6 +33,10 @@ class EditCardsInBoxViewModel(
         onPageLoaded()
     }
 
+    /**
+     * Lädt alle Karten, die zu einer Lernbox hinzugefügt werden können.
+     *
+     */
     fun onPageLoaded() {
         viewModelScope.launch {
             model.initializePage(learningBoxId = learningBoxId, learningObjectId = learningObjectId)
@@ -36,6 +51,11 @@ class EditCardsInBoxViewModel(
         }
     }
 
+    /**
+     * Speichert die ausgewählten Karten als isChecked = true in [cards]
+     *
+     * @param id Die UUID der Karte, die ausgewählt wurde.
+     */
     fun onCardSelected(id: UUID) {
         cards.value = cards.value.map {
             if (it.card.id == id) {
@@ -46,6 +66,10 @@ class EditCardsInBoxViewModel(
         }
     }
 
+    /**
+     * Wenn Karten zu einer Lernbox hinzugeügt werden -> [EditCardsInBoxModel] aktualisiert die Karten einer Lernbox.
+     *
+     */
     fun onAddCardsClicked() {
         val selectedCardsIds =
             cards.value

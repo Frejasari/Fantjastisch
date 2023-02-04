@@ -18,7 +18,16 @@ import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import de.fantjastisch.cards_frontend.learning_mode.LearningModeFragment
 import java.util.*
 
-
+/**
+ * Zeigt einen Dialog zur Festlegung der Sortierung von Karten einer Lernbox.
+ *
+ * @param learningBox Die Lernbox, zu der die Karten gehören.
+ * @param learningObjectId Die UUID des Lernobjekts, zu dem die Lernbox gehört.
+ * @param isOpen Gibt an, ob der Dialog geöffnet ist.
+ * @param setIsOpen Die Funktion, die ausgeführt wird, wenn auf einem Lernbox geklickt wird.
+ *
+ * @author
+ */
 @Composable
 fun LearningModeSortDialog(
     learningBox: LearningBoxWitNrOfCards,

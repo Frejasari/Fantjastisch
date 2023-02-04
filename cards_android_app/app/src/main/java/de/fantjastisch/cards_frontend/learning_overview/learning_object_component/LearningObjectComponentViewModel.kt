@@ -8,6 +8,15 @@ import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
+/**
+ * Stellt die Daten für die [LearningObjectComponent] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property learningSystemId Die UUID von dem Lernsystem, welches zu einem Lernobjekt gehört.
+ * @property learningObjectId Die UUID eines Lernobjekts, welches [LearningObjectComponent] darstellen will.
+ * @property model Das dazugehörige Model, welches die Logik kapselt.
+ *
+ * @author
+ */
 class LearningObjectComponentViewModel(
     private val learningSystemId: UUID,
     private val learningObjectId: UUID,
@@ -22,6 +31,10 @@ class LearningObjectComponentViewModel(
         onPageLoaded()
     }
 
+    /**
+     * Holt die Bezeichnung und den Lernfortschritt eines Lernobjekts, in dem Repository angefragt wird.
+     *
+     */
     private fun onPageLoaded() {
         viewModelScope.launch {
             model.initializePage(
@@ -40,6 +53,12 @@ class LearningObjectComponentViewModel(
 
     }
 
+
+    /**
+     * Setzt die Farbe für die Darstellung des Lernfortschritts
+     *
+     * @return Die Farbe für den aktuellen Lernfortschritt
+     */
     fun getColor(): Color {
         val color: Color = when {
             progress.value < 33 -> Color(0xFFC53030)
@@ -48,4 +67,5 @@ class LearningObjectComponentViewModel(
         }
         return color
     }
+
 }

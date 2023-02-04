@@ -16,6 +16,13 @@ import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignal
 import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import java.util.*
 
+/**
+ * Rendert die Seite "Lernsystem erstellen".
+ *
+ * @param modifier Modifier für die Seite.
+ *
+ * @author
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateLearningSystemView(

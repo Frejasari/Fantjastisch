@@ -27,6 +27,10 @@ import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEf
 class GlossaryFilterView(val bottomSheetNavigator: BottomSheetNavigator) : AndroidScreen() {
     // remember -> state nicht neu erzeugen, wenn Funktion neu aufgerufen wird.
 
+    /**
+     * Der Inhalt der View zum Filtern der Karten
+     *
+     */
     @Composable
     override fun Content() {
         val viewModel = viewModel { GlossaryFilterViewModel() }

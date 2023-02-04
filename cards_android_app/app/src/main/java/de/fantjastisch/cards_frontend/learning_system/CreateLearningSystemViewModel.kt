@@ -7,6 +7,14 @@ import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.infrastructure.fold
 import kotlinx.coroutines.launch
 
+
+/**
+ * Stellt die Daten für die [CreateLearningSystemView] bereit und nimmt seine Anfragen entgegen.
+ *
+ * @property model Das zugehörige Model, welches die Logik kapselt.
+ *
+ * @author
+ */
 class CreateLearningSystemViewModel(
     private val model: CreateLearningSystemModel = CreateLearningSystemModel()
 ) : ErrorHandlingViewModel() {
@@ -20,6 +28,11 @@ class CreateLearningSystemViewModel(
     val learningSystemBoxLabels = mutableStateOf<List<String>>(listOf())
     val numBoxes = mutableStateOf(0)
 
+    /**
+     * Wenn Lernsystem gespeichert wird -> [CreateLearningSystemModel] erstellt das Lernsystem
+     * mit den in den Variablen gespeicherten Daten und sendet die Anfrage an die Datenbank.
+     *
+     */
     fun onAddLearningSystemClicked() {
         viewModelScope.launch {
             model.addLearningSystem(
@@ -35,11 +48,23 @@ class CreateLearningSystemViewModel(
         }
     }
 
+    /**
+     * Ermittelt die Anzahl von Lernboxen eines Lernsystems und erzeugt eine leere Liste gleicher
+     * Länge für die Bezeichnungen dieser.
+     *
+     * @param numString die Anzahl der Lernboxen als String
+     */
     fun onBoxesSelected(numString: String) {
         numBoxes.value = model.getNumOfBoxes(numString)
         learningSystemBoxLabels.value = List(numBoxes.value) { "" }
     }
 
+    /**
+     * Speichert den übergebenen String als die Bezeichnung einer Lernbox.
+     *
+     * @param index Der Index der Lernbox innerhalb des Lernsystems
+     * @param element Neue Bezeichnung der Lernbox.
+     */
     fun onBoxLabelChanged(index: Int, element: String) {
         this.learningSystemBoxLabels.value = learningSystemBoxLabels.value.mapIndexed { i, value ->
             if (i == index) {

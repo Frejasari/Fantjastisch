@@ -21,6 +21,12 @@ import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import de.fantjastisch.cards_frontend.learning_object_details.sort_dialog.LearningModeSortDialog
 import java.util.*
 
+/**
+ * Rendert die Darstellung einer Lernbox von einem Lernobjekt.
+ *
+ * @param learningBox Die Lernbox, die dargestellt werden soll.
+ * @param learningObjectId Die UUID des Lernobjekts, zu dem die zu darstellende Lernbox gehört.
+ */
 @Composable
 fun LearningDetailsComponent(
     learningBox: LearningBoxWitNrOfCards,

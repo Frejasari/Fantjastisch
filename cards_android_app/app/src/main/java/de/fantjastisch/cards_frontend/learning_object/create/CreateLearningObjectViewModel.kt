@@ -48,10 +48,20 @@ class CreateLearningObjectViewModel(
         }
     }
 
+    /**
+     * Speichert die übergebene Bezeichnung des Lernobjekts in [learningObjectLabel].
+     *
+     * @param value Neue Bezeichnung des Lernobjekts.
+     */
     fun setLearningObjectLabel(value: String) {
         learningObjectLabel.value = value
     }
 
+    /**
+     * Speichert die ausgewählten Karten als isChecked = true in [allCards].
+     *
+     * @param id Id der Karte, welche ausgewählt wurde.
+     */
     fun onCardSelected(id: UUID) {
         allCards.value = allCards.value.map {
             if (it.card.id == id) {
@@ -62,6 +72,11 @@ class CreateLearningObjectViewModel(
         }
     }
 
+    /**
+     * Speichert die ausgewählten Kategorien als isChecked = true in [allCategories].
+     *
+     * @param id Id der Kategorie, welche ausgewählt wurde.
+     */
     fun onCategorySelected(id: UUID) {
         allCategories.value = allCategories.value.map {
             if (it.id == id) {
@@ -72,10 +87,20 @@ class CreateLearningObjectViewModel(
         }
     }
 
+    /**
+     * Speichert das ausgewählte Lernsystem als isChecked = true in [selectedSystem].
+     *
+     * @param id Id des Lernsystems, welches ausgewählt wurde.
+     */
     fun onLearningSystemSelected(id: UUID) {
         selectedSystem.value = learningSystems.value.first { it.id == id }
     }
 
+    /**
+     * Wenn Lernobjekt gespeichert wird-> [CreateLearningObjectModel] erstellt ein Lernobjekt mit den
+     * in den Variablen gespeicherten Daten und sendet eine Anfrage an die Datenbank.
+     *
+     */
     fun onAddLearningObjectClicked() {
         viewModelScope.launch {
             val response = model.addLearningObject(

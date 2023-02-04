@@ -1,5 +1,8 @@
 package de.fantjastisch.cards_frontend.category.overview
 
+
+import androidx.lifecycle.ViewModel
+
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.infrastructure.RepoResult
 import java.util.*
@@ -27,7 +30,7 @@ class CategoryOverviewModel(
      * Sendet eine Anfrage an das [CategoryRepository] um eine Kategorie zu löschen.
      *
      * @param id Id der Kategorie, welche gelöscht werden soll.
-     * @return RepoResult<Unit>
+     * @return RepoResult<Unit> (OnSuccess, OnUnexpectedError, ...)
      */
     suspend fun deleteCategory(id: UUID): RepoResult<Unit> =
         categoryRepository.deleteCategory(categoryId = id)
