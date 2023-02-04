@@ -161,6 +161,6 @@ object CategoriesTab : Tab {
         @Composable get() = TabOptions(
             index = 2u,
             title = stringResource(id = R.string.menu_categories_overview_label),
-            icon = painterResource(id = R.drawable.topic),
+            icon = painterResource(id = R.drawable.ic_menu_categories),
         )
 }

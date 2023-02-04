@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 
 
 /**
- * TODO
+ * Snackbar Component, wird gerendert, wenn wir eine Snackbar ausgeben.
  *
  * @param snackbarData vom Framework zur Verfuügung gestellte Daten fuür die Snackbar
  *
