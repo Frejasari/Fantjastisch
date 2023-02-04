@@ -80,7 +80,7 @@ fun MoveCardsToBoxView(
                             String.format(
                                 "%s (%d)",
                                 stringResource(R.string.previous_box_text),
-                                (viewModel.learningBoxNum.value - 1)
+                                (viewModel.learningBoxNum.value)
                             )
                         }
                     )
@@ -98,7 +98,7 @@ fun MoveCardsToBoxView(
                             String.format(
                                 "%s (%d)",
                                 stringResource(R.string.next_box_text),
-                                (viewModel.learningBoxNum.value + 1)
+                                (viewModel.learningBoxNum.value + 2)
                             )
                         }
                     )
