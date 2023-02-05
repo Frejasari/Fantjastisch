@@ -29,8 +29,6 @@ import static org.mockito.Mockito.*;
  *
  * @author Freja Sender, Alexander Kück
  */
-//@SpringBootTest
-//@Sql({"file:src/main/resources/schema.sql", "file:src/test/resources/test-data.sql"})
 @ExtendWith(MockitoExtension.class)
 public class LearningSystemAggregateTest {
     private LearningSystemAggregate learningSystemAggregate;
@@ -47,14 +45,11 @@ public class LearningSystemAggregateTest {
             .label("Testlabel")
             .boxLabels(Arrays.asList("Box1", "Box2"))
             .build();
-    //@Autowired
-    //private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
 
 
     @BeforeEach
     public void setUp() {
-        // learningSystemCommandRepository = new LearningSystemCommandRepository(namedParameterJdbcTemplate);
-        //LearningSystemQueryRepository learningSystemQueryRepository = new LearningSystemQueryRepository(namedParameterJdbcTemplate);
         LearningSystemValidator learningSystemValidator = new LearningSystemValidator(learningSystemQueryRepository);
         learningSystemAggregate = new LearningSystemAggregate(learningSystemCommandRepository, learningSystemValidator, learningSystemQueryRepository,uuidGenerator);
     }
