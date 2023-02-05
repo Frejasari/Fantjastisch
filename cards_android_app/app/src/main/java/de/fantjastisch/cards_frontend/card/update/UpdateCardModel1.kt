@@ -52,6 +52,18 @@ class UpdateCardModel(
         )
     )
 
+    /**
+     * Hält Daten für das Aktualisieren einer Karte.
+     *
+     * @property id Die UUID der zu aktualisierenden Karte
+     * @property answer Die Antwort
+     * @property question Die Frage
+     * @property tag Das Schlagwort
+     * @property allCategories Alle Kategorien
+     * @property categoriesOfCard Kategorien, zu den eine Karte gehört
+     * @property links Verlinkungen der Karte
+     * @property cards Alle Karten, die das Ziel einer Verlinkung sein können
+     */
     data class UpdateCard(
         val id: UUID,
         val answer: String,

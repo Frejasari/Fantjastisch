@@ -24,6 +24,14 @@ import java.util.*
         onDelete = ForeignKey.CASCADE
     )]
 )
+/**
+ * Hält Daten über die Zuordnungen von Karten zu Lernboxen
+ *
+ * @param learningBoxId Die UUID der Lernbox, zu der eine Karte gehört.
+ * @param cardId Die UUID einer Karte, die zu einer Lernbox gehört.
+ *
+ * @author Semjon Nirmann,Jessica Repty
+ */
 data class CardToLearningBox(
     @ColumnInfo(name = "learning_box_id") val learningBoxId: UUID,
     @ColumnInfo(name = "card_id") val cardId: UUID,

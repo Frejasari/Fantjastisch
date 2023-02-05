@@ -28,6 +28,16 @@ import java.util.*
     )]
 )
 
+/**
+ * Hält Daten für eine Lernbox.
+ *
+ * @param id Die UUID der Lernbox.
+ * @param learningObjectId Die UUID des Lernobjekts, zu dem die Lernbox gehört.
+ * @param boxNumber Der Index der Lernbox.
+ * @param label Die Bezeichnung der Lernbox.
+ *
+ * @author Semjon Nirmann, Jessica Repty
+ */
 data class LearningBox(
     @PrimaryKey
     val id: UUID = generateId(),

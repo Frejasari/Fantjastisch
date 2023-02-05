@@ -100,6 +100,11 @@ class CategoryOverviewViewModel(
         }
     }
 
+    /**
+     * Setzt [currentDeleteDialog] auf null zum Schließen des Dialogs beim
+     * Löschen einer Kategorie.
+     *
+     */
     private fun closeDialog() {
         currentDeleteDialog.value = null
     }

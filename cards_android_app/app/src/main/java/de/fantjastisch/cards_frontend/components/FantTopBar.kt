@@ -53,6 +53,11 @@ fun FantTopBar(
     )
 }
 
+/**
+ * Zeigt den Screen um die Karten zu filtern an
+ *
+ * @author Freja Sender
+ */
 @Composable
 fun FiltersButton() {
     val bottomSheetNavigator = LocalBottomSheetNavigator.current
@@ -81,6 +86,11 @@ fun FiltersButton() {
     }
 }
 
+/**
+ * Setzt die Filtereinstellungen zurück
+ *
+ * @author Freja Sender
+ */
 @Composable
 fun ClearFilterButton() {
     val hasFilters by CardsFilters.hasFilters.collectAsState(initial = false)

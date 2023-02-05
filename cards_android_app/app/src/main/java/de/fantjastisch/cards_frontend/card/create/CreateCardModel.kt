@@ -30,11 +30,25 @@ class CreateCardModel(
     private val categoryRepository: CategoryRepository = CategoryRepository()
 ) {
 
+    /**
+     * Hält Daten über alle Karten, die das Ziel einer Verlinkung sein können,
+     * und über alle Kategorien, die eine Karte untergeordnet werden kann.
+     *
+     * @property cards
+     * @property allCategories
+     */
     data class CreateCard(
         val cards: List<CardSelectItem>,
         val allCategories: List<CategorySelectItem>,
     )
 
+    /**
+     * Holt alle Karten und Kategorien.
+     * Alle Karten werden für die Verlinkung auf isChecked = false gesetzt.
+     * Alle Kategorien werden auf isChecked = false gesetzt.
+     *
+     * @return RepoResult<CreateCard> OnSuccess: ein Entität der [CreateCard]
+     */
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(): RepoResult<CreateCard> = coroutineScope {
 
