@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 /**
  * Diese Klasse stellt den Teil des Persistence-Layers bereit, welcher sich mit dem Lesen von Kategorien-Entitäten beschäftigt.
- * <p>
  * Im Rahmen des Persistence-Layers wird die JDBC Bibliothek für die Low-Level-Interaktion mit der Datenbank genutzt.
  *
  * @author Semjon Nirmann, Alexander Kück
@@ -24,7 +23,7 @@ public class CategoryQueryRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
-    public CategoryQueryRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public CategoryQueryRepository(final NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
@@ -36,7 +35,7 @@ public class CategoryQueryRepository {
                 .subCategories(resultSetArr).build();
     };
 
-    private Set<UUID> parseSQLArrayToUUIDSet(String arr) {
+    private Set<UUID> parseSQLArrayToUUIDSet(final String arr) {
         if (arr == null) {
             return Collections.emptySet();
         }
@@ -64,7 +63,7 @@ public class CategoryQueryRepository {
      * oder null, sofern die Entität nicht gefunden werden konnte.
      * @throws EmptyResultDataAccessException Die Entität konnte nicht gefunden werden.
      */
-    public Category get(UUID id) {
+    public Category get(final UUID id) {
         final String query = "select id, label, sub_category_ids from public.categories where id = :id;";
         try {
             return namedParameterJdbcTemplate.queryForObject(query,
@@ -81,7 +80,7 @@ public class CategoryQueryRepository {
      * @param categoryId Die Id der Kategorie die überprüft werden soll
      * @return Einen Boolean, ob die Kategorie leer ist oder nicht
      */
-    public Boolean isCategoryEmpty(UUID categoryId) {
+    public Boolean isCategoryEmpty(final UUID categoryId) {
         final String query = "select CASE WHEN EXISTS (SELECT 1 FROM public.categories_to_cards where " +
                 "category_id = :categoryId ) THEN 'FALSE' ELSE 'TRUE' END";
         return namedParameterJdbcTemplate.queryForObject(query,

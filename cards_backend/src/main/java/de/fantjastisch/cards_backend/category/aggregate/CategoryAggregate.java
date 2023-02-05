@@ -55,6 +55,7 @@ public class CategoryAggregate {
                 .subCategories(subCategories)
                 .build();
         categoryCommandRepository.create(category);
+
         return category.getId();
     }
 
@@ -106,5 +107,4 @@ public class CategoryAggregate {
     public List<Category> handle() {
         return categoryQueryRepository.getPage();
     }
-
 }

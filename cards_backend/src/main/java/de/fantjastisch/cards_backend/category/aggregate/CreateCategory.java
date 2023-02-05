@@ -16,6 +16,7 @@ import java.util.UUID;
  *
  * @author Semjon Nirmann
  */
+@SuppressWarnings("deprecation")
 @Getter
 @Builder
 @ToString
@@ -24,7 +25,6 @@ import java.util.UUID;
 public class CreateCategory implements Commandable {
 
     @NotBlank
-    @NotNull
     @Schema(
             description = "The category label",
             required = true,

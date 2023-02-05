@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
  *
  * @author Freja Sender, Tamari Bayer, Jessica Repty
  */
-
 @Repository
 public class CardQueryRepository {
 
