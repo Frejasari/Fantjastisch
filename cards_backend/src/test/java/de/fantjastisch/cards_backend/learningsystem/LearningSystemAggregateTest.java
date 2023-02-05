@@ -21,7 +21,8 @@ import java.util.Arrays;
 import java.util.UUID;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -51,10 +52,11 @@ public class LearningSystemAggregateTest {
     @BeforeEach
     public void setUp() {
         LearningSystemValidator learningSystemValidator = new LearningSystemValidator(learningSystemQueryRepository);
-        learningSystemAggregate = new LearningSystemAggregate(learningSystemCommandRepository, learningSystemValidator, learningSystemQueryRepository,uuidGenerator);
+        learningSystemAggregate = new LearningSystemAggregate(learningSystemCommandRepository, learningSystemValidator, learningSystemQueryRepository, uuidGenerator);
     }
+
     @Test
-    public void shouldCreate(){
+    public void shouldCreate() {
         when(uuidGenerator.randomUUID()).thenReturn(ls.getId());
         CreateLearningSystem toCreate = CreateLearningSystem.builder()
                 .label(ls.getLabel())
@@ -64,8 +66,9 @@ public class LearningSystemAggregateTest {
         verify(learningSystemCommandRepository, times(1)).save(ls);
 
     }
+
     @Test
-    public void shouldUpdate(){
+    public void shouldUpdate() {
         when(learningSystemQueryRepository.get(ls.getId())).thenReturn(ls);
         UpdateLearningSystem toUpdate = UpdateLearningSystem.builder()
                 .id(ls.getId())
@@ -80,25 +83,25 @@ public class LearningSystemAggregateTest {
                 .build());
 
     }
+
     @Test
-    public void shouldDelete()
-    {
+    public void shouldDelete() {
         when(learningSystemQueryRepository.get(ls.getId())).thenReturn(ls);
         learningSystemAggregate.handleDelete(ls.getId());
-        verify(learningSystemCommandRepository,times(1)).delete(ls.getId());
+        verify(learningSystemCommandRepository, times(1)).delete(ls.getId());
     }
+
     @Test
-    public void shouldGet()
-    {
+    public void shouldGet() {
         when(learningSystemQueryRepository.get(ls.getId())).thenReturn(ls);
         learningSystemAggregate.handleDelete(ls.getId());
-        verify(learningSystemQueryRepository,times (2)).get(ls.getId());
+        verify(learningSystemQueryRepository, times(2)).get(ls.getId());
     }
+
     @Test
-    public void shouldGetPage()
-    {
+    public void shouldGetPage() {
         learningSystemAggregate.handle();
-        verify(learningSystemQueryRepository,times (1)).getPage();
+        verify(learningSystemQueryRepository, times(1)).getPage();
     }
 
     @Test
@@ -108,7 +111,7 @@ public class LearningSystemAggregateTest {
                 .boxLabels(ls.getBoxLabels())
                 .build();
 
-        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toCreate));
+        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toCreate));
 
         ErrorEntry error = ErrorEntry.builder()
                 .code(NOT_BLANK_VIOLATION)
@@ -121,7 +124,7 @@ public class LearningSystemAggregateTest {
                 .boxLabels(ls.getBoxLabels())
                 .build();
 
-        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toCreate2));
+        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toCreate2));
 
         ErrorEntry error2 = ErrorEntry.builder()
                 .code(NOT_BLANK_VIOLATION)
@@ -139,7 +142,7 @@ public class LearningSystemAggregateTest {
                 .boxLabels(ls.getBoxLabels())
                 .build();
 
-        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toUpdate));
+        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toUpdate));
 
         ErrorEntry error = ErrorEntry.builder()
                 .code(NOT_BLANK_VIOLATION)
@@ -153,7 +156,7 @@ public class LearningSystemAggregateTest {
                 .boxLabels(ls.getBoxLabels())
                 .build();
 
-        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toUpdate2));
+        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toUpdate2));
 
         ErrorEntry error2 = ErrorEntry.builder()
                 .code(NOT_BLANK_VIOLATION)
@@ -169,7 +172,7 @@ public class LearningSystemAggregateTest {
                 .boxLabels(null)
                 .build();
 
-        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toCreate));
+        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toCreate));
 
         ErrorEntry error = ErrorEntry.builder()
                 .code(NOT_NULL_VIOLATION)
@@ -178,13 +181,12 @@ public class LearningSystemAggregateTest {
         assertTrue(exceptionnull.getErrors().contains(error));
 
 
-
         CreateLearningSystem toCreate2 = CreateLearningSystem.builder()
                 .label(ls.getLabel())
                 .boxLabels(Arrays.asList(""))
                 .build();
 
-        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toCreate2));
+        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toCreate2));
 
         ErrorEntry error2 = ErrorEntry.builder()
                 .code(BOX_LABELS_IS_NULL_VIOLATION)
@@ -194,10 +196,10 @@ public class LearningSystemAggregateTest {
 
         CreateLearningSystem toCreate3 = CreateLearningSystem.builder()
                 .label(ls.getLabel())
-                .boxLabels(Arrays.asList("Test",""))
+                .boxLabels(Arrays.asList("Test", ""))
                 .build();
 
-        CommandValidationException exceptionblank2 = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toCreate3));
+        CommandValidationException exceptionblank2 = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toCreate3));
 
         ErrorEntry error3 = ErrorEntry.builder()
                 .code(BOX_LABELS_IS_NULL_VIOLATION)
@@ -207,10 +209,10 @@ public class LearningSystemAggregateTest {
 
         CreateLearningSystem toCreate4 = CreateLearningSystem.builder()
                 .label(ls.getLabel())
-                .boxLabels(Arrays.asList("Test",null))
+                .boxLabels(Arrays.asList("Test", null))
                 .build();
 
-        CommandValidationException exceptionnull2 = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toCreate4));
+        CommandValidationException exceptionnull2 = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toCreate4));
 
         ErrorEntry error4 = ErrorEntry.builder()
                 .code(BOX_LABELS_IS_NULL_VIOLATION)
@@ -227,7 +229,7 @@ public class LearningSystemAggregateTest {
                 .boxLabels(null)
                 .build();
 
-        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toUpdate));
+        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toUpdate));
 
         ErrorEntry error = ErrorEntry.builder()
                 .code(NOT_NULL_VIOLATION)
@@ -236,14 +238,13 @@ public class LearningSystemAggregateTest {
         assertTrue(exceptionnull.getErrors().contains(error));
 
 
-
         UpdateLearningSystem toUpdate2 = UpdateLearningSystem.builder()
                 .id(ls.getId())
                 .label(ls.getLabel())
                 .boxLabels(Arrays.asList(""))
                 .build();
 
-        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toUpdate2));
+        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toUpdate2));
 
         ErrorEntry error2 = ErrorEntry.builder()
                 .code(BOX_LABELS_IS_NULL_VIOLATION)
@@ -254,10 +255,10 @@ public class LearningSystemAggregateTest {
         UpdateLearningSystem toUpdate3 = UpdateLearningSystem.builder()
                 .id(ls.getId())
                 .label(ls.getLabel())
-                .boxLabels(Arrays.asList("Test",""))
+                .boxLabels(Arrays.asList("Test", ""))
                 .build();
 
-        CommandValidationException exceptionblank2 = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toUpdate3));
+        CommandValidationException exceptionblank2 = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toUpdate3));
 
         ErrorEntry error3 = ErrorEntry.builder()
                 .code(BOX_LABELS_IS_NULL_VIOLATION)
@@ -268,10 +269,10 @@ public class LearningSystemAggregateTest {
         UpdateLearningSystem toUpdate4 = UpdateLearningSystem.builder()
                 .id(ls.getId())
                 .label(ls.getLabel())
-                .boxLabels(Arrays.asList("Test",null))
+                .boxLabels(Arrays.asList("Test", null))
                 .build();
 
-        CommandValidationException exceptionnull2 = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handle(toUpdate4));
+        CommandValidationException exceptionnull2 = assertThrows(CommandValidationException.class, () -> learningSystemAggregate.handle(toUpdate4));
 
         ErrorEntry error4 = ErrorEntry.builder()
                 .code(BOX_LABELS_IS_NULL_VIOLATION)

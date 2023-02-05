@@ -6,8 +6,8 @@ import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.util.RepoResult
 import de.fantjastisch.cards_frontend.util.RepoResult.ServerError
-import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
 import de.fantjastisch.cards_frontend.util.RepoResult.Success
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
 import de.fantjastisch.cards_frontend.util.isNetworkError
 import de.fantjastisch.cards_frontend.util.toUnselectedCategorySelectItems
 import kotlinx.coroutines.*

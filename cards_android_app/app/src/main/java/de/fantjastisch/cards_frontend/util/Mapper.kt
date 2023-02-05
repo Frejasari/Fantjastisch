@@ -6,7 +6,7 @@ import org.openapitools.client.models.CategoryEntity
 
 /**
  * Extension Function, die CategoryEntities zu CategorySelectItems mappt.
- *
+ * @author Freja Sender
  */
 fun List<CategoryEntity>.toUnselectedCategorySelectItems() = map { cat ->
     CategorySelectItem(

@@ -26,6 +26,8 @@ import androidx.compose.ui.draw.rotate
  * @param additionalActions Optionale Aktionselemente (wie z.B. IconButtons)
  * @param additionalContent Optionaler Zusatzinhalt, wie weitere Reihen mit Elementen
  * @param expandedContent Optionaler Zusatzinhalt für die ausgeklappte Ansicht
+ *
+ * @author Freja Sender
  */
 @Composable
 fun ExpandableRow(

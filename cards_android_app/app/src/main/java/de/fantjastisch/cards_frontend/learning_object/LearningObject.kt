@@ -11,6 +11,7 @@ import java.util.*
  * @property id Die UUID eines Lernobjekts.
  * @property label Die Bezeichnung eines Lernobjekts.
  * @property learningSystemId Die UUID des dazugehörigen Lernsystems.
+ * @author Freja Sender, Semjon Nirmann, Jessica Repty
  */
 @Entity(tableName = "learning_object")
 data class LearningObject(

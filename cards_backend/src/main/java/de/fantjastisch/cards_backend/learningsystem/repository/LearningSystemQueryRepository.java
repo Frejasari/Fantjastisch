@@ -1,6 +1,5 @@
 package de.fantjastisch.cards_backend.learningsystem.repository;
 
-import de.fantjastisch.cards_backend.category.Category;
 import de.fantjastisch.cards_backend.learningsystem.LearningSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

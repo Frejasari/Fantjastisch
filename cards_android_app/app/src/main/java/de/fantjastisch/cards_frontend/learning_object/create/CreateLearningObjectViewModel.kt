@@ -77,7 +77,7 @@ class CreateLearningObjectViewModel(
      * @param id Id der Karte, welche ausgewählt wurde.
      */
     fun onCardSelected(id: UUID) {
-        selectedCards = if(selectedCards.contains(id)) {
+        selectedCards = if (selectedCards.contains(id)) {
             selectedCards - id
         } else {
             selectedCards + id
