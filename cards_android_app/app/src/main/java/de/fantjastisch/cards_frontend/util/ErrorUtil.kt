@@ -21,7 +21,6 @@ fun mapError(code: ErrorEntryEntity.Code): Int {
         ErrorEntryEntity.Code.sUBCATEGORYDOESNTEXISTVIOLATION -> R.string.error_category_does_not_exist
         ErrorEntryEntity.Code.cATEGORYNOTEMPTYVIOLATION -> R.string.error_no_category
         ErrorEntryEntity.Code.cYCLICSUBCATEGORYRELATIONVIOLATION -> R.string.error_no_cycles
-        ErrorEntryEntity.Code.sUBCATEGORYISNULLVIOLATION -> R.string.error_subcategories_not_null
         ErrorEntryEntity.Code.eNTITYDOESNOTEXIST -> R.string.error_entity_does_not_exist
         ErrorEntryEntity.Code.cARDDUPLICATEVIOLATION -> R.string.error_card_already_exists
         ErrorEntryEntity.Code.bOXLABELSISNULLVIOLATION -> R.string.error_box_labels_null

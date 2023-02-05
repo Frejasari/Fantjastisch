@@ -66,7 +66,7 @@ public class LearningSystemController {
     public CreatedResponse createLearningSystem(
             @RequestBody CreateLearningSystem command)
             throws RuntimeException {
-        return new CreatedResponse(learningSystemAggregate.handleDelete(command));
+        return new CreatedResponse(learningSystemAggregate.handle(command));
     }
 
     /**
@@ -82,7 +82,7 @@ public class LearningSystemController {
             @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json")})
     })
     public void updateLearningSystem(@RequestBody UpdateLearningSystem command) {
-        learningSystemAggregate.handleDelete(command);
+        learningSystemAggregate.handle(command);
     }
 
     /**
@@ -133,6 +133,6 @@ public class LearningSystemController {
                     array = @ArraySchema(schema = @Schema(implementation = LearningSystem.class)))})
     })
     public List<LearningSystem> getPage() {
-        return learningSystemAggregate.handleDelete();
+        return learningSystemAggregate.handle();
     }
 }

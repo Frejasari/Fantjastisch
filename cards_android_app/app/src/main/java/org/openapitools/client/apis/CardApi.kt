@@ -16,9 +16,9 @@ interface CardApi {
      * 
      * Create a new Card
      * Responses:
-     *  - 422: Unprocessable Entity
-     *  - 404: Not Found
      *  - 201: Created
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param createCardEntity 
      * @return [Call]<[kotlin.String]>
@@ -30,9 +30,9 @@ interface CardApi {
      * 
      * Delete a card
      * Responses:
-     *  - 422: Unprocessable Entity
-     *  - 404: Not Found
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param id 
      * @return [Call]<[Unit]>
@@ -44,8 +44,8 @@ interface CardApi {
      * 
      * Get the Card from the given Id
      * Responses:
-     *  - 422: Unprocessable Entity
      *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *  - 200: OK
      *
      * @param id 
@@ -58,9 +58,9 @@ interface CardApi {
      * Get all cards
      * 
      * Responses:
-     *  - 422: Unprocessable Entity
-     *  - 404: Not Found
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param categoryFilter  (optional)
      * @param search  (optional)
@@ -75,9 +75,9 @@ interface CardApi {
      * 
      * Update a card
      * Responses:
-     *  - 422: Unprocessable Entity
-     *  - 404: Not Found
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param updateCardEntity 
      * @return [Call]<[Unit]>

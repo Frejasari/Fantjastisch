@@ -7,7 +7,6 @@ import okhttp3.RequestBody
 import com.squareup.moshi.Json
 
 import org.openapitools.client.models.CreateLearningSystemEntity
-import org.openapitools.client.models.DeleteLearningSystemEntity
 import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.LearningSystemEntity
 import org.openapitools.client.models.UpdateLearningSystemEntity
@@ -17,9 +16,9 @@ interface LearningSystemApi {
      * Create a new learning system
      * 
      * Responses:
-     *  - 422: Unprocessable Entity
-     *  - 404: Not Found
      *  - 201: Created
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param createLearningSystemEntity 
      * @return [Call]<[kotlin.String]>
@@ -31,23 +30,23 @@ interface LearningSystemApi {
      * Delete a learning system
      * 
      * Responses:
-     *  - 422: Unprocessable Entity
-     *  - 404: Not Found
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
-     * @param deleteLearningSystemEntity 
+     * @param id 
      * @return [Call]<[Unit]>
      */
     @DELETE("learningSystem/delete")
-    fun deleteLearningSystem(@Body deleteLearningSystemEntity: DeleteLearningSystemEntity): Call<Unit>
+    fun deleteLearningSystem(@Query("id") id: java.util.UUID): Call<Unit>
 
     /**
      * Get specific learning system
      * 
      * Responses:
+     *  - 404: Not Found
      *  - 422: Unprocessable Entity
      *  - 200: OK
-     *  - 404: Not Found
      *
      * @param id 
      * @return [Call]<[LearningSystemEntity]>
@@ -59,9 +58,9 @@ interface LearningSystemApi {
      * Get all learning systems
      * 
      * Responses:
-     *  - 422: Unprocessable Entity
      *  - 200: OK
      *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @return [Call]<[kotlin.collections.List<LearningSystemEntity>]>
      */
@@ -72,9 +71,9 @@ interface LearningSystemApi {
      * Update a learning system
      * 
      * Responses:
-     *  - 422: Unprocessable Entity
-     *  - 404: Not Found
      *  - 200: OK
+     *  - 404: Not Found
+     *  - 422: Unprocessable Entity
      *
      * @param updateLearningSystemEntity 
      * @return [Call]<[Unit]>

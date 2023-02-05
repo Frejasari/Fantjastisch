@@ -41,7 +41,7 @@ public class LearningSystemAggregate {
      * @param command Das CRUD-Kommando-Objekt zum Erstellen eines Lernsystems.
      * @return Eine UUID, die die erstellte Entität darstellt.
      */
-    public UUID handleDelete(final CreateLearningSystem command) {
+    public UUID handle(final CreateLearningSystem command) {
         learningSystemValidator.validate(command);
 
         LearningSystem learningSystem =
@@ -59,7 +59,7 @@ public class LearningSystemAggregate {
      *
      * @param command Das CRUD-Kommando-Objekt zum Aktualisieren eines Lernsystems.
      */
-    public void handleDelete(final UpdateLearningSystem command) {
+    public void handle(final UpdateLearningSystem command) {
         learningSystemValidator.validate(command);
 
         learningSystemCommandRepository.update(
@@ -97,7 +97,7 @@ public class LearningSystemAggregate {
      *
      * @return Eine Liste aller Entitäten vom Typ Lernsystem, gekapselt in entsprechenden {@link LearningSystem}-Instanzen.
      */
-    public List<LearningSystem> handleDelete() {
+    public List<LearningSystem> handle() {
         return learningSystemQueryRepository.getPage();
     }
 }
