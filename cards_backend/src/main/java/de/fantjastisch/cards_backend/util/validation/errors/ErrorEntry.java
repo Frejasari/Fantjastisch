@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
  *
  * @author Semjon Nirmann, Freja Sender
  */
+@SuppressWarnings("deprecation")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

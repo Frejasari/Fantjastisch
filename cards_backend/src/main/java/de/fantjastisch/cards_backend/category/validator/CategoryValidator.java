@@ -42,7 +42,7 @@ public class CategoryValidator extends Validator {
      *
      * @param command Eine {@link CreateCategory}-Instanz, welche validiert werden soll.
      */
-    public void validate(CreateCategory command) {
+    public void validate(final CreateCategory command) {
         throwIfNeeded(validateConstraints(command));
         List<ErrorEntry> errors = new ArrayList<>();
         final List<Category> allCategories = categoryQueryRepository.getPage();
@@ -65,7 +65,7 @@ public class CategoryValidator extends Validator {
      *
      * @param command Eine {@link UpdateCategory}-Instanz, welche validiert werden soll.
      */
-    public void validate(UpdateCategory command) {
+    public void validate(final UpdateCategory command) {
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(validateConstraints(command));
         throwIfNeeded(errors);
@@ -89,13 +89,13 @@ public class CategoryValidator extends Validator {
      * Es wird eine {@link de.fantjastisch.cards_backend.util.validation.CommandValidationException} bzw.
      * eine {@link ResponseStatusException} geworfen, sofern einer dieser Fälle gilt.
      *
-     * @param id eine UUID, welche validiert werden soll.
+     * @param categoryId eine UUID, welche validiert werden soll.
      */
-    public void validateDelete(UUID id) {
-        throwIfCategoryDoesNotExist(id);
+    public void validateDelete(final UUID categoryId) {
+        throwIfCategoryDoesNotExist(categoryId);
 
         List<ErrorEntry> errors = new ArrayList<>();
-        errors.addAll(checkIfCategoryIsInUse(id));
+        errors.addAll(checkIfCategoryIsInUse(categoryId));
         throwIfNeeded(errors);
     }
 
@@ -107,7 +107,7 @@ public class CategoryValidator extends Validator {
      *
      * @param categoryId Die ID der Kategorie, welche gelöscht werden soll.
      */
-    public void validateGet(UUID categoryId) {
+    public void validateGet(final UUID categoryId) {
         throwIfCategoryDoesNotExist(categoryId);
     }
 
@@ -129,7 +129,7 @@ public class CategoryValidator extends Validator {
         );
     }
 
-    private List<ErrorEntry> checkIfSubcategoryExists(Set<UUID> subCategories, List<Category> allCategories) {
+    private List<ErrorEntry> checkIfSubcategoryExists(final Set<UUID> subCategories, final List<Category> allCategories) {
         for (UUID subCategoryId : subCategories) {
             if (subCategoryId != null && allCategories.stream().noneMatch(category -> category.getId().equals(subCategoryId))) {
                 return Collections.singletonList(
@@ -143,7 +143,7 @@ public class CategoryValidator extends Validator {
     }
 
     private List<ErrorEntry> checkIfCycleInSubCategoriesFound
-            (List<Category> allCategories, Set<UUID> subCategories, ArrayList<UUID> visited) {
+            (final List<Category> allCategories, final Set<UUID> subCategories, final ArrayList<UUID> visited) {
         /*
         Prüfe rekursiv, ob beim Aktualisieren der Unterkategorien einer
         vorhandenen Kategorie Zyklen in der Kategorien-Hierarchie entstehen.
@@ -179,7 +179,7 @@ public class CategoryValidator extends Validator {
         return errors;
     }
 
-    private List<ErrorEntry> checkIfLabelTaken(String label, List<Category> allCategories) {
+    private List<ErrorEntry> checkIfLabelTaken(final String label, final List<Category> allCategories) {
         List<ErrorEntry> errors = new ArrayList<>();
         List<Category> withSameName = allCategories.stream()
                 .filter(category -> category.getLabel().equals(label))
@@ -194,13 +194,10 @@ public class CategoryValidator extends Validator {
         return errors;
     }
 
-    private List<ErrorEntry> checkIfLabelTakenForUpdate(UpdateCategory toUpdate, List<Category> allCategories) {
-        Category getCat = categoryQueryRepository.get(toUpdate.getId());
+    private List<ErrorEntry> checkIfLabelTakenForUpdate(final UpdateCategory toUpdate, final List<Category> allCategories) {
+        Category category = categoryQueryRepository.get(toUpdate.getId());
         ArrayList<Category> all = new ArrayList<>(allCategories);
-        List<ErrorEntry> errors = new ArrayList<>();
-        if (all.remove(getCat)) {
-            errors = checkIfLabelTaken(toUpdate.getLabel(), all);
-        }
-        return errors;
+        all.remove(category);
+        return checkIfLabelTaken(toUpdate.getLabel(), all);
     }
 }

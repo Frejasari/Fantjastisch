@@ -47,10 +47,12 @@ public class CategoryAggregate {
     public UUID handle(final CreateCategory command) {
         categoryValidator.validate(command);
 
+        final Set<UUID> subCategories = new HashSet<>(command.getSubCategories());
+        subCategories.remove(null);
         Category category = Category.builder()
                 .id(uuidGenerator.randomUUID())
                 .label(command.getLabel().trim())
-                .subCategories(command.getSubCategories())
+                .subCategories(subCategories)
                 .build();
         categoryCommandRepository.create(category);
         return category.getId();

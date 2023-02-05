@@ -62,7 +62,23 @@ public class CategoryAggregateTest {
 
         CreateCategory toCreate = CreateCategory.builder()
                 .label(category.getLabel())
-                .subCategories(Collections.emptySet())
+                .subCategories(category.getSubCategories())
+                .build();
+
+        categoryAggregate.handle(toCreate);
+        verify(categoryCommandRepository, times(1)).create(category);
+    }
+
+    @Test
+    public void shouldCreateOnNullSubcategorie() {
+        when(categoryQueryRepository.getPage()).thenReturn(Collections.emptyList());
+        when(uuidGenerator.randomUUID()).thenReturn(category.getId());
+
+        Set<UUID> subCategories = new HashSet<>();
+        subCategories.add(null);
+        CreateCategory toCreate = CreateCategory.builder()
+                .label(category.getLabel())
+                .subCategories(subCategories)
                 .build();
 
         categoryAggregate.handle(toCreate);
@@ -98,6 +114,20 @@ public class CategoryAggregateTest {
     }
 
     @Test
+    public void shouldGet() {
+        when(categoryQueryRepository.get(category.getId())).thenReturn(category);
+
+        categoryAggregate.handle(category.getId());
+        verify(categoryQueryRepository, times(2)).get(category.getId());
+    }
+
+    @Test
+    public void shouldGetPage() {
+        categoryAggregate.handle();
+        verify(categoryQueryRepository, times(1)).getPage();
+    }
+
+    @Test
     public void shouldThrowWhenLabelTaken() {
         when(categoryQueryRepository.getPage()).thenReturn(Collections.singletonList(category));
 
@@ -126,6 +156,26 @@ public class CategoryAggregateTest {
                 .builder()
                 .code(CATEGORY_NOT_EMPTY_VIOLATION)
                 .field("id").build()
+        ));
+    }
+
+    @Test
+    public void shouldThrowWhenSubCategoryDoesNotExist() {
+        when(categoryQueryRepository.getPage()).thenReturn(Collections.emptyList());
+
+        CreateCategory toCreate = CreateCategory.builder()
+                .label(category.getLabel())
+                .subCategories(Set.of(UUID.fromString("a8f44f64-ba23-4a3b-b847-928085005eed")))
+                .build();
+
+        CommandValidationException exception = assertThrows(CommandValidationException.class,
+                () -> categoryAggregate.handle(toCreate));
+
+        assertTrue(exception.getErrors().contains(ErrorEntry
+                .builder()
+                .code(SUBCATEGORY_DOESNT_EXIST_VIOLATION)
+                .field("subCategories")
+                .build()
         ));
     }
 
@@ -284,6 +334,4 @@ public class CategoryAggregateTest {
         assertTrue(exception.getErrors().contains(nullSubcategoryError));
 
     }
-    // cant add self
-    // cant add parent to subcategories ...
 }
