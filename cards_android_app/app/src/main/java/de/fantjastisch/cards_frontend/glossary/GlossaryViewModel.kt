@@ -4,8 +4,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.util.fold
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import java.util.*
@@ -26,6 +28,9 @@ object CardsFilters {
     fun reset() {
         filters.value = initialFilters
     }
+
+    val hasFilters: Flow<Boolean> =
+        filters.map { it.tag.isNotBlank() || it.search.isNotBlank() || it.categories.isNotEmpty() }
 }
 
 /**
@@ -71,15 +76,10 @@ class GlossaryViewModel(
      */
     fun onPageLoaded() {
         viewModelScope.launch {
-
-            glossaryModel.getCards(
-                categoryIds = CardsFilters.filters.value.categories,
-                search = CardsFilters.filters.value.search,
-                tag = CardsFilters.filters.value.tag,
-                sort = CardsFilters.filters.value.sort
-            ).fold(
-                onSuccess = { cards.value = it }
-            )
+            glossaryModel.getCards()
+                .fold(
+                    onSuccess = { cards.value = it }
+                )
         }
     }
 

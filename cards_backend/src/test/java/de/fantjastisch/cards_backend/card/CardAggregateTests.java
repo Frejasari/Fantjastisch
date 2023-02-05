@@ -20,13 +20,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
+
 
 
 /**
@@ -294,8 +296,8 @@ public class CardAggregateTests {
     }
 
     @Test
-    public void shouldThrowWhenDuplicateCard() {
-        when(cardQueryRepository.getPage(null, null, card.getTag(), false))
+    public void shouldThrowWhenCreateDuplicateCard() {
+        when(cardQueryRepository.getPage(null, null, null, false))
                 .thenReturn(Collections.singletonList(card));
 
         when(categoryQueryRepository.get(category.getId())).thenReturn(category);
@@ -316,7 +318,10 @@ public class CardAggregateTests {
         CommandValidationException exception = assertThrows(CommandValidationException.class,
                 () -> cardAggregate.handle(toCreate));
         assertTrue(exception.getErrors().contains(duplicateError));
+
+        verify(cardCommandRepository, times(1)).create(cardForSave);
     }
+
 
     @Test
     public void shouldThrowNullQuestion() {
@@ -412,5 +417,187 @@ public class CardAggregateTests {
         exception = assertThrows(CommandValidationException.class,
                 () -> cardAggregate.handle(toUpdate));
         assertTrue(exception.getErrors().contains(constraintError));
+    }
+
+    @Test
+    public void shouldCreate() {
+        when(cardQueryRepository.getPage(null,null,null,false)).thenReturn(Collections.emptyList());
+        when(categoryQueryRepository.get(category.getId())).thenReturn(category);
+        when(uuidGenerator.randomUUID()).thenReturn(cardForSave.getId());
+
+        CreateCard toCreate = CreateCard.builder()
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
+                .links(cardForSave.getLinks())
+                .build();
+
+
+        cardAggregate.handle(toCreate);
+        verify(cardCommandRepository, times(2)).create(cardForSave);
+    }
+
+    @Test
+    public void shouldCreateWithLinks() {
+        when(cardQueryRepository.getPage(null,null,null,false)).thenReturn(Collections.emptyList());
+        when(categoryQueryRepository.get(category.getId())).thenReturn(category);
+        when(uuidGenerator.randomUUID()).thenReturn(cardForSave.getId());
+
+        Card linkedCard = Card.builder()
+                .id(UUID.randomUUID())
+                .question("I am the question")
+                .answer("I am the answer")
+                .tag("I am a tag")
+                .links(Collections.emptySet())
+                .categories(Set.of(Card.Category
+                        .builder()
+                        .id(category.getId())
+                        .label(category.getLabel())
+                        .build()))
+                .build();
+
+        Link link = Link.builder()
+                        .label("link")
+                        .target(linkedCard.getId())
+                        .build();
+
+        when(cardQueryRepository.get(linkedCard.getId())).thenReturn(linkedCard);
+
+        CreateCard toCreate = CreateCard.builder()
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
+                .links(Set.of(link))
+                .build();
+
+        cardAggregate.handle(toCreate);
+        verify(cardCommandRepository, times(1)).create(cardForSave);
+    }
+
+    @Test
+    public void shouldUpdateWithLinks() {
+        when(categoryQueryRepository.get(category.getId())).thenReturn(category);
+
+        Card linkedCard = Card.builder()
+                .id(UUID.randomUUID())
+                .question("I am the question")
+                .answer("I am the answer")
+                .tag("I am a tag")
+                .links(Collections.emptySet())
+                .categories(Set.of(Card.Category
+                        .builder()
+                        .id(category.getId())
+                        .label(category.getLabel())
+                        .build()))
+                .build();
+
+
+        Link link = Link.builder()
+                .label("link")
+                .target(linkedCard.getId())
+                .build();
+
+        when(cardQueryRepository.get(linkedCard.getId())).thenReturn(linkedCard);
+
+        UpdateCard toCreate = UpdateCard.builder()
+                .id(cardForSave.getId())
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
+                .links(Set.of(link))
+                .build();
+
+        when(cardQueryRepository.get(toCreate.getId())).thenReturn(card);
+
+        cardAggregate.handle(toCreate);
+        verify(cardCommandRepository, times(1)).create(cardForSave);
+    }
+
+    @Test
+    public void shouldUpdate() {
+        UpdateCard toUpdate = UpdateCard.builder()
+                .id(card.getId())
+                .question(card.getQuestion())
+                .answer(card.getAnswer())
+                .tag(card.getTag())
+                .categories(cardForSave.getCategories())
+                .links(card.getLinks())
+                .build();
+
+        when(categoryQueryRepository.get(category.getId())).thenReturn(category);
+        when(cardQueryRepository.get(toUpdate.getId())).thenReturn(card);
+
+        assertDoesNotThrow(() -> cardAggregate.handle(toUpdate));
+        verify(cardCommandRepository, times(1)).update(cardForSave);
+    }
+
+    @Test
+    public void shouldDelete() {
+        when(cardQueryRepository.get(card.getId())).thenReturn(card);
+
+        cardAggregate.handleDelete(card.getId());
+        verify(cardCommandRepository, times(1)).delete(card.getId());
+    }
+
+    @Test
+    public void shouldGet() {
+        when(cardQueryRepository.get(card.getId())).thenReturn(card);
+
+        cardAggregate.handle(card.getId());
+        verify(cardQueryRepository, times(2)).get(card.getId());
+    }
+
+    @Test
+    public void shouldGetPage() {
+        cardAggregate.handle(null,null,null,false);
+        verify(cardQueryRepository, times(1)).getPage(null,null,null,false);
+
+        cardAggregate.handle(null,"Suchbegriff",null,false);
+        verify(cardQueryRepository, times(1)).getPage(null,"Suchbegriff",null,false);
+
+        cardAggregate.handle(null,null,"Tag",false);
+        verify(cardQueryRepository, times(1)).getPage(null,null,"Tag",false);
+    }
+
+    @Test
+    public void shouldcreateWhenNoDuplicates() {
+        when(cardQueryRepository.getPage(null,null,null,false)).thenReturn(List.of(card));
+        when(categoryQueryRepository.get(category.getId())).thenReturn(category);
+
+        CreateCard toCreate = CreateCard.builder()
+                .question("Are your the question?")
+                .answer(cardForSave.getAnswer())
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
+                .links(cardForSave.getLinks())
+                .build();
+
+        cardAggregate.handle(toCreate);
+        verify(cardCommandRepository, times(1)).create(cardForSave);
+
+        toCreate = CreateCard.builder()
+                .question(cardForSave.getQuestion())
+                .answer("I am the answer.")
+                .tag(cardForSave.getTag())
+                .categories(cardForSave.getCategories())
+                .links(cardForSave.getLinks())
+                .build();
+
+        cardAggregate.handle(toCreate);
+        verify(cardCommandRepository, times(1)).create(cardForSave);
+
+        toCreate = CreateCard.builder()
+                .question(cardForSave.getQuestion())
+                .answer(cardForSave.getAnswer())
+                .tag("I am the tag.")
+                .categories(cardForSave.getCategories())
+                .links(cardForSave.getLinks())
+                .build();
+
+        cardAggregate.handle(toCreate);
+        verify(cardCommandRepository, times(1)).create(cardForSave);
     }
 }

@@ -10,6 +10,7 @@ import de.fantjastisch.cards_frontend.util.isNetworkError
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import org.openapitools.client.models.CardEntity
 import java.util.*
 
 /**
@@ -34,16 +35,11 @@ class GlossaryModel(
      * @param tag Das Schlagwort, wonach gesucht wird.
      * @param sort Alphabetische Sortierung von Tags.
      */
-    suspend fun getCards(
-        categoryIds: List<UUID>,
-        search: String,
-        tag: String,
-        sort: Boolean
-    ) = cardRepository.getPage(
-        categoryIds = categoryIds.ifEmpty { null },
-        search = search.ifEmpty { null },
-        tag = tag.ifEmpty { null },
-        sort = sort
+    suspend fun getCards(): RepoResult<List<CardEntity>> = cardRepository.getPage(
+        categoryIds = CardsFilters.filters.value.categories.ifEmpty { null },
+        search = CardsFilters.filters.value.search.ifEmpty { null },
+        tag = CardsFilters.filters.value.tag.ifEmpty { null },
+        sort = CardsFilters.filters.value.sort
     )
 
 

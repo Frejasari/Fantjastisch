@@ -5,6 +5,7 @@ import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
+import de.fantjastisch.cards_frontend.glossary.CardsFilters
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
@@ -53,7 +54,6 @@ class CreateLearningObjectModel(
      * @property learningSystems Alle Lernsysteme.
      */
     data class CreateLearningObject(
-        val cardSelectItems: List<CardSelectItem>,
         val categorySelectItems: List<CategorySelectItem>,
         val learningSystems: List<SingleSelectItem>
     )
@@ -67,34 +67,19 @@ class CreateLearningObjectModel(
     @Suppress("UNCHECKED_CAST")
     suspend fun initializePage(): RepoResult<CreateLearningObject> = coroutineScope {
         // Runs coroutines in parallel and waits until all of them are done
-        val (cardsResult, categoriesResult, learningSystemsResult) = awaitAll(
-            async {
-                cardRepository.getPage(
-                    categoryIds = null,
-                    search = null,
-                    tag = null,
-                    sort = false
-                )
-            },
+        val (categoriesResult, learningSystemsResult) = awaitAll(
             async { categoryRepository.getPage() },
             async { learningSystemRepository.getPage() }
         )
 
         // Wenn alle Resultate da
         when {
-            cardsResult is Success
-                    && categoriesResult is Success
+            categoriesResult is Success
                     && learningSystemsResult is Success -> {
                 // Verarbeite
-                val cards = (cardsResult.result) as List<CardEntity>
                 val categories = categoriesResult.result as List<CategoryEntity>
                 learningSystems = learningSystemsResult.result as List<LearningSystemEntity>
 
-                val cardSelectItems = cards.map { card ->
-                    CardSelectItem(
-                        card = card, isChecked = false
-                    )
-                }
 
                 val categorySelectItems = categories.toUnselectedCategorySelectItems()
 
@@ -108,16 +93,29 @@ class CreateLearningObjectModel(
                 // Objekt für Rückgabe füllen
                 Success(
                     CreateLearningObject(
-                        cardSelectItems = cardSelectItems,
                         categorySelectItems = categorySelectItems,
                         learningSystems = learningSystemSelectItems
                     )
                 )
             }
-            cardsResult.isNetworkError() || categoriesResult.isNetworkError() || learningSystemsResult.isNetworkError()
+            categoriesResult.isNetworkError() || learningSystemsResult.isNetworkError()
             -> ServerError(NETWORK_ERROR)
             else -> ServerError(UNEXPECTED_ERROR)
         }
+    }
+
+    /**
+     * Funktion die Karten lädt.
+     *
+     * @return RepoResult mit einer Liste von Karten.
+     */
+    suspend fun loadCards(): RepoResult<List<CardEntity>> = coroutineScope {
+        cardRepository.getPage(
+            categoryIds = CardsFilters.filters.value.categories.ifEmpty { null },
+            search = CardsFilters.filters.value.search.ifEmpty { null },
+            tag = CardsFilters.filters.value.tag.ifEmpty { null },
+            sort = CardsFilters.filters.value.sort
+        )
     }
 
     /**

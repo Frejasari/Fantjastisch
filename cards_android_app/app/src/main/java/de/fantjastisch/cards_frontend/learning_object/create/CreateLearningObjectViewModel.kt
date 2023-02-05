@@ -6,7 +6,9 @@ import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
+import de.fantjastisch.cards_frontend.glossary.CardsFilters
 import de.fantjastisch.cards_frontend.util.fold
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -29,6 +31,8 @@ class CreateLearningObjectViewModel(
     val isFinished = mutableStateOf(false)
     val learningObjectLabel = mutableStateOf("")
 
+    private var selectedCards = emptyList<UUID>()
+
     // constructor (wird ganz am Anfang aufgerufen)
     init {
         viewModelScope.launch {
@@ -37,10 +41,24 @@ class CreateLearningObjectViewModel(
                 .fold(
                     onSuccess = { learningObject ->
                         allCategories.value = learningObject.categorySelectItems
-                        allCards.value = learningObject.cardSelectItems
                         learningSystems.value = learningObject.learningSystems
                     }
                 )
+        }
+        viewModelScope.launch {
+            CardsFilters.filters.collectLatest {
+                model.loadCards().fold(
+                    onSuccess = {
+                        val cardSelectItems = it.map { card ->
+                            CardSelectItem(
+                                card = card,
+                                isChecked = selectedCards.contains(card.id)
+                            )
+                        }
+                        allCards.value = cardSelectItems
+                    }
+                )
+            }
         }
     }
 
@@ -59,12 +77,18 @@ class CreateLearningObjectViewModel(
      * @param id Id der Karte, welche ausgewählt wurde.
      */
     fun onCardSelected(id: UUID) {
+        selectedCards = if(selectedCards.contains(id)) {
+            selectedCards - id
+        } else {
+            selectedCards + id
+        }
+
+        rebuildAllCards()
+    }
+
+    private fun rebuildAllCards() {
         allCards.value = allCards.value.map {
-            if (it.card.id == id) {
-                it.copy(isChecked = !it.isChecked)
-            } else {
-                it
-            }
+            it.copy(isChecked = selectedCards.contains(it.card.id))
         }
     }
 
