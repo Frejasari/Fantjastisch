@@ -61,7 +61,7 @@ public class LearningSystemAggregateTest {
         // learningSystemCommandRepository = new LearningSystemCommandRepository(namedParameterJdbcTemplate);
         //LearningSystemQueryRepository learningSystemQueryRepository = new LearningSystemQueryRepository(namedParameterJdbcTemplate);
         LearningSystemValidator learningSystemValidator = new LearningSystemValidator(learningSystemQueryRepository);
-        learningSystemAggregate = new LearningSystemAggregate(learningSystemCommandRepository, learningSystemValidator, learningSystemQueryRepository, new UUIDGenerator());
+        learningSystemAggregate = new LearningSystemAggregate(learningSystemCommandRepository, learningSystemValidator, learningSystemQueryRepository,uuidGenerator);
     }
     @Test
     public void shouldCreate(){
