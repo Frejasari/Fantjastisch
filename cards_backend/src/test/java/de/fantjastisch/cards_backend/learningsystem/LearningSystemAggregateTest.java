@@ -12,6 +12,9 @@ import de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -23,34 +26,89 @@ import java.util.List;
 import java.util.UUID;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Test Klasse für die LearningSystem Repositories
  *
  * @author Freja Sender, Alexander Kück
  */
-@SpringBootTest
-@Sql({"file:src/main/resources/schema.sql", "file:src/test/resources/test-data.sql"})
+//@SpringBootTest
+//@Sql({"file:src/main/resources/schema.sql", "file:src/test/resources/test-data.sql"})
+@ExtendWith(MockitoExtension.class)
 public class LearningSystemAggregateTest {
     private LearningSystemAggregate learningSystemAggregate;
+    @Mock
+    private UUIDGenerator uuidGenerator;
+    @Mock
     private LearningSystemCommandRepository learningSystemCommandRepository;
+    @Mock
+    private LearningSystemQueryRepository learningSystemQueryRepository;
+
 
     private final LearningSystem ls = LearningSystem.builder()
             .id(UUID.fromString("2be2989b-215f-49ca-ae95-366b2a3db03d"))
             .label("Testlabel")
             .boxLabels(Arrays.asList("Box1", "Box2"))
             .build();
-    @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    //@Autowired
+    //private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
 
     @BeforeEach
     public void setUp() {
-        LearningSystemCommandRepository learningSystemCommandRepository = new LearningSystemCommandRepository(namedParameterJdbcTemplate);
-        LearningSystemQueryRepository learningSystemQueryRepository = new LearningSystemQueryRepository(namedParameterJdbcTemplate);
+        // learningSystemCommandRepository = new LearningSystemCommandRepository(namedParameterJdbcTemplate);
+        //LearningSystemQueryRepository learningSystemQueryRepository = new LearningSystemQueryRepository(namedParameterJdbcTemplate);
         LearningSystemValidator learningSystemValidator = new LearningSystemValidator(learningSystemQueryRepository);
         learningSystemAggregate = new LearningSystemAggregate(learningSystemCommandRepository, learningSystemValidator, learningSystemQueryRepository, new UUIDGenerator());
+    }
+    @Test
+    public void shouldCreate(){
+        when(uuidGenerator.randomUUID()).thenReturn(ls.getId());
+        CreateLearningSystem toCreate = CreateLearningSystem.builder()
+                .label(ls.getLabel())
+                .boxLabels(ls.getBoxLabels())
+                .build();
+        learningSystemAggregate.handleDelete(toCreate);
+        verify(learningSystemCommandRepository, times(1)).save(ls);
+
+    }
+    @Test
+    public void shouldUpdate(){
+        when(learningSystemQueryRepository.get(ls.getId())).thenReturn(ls);
+        UpdateLearningSystem toUpdate = UpdateLearningSystem.builder()
+                .id(ls.getId())
+                .label("Testlabel2")
+                .boxLabels(ls.getBoxLabels())
+                .build();
+        learningSystemAggregate.handleDelete(toUpdate);
+        verify(learningSystemCommandRepository, times(1)).update(LearningSystem.builder()
+                .id(ls.getId())
+                .label(toUpdate.getLabel())
+                .boxLabels(ls.getBoxLabels())
+                .build());
+
+    }
+    @Test
+    public void shouldDelete()
+    {
+        when(learningSystemQueryRepository.get(ls.getId())).thenReturn(ls);
+        learningSystemAggregate.handleDelete(ls.getId());
+        verify(learningSystemCommandRepository,times(1)).delete(ls.getId());
+    }
+    @Test
+    public void shouldGet()
+    {
+        when(learningSystemQueryRepository.get(ls.getId())).thenReturn(ls);
+        learningSystemAggregate.handleDelete(ls.getId());
+        verify(learningSystemQueryRepository,times (2)).get(ls.getId());
+    }
+    @Test
+    public void shouldGetPage()
+    {
+        learningSystemAggregate.handleDelete();
+        verify(learningSystemQueryRepository,times (1)).getPage();
     }
 
     @Test
