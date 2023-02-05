@@ -27,9 +27,7 @@ class LearningOverviewViewModel(
     fun onPageLoaded() {
         viewModelScope.launch {
             model.initializePage().fold(
-                onSuccess = { learningObjects.value = it },
-                onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedError,
+                onSuccess = { learningObjects.value = it }
             )
         }
     }

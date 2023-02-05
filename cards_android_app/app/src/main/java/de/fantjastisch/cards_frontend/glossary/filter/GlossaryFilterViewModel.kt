@@ -48,9 +48,7 @@ class GlossaryFilterViewModel(
                                     categorySelectItem
                                 }
                             }
-                    },
-                    onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedError,
+                    }
                 )
         }
     }

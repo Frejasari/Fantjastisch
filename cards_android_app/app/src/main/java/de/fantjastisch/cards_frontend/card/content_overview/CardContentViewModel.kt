@@ -31,9 +31,7 @@ class CardContentViewModel(
                 .fold(
                     onSuccess = { cardResponse ->
                         card.value = cardResponse
-                    },
-                    onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedError,
+                    }
                 )
         }
     }

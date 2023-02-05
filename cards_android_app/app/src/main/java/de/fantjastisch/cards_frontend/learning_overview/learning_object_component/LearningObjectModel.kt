@@ -3,6 +3,9 @@ package de.fantjastisch.cards_frontend.learning_overview.learning_object_compone
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_system.LearningSystemRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.*
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
+import de.fantjastisch.cards_frontend.util.isNetworkError
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -58,20 +61,23 @@ class LearningObjectModel(
             }
         )
         when {
-            learningSystemResult is RepoResult.Success &&
-                    progressResult is RepoResult.Success -> {
+            learningSystemResult is Success &&
+                    progressResult is Success -> {
                 val listOfCardAmountsInBoxes = progressResult.result as List<Int>
                 val progress =
                     calculateProgress(listOfCardAmountsInBoxes = listOfCardAmountsInBoxes)
                 val learningSystem = learningSystemResult.result as LearningSystemEntity
-                RepoResult.Success(
+                Success(
                     LearningObjectView(
                         progress = progress,
                         learningSystemLabel = learningSystem.label
                     )
                 )
             }
-            else -> RepoResult.ServerError()
+            learningSystemResult.isNetworkError() || progressResult.isNetworkError() -> ServerError(
+                NETWORK_ERROR
+            )
+            else -> ServerError(UNEXPECTED_ERROR)
         }
     }
 

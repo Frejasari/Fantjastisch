@@ -4,9 +4,15 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
+import de.fantjastisch.cards_frontend.util.RepoResult.*
+import kotlinx.coroutines.suspendCancellableCoroutine
 import org.openapitools.client.models.ErrorEntryEntity
 import org.openapitools.client.models.ErrorResponseEntity
+import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.resume
 
 /**
  * Klasse, die als standardisierte Rückgabe durch die Repositories genutzt wird.
@@ -16,14 +22,20 @@ import retrofit2.Response
  * @author Freja Sender
  */
 sealed class RepoResult<T> {
+
+    enum class UnexpectedErrorType {
+        NETWORK_ERROR,
+        UNEXPECTED_ERROR
+    }
+
     data class Success<T>(val result: T) : RepoResult<T>()
     data class Error<T>(val errors: List<ErrorEntryEntity>) : RepoResult<T>()
-
-    class ServerError<T> : RepoResult<T>()
+    data class ServerError<T>(val cause: UnexpectedErrorType) : RepoResult<T>()
 }
 
 /**
  * Extension-Function auf dem RepoResult Object, welche ein einfaches Interface mit Callbacks zum Behandeln dieser zur Verfügung stellt.
+ * Nur im Kontext eines ErrorHandlingViewModels nutzbar -> Standardfunktionalität zum Handeln von Validation Errors und Unexpected Errors
  *
  * @param T der Rückgabe-Typ bei Erfolg
  * @param onSuccess Callback der bei Erfolg aufgerufen wird.
@@ -32,15 +44,40 @@ sealed class RepoResult<T> {
  *
  * @author Freja Sender
  */
+context(ErrorHandlingViewModel)
 fun <T> RepoResult<T>.fold(
     onSuccess: (T) -> Unit,
-    onValidationError: (errors: List<ErrorEntryEntity>) -> Unit,
-    onUnexpectedError: () -> Unit
+    onValidationError: (errors: List<ErrorEntryEntity>) -> Unit = ::setValidationErrors,
+    onUnexpectedError: (cause: UnexpectedErrorType) -> Unit = ::setUnexpectedError
 ) {
     when (this) {
-        is RepoResult.Success -> onSuccess(this.result)
-        is RepoResult.Error -> onValidationError(this.errors)
-        is RepoResult.ServerError -> onUnexpectedError()
+        is Success -> onSuccess(this.result)
+        is Error -> onValidationError(this.errors)
+        is ServerError -> onUnexpectedError(this.cause)
+    }
+}
+
+suspend fun <T> Call<T>.awaitResponse(): RepoResult<T> {
+    return suspendCancellableCoroutine { continuation ->
+        continuation.invokeOnCancellation {
+            cancel()
+        }
+        enqueue(object : Callback<T> {
+            override fun onResponse(call: Call<T>, response: Response<T>) {
+                continuation.resume(response.toRepoResult())
+            }
+
+            override fun onFailure(call: Call<T>, t: Throwable) {
+                continuation.resume(ServerError(UnexpectedErrorType.NETWORK_ERROR))
+            }
+        })
+    }
+}
+
+fun <T> RepoResult<T>.isNetworkError(): Boolean {
+    return when {
+        this is ServerError && this.cause == UnexpectedErrorType.NETWORK_ERROR -> true
+        else -> false
     }
 }
 
@@ -51,10 +88,10 @@ fun <T> RepoResult<T>.fold(
  *
  * @author Freja Sender
  */
-fun <T> Response<T>.toRepoResult(): RepoResult<T> {
+private fun <T> Response<T>.toRepoResult(): RepoResult<T> {
     val body = body()
     if (body != null) {
-        return RepoResult.Success(body)
+        return Success(body)
     } else {
         val errorBody = errorBody()
         if (errorBody != null) {
@@ -72,11 +109,11 @@ fun <T> Response<T>.toRepoResult(): RepoResult<T> {
 
                 val errors: ErrorResponseEntity? = adapter.fromJson(errorBody.string())
                 if (errors != null) {
-                    return RepoResult.Error(errors.errors)
+                    return Error(errors.errors)
                 }
 
             }
         }
     }
-    return RepoResult.ServerError()
+    return ServerError(UnexpectedErrorType.UNEXPECTED_ERROR)
 }

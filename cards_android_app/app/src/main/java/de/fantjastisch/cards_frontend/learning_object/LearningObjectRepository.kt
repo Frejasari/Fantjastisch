@@ -2,6 +2,8 @@ package de.fantjastisch.cards_frontend.learning_object
 
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.*
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
 import java.util.*
 
 /**
@@ -26,9 +28,9 @@ class LearningObjectRepository(
     suspend fun getAll(): RepoResult<List<LearningObject>> {
         return try {
             val learningObjects = repository.getAll()
-            RepoResult.Success(learningObjects)
+            Success(learningObjects)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -43,9 +45,9 @@ class LearningObjectRepository(
     ): RepoResult<LearningObject> {
         return try {
             val found = repository.findById(id)
-            RepoResult.Success(found)
+            Success(found)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -60,9 +62,9 @@ class LearningObjectRepository(
     ): RepoResult<Unit> {
         return try {
             repository.insert(learningObject)
-            RepoResult.Success(Unit)
+            Success(Unit)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -77,9 +79,9 @@ class LearningObjectRepository(
     ): RepoResult<Unit> {
         return try {
             repository.delete(id)
-            RepoResult.Success(Unit)
+            Success(Unit)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 }

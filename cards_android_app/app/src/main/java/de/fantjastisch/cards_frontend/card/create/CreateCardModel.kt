@@ -5,10 +5,12 @@ import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.ServerError
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
+import de.fantjastisch.cards_frontend.util.RepoResult.Success
+import de.fantjastisch.cards_frontend.util.isNetworkError
 import de.fantjastisch.cards_frontend.util.toUnselectedCategorySelectItems
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CategoryEntity
 import org.openapitools.client.models.CreateCardEntity
@@ -33,18 +35,17 @@ class CreateCardModel(
         val allCategories: List<CategorySelectItem>,
     )
 
-
     @Suppress("UNCHECKED_CAST")
-    suspend fun initializePage() = coroutineScope {
-//
+    suspend fun initializePage(): RepoResult<CreateCard> = coroutineScope {
+
         val (categoryResult, allCardsResult) = awaitAll(
             async { categoryRepository.getPage() },
             async { cardRepository.getPage(null, null, null, false) }
         )
 
         when {
-            allCardsResult is RepoResult.Success
-                    && categoryResult is RepoResult.Success -> {
+            allCardsResult is Success
+                    && categoryResult is Success -> {
                 val cards = allCardsResult.result as List<CardEntity>
                 val categories = categoryResult.result as List<CategoryEntity>
                 val cardSelectItems = cards
@@ -56,14 +57,16 @@ class CreateCardModel(
                     }
                 val categorySelectItems = categories.toUnselectedCategorySelectItems()
 
-                RepoResult.Success(
+                Success(
                     CreateCard(
                         allCategories = categorySelectItems,
                         cards = cardSelectItems
                     )
                 )
             }
-            else -> RepoResult.ServerError()
+            allCardsResult.isNetworkError() || categoryResult.isNetworkError()
+            -> ServerError(NETWORK_ERROR)
+            else -> ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -82,7 +85,7 @@ class CreateCardModel(
         tag: String,
         categories: List<CategorySelectItem>,
         links: List<LinkEntity>
-    ) = cardRepository.createCard(
+    ): RepoResult<String> = cardRepository.createCard(
         card = CreateCardEntity(
             question = question.trim(),
             answer = answer.trim(),

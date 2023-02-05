@@ -53,9 +53,7 @@ class MoveCardsToBoxViewModel(
                         learningBoxNum.value = it.learningBoxNum
                         isFirstBox.value = it.isFirstBox
                         isLastBox.value = it.isLastBox
-                    },
-                    onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedError
+                    }
                 )
             isLoading.value = false
         }
@@ -91,9 +89,7 @@ class MoveCardsToBoxViewModel(
                 previousBoxId = previousBoxId,
                 learningBoxId = learningBoxId
             ).fold(
-                onSuccess = { onPageLoaded() },
-                onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedError
+                onSuccess = { onPageLoaded() }
             )
         }
     }
@@ -112,9 +108,7 @@ class MoveCardsToBoxViewModel(
                 nextBoxId = nextBoxId,
                 learningBoxId = learningBoxId
             ).fold(
-                onSuccess = { onPageLoaded() },
-                onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedError,
+                onSuccess = { onPageLoaded() }
             )
         }
     }

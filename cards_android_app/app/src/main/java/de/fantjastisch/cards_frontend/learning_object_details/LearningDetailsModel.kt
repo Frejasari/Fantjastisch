@@ -5,6 +5,8 @@ import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.*
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -50,15 +52,15 @@ class LearningDetailsModel(
             )
 
             when {
-                learningBoxes is RepoResult.Success &&
-                        learningObject is RepoResult.Success -> {
+                learningBoxes is Success &&
+                        learningObject is Success -> {
                     val learningDetails = LearningDetails(
                         learningBoxes = learningBoxes.result as List<LearningBoxWitNrOfCards>,
                         learningObjectLabel = (learningObject.result as LearningObject).label
                     )
-                    RepoResult.Success(learningDetails)
+                    Success(learningDetails)
                 }
-                else -> RepoResult.ServerError()
+                else -> ServerError(UNEXPECTED_ERROR)
             }
         }
 }

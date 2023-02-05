@@ -44,9 +44,7 @@ class UpdateCardViewModel(
                         }
                         cardLinks.value = card.links as ArrayList<LinkEntity>
                         cards.value = card.cards
-                    },
-                    onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedError,
+                    }
                 )
         }
     }
@@ -68,9 +66,7 @@ class UpdateCardViewModel(
                 categories = categories.value,
                 links = cardLinks.value
             ).fold(
-                onSuccess = { isFinished.value = true },
-                onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedError,
+                onSuccess = { isFinished.value = true }
             )
         }
     }

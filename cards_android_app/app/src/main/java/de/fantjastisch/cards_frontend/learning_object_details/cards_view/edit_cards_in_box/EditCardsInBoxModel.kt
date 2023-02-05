@@ -4,6 +4,7 @@ import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -59,9 +60,9 @@ class EditCardsInBoxModel(
             }
         )
         when {
-            cardsResult is RepoResult.Success
-                    && cardsInLearningBoxResult is RepoResult.Success
-                    && cardsInLearningObjectResult is RepoResult.Success -> {
+            cardsResult is Success
+                    && cardsInLearningBoxResult is Success
+                    && cardsInLearningObjectResult is Success -> {
                 val cards = (cardsResult.result) as List<CardEntity>
                 val cardsInLearningBox = (cardsInLearningBoxResult.result) as List<UUID>
                 val cardsInLearningObject = (cardsInLearningObjectResult.result) as List<UUID>
@@ -70,9 +71,9 @@ class EditCardsInBoxModel(
                     listOfCardIdsInObject = cardsInLearningObject,
                     allCards = cards
                 )
-                RepoResult.Success(containedCards)
+                Success(containedCards)
             }
-            else -> RepoResult.Error(emptyList())
+            else -> Error(emptyList())
         }
     }
 

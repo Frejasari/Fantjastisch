@@ -6,6 +6,9 @@ import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.*
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
+import de.fantjastisch.cards_frontend.util.isNetworkError
 import kotlinx.coroutines.*
 import org.openapitools.client.models.CardEntity
 import java.util.*
@@ -69,8 +72,8 @@ class MoveCardsToBoxModel(
             })
 
         when {
-            learningBoxes is RepoResult.Success &&
-                    cards is RepoResult.Success -> {
+            learningBoxes is Success &&
+                    cards is Success -> {
                 // alle Lernboxen
                 val learningBoxesInObject = learningBoxes.result as List<LearningBoxWitNrOfCards>
                 // der Index der AusgangsLernbox
@@ -87,7 +90,7 @@ class MoveCardsToBoxModel(
                     cards.result as List<CardEntity>,
                     learningBoxId = learningBoxId
                 )) {
-                    is RepoResult.Success -> {
+                    is Success -> {
                         val moveCardsToBox = MoveCardsToBox(
                             learningBoxes = learningBoxesInObject,
                             learningBoxNum = learningBoxNum,
@@ -95,13 +98,14 @@ class MoveCardsToBoxModel(
                             isFirstBox = isFirstBox,
                             cards = contained.result
                         )
-                        RepoResult.Success(moveCardsToBox)
+                        Success(moveCardsToBox)
                     }
-                    is RepoResult.Error,
-                    is RepoResult.ServerError -> RepoResult.ServerError()
+                    is Error -> Error(contained.errors)
+                    is ServerError -> ServerError(contained.cause)
                 }
             }
-            else -> RepoResult.ServerError()
+            learningBoxes.isNetworkError() || cards.isNetworkError() -> ServerError(NETWORK_ERROR)
+            else -> ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -143,7 +147,7 @@ class MoveCardsToBoxModel(
     ): RepoResult<List<CardSelectItem>> {
         return when (val result =
             cardToLearningBoxRepository.getCardIdsForBox(learningBoxId = learningBoxId)) {
-            is RepoResult.Success -> {
+            is Success -> {
                 val selectItems = allCards
                     .filter { card -> result.result.contains(card.id) }
                     .map { card ->
@@ -152,10 +156,10 @@ class MoveCardsToBoxModel(
                             isChecked = false
                         )
                     }
-                RepoResult.Success(selectItems)
+                Success(selectItems)
             }
-            is RepoResult.Error,
-            is RepoResult.ServerError -> RepoResult.ServerError()
+            is Error -> Error(result.errors)
+            is ServerError -> ServerError(result.cause)
         }
     }
 

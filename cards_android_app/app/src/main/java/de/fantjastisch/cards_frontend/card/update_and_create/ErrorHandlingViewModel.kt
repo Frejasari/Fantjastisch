@@ -2,7 +2,9 @@ package de.fantjastisch.cards_frontend.card.update_and_create
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import de.fantjastisch.cards_frontend.util.ErrorsEnum
+import de.fantjastisch.cards_frontend.util.ErrorsEnum.*
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.UNEXPECTED_ERROR
 import org.openapitools.client.models.ErrorEntryEntity
 
 /**
@@ -12,20 +14,24 @@ import org.openapitools.client.models.ErrorEntryEntity
  */
 abstract class ErrorHandlingViewModel : ViewModel() {
 
-    val error = mutableStateOf(ErrorsEnum.NO_ERROR)
+    val error = mutableStateOf(NO_ERROR)
 
     val errors = mutableStateOf<List<ErrorEntryEntity>>(emptyList())
 
     fun onToastShown() {
-        error.value = ErrorsEnum.NO_ERROR
+        error.value = NO_ERROR
     }
 
-    protected fun setValidationErrors(errors: List<ErrorEntryEntity>) {
-        error.value = ErrorsEnum.CHECK_INPUT
+    fun setValidationErrors(errors: List<ErrorEntryEntity>) {
+        error.value = CHECK_INPUT
         this.errors.value = errors
     }
 
-    protected fun setUnexpectedError() {
-        error.value = ErrorsEnum.UNEXPECTED
+    fun setUnexpectedError(cause: UnexpectedErrorType) {
+        if (cause == UNEXPECTED_ERROR) {
+            error.value = UNEXPECTED
+        } else {
+            error.value = NETWORK
+        }
     }
 }

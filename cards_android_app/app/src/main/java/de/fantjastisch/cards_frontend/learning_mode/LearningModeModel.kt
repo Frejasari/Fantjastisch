@@ -5,6 +5,9 @@ import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.*
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
+import de.fantjastisch.cards_frontend.util.isNetworkError
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -71,9 +74,9 @@ class LearningModeModel(
         )
 
         when {
-            cardResult is RepoResult.Success
-                    && learningBoxResult is RepoResult.Success
-                    && cardsInLearningBoxResult is RepoResult.Success -> {
+            cardResult is Success
+                    && learningBoxResult is Success
+                    && cardsInLearningBoxResult is Success -> {
                 val allCards =
                     (if (!sort) cardResult.result.shuffled() else cardResult.result) as List<CardEntity>
                 val learningBoxesInObject =
@@ -93,9 +96,12 @@ class LearningModeModel(
                     learningBox = box
                 )
 
-                RepoResult.Success(learningMode)
+                Success(learningMode)
             }
-            else -> RepoResult.ServerError()
+            cardResult.isNetworkError() || learningBoxResult.isNetworkError() || cardsInLearningBoxResult.isNetworkError() -> ServerError(
+                NETWORK_ERROR
+            )
+            else -> ServerError(UNEXPECTED_ERROR)
         }
     }
 

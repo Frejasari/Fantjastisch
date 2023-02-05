@@ -4,6 +4,9 @@ import de.fantjastisch.cards_frontend.card.update.UpdateCardViewModel
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.*
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
+import de.fantjastisch.cards_frontend.util.isNetworkError
 import de.fantjastisch.cards_frontend.util.toUnselectedCategorySelectItems
 import kotlinx.coroutines.*
 import org.openapitools.client.models.*
@@ -71,14 +74,14 @@ class UpdateCategoryModel(
         )
 
         when {
-            categoryResult is RepoResult.Success
-                    && allCategoriesResult is RepoResult.Success -> {
+            categoryResult is Success
+                    && allCategoriesResult is Success -> {
                 val category = categoryResult.result as CategoryEntity
                 val categories = allCategoriesResult.result as List<CategoryEntity>
                 val categorySelectItems = categories
                     .filter { cat -> cat.id != id }
                     .toUnselectedCategorySelectItems()
-                RepoResult.Success(
+                Success(
                     UpdateCategory(
                         id = category.id,
                         label = category.label,
@@ -87,7 +90,10 @@ class UpdateCategoryModel(
                     )
                 )
             }
-            else -> RepoResult.Error(emptyList())
+            categoryResult.isNetworkError() || allCategoriesResult.isNetworkError() -> ServerError(
+                NETWORK_ERROR
+            )
+            else -> ServerError(UNEXPECTED_ERROR)
         }
     }
 }

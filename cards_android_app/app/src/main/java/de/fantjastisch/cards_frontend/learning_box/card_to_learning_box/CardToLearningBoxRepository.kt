@@ -3,6 +3,9 @@ package de.fantjastisch.cards_frontend.learning_box.card_to_learning_box
 import androidx.room.Transaction
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.ServerError
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.UNEXPECTED_ERROR
+import de.fantjastisch.cards_frontend.util.RepoResult.Success
 import java.util.*
 
 /**
@@ -29,9 +32,9 @@ class CardToLearningBoxRepository(
     ): RepoResult<List<UUID>> {
         return try {
             val cardIdsForBox = repository.getCardIdsForBox(learningBoxId)
-            RepoResult.Success(cardIdsForBox)
+            Success(cardIdsForBox)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -55,9 +58,9 @@ class CardToLearningBoxRepository(
                         cardId = it
                     )
                 })
-            RepoResult.Success(Unit)
+            Success(Unit)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -82,9 +85,9 @@ class CardToLearningBoxRepository(
                     cardId = it
                 )
             })
-            RepoResult.Success(Unit)
+            Success(Unit)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -101,9 +104,9 @@ class CardToLearningBoxRepository(
         return try {
             val allCardsForLearningObject =
                 repository.getAllCardsForLearningObject(learningObjectId = learningObjectId)
-            RepoResult.Success(allCardsForLearningObject)
+            Success(allCardsForLearningObject)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -126,9 +129,9 @@ class CardToLearningBoxRepository(
                     cardId = it
                 )
             })
-            RepoResult.Success(Unit)
+            Success(Unit)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -141,9 +144,9 @@ class CardToLearningBoxRepository(
     suspend fun deleteCard(cardId: UUID): RepoResult<Unit> {
         return try {
             repository.deleteCardFromAllBoxes(cardId = cardId)
-            RepoResult.Success(Unit)
+            Success(Unit)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 }

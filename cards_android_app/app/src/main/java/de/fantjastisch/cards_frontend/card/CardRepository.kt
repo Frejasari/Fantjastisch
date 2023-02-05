@@ -2,12 +2,11 @@ package de.fantjastisch.cards_frontend.card
 
 import de.fantjastisch.cards_frontend.config.client
 import de.fantjastisch.cards_frontend.util.RepoResult
-import de.fantjastisch.cards_frontend.util.toRepoResult
+import de.fantjastisch.cards_frontend.util.awaitResponse
 import org.openapitools.client.apis.CardApi
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CreateCardEntity
 import org.openapitools.client.models.UpdateCardEntity
-import retrofit2.awaitResponse
 import java.util.*
 
 /**
@@ -28,7 +27,7 @@ class CardRepository {
      */
     suspend fun getCard(
         id: UUID,
-    ): RepoResult<CardEntity> = service.getCard(id).awaitResponse().toRepoResult()
+    ): RepoResult<CardEntity> = service.getCard(id).awaitResponse()
 
     /**
      * Sendet eine Anfrage an das Backend und kriegt im Erfolgsfall alle
@@ -51,7 +50,7 @@ class CardRepository {
         search = search,
         tag = tag,
         sort = sort
-    ).awaitResponse().toRepoResult()
+    ).awaitResponse()
 
     /**
      * Sendet eine Anfrage an das Backend, um eine Karte in die Datenbank zu speichern.
@@ -61,7 +60,7 @@ class CardRepository {
      */
     suspend fun createCard(
         card: CreateCardEntity,
-    ): RepoResult<String> = service.createCard(card).awaitResponse().toRepoResult()
+    ): RepoResult<String> = service.createCard(card).awaitResponse()
 
     /**
      * Sendet eine Anfrage an das Backend, um eine bestehende Karte in der Datenbank zu überschreiben.
@@ -71,7 +70,7 @@ class CardRepository {
      */
     suspend fun updateCard(
         card: UpdateCardEntity,
-    ): RepoResult<Unit> = service.updateCard(card).awaitResponse().toRepoResult()
+    ): RepoResult<Unit> = service.updateCard(card).awaitResponse()
 
     /**
      * Sendet eine Anfrage an das Backend, um eine bestehende Karte aus der Datenbank zu löschen.
@@ -81,5 +80,5 @@ class CardRepository {
      */
     suspend fun deleteCard(
         cardId: UUID,
-    ): RepoResult<Unit> = service.deleteCard(cardId).awaitResponse().toRepoResult()
+    ): RepoResult<Unit> = service.deleteCard(cardId).awaitResponse()
 }

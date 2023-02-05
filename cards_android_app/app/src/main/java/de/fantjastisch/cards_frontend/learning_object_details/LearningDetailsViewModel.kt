@@ -35,9 +35,7 @@ class LearningDetailsViewModel(
                 onSuccess = {
                     learningBoxes.value = it.learningBoxes
                     learningObjectLabel = it.learningObjectLabel
-                },
-                onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedError,
+                }
             )
         }
     }

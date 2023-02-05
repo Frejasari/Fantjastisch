@@ -41,9 +41,7 @@ class CreateLearningSystemViewModel(
             ).fold(
                 onSuccess = {
                     isFinished.value = true
-                },
-                onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedError,
+                }
             )
         }
     }

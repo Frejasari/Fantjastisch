@@ -3,6 +3,7 @@ package de.fantjastisch.cards_frontend.category.create
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.*
 import de.fantjastisch.cards_frontend.util.toUnselectedCategorySelectItems
 import org.openapitools.client.models.CreateCategoryEntity
 
@@ -25,12 +26,12 @@ class CreateCategoryModel(
      */
     suspend fun getCategories(): RepoResult<List<CategorySelectItem>> {
         return when (val result = categoryRepository.getPage()) {
-            is RepoResult.Success -> {
+            is Success -> {
                 val categorySelectItems = result.result.toUnselectedCategorySelectItems()
-                return RepoResult.Success(categorySelectItems)
+                return Success(categorySelectItems)
             }
-            is RepoResult.Error -> RepoResult.Error(result.errors)
-            is RepoResult.ServerError -> RepoResult.ServerError()
+            is Error -> Error(result.errors)
+            is ServerError -> ServerError(result.cause)
         }
     }
 

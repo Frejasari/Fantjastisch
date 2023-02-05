@@ -44,9 +44,7 @@ class LearningObjectComponentViewModel(
                 onSuccess = {
                     learningSystemLabel.value = it.learningSystemLabel
                     progress.value = it.progress
-                },
-                onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedError,
+                }
             )
             isLoading.value = false
         }

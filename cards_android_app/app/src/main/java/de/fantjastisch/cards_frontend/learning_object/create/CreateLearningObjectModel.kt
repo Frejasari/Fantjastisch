@@ -11,8 +11,9 @@ import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLe
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
 import de.fantjastisch.cards_frontend.learning_system.LearningSystemRepository
-import de.fantjastisch.cards_frontend.util.RepoResult
-import de.fantjastisch.cards_frontend.util.toUnselectedCategorySelectItems
+import de.fantjastisch.cards_frontend.util.*
+import de.fantjastisch.cards_frontend.util.RepoResult.*
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -75,13 +76,14 @@ class CreateLearningObjectModel(
                 )
             },
             async { categoryRepository.getPage() },
-            async { learningSystemRepository.getPage() })
+            async { learningSystemRepository.getPage() }
+        )
 
+        // Wenn alle Resultate da
         when {
-            // Wenn alle Resultate da
-            cardsResult is RepoResult.Success &&
-                    categoriesResult is RepoResult.Success &&
-                    learningSystemsResult is RepoResult.Success -> {
+            cardsResult is Success
+                    && categoriesResult is Success
+                    && learningSystemsResult is Success -> {
                 // Verarbeite
                 val cards = (cardsResult.result) as List<CardEntity>
                 val categories = categoriesResult.result as List<CategoryEntity>
@@ -103,7 +105,7 @@ class CreateLearningObjectModel(
                 }
 
                 // Objekt für Rückgabe füllen
-                RepoResult.Success(
+                Success(
                     CreateLearningObject(
                         cardSelectItems = cardSelectItems,
                         categorySelectItems = categorySelectItems,
@@ -111,8 +113,9 @@ class CreateLearningObjectModel(
                     )
                 )
             }
-            // Sonst Fehler
-            else -> RepoResult.ServerError()
+            cardsResult.isNetworkError() || categoriesResult.isNetworkError() || learningSystemsResult.isNetworkError()
+            -> ServerError(NETWORK_ERROR)
+            else -> ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -123,12 +126,8 @@ class CreateLearningObjectModel(
      * @return RepoResult<LearningSystemEntity> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
      * werden konnten, oder nicht.
      */
-    private suspend fun getLearningSystemFromInput(selectedSystemId: UUID): RepoResult<LearningSystemEntity> {
-        return when (val response = learningSystemRepository.getLearningSystem(selectedSystemId)) {
-            is RepoResult.Success -> response
-            is RepoResult.Error, is RepoResult.ServerError -> RepoResult.ServerError()
-        }
-    }
+    private suspend fun getLearningSystemFromInput(selectedSystemId: UUID): RepoResult<LearningSystemEntity> =
+        learningSystemRepository.getLearningSystem(selectedSystemId)
 
     /**
      * Holt alle Karten, die zu der asugewählten Kategorien gehören, indem die Anfrage,
@@ -141,20 +140,17 @@ class CreateLearningObjectModel(
     private suspend fun getCardsFromCategories(
         categories: List<CategorySelectItem>
     ): RepoResult<List<CardEntity>> {
-        val checkedCategories = categories.filter { category -> category.isChecked }.map { it.id }
+        val checkedCategories =
+            categories.filter { category -> category.isChecked }.map { it.id }
         return if (checkedCategories == emptyList<UUID>()) {
-            RepoResult.Success(emptyList())
+            Success(emptyList())
         } else {
-            when (val response = cardRepository.getPage(
+            return cardRepository.getPage(
                 categoryIds = checkedCategories,
                 search = null,
                 tag = null,
                 sort = null,
-            )) {
-                is RepoResult.Success -> response
-                is RepoResult.Error,
-                is RepoResult.ServerError -> RepoResult.ServerError()
-            }
+            )
         }
     }
 
@@ -181,22 +177,18 @@ class CreateLearningObjectModel(
             // Füge sie in die DB ein
             val result = insertLearningBox(learningBox = learningBox)
 
-            if (result is RepoResult.Success) {
+            if (result is Success) {
                 // Setze gewählte Karten in die erste Lernbox ein, sonst eine leere Liste
                 val cardInsertionResponse = insertCardsIntoBox(
                     learningBox = learningBox,
                     cardIds = if (index == 0) cardsToInsert else mutableListOf()
                 )
-                if (cardInsertionResponse is RepoResult.ServerError ||
-                    cardInsertionResponse is RepoResult.Error
-                ) {
-                    return RepoResult.ServerError() // Konnte Karten nicht in Lernbox einsetzen
+                if (cardInsertionResponse is Success) {
+                    return Success(Unit) // Konnte Karten nicht in Lernbox einsetzen
                 }
-            } else {
-                return RepoResult.ServerError() // Konnte Lernbox nicht einsetzen
             }
         }
-        return RepoResult.Success(Unit)
+        return ServerError(UNEXPECTED_ERROR)
     }
 
     /**
@@ -256,18 +248,20 @@ class CreateLearningObjectModel(
         )
 
         if (errors.isNotEmpty()) {
-            return RepoResult.Error(errors = errors)
+            return Error(errors = errors)
         }
         val learningSystem = getLearningSystemFromInput(selectedSystem!!.id)
         val cardsFromSelectedCategories = getCardsFromCategories(categories = categories)
 
         // Hole Lernsystem und Karten aus angekreuzten Kategorien aus DB
         return when {
-            learningSystem is RepoResult.Success
-                    && cardsFromSelectedCategories is RepoResult.Success -> {
+            learningSystem is Success
+                    && cardsFromSelectedCategories is Success -> {
                 // Sammle einzeln hinzugefügte Karten
                 val cardsToInsert: MutableList<UUID> =
-                    cards.filter { card -> card.isChecked }.map { card -> card.card.id }
+                    cards
+                        .filter { card -> card.isChecked }
+                        .map { card -> card.card.id }
                         .toMutableList()
 
                 // Füge Karten aus angekreuzten Kategorien hinzu zu allen einzusetzenden Karten
@@ -281,20 +275,17 @@ class CreateLearningObjectModel(
                 // Füge Lernobjekt in DB ein
                 val insertLearningObjectResponse = insertLearningObject(learningObject)
 
-                if (insertLearningObjectResponse is RepoResult.Error ||
-                    insertLearningObjectResponse is RepoResult.ServerError
-                ) {
-                    // Konnte Lernobjekt nicht in DB einsetzen
-                    return RepoResult.ServerError()
+                if (insertLearningObjectResponse is Success) {
+                    // Füge Lernboxen sowie ihren Inhalt in entsprechende Tabellen ein
+                    return insertLearningBoxesWithCards(
+                        learningSystem = learningSystem.result,
+                        learningObject = learningObject,
+                        cardsToInsert = cardsToInsert
+                    )
                 }
-                // Füge Lernboxen sowie ihren Inhalt in entsprechende Tabellen ein
-                return insertLearningBoxesWithCards(
-                    learningSystem = learningSystem.result,
-                    learningObject = learningObject,
-                    cardsToInsert = cardsToInsert
-                )
+                return ServerError(UNEXPECTED_ERROR)
             }
-            else -> RepoResult.ServerError()
+            else -> ServerError(UNEXPECTED_ERROR)
         }
     }
 }

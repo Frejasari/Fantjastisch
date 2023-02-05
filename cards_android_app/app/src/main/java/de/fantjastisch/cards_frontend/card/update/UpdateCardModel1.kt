@@ -5,6 +5,7 @@ import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.*
 import kotlinx.coroutines.*
 import org.openapitools.client.models.*
 import java.util.*
@@ -82,9 +83,9 @@ class UpdateCardModel(
         )
 
         when {
-            cardResult is RepoResult.Success
-                    && categoryResult is RepoResult.Success
-                    && allCardsResult is RepoResult.Success -> {
+            cardResult is Success
+                    && categoryResult is Success
+                    && allCardsResult is Success -> {
                 val card = cardResult.result as CardEntity
                 val categories = categoryResult.result as List<CategoryEntity>
                 val cards = allCardsResult.result as List<CardEntity>
@@ -96,7 +97,7 @@ class UpdateCardModel(
                             isChecked = false
                         )
                     }
-                RepoResult.Success(
+                Success(
                     UpdateCard(
                         id = card.id,
                         question = card.question,
@@ -109,7 +110,7 @@ class UpdateCardModel(
                     )
                 )
             }
-            else -> RepoResult.Error(emptyList())
+            else -> Error(emptyList())
         }
     }
 }

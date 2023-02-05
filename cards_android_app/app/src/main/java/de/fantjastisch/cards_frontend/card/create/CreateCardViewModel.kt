@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.CreateAndUpdateViewModel
 import de.fantjastisch.cards_frontend.util.ErrorsEnum
-import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -25,16 +25,13 @@ class CreateCardViewModel(
 
     init {
         viewModelScope.launch {
-
-            when (val result = createCardModel.initializePage()) {
-                is RepoResult.Success -> {
-                    cards.value = result.result.cards
-                    categories.value = result.result.allCategories
-                }
-
-                is RepoResult.Error -> setValidationErrors(result.errors)
-                is RepoResult.ServerError -> setUnexpectedError()
-            }
+            createCardModel.initializePage()
+                .fold(
+                    onSuccess = {
+                        cards.value = it.cards
+                        categories.value = it.allCategories
+                    }
+                )
         }
     }
 
@@ -48,26 +45,22 @@ class CreateCardViewModel(
 
         // check for categories -> if no then wait till yes
         viewModelScope.launch {
-            val result = createCardModel.createCard(
+            createCardModel.createCard(
                 question = cardQuestion.value,
                 answer = cardAnswer.value,
                 tag = cardTag.value.replaceFirstChar { letter -> letter.uppercaseChar() },
                 links = cardLinks.value,
                 categories = categories.value
-            )
-
-            when (result) {
-                is RepoResult.Success -> isFinished.value = true
-                is RepoResult.Error -> {
-                    errors.value = result.errors
-                    if (result.errors.map { it.field }.contains("categories")) {
+            ).fold(
+                onSuccess = { isFinished.value = true },
+                onValidationError = { errors ->
+                    if (errors.map { it.field }.contains("categories")) {
                         error.value = ErrorsEnum.CARD_MUST_HAVE_CATEGORY_ERROR
                     } else {
-                        setValidationErrors(result.errors)
+                        setValidationErrors(errors)
                     }
                 }
-                is RepoResult.ServerError -> setUnexpectedError()
-            }
+            )
         }
     }
 }

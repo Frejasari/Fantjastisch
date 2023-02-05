@@ -48,9 +48,7 @@ class UpdateCategoryViewModel(
                         errors.value = emptyList()
                         label.value = category.label
                         allCategories.value = category.allCategories
-                    },
-                    onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedError,
+                    }
                 )
         }
     }
@@ -76,10 +74,8 @@ class UpdateCategoryViewModel(
                     } else {
                         setValidationErrors(it)
                     }
-                },
-                onUnexpectedError = ::setUnexpectedError
+                }
             )
-
         }
     }
 

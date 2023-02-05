@@ -6,13 +6,12 @@ import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
-import de.fantjastisch.cards_frontend.util.RepoResult
 import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import java.util.*
 
 /**
- * Stellt die Daten für die [LearningObjectView] bereit und nimmt seine Anfragen entgegen.
+ * Stellt die Daten für die [CreateLearningObjectView] bereit und nimmt seine Anfragen entgegen.
  *
  * @property model Das zugehörige Model, welches die Logik kapselt.
  *
@@ -40,9 +39,7 @@ class CreateLearningObjectViewModel(
                         allCategories.value = learningObject.categorySelectItems
                         allCards.value = learningObject.cardSelectItems
                         learningSystems.value = learningObject.learningSystems
-                    },
-                    onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedError,
+                    }
                 )
         }
     }
@@ -102,18 +99,14 @@ class CreateLearningObjectViewModel(
      */
     fun onAddLearningObjectClicked() {
         viewModelScope.launch {
-            val response = model.addLearningObject(
+            model.addLearningObject(
                 learningObjectLabel = learningObjectLabel.value.trim(),
                 selectedSystem = selectedSystem.value,
                 categories = allCategories.value,
                 cards = allCards.value
+            ).fold(
+                onSuccess = { isFinished.value = true }
             )
-
-            when (response) {
-                is RepoResult.Success -> isFinished.value = true
-                is RepoResult.Error -> setValidationErrors(response.errors)
-                is RepoResult.ServerError -> setUnexpectedError()
-            }
         }
 
     }

@@ -4,6 +4,9 @@ import androidx.room.Transaction
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.ServerError
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.UNEXPECTED_ERROR
+import de.fantjastisch.cards_frontend.util.RepoResult.Success
 import java.util.*
 
 /**
@@ -30,9 +33,9 @@ class DeleteLearningObjectModel(
         return try {
             learningObjectRepository.delete(id = learningObjectId)
             learningBoxRepository.deleteAllBoxesForObject(learningObjectId = learningObjectId)
-            RepoResult.Success(Unit)
+            Success(Unit)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 }

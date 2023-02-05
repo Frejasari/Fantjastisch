@@ -2,6 +2,8 @@ package de.fantjastisch.cards_frontend.learning_box
 
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.ServerError
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.UNEXPECTED_ERROR
 import java.util.*
 
 /**
@@ -31,7 +33,7 @@ class LearningBoxRepository(
                 repository.getAllBoxesForLearningObjectWithNrOfCards(learningObjectId)
             RepoResult.Success(allBoxesForLearningObject)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -48,7 +50,7 @@ class LearningBoxRepository(
             val cardsFromLearningObject = repository.getCardsFromLearningObject(learningObjectId)
             RepoResult.Success(cardsFromLearningObject)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 
@@ -66,7 +68,7 @@ class LearningBoxRepository(
             repository.insert(learningBox)
             RepoResult.Success(Unit)
         } catch (ex: Throwable) {
-            RepoResult.ServerError()
+            ServerError(UNEXPECTED_ERROR)
         }
     }
 

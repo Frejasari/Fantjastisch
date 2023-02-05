@@ -42,9 +42,7 @@ class EditCardsInBoxViewModel(
                     onSuccess = {
                         cards.value = it
                         isLoading.value = false
-                    },
-                    onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedError
+                    }
                 )
         }
     }
@@ -79,9 +77,7 @@ class EditCardsInBoxViewModel(
                 selectedCardsIds = selectedCardsIds,
                 learningBoxId = learningBoxId
             ).fold(
-                onSuccess = { isFinished.value = true },
-                onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedError,
+                onSuccess = { isFinished.value = true }
             )
         }
     }

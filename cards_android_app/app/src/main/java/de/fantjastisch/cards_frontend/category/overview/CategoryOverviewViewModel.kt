@@ -4,7 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
 import de.fantjastisch.cards_frontend.util.ErrorsEnum
-import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.*
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
 import org.openapitools.client.models.CategoryEntity
@@ -35,13 +36,12 @@ class CategoryOverviewViewModel(
      */
     fun onPageLoaded() {
         viewModelScope.launch {
-            when (val result = categoryGraphModel.getCategories()) {
-                is RepoResult.Success -> {
-                    categories.value = result.result
-                }
-                is RepoResult.Error -> setValidationErrors(result.errors)
-                is RepoResult.ServerError -> setUnexpectedError()
-            }
+            categoryGraphModel.getCategories()
+                .fold(
+                    onSuccess = {
+                        categories.value = it
+                    }
+                )
         }
     }
 
@@ -78,11 +78,11 @@ class CategoryOverviewViewModel(
                 id = cat.id
             )
             when (result) {
-                is RepoResult.Success -> {
+                is Success -> {
                     onPageLoaded()
                     closeDialog()
                 }
-                is RepoResult.Error -> {
+                is Error -> {
                     errors.value = result.errors
                     val empty = result.errors.map {
                         it.code
@@ -95,7 +95,7 @@ class CategoryOverviewViewModel(
                     }
 
                 }
-                is RepoResult.ServerError -> setUnexpectedError()
+                is ServerError -> setUnexpectedError(result.cause)
             }
         }
     }

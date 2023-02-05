@@ -1,10 +1,9 @@
 package de.fantjastisch.cards_frontend.glossary
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -72,21 +71,15 @@ class GlossaryViewModel(
      */
     fun onPageLoaded() {
         viewModelScope.launch {
-            val result = glossaryModel.getCards(
+
+            glossaryModel.getCards(
                 categoryIds = CardsFilters.filters.value.categories,
                 search = CardsFilters.filters.value.search,
                 tag = CardsFilters.filters.value.tag,
                 sort = CardsFilters.filters.value.sort
+            ).fold(
+                onSuccess = { cards.value = it }
             )
-            when (result) {
-                is RepoResult.Success -> {
-                    cards.value = result.result
-                    Log.v("CardsFilter", "Received ${result.result.size} cards")
-                }
-                is RepoResult.Error -> setValidationErrors(result.errors)
-                is RepoResult.ServerError -> setUnexpectedError()
-
-            }
         }
     }
 
@@ -107,17 +100,14 @@ class GlossaryViewModel(
         val card = currentDeleteDialog.value!!.card
         currentDeleteDialog.value = DeletionProgress.Deleting(card)
         viewModelScope.launch {
-            val result = glossaryModel.deleteCard(
+            glossaryModel.deleteCard(
                 cardId = card.id
-            )
-            when (result) {
-                is RepoResult.Success -> {
+            ).fold(
+                onSuccess = {
                     onPageLoaded()
                     currentDeleteDialog.value = null
                 }
-                is RepoResult.Error -> setValidationErrors(result.errors)
-                is RepoResult.ServerError -> setUnexpectedError()
-            }
+            )
         }
     }
 

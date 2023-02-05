@@ -58,9 +58,7 @@ class LearningModeViewModel(
                     learningBox.value = it.learningBox
                     nextCard()
                     isLoading.value = false
-                },
-                onValidationError = ::setValidationErrors,
-                onUnexpectedError = ::setUnexpectedError,
+                }
             )
         }
     }
@@ -99,9 +97,7 @@ class LearningModeViewModel(
                     toBoxId = nextBoxId,
                     currentCardId = currentCard.value!!.id
                 ).fold(
-                    onSuccess = { nextCard() },
-                    onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedError,
+                    onSuccess = { nextCard() }
                 )
             }
         }
@@ -124,9 +120,7 @@ class LearningModeViewModel(
                     toBoxId = nextBoxId,
                     currentCardId = currentCard.value!!.id
                 ).fold(
-                    onSuccess = { nextCard() },
-                    onValidationError = ::setValidationErrors,
-                    onUnexpectedError = ::setUnexpectedError,
+                    onSuccess = { nextCard() }
                 )
             }
         }

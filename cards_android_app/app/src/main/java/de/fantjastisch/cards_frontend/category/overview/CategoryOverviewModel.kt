@@ -3,6 +3,7 @@ package de.fantjastisch.cards_frontend.category.overview
 
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
+import org.openapitools.client.models.CategoryEntity
 import java.util.*
 
 /**
@@ -22,7 +23,7 @@ class CategoryOverviewModel(
      *
      * @return RepoResult<List<CategoryEntity>> OnSuccess: Eine Liste aller Kategorien.
      */
-    suspend fun getCategories() = categoryRepository.getPage()
+    suspend fun getCategories(): RepoResult<List<CategoryEntity>> = categoryRepository.getPage()
 
     /**
      * Sendet eine Anfrage an das [CategoryRepository] um eine Kategorie zu löschen.

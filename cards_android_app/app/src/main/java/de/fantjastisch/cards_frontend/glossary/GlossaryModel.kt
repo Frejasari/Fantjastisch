@@ -3,6 +3,10 @@ package de.fantjastisch.cards_frontend.glossary
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
+import de.fantjastisch.cards_frontend.util.RepoResult.*
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.NETWORK_ERROR
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.UNEXPECTED_ERROR
+import de.fantjastisch.cards_frontend.util.isNetworkError
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -60,11 +64,12 @@ class GlossaryModel(
             },
         )
         when {
-            apiResult is RepoResult.Success
-                    && dbResult is RepoResult.Success -> {
-                RepoResult.Success(Unit)
+            apiResult is Success && dbResult is Success -> {
+                Success(Unit)
             }
-            else -> RepoResult.Error(emptyList())
+            apiResult is Error -> Error(apiResult.errors)
+            apiResult.isNetworkError() || dbResult.isNetworkError() -> ServerError(NETWORK_ERROR)
+            else -> ServerError(UNEXPECTED_ERROR)
         }
     }
 
