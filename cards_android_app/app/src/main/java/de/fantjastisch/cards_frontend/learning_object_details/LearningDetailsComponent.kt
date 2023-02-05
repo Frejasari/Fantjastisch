@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import de.fantjastisch.cards.R
-import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
+import de.fantjastisch.cards_frontend.learning_box.LearningBoxWithNrOfCards
 import de.fantjastisch.cards_frontend.learning_object_details.sort_dialog.LearningModeSortDialog
 import java.util.*
 
@@ -31,7 +31,7 @@ import java.util.*
  */
 @Composable
 fun LearningDetailsComponent(
-    learningBox: LearningBoxWitNrOfCards,
+    learningBox: LearningBoxWithNrOfCards,
     learningObjectId: UUID
 ) {
     val dialogOpen = remember { mutableStateOf(false) }

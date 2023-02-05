@@ -1,7 +1,7 @@
 package de.fantjastisch.cards_frontend.learning_object_details
 
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
-import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
+import de.fantjastisch.cards_frontend.learning_box.LearningBoxWithNrOfCards
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
 import de.fantjastisch.cards_frontend.learning_object.LearningObjectRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
@@ -33,7 +33,7 @@ class LearningDetailsModel(
      * @property learningObjectLabel Die Bezeichnung des Lernobjekts
      */
     data class LearningDetails(
-        val learningBoxes: List<LearningBoxWitNrOfCards>,
+        val learningBoxes: List<LearningBoxWithNrOfCards>,
         val learningObjectLabel: String
     )
 
@@ -55,7 +55,7 @@ class LearningDetailsModel(
                 learningBoxes is Success &&
                         learningObject is Success -> {
                     val learningDetails = LearningDetails(
-                        learningBoxes = learningBoxes.result as List<LearningBoxWitNrOfCards>,
+                        learningBoxes = learningBoxes.result as List<LearningBoxWithNrOfCards>,
                         learningObjectLabel = (learningObject.result as LearningObject).label
                     )
                     Success(learningDetails)

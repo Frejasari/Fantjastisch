@@ -17,7 +17,7 @@ interface LearningBoxDao {
      * Holt alle Lernboxen eines Lernobjektes mit der Anzahl an Karten aus der Datenbank.
      *
      * @param learningObjectId Id, des Lernobjektes.
-     * @return Liste mit [LearningBoxWitNrOfCards]-Entität pro Lernbox, aufsteigend nach Lernbox-Nr. sortiert.
+     * @return Liste mit [LearningBoxWithNrOfCards]-Entität pro Lernbox, aufsteigend nach Lernbox-Nr. sortiert.
      */
     @Query(
         "SELECT lb.id, lb.box_number, lb.label, lb.learning_object_id, " +
@@ -27,7 +27,7 @@ interface LearningBoxDao {
                 "group by (lb.id) " +
                 "ORDER BY box_number ASC"
     )
-    suspend fun getAllBoxesForLearningObjectWithNrOfCards(learningObjectId: UUID): List<LearningBoxWitNrOfCards>
+    suspend fun getAllBoxesForLearningObjectWithNrOfCards(learningObjectId: UUID): List<LearningBoxWithNrOfCards>
 
     /**
      * Fügt ein oder mehrere  Lernboxen in die Datenbank ein.

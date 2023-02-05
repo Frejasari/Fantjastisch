@@ -3,7 +3,7 @@ package de.fantjastisch.cards_frontend.learning_mode
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
+import de.fantjastisch.cards_frontend.learning_box.LearningBoxWithNrOfCards
 import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import org.openapitools.client.models.CardEntity
@@ -33,10 +33,10 @@ class LearningModeViewModel(
     var numberOfCardsRemaining = mutableStateOf(0)
     private var nextCards: Queue<CardEntity> = LinkedList()
 
-    val learningBox = mutableStateOf<LearningBoxWitNrOfCards?>(null)
+    val learningBox = mutableStateOf<LearningBoxWithNrOfCards?>(null)
     var isLastBox = false
     var isFirstBox = false
-    private var learningBoxesInObject: List<LearningBoxWitNrOfCards> = listOf()
+    private var learningBoxesInObject: List<LearningBoxWithNrOfCards> = listOf()
 
     /**
      * Initialisiert viewModel Felder basierend auf der Rückmeldung des Models. Die Verarbeitung der Rückgabe vom Model

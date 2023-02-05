@@ -27,7 +27,7 @@ class LearningBoxRepository(
      */
     suspend fun getAllBoxesForLearningObject(
         learningObjectId: UUID
-    ): RepoResult<List<LearningBoxWitNrOfCards>> {
+    ): RepoResult<List<LearningBoxWithNrOfCards>> {
         return try {
             val allBoxesForLearningObject =
                 learningBoxRepository.getAllBoxesForLearningObjectWithNrOfCards(learningObjectId)

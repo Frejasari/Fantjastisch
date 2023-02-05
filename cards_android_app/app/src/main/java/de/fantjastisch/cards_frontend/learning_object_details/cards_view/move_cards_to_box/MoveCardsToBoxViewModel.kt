@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
+import de.fantjastisch.cards_frontend.learning_box.LearningBoxWithNrOfCards
 import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import java.util.*
@@ -26,7 +26,7 @@ class MoveCardsToBoxViewModel(
 
     val cards = mutableStateOf<List<CardSelectItem>>(mutableListOf())
     val isFinished = mutableStateOf(false)
-    private var learningBoxesInObject: List<LearningBoxWitNrOfCards> = listOf()
+    private var learningBoxesInObject: List<LearningBoxWithNrOfCards> = listOf()
     val learningBoxNum = mutableStateOf(-1)
     val isLastBox = mutableStateOf(false)
     val isFirstBox = mutableStateOf(false)

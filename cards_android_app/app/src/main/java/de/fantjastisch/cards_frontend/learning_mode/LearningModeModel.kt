@@ -2,7 +2,7 @@ package de.fantjastisch.cards_frontend.learning_mode
 
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
-import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
+import de.fantjastisch.cards_frontend.learning_box.LearningBoxWithNrOfCards
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
 import de.fantjastisch.cards_frontend.util.RepoResult.*
@@ -31,11 +31,11 @@ class LearningModeModel(
 ) {
 
     data class LearningMode(
-        val learningBoxesInObject: List<LearningBoxWitNrOfCards>,
+        val learningBoxesInObject: List<LearningBoxWithNrOfCards>,
         val isFirstBox: Boolean,
         val isLastBox: Boolean,
         val nextCards: Queue<CardEntity>,
-        val learningBox: LearningBoxWitNrOfCards
+        val learningBox: LearningBoxWithNrOfCards
     )
 
     /**
@@ -80,7 +80,7 @@ class LearningModeModel(
                 val allCards =
                     (if (!sort) cardResult.result.shuffled() else cardResult.result) as List<CardEntity>
                 val learningBoxesInObject =
-                    learningBoxResult.result as List<LearningBoxWitNrOfCards>
+                    learningBoxResult.result as List<LearningBoxWithNrOfCards>
                 val cardsInLearningBox = cardsInLearningBoxResult.result as List<UUID>
 
                 val box = learningBoxesInObject.first { it.id == learningBoxId }

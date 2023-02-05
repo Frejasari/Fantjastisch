@@ -3,7 +3,7 @@ package de.fantjastisch.cards_frontend.learning_object_details
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import de.fantjastisch.cards_frontend.card.update_and_create.ErrorHandlingViewModel
-import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
+import de.fantjastisch.cards_frontend.learning_box.LearningBoxWithNrOfCards
 import de.fantjastisch.cards_frontend.util.fold
 import kotlinx.coroutines.launch
 import java.util.*
@@ -20,7 +20,7 @@ class LearningDetailsViewModel(
     val learningObjectId: UUID,
     val model: LearningDetailsModel = LearningDetailsModel()
 ) : ErrorHandlingViewModel() {
-    val learningBoxes = mutableStateOf<List<LearningBoxWitNrOfCards>>(emptyList())
+    val learningBoxes = mutableStateOf<List<LearningBoxWithNrOfCards>>(emptyList())
     var learningObjectLabel = ""
     val celebrate = mutableStateOf(false)
 

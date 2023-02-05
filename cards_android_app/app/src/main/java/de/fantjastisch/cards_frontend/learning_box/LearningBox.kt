@@ -57,7 +57,7 @@ data class LearningBox(
  *
  * @author Freja Sender
  */
-data class LearningBoxWitNrOfCards(
+data class LearningBoxWithNrOfCards(
     @ColumnInfo val id: UUID = generateId(),
     @ColumnInfo(name = "learning_object_id") val learningObjectId: UUID,
     @ColumnInfo(name = "box_number") val boxNumber: Int,

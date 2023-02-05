@@ -3,7 +3,7 @@ package de.fantjastisch.cards_frontend.learning_object_details.cards_view.move_c
 import de.fantjastisch.cards_frontend.card.CardRepository
 import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
-import de.fantjastisch.cards_frontend.learning_box.LearningBoxWitNrOfCards
+import de.fantjastisch.cards_frontend.learning_box.LearningBoxWithNrOfCards
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
 import de.fantjastisch.cards_frontend.util.RepoResult.*
@@ -38,7 +38,7 @@ class MoveCardsToBoxModel(
      * @property cards alle Karten zu einer Lernbox.
      */
     data class MoveCardsToBox(
-        val learningBoxes: List<LearningBoxWitNrOfCards>,
+        val learningBoxes: List<LearningBoxWithNrOfCards>,
         val learningBoxNum: Int,
         var isLastBox: Boolean,
         var isFirstBox: Boolean,
@@ -75,7 +75,7 @@ class MoveCardsToBoxModel(
             learningBoxes is Success &&
                     cards is Success -> {
                 // alle Lernboxen
-                val learningBoxesInObject = learningBoxes.result as List<LearningBoxWitNrOfCards>
+                val learningBoxesInObject = learningBoxes.result as List<LearningBoxWithNrOfCards>
                 // der Index der AusgangsLernbox
                 val learningBoxNum = getLearningBoxNum(
                     learningBoxes = learningBoxesInObject,
@@ -115,7 +115,7 @@ class MoveCardsToBoxModel(
      * @param learningObjectId Die UUID des Lernobjekts, dessen Lernboxes geholt werden.
      * @return
      */
-    private suspend fun getAllLearningBoxes(learningObjectId: UUID): RepoResult<List<LearningBoxWitNrOfCards>> =
+    private suspend fun getAllLearningBoxes(learningObjectId: UUID): RepoResult<List<LearningBoxWithNrOfCards>> =
         learningBoxRepository.getAllBoxesForLearningObject(learningObjectId = learningObjectId)
 
 
@@ -127,7 +127,7 @@ class MoveCardsToBoxModel(
      * @return Der Index der Lernbox.
      */
     private fun getLearningBoxNum(
-        learningBoxes: List<LearningBoxWitNrOfCards>,
+        learningBoxes: List<LearningBoxWithNrOfCards>,
         learningBoxId: UUID
     ): Int {
         return learningBoxes.first { box -> box.id == learningBoxId }.boxNumber
