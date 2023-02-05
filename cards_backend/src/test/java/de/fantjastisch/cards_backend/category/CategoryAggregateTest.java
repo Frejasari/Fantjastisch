@@ -251,7 +251,7 @@ public class CategoryAggregateTest {
         CommandValidationException exception = Assertions.assertThrows(CommandValidationException.class,
                 () -> categoryAggregate.handle(toCreate));
         ErrorEntry blankLabel = ErrorEntry.builder()
-                .code(NOT_NULL_VIOLATION)
+                .code(NOT_BLANK_VIOLATION)
                 .field("label")
                 .build();
         assertTrue(exception.getErrors().contains(blankLabel));

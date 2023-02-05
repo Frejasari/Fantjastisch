@@ -35,7 +35,7 @@ public class CardCommandRepository {
      * @param card Die Karteikarte, welche in die Datenbank eingefügt werden soll.
      */
     @Transactional
-    public void create(Card card) {
+    public void create(final Card card) {
         updateCategoriesOfCard(card.getId(), card.getCategories());
         updateLinksOfCard(card.getId(), card.getLinks());
 

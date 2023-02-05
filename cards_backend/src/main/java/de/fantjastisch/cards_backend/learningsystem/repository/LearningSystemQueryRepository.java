@@ -36,7 +36,7 @@ public class LearningSystemQueryRepository {
                 .boxLabels(resultSetArr).build();
     };
 
-    private List<String> parseSQLArrayToStringArray(String arr) {
+    private List<String> parseSQLArrayToStringArray(final String arr) {
         if (arr == null) {
             return Collections.emptyList();
         }
@@ -55,7 +55,7 @@ public class LearningSystemQueryRepository {
      * oder null, sofern die Entität nicht gefunden werden konnte.
      * @throws EmptyResultDataAccessException Die Entität konnte nicht gefunden werden.
      */
-    public LearningSystem get(UUID id) {
+    public LearningSystem get(final UUID id) {
         final String query = "SELECT * FROM public.learning_systems WHERE id = :id;";
         try {
             return namedParameterJdbcTemplate.queryForObject(query,

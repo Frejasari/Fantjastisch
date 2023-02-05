@@ -87,7 +87,7 @@ public class LearningSystemAggregate {
      * @param learningSystemId Die UUID eines Lernsystems, welche angefordert wird.
      * @return Die entsprechende Entität des Lernsystems, gekapselt in einer {@link LearningSystem}-Instanz.
      */
-    public LearningSystem handleGet(UUID learningSystemId) {
+    public LearningSystem handleGet(final UUID learningSystemId) {
         learningSystemValidator.validate(learningSystemId);
         return learningSystemQueryRepository.get(learningSystemId);
     }

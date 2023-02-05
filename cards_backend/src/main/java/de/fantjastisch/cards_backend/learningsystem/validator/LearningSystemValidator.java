@@ -42,7 +42,7 @@ public class LearningSystemValidator extends Validator {
      * @param command Eine {@link CreateLearningSystem}-Instanz, welche validiert werden soll.
      * @throws org.hibernate.tool.schema.spi.CommandAcceptanceException Constraint verletzt
      */
-    public void validate(CreateLearningSystem command) {
+    public void validate(final CreateLearningSystem command) {
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(validateConstraints(command));
         throwIfNeeded(errors);
@@ -60,7 +60,7 @@ public class LearningSystemValidator extends Validator {
      * @throws org.hibernate.tool.schema.spi.CommandAcceptanceException Constraint verletzt
      * @throws ResponseStatusException                                  wenn Lernsystem nicht existiert.
      */
-    public void validate(UpdateLearningSystem command) {
+    public void validate(final UpdateLearningSystem command) {
         List<ErrorEntry> errors = new ArrayList<>();
 
         errors.addAll(validateConstraints(command));
@@ -78,12 +78,12 @@ public class LearningSystemValidator extends Validator {
      * @param learningSystemId Die ID des Lernsystems, welche geprüft werden soll.
      * @throws ResponseStatusException wenn Lernsystem nicht existiert.
      */
-    public void validate(UUID learningSystemId) {
+    public void validate(final UUID learningSystemId) {
         throwIfLearningSystemDoesNotExist(learningSystemId);
     }
 
 
-    private void throwIfLearningSystemDoesNotExist(UUID learningSystemId) {
+    private void throwIfLearningSystemDoesNotExist(final UUID learningSystemId) {
         LearningSystem learningSystem = learningSystemQueryRepository.get(learningSystemId);
         if (learningSystem == null) {
             throw new ResponseStatusException(
@@ -92,7 +92,7 @@ public class LearningSystemValidator extends Validator {
         }
     }
 
-    private List<ErrorEntry> checkIfBoxLabelsContainNull(List<String> labels) {
+    private List<ErrorEntry> checkIfBoxLabelsContainNull(final List<String> labels) {
         List<ErrorEntry> errors = new ArrayList<>();
         boolean containsNullOrBlank = labels.stream().anyMatch(s -> (s == null || s.isBlank()));
         if (containsNullOrBlank) {

@@ -24,7 +24,7 @@ public class CategoryCommandRepository {
      *
      * @param category Die Kategorie, welche in die Datenbank eingefügt werden soll.
      */
-    public void create(Category category) {
+    public void create(final Category category) {
         final String sql = "INSERT INTO public.categories (id, label, sub_category_ids) VALUES (:id, :label, :sub_category_ids)";
 
         namedParameterJdbcTemplate.update(sql, toParameterSource(category));
@@ -46,7 +46,7 @@ public class CategoryCommandRepository {
      *
      * @param category Die aktualisierte Kategorie.
      */
-    public void update(Category category) {
+    public void update(final Category category) {
         final String sql = "UPDATE public.categories SET label = :label, sub_category_ids = :sub_category_ids WHERE id = :id";
         namedParameterJdbcTemplate.update(sql, toParameterSource(category));
     }

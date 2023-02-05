@@ -47,7 +47,7 @@ public class CardValidator extends Validator {
      * @throws ResponseStatusException    Wenn eine Kategorie nicht existiert oder eine Karte mit
      *                                    gleichen Parametern schon vorhanden ist.
      */
-    public void validate(CreateCard command) {
+    public void validate(final CreateCard command) {
         List<ErrorEntry> errors = new ArrayList<>();
         throwIfNeeded(validateConstraints(command));
         command.getLinks().forEach(link -> throwIfCardDoesNotExist(link.getTarget()));
@@ -70,7 +70,7 @@ public class CardValidator extends Validator {
      * @throws ResponseStatusException    Wenn eine Kategorie nicht existiert oder eine Karte mit
      *                                    gleichen Parametern schon vorhanden ist.
      */
-    public void validate(UpdateCard command) {
+    public void validate(final UpdateCard command) {
         throwIfNeeded(validateConstraints(command));
         throwIfCardDoesNotExist(command.getId());
         command.getLinks().forEach(link -> throwIfCardDoesNotExist(link.getTarget()));
@@ -85,7 +85,7 @@ public class CardValidator extends Validator {
      *
      * @param cardId die Id der zu löschenden Karte
      */
-    public void validateDelete(UUID cardId) {
+    public void validateDelete(final UUID cardId) {
         throwIfCardDoesNotExist(cardId);
     }
 
@@ -94,7 +94,7 @@ public class CardValidator extends Validator {
      *
      * @param cardId die Id der zu erhaltenen Karte
      */
-    public void validateGet(UUID cardId) {
+    public void validateGet(final UUID cardId) {
         throwIfCardDoesNotExist(cardId);
     }
 
@@ -114,7 +114,7 @@ public class CardValidator extends Validator {
      * @param tag      Der zu überprüfende Tag.
      * @return Die Liste aller Fehlermeldungen, die ermittelt wurden.
      */
-    private List<ErrorEntry> validateCardTaken(String question, String answer, String tag) {
+    private List<ErrorEntry> validateCardTaken(final String question, final String answer, final String tag) {
         List<Card> cards = cardQueryRepository.getPage(null, null, null, false);
         List<Card> duplicateCard = cards.stream().filter
                         (card -> card.getQuestion().equals(question)
@@ -138,7 +138,7 @@ public class CardValidator extends Validator {
      * @param categories Die Liste der UUIDs, die Instanzen von {@link Category} sein sollen.
      * @return Die Liste aller Fehlermeldungen, die ermittelt wurden.
      */
-    private List<ErrorEntry> checkIfCategoriesExist(Set<UUID> categories) {
+    private List<ErrorEntry> checkIfCategoriesExist(final Set<UUID> categories) {
         List<ErrorEntry> errors = new ArrayList<>();
         for (UUID category : categories) {
             if (categoryQueryRepository.get(category) == null) {
