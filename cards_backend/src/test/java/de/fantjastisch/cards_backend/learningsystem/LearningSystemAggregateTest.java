@@ -8,6 +8,7 @@ import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemQue
 import de.fantjastisch.cards_backend.learningsystem.validator.LearningSystemValidator;
 import de.fantjastisch.cards_backend.util.UUIDGenerator;
 import de.fantjastisch.cards_backend.util.validation.CommandValidationException;
+import de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,8 +22,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
- * Test Klasse für die Category Repositories
+ * Test Klasse für die LearningSystem Repositories
  *
  * @author Freja Sender, Alexander Kück
  */
@@ -30,6 +35,13 @@ import java.util.UUID;
 @Sql({"file:src/main/resources/schema.sql", "file:src/test/resources/test-data.sql"})
 public class LearningSystemAggregateTest {
     private LearningSystemAggregate learningSystemAggregate;
+    private LearningSystemCommandRepository learningSystemCommandRepository;
+
+    private final LearningSystem ls = LearningSystem.builder()
+            .id(UUID.fromString("2be2989b-215f-49ca-ae95-366b2a3db03d"))
+            .label("Testlabel")
+            .boxLabels(Arrays.asList("Box1", "Box2"))
+            .build();
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -45,43 +57,179 @@ public class LearningSystemAggregateTest {
     public void shouldThrowWhenCreatingWithEmptyLabel() {
         CreateLearningSystem toCreate = CreateLearningSystem.builder()
                 .label("")
-                .boxLabels(Arrays.asList("Box1", "Box2"))
+                .boxLabels(ls.getBoxLabels())
                 .build();
-        Assertions.assertThrows(CommandValidationException.class,
-                () -> learningSystemAggregate.handleDelete(toCreate));
+
+        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toCreate));
+
+        ErrorEntry error = ErrorEntry.builder()
+                .code(NOT_BLANK_VIOLATION)
+                .field("label")
+                .build();
+        assertTrue(exceptionblank.getErrors().contains(error));
+
+        CreateLearningSystem toCreate2 = CreateLearningSystem.builder()
+                .label(null)
+                .boxLabels(ls.getBoxLabels())
+                .build();
+
+        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toCreate2));
+
+        ErrorEntry error2 = ErrorEntry.builder()
+                .code(NOT_BLANK_VIOLATION)
+                .field("label")
+                .build();
+        assertTrue(exceptionnull.getErrors().contains(error2));
     }
+
 
     @Test
     public void shouldThrowWhenUpdatingWithEmptyLabel() {
-
         UpdateLearningSystem toUpdate = UpdateLearningSystem.builder()
-                .id(UUID.fromString("2be2989b-215f-49ca-ae95-366b2a3db03d"))
+                .id(ls.getId())
                 .label("")
-                .boxLabels(Arrays.asList("Box1", "Box2"))
+                .boxLabels(ls.getBoxLabels())
                 .build();
-        Assertions.assertThrows(CommandValidationException.class,
-                () -> learningSystemAggregate.handleDelete(toUpdate));
+
+        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toUpdate));
+
+        ErrorEntry error = ErrorEntry.builder()
+                .code(NOT_BLANK_VIOLATION)
+                .field("label")
+                .build();
+        assertTrue(exceptionblank.getErrors().contains(error));
+
+        UpdateLearningSystem toUpdate2 = UpdateLearningSystem.builder()
+                .id(ls.getId())
+                .label(null)
+                .boxLabels(ls.getBoxLabels())
+                .build();
+
+        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toUpdate2));
+
+        ErrorEntry error2 = ErrorEntry.builder()
+                .code(NOT_BLANK_VIOLATION)
+                .field("label")
+                .build();
+        assertTrue(exceptionnull.getErrors().contains(error2));
     }
 
     @Test
     public void shouldThrowWhenCreatingWithEmptyBoxLabels() {
         CreateLearningSystem toCreate = CreateLearningSystem.builder()
-                .label("2Box")
-                .boxLabels(List.of(""))
+                .label(ls.getLabel())
+                .boxLabels(null)
                 .build();
-        Assertions.assertThrows(CommandValidationException.class,
-                () -> learningSystemAggregate.handleDelete(toCreate));
+
+        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toCreate));
+
+        ErrorEntry error = ErrorEntry.builder()
+                .code(NOT_NULL_VIOLATION)
+                .field("boxLabels")
+                .build();
+        assertTrue(exceptionnull.getErrors().contains(error));
+
+
+
+        CreateLearningSystem toCreate2 = CreateLearningSystem.builder()
+                .label(ls.getLabel())
+                .boxLabels(Arrays.asList(""))
+                .build();
+
+        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toCreate2));
+
+        ErrorEntry error2 = ErrorEntry.builder()
+                .code(BOX_LABELS_IS_NULL_VIOLATION)
+                .field("boxLabels")
+                .build();
+        assertTrue(exceptionblank.getErrors().contains(error2));
+
+        CreateLearningSystem toCreate3 = CreateLearningSystem.builder()
+                .label(ls.getLabel())
+                .boxLabels(Arrays.asList("Test",""))
+                .build();
+
+        CommandValidationException exceptionblank2 = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toCreate3));
+
+        ErrorEntry error3 = ErrorEntry.builder()
+                .code(BOX_LABELS_IS_NULL_VIOLATION)
+                .field("boxLabels")
+                .build();
+        assertTrue(exceptionblank2.getErrors().contains(error3));
+
+        CreateLearningSystem toCreate4 = CreateLearningSystem.builder()
+                .label(ls.getLabel())
+                .boxLabels(Arrays.asList("Test",null))
+                .build();
+
+        CommandValidationException exceptionnull2 = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toCreate4));
+
+        ErrorEntry error4 = ErrorEntry.builder()
+                .code(BOX_LABELS_IS_NULL_VIOLATION)
+                .field("boxLabels")
+                .build();
+        assertTrue(exceptionnull2.getErrors().contains(error4));
     }
 
     @Test
     public void shouldThrowWhenUpdatingWithEmptyBoxLabels() {
         UpdateLearningSystem toUpdate = UpdateLearningSystem.builder()
-                .id(UUID.fromString("2be2989b-215f-49ca-ae95-366b2a3db03d"))
-                .label("2Box")
-                .boxLabels(List.of(""))
+                .id(ls.getId())
+                .label(ls.getLabel())
+                .boxLabels(null)
                 .build();
-        Assertions.assertThrows(CommandValidationException.class,
-                () -> learningSystemAggregate.handleDelete(toUpdate));
+
+        CommandValidationException exceptionnull = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toUpdate));
+
+        ErrorEntry error = ErrorEntry.builder()
+                .code(NOT_NULL_VIOLATION)
+                .field("boxLabels")
+                .build();
+        assertTrue(exceptionnull.getErrors().contains(error));
+
+
+
+        UpdateLearningSystem toUpdate2 = UpdateLearningSystem.builder()
+                .id(ls.getId())
+                .label(ls.getLabel())
+                .boxLabels(Arrays.asList(""))
+                .build();
+
+        CommandValidationException exceptionblank = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toUpdate2));
+
+        ErrorEntry error2 = ErrorEntry.builder()
+                .code(BOX_LABELS_IS_NULL_VIOLATION)
+                .field("boxLabels")
+                .build();
+        assertTrue(exceptionblank.getErrors().contains(error2));
+
+        UpdateLearningSystem toUpdate3 = UpdateLearningSystem.builder()
+                .id(ls.getId())
+                .label(ls.getLabel())
+                .boxLabels(Arrays.asList("Test",""))
+                .build();
+
+        CommandValidationException exceptionblank2 = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toUpdate3));
+
+        ErrorEntry error3 = ErrorEntry.builder()
+                .code(BOX_LABELS_IS_NULL_VIOLATION)
+                .field("boxLabels")
+                .build();
+        assertTrue(exceptionblank2.getErrors().contains(error3));
+
+        UpdateLearningSystem toUpdate4 = UpdateLearningSystem.builder()
+                .id(ls.getId())
+                .label(ls.getLabel())
+                .boxLabels(Arrays.asList("Test",null))
+                .build();
+
+        CommandValidationException exceptionnull2 = assertThrows(CommandValidationException.class, ()-> learningSystemAggregate.handleDelete(toUpdate4));
+
+        ErrorEntry error4 = ErrorEntry.builder()
+                .code(BOX_LABELS_IS_NULL_VIOLATION)
+                .field("boxLabels")
+                .build();
+        assertTrue(exceptionnull2.getErrors().contains(error4));
     }
 
     @Test
@@ -96,7 +244,7 @@ public class LearningSystemAggregateTest {
     }
 
     @Test
-    public void shouldThrowWhenDeleting() {
+    public void shouldThrowWhenDeletingNotExisting() {
         Assertions.assertThrows(ResponseStatusException.class,
                 () -> learningSystemAggregate.handleDelete(UUID.fromString("f5d15dd3-4670-45dc-a2bc-eed985c3a8be")));
     }
