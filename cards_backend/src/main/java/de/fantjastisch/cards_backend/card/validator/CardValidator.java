@@ -115,7 +115,7 @@ public class CardValidator extends Validator {
      * @return Die Liste aller Fehlermeldungen, die ermittelt wurden.
      */
     private List<ErrorEntry> validateCardTaken(String question, String answer, String tag) {
-        List<Card> cards = cardQueryRepository.getPage(null, null, tag, false);
+        List<Card> cards = cardQueryRepository.getPage(null, null, null, false);
         List<Card> duplicateCard = cards.stream().filter
                         (card -> card.getQuestion().equals(question)
                                 && card.getAnswer().equals(answer)
