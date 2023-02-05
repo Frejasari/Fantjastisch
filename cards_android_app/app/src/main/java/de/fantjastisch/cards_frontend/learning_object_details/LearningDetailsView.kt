@@ -67,7 +67,10 @@ fun LearningDetailsView(
     }
 }
 
-
+/**
+ * Zeigt das Konfetti an, wenn alle Karten gelernt wurden.
+ *
+ */
 @Composable
 fun CelebrationAnimation() {
     val composition by rememberLottieComposition(
