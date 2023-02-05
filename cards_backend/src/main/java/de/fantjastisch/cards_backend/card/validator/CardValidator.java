@@ -48,10 +48,10 @@ public class CardValidator extends Validator {
      *                                    gleichen Parametern schon vorhanden ist.
      */
     public void validate(CreateCard command) {
+        List<ErrorEntry> errors = new ArrayList<>();
         throwIfNeeded(validateConstraints(command));
         command.getLinks().forEach(link -> throwIfCardDoesNotExist(link.getTarget()));
 
-        List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(checkIfCategoriesExist(command.getCategories()));
         errors.addAll(validateCardTaken(command.getQuestion(), command.getAnswer(), command.getTag()));
         throwIfNeeded(errors);
@@ -140,13 +140,6 @@ public class CardValidator extends Validator {
      */
     private List<ErrorEntry> checkIfCategoriesExist(Set<UUID> categories) {
         List<ErrorEntry> errors = new ArrayList<>();
-        if (categories.isEmpty()) {
-            errors.add(
-                    ErrorEntry.builder()
-                            .code(NO_CATEGORIES_VIOLATION)
-                            .field("categories")
-                            .build());
-        }
         for (UUID category : categories) {
             if (categoryQueryRepository.get(category) == null) {
                 errors.add(
