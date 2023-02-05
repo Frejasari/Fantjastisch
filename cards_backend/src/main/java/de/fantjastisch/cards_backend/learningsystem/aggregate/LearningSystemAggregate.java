@@ -41,7 +41,7 @@ public class LearningSystemAggregate {
      * @param command Das CRUD-Kommando-Objekt zum Erstellen eines Lernsystems.
      * @return Eine UUID, die die erstellte Entität darstellt.
      */
-    public UUID handle(final CreateLearningSystem command) {
+    public UUID handleDelete(final CreateLearningSystem command) {
         learningSystemValidator.validate(command);
 
         LearningSystem learningSystem =
@@ -59,7 +59,7 @@ public class LearningSystemAggregate {
      *
      * @param command Das CRUD-Kommando-Objekt zum Aktualisieren eines Lernsystems.
      */
-    public void handle(final UpdateLearningSystem command) {
+    public void handleDelete(final UpdateLearningSystem command) {
         learningSystemValidator.validate(command);
 
         learningSystemCommandRepository.update(
@@ -73,12 +73,12 @@ public class LearningSystemAggregate {
     /**
      * Diese Funktion validiert und vermittelt eine Anfrage zum Löschen eines Lernsystems.
      *
-     * @param command Das CRUD-Kommando-Objekt zum Löschen eines Lernsystems.
+     * @param learningSystemId die Id des zu löschendne Lernsystems
      */
-    public void handle(final DeleteLearningSystem command) {
-        learningSystemValidator.validate(command.getId());
-        LearningSystem learningSystem = learningSystemQueryRepository.get(command.getId());
-        learningSystemCommandRepository.delete(learningSystem);
+    public void handleDelete(final UUID learningSystemId) {
+        learningSystemValidator.validate(learningSystemId);
+        LearningSystem learningSystem = learningSystemQueryRepository.get(learningSystemId);
+        learningSystemCommandRepository.delete(learningSystemId);
     }
 
     /**
@@ -87,7 +87,7 @@ public class LearningSystemAggregate {
      * @param learningSystemId Die UUID eines Lernsystems, welche angefordert wird.
      * @return Die entsprechende Entität des Lernsystems, gekapselt in einer {@link LearningSystem}-Instanz.
      */
-    public LearningSystem handle(UUID learningSystemId) {
+    public LearningSystem handleGet(UUID learningSystemId) {
         learningSystemValidator.validate(learningSystemId);
         return learningSystemQueryRepository.get(learningSystemId);
     }
@@ -97,7 +97,7 @@ public class LearningSystemAggregate {
      *
      * @return Eine Liste aller Entitäten vom Typ Lernsystem, gekapselt in entsprechenden {@link LearningSystem}-Instanzen.
      */
-    public List<LearningSystem> handle() {
+    public List<LearningSystem> handleDelete() {
         return learningSystemQueryRepository.getPage();
     }
 }

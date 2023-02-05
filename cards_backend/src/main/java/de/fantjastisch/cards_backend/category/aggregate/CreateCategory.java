@@ -4,11 +4,8 @@ import de.fantjastisch.cards_backend.util.validation.Commandable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
 import java.util.UUID;
@@ -19,11 +16,11 @@ import java.util.UUID;
  *
  * @author Semjon Nirmann
  */
-@Data
-@SuperBuilder
-@ToString(callSuper = true)
-@NoArgsConstructor
+@Getter
+@Builder
+@ToString
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreateCategory implements Commandable {
 
     @NotBlank

@@ -2,7 +2,6 @@ package de.fantjastisch.cards_backend.learningsystem.controller;
 
 import de.fantjastisch.cards_backend.learningsystem.LearningSystem;
 import de.fantjastisch.cards_backend.learningsystem.aggregate.CreateLearningSystem;
-import de.fantjastisch.cards_backend.learningsystem.aggregate.DeleteLearningSystem;
 import de.fantjastisch.cards_backend.learningsystem.aggregate.LearningSystemAggregate;
 import de.fantjastisch.cards_backend.learningsystem.aggregate.UpdateLearningSystem;
 import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemQueryRepository;
@@ -67,7 +66,7 @@ public class LearningSystemController {
     public CreatedResponse createLearningSystem(
             @RequestBody CreateLearningSystem command)
             throws RuntimeException {
-        return new CreatedResponse(learningSystemAggregate.handle(command));
+        return new CreatedResponse(learningSystemAggregate.handleDelete(command));
     }
 
     /**
@@ -83,13 +82,13 @@ public class LearningSystemController {
             @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json")})
     })
     public void updateLearningSystem(@RequestBody UpdateLearningSystem command) {
-        learningSystemAggregate.handle(command);
+        learningSystemAggregate.handleDelete(command);
     }
 
     /**
      * Diese Funktion stellt den API-Endpunkt zum Löschen einer Lernsystem-Entität bereit.
      *
-     * @param command Eine Instanz der Klasse {@link DeleteLearningSystem}.
+     * @param id Die Id des zu löschenden Lernsystems
      */
     @DeleteMapping(path = "delete")
     @Operation(
@@ -98,8 +97,8 @@ public class LearningSystemController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json")})
     })
-    public void deleteLearningSystem(@RequestBody DeleteLearningSystem command) {
-        learningSystemAggregate.handle(command);
+    public void deleteLearningSystem(@RequestParam UUID id) {
+        learningSystemAggregate.handleDelete(id);
     }
 
     /**
@@ -117,7 +116,7 @@ public class LearningSystemController {
             summary = "Get specific learning system",
             operationId = "getLearningSystem")
     public LearningSystem get(@RequestParam UUID id) {
-        return learningSystemAggregate.handle(id);
+        return learningSystemAggregate.handleGet(id);
     }
 
     /**
@@ -134,6 +133,6 @@ public class LearningSystemController {
                     array = @ArraySchema(schema = @Schema(implementation = LearningSystem.class)))})
     })
     public List<LearningSystem> getPage() {
-        return learningSystemAggregate.handle();
+        return learningSystemAggregate.handleDelete();
     }
 }

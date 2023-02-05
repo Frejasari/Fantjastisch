@@ -1,7 +1,6 @@
 package de.fantjastisch.cards_backend.learningsystem;
 
 import de.fantjastisch.cards_backend.learningsystem.aggregate.CreateLearningSystem;
-import de.fantjastisch.cards_backend.learningsystem.aggregate.DeleteLearningSystem;
 import de.fantjastisch.cards_backend.learningsystem.aggregate.LearningSystemAggregate;
 import de.fantjastisch.cards_backend.learningsystem.aggregate.UpdateLearningSystem;
 import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemCommandRepository;
@@ -9,7 +8,6 @@ import de.fantjastisch.cards_backend.learningsystem.repository.LearningSystemQue
 import de.fantjastisch.cards_backend.learningsystem.validator.LearningSystemValidator;
 import de.fantjastisch.cards_backend.util.UUIDGenerator;
 import de.fantjastisch.cards_backend.util.validation.CommandValidationException;
-import de.fantjastisch.cards_backend.util.validation.errors.ErrorEntry;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,9 +18,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
-
 
 /**
  * Test Klasse für die Category Repositories
@@ -35,13 +32,6 @@ public class LearningSystemAggregateTest {
     private LearningSystemAggregate learningSystemAggregate;
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    LearningSystem learningSystem = LearningSystem
-            .builder()
-            .id(UUID.fromString("2be2989b-215f-49ca-ae95-366b2a3db03d"))
-            .label("2Box")
-            .boxLabels(Arrays.asList("Box1","Box2"))
-            .build();
 
     @BeforeEach
     public void setUp() {
@@ -57,29 +47,30 @@ public class LearningSystemAggregateTest {
                 .label("")
                 .boxLabels(Arrays.asList("Box1", "Box2"))
                 .build();
-        CommandValidationException exception = Assertions.assertThrows(CommandValidationException.class,
-                () -> learningSystemAggregate.handle(toCreate));
+        Assertions.assertThrows(CommandValidationException.class,
+                () -> learningSystemAggregate.handleDelete(toCreate));
     }
+
     @Test
     public void shouldThrowWhenUpdatingWithEmptyLabel() {
 
         UpdateLearningSystem toUpdate = UpdateLearningSystem.builder()
                 .id(UUID.fromString("2be2989b-215f-49ca-ae95-366b2a3db03d"))
                 .label("")
-                .boxLabels(Arrays.asList("Box1","Box2"))
+                .boxLabels(Arrays.asList("Box1", "Box2"))
                 .build();
-        CommandValidationException exception = Assertions.assertThrows(CommandValidationException.class,
-                () -> learningSystemAggregate.handle(toUpdate));
+        Assertions.assertThrows(CommandValidationException.class,
+                () -> learningSystemAggregate.handleDelete(toUpdate));
     }
 
     @Test
     public void shouldThrowWhenCreatingWithEmptyBoxLabels() {
         CreateLearningSystem toCreate = CreateLearningSystem.builder()
                 .label("2Box")
-                .boxLabels(Arrays.asList(""))
+                .boxLabels(List.of(""))
                 .build();
-        CommandValidationException exception = Assertions.assertThrows(CommandValidationException.class,
-                () -> learningSystemAggregate.handle(toCreate));
+        Assertions.assertThrows(CommandValidationException.class,
+                () -> learningSystemAggregate.handleDelete(toCreate));
     }
 
     @Test
@@ -87,34 +78,26 @@ public class LearningSystemAggregateTest {
         UpdateLearningSystem toUpdate = UpdateLearningSystem.builder()
                 .id(UUID.fromString("2be2989b-215f-49ca-ae95-366b2a3db03d"))
                 .label("2Box")
-                .boxLabels(Arrays.asList(""))
+                .boxLabels(List.of(""))
                 .build();
-        CommandValidationException exception = Assertions.assertThrows(CommandValidationException.class,
-                () -> learningSystemAggregate.handle(toUpdate));
+        Assertions.assertThrows(CommandValidationException.class,
+                () -> learningSystemAggregate.handleDelete(toUpdate));
     }
+
     @Test
     public void shouldThrowWhenUpdatingNotExisting() {
         UpdateLearningSystem toUpdate = UpdateLearningSystem.builder()
                 .id(UUID.fromString("48039f58-ad1e-434e-a2e4-b8179ffa1c68"))
                 .label("2Box")
-                .boxLabels(Arrays.asList("Box1","Box2"))
+                .boxLabels(Arrays.asList("Box1", "Box2"))
                 .build();
         ResponseStatusException exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> learningSystemAggregate.handle(toUpdate));
+                () -> learningSystemAggregate.handleDelete(toUpdate));
     }
 
     @Test
     public void shouldThrowWhenDeleting() {
-        DeleteLearningSystem toDelete = DeleteLearningSystem
-                .builder()
-                .id(UUID.fromString("f5d15dd3-4670-45dc-a2bc-eed985c3a8be"))
-                .build();
-        ResponseStatusException exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> learningSystemAggregate.handle(toDelete));
-
-
+        Assertions.assertThrows(ResponseStatusException.class,
+                () -> learningSystemAggregate.handleDelete(UUID.fromString("f5d15dd3-4670-45dc-a2bc-eed985c3a8be")));
     }
-
-
-    // TODO: Andere Validierungen prüfen?
 }

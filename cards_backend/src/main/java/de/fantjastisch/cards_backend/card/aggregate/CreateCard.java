@@ -8,7 +8,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 import java.util.UUID;
@@ -20,10 +19,10 @@ import java.util.UUID;
  * @author Tamari Bayer, Jessica Repty, Freja Sender
  */
 
-@Data
-@SuperBuilder
-@ToString(callSuper = true)
-@NoArgsConstructor
+@SuppressWarnings("deprecation")
+@Getter
+@Builder
+@ToString
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreateCard implements Commandable {
@@ -32,31 +31,31 @@ public class CreateCard implements Commandable {
     @Schema(
             required = true,
             example = "Who am I?")
-    private String question;
+    String question;
 
     @NotBlank
     @Schema(
             required = true,
             example = "I am me")
-    private String answer;
+    String answer;
 
     @NotBlank
     @Schema(
             required = true,
             example = "wichtig")
-    private String tag;
+    String tag;
 
     @NotEmpty
     @Schema(
             required = true,
             example = "[3b1824120d6d4857843aedfc1973d323, 40ac4fcc97024a87b0bdbffe1f7f49f8]")
-    private Set<UUID> categories;
+    Set<UUID> categories;
 
     @NotNull
     @Schema(
             required = true,
             example = "[3b1824120d6d4857843aedfc1973d323, 40ac4fcc97024a87b0bdbffe1f7f49f8]")
     // use Set to avoid duplicates
-    private Set<Link> links;
+    Set<Link> links;
 
 }

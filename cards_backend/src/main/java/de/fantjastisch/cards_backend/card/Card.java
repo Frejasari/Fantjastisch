@@ -2,12 +2,9 @@ package de.fantjastisch.cards_backend.card;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
 import java.util.UUID;
@@ -17,8 +14,10 @@ import java.util.UUID;
  *
  * @author Tamari Bayer, Jessica Repty, Freja Sender
  */
+@SuppressWarnings("deprecation")
 @Builder
-@Data // getter, setter, toString
+@Data // getter, setter, toString\
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Card {
     @Schema(required = true)
     UUID id;
@@ -40,7 +39,6 @@ public class Card {
     @NoArgsConstructor
     @AllArgsConstructor
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonPropertyOrder({"id", "label"})
     @Schema(name = "CategoryOfCard") // rename for client generation to avoid name clash
     public static class Category {
 

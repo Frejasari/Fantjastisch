@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 
 /**
  * Diese Klasse stellt den Teil des Persistence-Layers bereit, welcher sich mit dem Erstellen, Aktualisieren und Löschen
@@ -31,7 +33,7 @@ public class LearningSystemCommandRepository {
      *
      * @param learningSystem Das Lernsystem, welches in die Datenbank eingefügt werden soll.
      */
-    public void save(LearningSystem learningSystem) {
+    public void save(final LearningSystem learningSystem) {
         final String sql = "INSERT INTO public.learning_systems (id, label, box_labels) VALUES (:id, :label, :box_labels)";
         namedParameterJdbcTemplate.update(sql, toParameterSource(learningSystem));
     }
@@ -39,11 +41,11 @@ public class LearningSystemCommandRepository {
     /**
      * Diese Funktion löscht ein übergebenes Lernsystem aus der Datenbank.
      *
-     * @param learningSystem Das Lernsystem, welches aus der Datenbank gelöscht werden soll.
+     * @param learningSystemId Das Lernsystem, welches aus der Datenbank gelöscht werden soll.
      */
-    public void delete(LearningSystem learningSystem) {
+    public void delete(final UUID learningSystemId) {
         final String sql = "DELETE FROM public.learning_systems WHERE id = :id";
-        namedParameterJdbcTemplate.update(sql, toParameterSource(learningSystem));
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource().addValue("id", learningSystemId));
     }
 
     /**
@@ -52,12 +54,12 @@ public class LearningSystemCommandRepository {
      *
      * @param learningSystem Das aktualisierte Lernsystem.
      */
-    public void update(LearningSystem learningSystem) {
+    public void update(final LearningSystem learningSystem) {
         final String sql = "UPDATE public.learning_systems SET label = :label, box_Labels = :box_labels WHERE id = :id";
         namedParameterJdbcTemplate.update(sql, toParameterSource(learningSystem));
     }
 
-    private SqlParameterSource toParameterSource(LearningSystem learningSystem) {
+    private SqlParameterSource toParameterSource(final LearningSystem learningSystem) {
         return new MapSqlParameterSource()
                 .addValue("id", learningSystem.getId())
                 .addValue("label", learningSystem.getLabel())

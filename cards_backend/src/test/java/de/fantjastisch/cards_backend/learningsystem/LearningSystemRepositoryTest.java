@@ -98,7 +98,7 @@ public class LearningSystemRepositoryTest {
 
         learningSystemCommandRepository.save(todelete);
 
-        learningSystemCommandRepository.delete(learningSystemQueryRepository.get(todelete.getId()));
+        learningSystemCommandRepository.delete(todelete.getId());
 
         Assertions.assertNull(learningSystemQueryRepository.get(todelete.getId()));
 

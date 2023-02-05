@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
 
@@ -54,8 +53,7 @@ public class CardValidator extends Validator {
 
         List<ErrorEntry> errors = new ArrayList<>();
         errors.addAll(checkIfCategoriesExist(command.getCategories()));
-        errors.addAll(validateCardTaken(command.getQuestion(), command.getAnswer(), command.getTag(),
-                command.getCategories()));
+        errors.addAll(validateCardTaken(command.getQuestion(), command.getAnswer(), command.getTag()));
         throwIfNeeded(errors);
     }
 
@@ -82,10 +80,20 @@ public class CardValidator extends Validator {
         throwIfNeeded(errors);
     }
 
+    /**
+     * Validiert ein Delete Command
+     *
+     * @param cardId die Id der zu löschenden Karte
+     */
     public void validateDelete(UUID cardId) {
         throwIfCardDoesNotExist(cardId);
     }
 
+    /**
+     * Valiediert ein Get Command
+     *
+     * @param cardId die Id der zu erhaltenen Karte
+     */
     public void validateGet(UUID cardId) {
         throwIfCardDoesNotExist(cardId);
     }
@@ -101,20 +109,18 @@ public class CardValidator extends Validator {
      * Diese Funktion prüft, ob es schon eine Karteikarte mit den gleichen Attributen (Frage, Antwort,
      * Tag, Kategories) gibt.
      *
-     * @param question   Die zu überprüfende Frage.
-     * @param answer     Die zu überprüfende Antwort.
-     * @param tag        Der zu überprüfende Tag.
-     * @param categories Die zu überprüfende Liste von UUIDs, die Instanzen {@link Category} sind.
+     * @param question Die zu überprüfende Frage.
+     * @param answer   Die zu überprüfende Antwort.
+     * @param tag      Der zu überprüfende Tag.
      * @return Die Liste aller Fehlermeldungen, die ermittelt wurden.
      */
-    private List<ErrorEntry> validateCardTaken(String question, String answer, String tag,
-                                               Set<UUID> categories) {
+    private List<ErrorEntry> validateCardTaken(String question, String answer, String tag) {
         List<Card> cards = cardQueryRepository.getPage(null, null, tag, false);
         List<Card> duplicateCard = cards.stream().filter
-                (card -> card.getQuestion().equals(question)
-                        && card.getAnswer().equals(answer)
-                        && card.getTag().equals(tag)
-                        && card.getCategories().stream().map(Card.Category::getId).collect(Collectors.toSet()).equals(categories))
+                        (card -> card.getQuestion().equals(question)
+                                && card.getAnswer().equals(answer)
+                                && card.getTag().equals(tag)
+                        )
                 .toList();
         if (!duplicateCard.isEmpty()) {
             return Collections.singletonList(
