@@ -7,8 +7,6 @@ import de.fantjastisch.cards_backend.card.repository.CardCommandRepository;
 import de.fantjastisch.cards_backend.card.repository.CardQueryRepository;
 import de.fantjastisch.cards_backend.card.validator.CardValidator;
 import de.fantjastisch.cards_backend.category.Category;
-import de.fantjastisch.cards_backend.category.aggregate.CreateCategory;
-import de.fantjastisch.cards_backend.category.aggregate.UpdateCategory;
 import de.fantjastisch.cards_backend.category.repository.CategoryCommandRepository;
 import de.fantjastisch.cards_backend.category.repository.CategoryQueryRepository;
 import de.fantjastisch.cards_backend.util.UUIDGenerator;
@@ -28,9 +26,7 @@ import java.util.UUID;
 
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
 import static org.junit.jupiter.api.Assertions.*;
-
 import static org.mockito.Mockito.*;
-
 import static org.mockito.Mockito.when;
 
 
