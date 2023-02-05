@@ -22,6 +22,7 @@ class LearningDetailsViewModel(
 ) : ErrorHandlingViewModel() {
     val learningBoxes = mutableStateOf<List<LearningBoxWitNrOfCards>>(emptyList())
     var learningObjectLabel = ""
+    val celebrate = mutableStateOf(false)
 
 
     /**
@@ -30,11 +31,16 @@ class LearningDetailsViewModel(
      *
      */
     fun onPageLoaded() {
+        celebrate.value = false
         viewModelScope.launch() {
             model.initializePage(learningObjectId = learningObjectId).fold(
                 onSuccess = {
                     learningBoxes.value = it.learningBoxes
                     learningObjectLabel = it.learningObjectLabel
+                    val firstBoxWithCards = it.learningBoxes.firstOrNull { it.nrOfCards != 0 }
+                    if (firstBoxWithCards?.boxNumber == it.learningBoxes.lastOrNull()?.boxNumber) {
+                        celebrate.value = true
+                    }
                 }
             )
         }

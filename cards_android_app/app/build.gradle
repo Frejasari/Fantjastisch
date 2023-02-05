@@ -112,4 +112,8 @@ dependencies {
 
     // Google - FlowLayout (Apache License 2.0)
     implementation "com.google.accompanist:accompanist-flowlayout:0.29.1-alpha"
+
+    // Animationen
+    implementation "com.airbnb.android:lottie-compose:5.2.0"
+
 }
