@@ -34,7 +34,7 @@ sealed class RepoResult<T> {
 }
 
 /**
- * Extension-Function auf dem RepoResult Object, welche ein einfaches Interface mit Callbacks zum Behandeln dieser zur Verfügung stellt.
+ * Extension-Function auf dem [RepoResult] Object, welche ein einfaches Interface mit Callbacks zum Behandeln dieser zur Verfügung stellt.
  * Nur im Kontext eines ErrorHandlingViewModels nutzbar -> Standardfunktionalität zum Handeln von Validation Errors und Unexpected Errors
  *
  * @param T der Rückgabe-Typ bei Erfolg
@@ -57,6 +57,13 @@ fun <T> RepoResult<T>.fold(
     }
 }
 
+/**
+ * Extension-Function auf dem [Call] Object, welches einen API-Call absetzt & diesen direkt auf unser RepoResult-Object abbildet.
+ *
+ * @param T der Rückgabe-Typ bei Erfolg
+ *
+ * @author Freja Sender
+ */
 suspend fun <T> Call<T>.awaitResponse(): RepoResult<T> {
     return suspendCancellableCoroutine { continuation ->
         continuation.invokeOnCancellation {
@@ -74,6 +81,13 @@ suspend fun <T> Call<T>.awaitResponse(): RepoResult<T> {
     }
 }
 
+/**
+ * Extension-Function auf dem [RepoResult] Object, welches das Überprüfen auf einen Netzwerkfehler vereinfacht.
+ *
+ * @param T der Rückgabe-Typ bei Erfolg
+ *
+ * @author Freja Sender
+ */
 fun <T> RepoResult<T>.isNetworkError(): Boolean {
     return when {
         this is ServerError && this.cause == UnexpectedErrorType.NETWORK_ERROR -> true

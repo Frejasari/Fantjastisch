@@ -4,7 +4,6 @@ import de.fantjastisch.cards_backend.util.validation.Commandable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -23,7 +22,6 @@ import java.util.UUID;
 @SuperBuilder
 @ToString(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 public class UpdateCategory implements Commandable {
     @NotNull
     @Schema(

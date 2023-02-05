@@ -90,9 +90,8 @@ class UpdateCategoryModel(
                     )
                 )
             }
-            categoryResult.isNetworkError() || allCategoriesResult.isNetworkError() -> ServerError(
-                NETWORK_ERROR
-            )
+            categoryResult.isNetworkError() || allCategoriesResult.isNetworkError()
+            -> ServerError(NETWORK_ERROR)
             else -> ServerError(UNEXPECTED_ERROR)
         }
     }

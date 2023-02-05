@@ -97,8 +97,16 @@ public class CardAggregate {
      * @param sort           Ein Boolean, wenn er true ist, werden entsprechende Karteikarten alphabetisch nach Tags sortiert
      * @return Eine Liste der Instanzen der Klasse {@link Card}
      */
-    public List<Card> handle(List<UUID> categoryFilter, String search, String tag, boolean sort) {
-        return cardQueryRepository.getPage(categoryFilter, search.trim(), tag.trim(), sort);
+    public List<Card> handle(final List<UUID> categoryFilter, final String search, final String tag, boolean sort) {
+        String trimmedSearch = null;
+        String trimmedTag = null;
+        if (search != null) {
+            trimmedSearch = search.trim();
+        }
+        if (tag != null) {
+            trimmedTag = tag.trim();
+        }
+        return cardQueryRepository.getPage(categoryFilter, trimmedSearch, trimmedTag, sort);
     }
 
     /**

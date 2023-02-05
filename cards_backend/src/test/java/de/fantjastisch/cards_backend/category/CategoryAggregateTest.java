@@ -22,7 +22,7 @@ import java.util.*;
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 /**
@@ -56,8 +56,45 @@ public class CategoryAggregateTest {
     }
 
     @Test
-    public void jackson() {
+    public void shouldCreate() {
+        when(categoryQueryRepository.getPage()).thenReturn(Collections.emptyList());
+        when(uuidGenerator.randomUUID()).thenReturn(category.getId());
 
+        CreateCategory toCreate = CreateCategory.builder()
+                .label(category.getLabel())
+                .subCategories(Collections.emptySet())
+                .build();
+
+        categoryAggregate.handle(toCreate);
+        verify(categoryCommandRepository, times(1)).create(category);
+    }
+
+
+    @Test
+    public void shouldUpdate() {
+        when(categoryQueryRepository.getPage()).thenReturn(Collections.singletonList(category));
+        when(categoryQueryRepository.get(category.getId())).thenReturn(category);
+
+        UpdateCategory toUpdate = UpdateCategory.builder()
+                .id(category.getId())
+                .label("new Label")
+                .subCategories(Collections.emptySet())
+                .build();
+
+        categoryAggregate.handle(toUpdate);
+        verify(categoryCommandRepository, times(1)).update(category
+                .toBuilder()
+                .label(toUpdate.getLabel())
+                .build());
+    }
+
+    @Test
+    public void shouldDelete() {
+        when(categoryQueryRepository.get(category.getId())).thenReturn(category);
+        when(categoryQueryRepository.isCategoryEmpty(category.getId())).thenReturn(true);
+
+        categoryAggregate.handleDelete(category.getId());
+        verify(categoryCommandRepository, times(1)).delete(category.getId());
     }
 
     @Test
@@ -209,7 +246,6 @@ public class CategoryAggregateTest {
                 .field("subCategories")
                 .build();
         assertTrue(exception.getErrors().contains(cyclicSubcategoryError));
-
     }
 
     @Test

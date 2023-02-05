@@ -8,10 +8,10 @@ import de.fantjastisch.cards_backend.util.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Das CategoryAggregate stellt die Verbindung zwischen dem Controller und dem Persistance-Layer her, fungiert also
@@ -64,7 +64,7 @@ public class CategoryAggregate {
     public void handle(final UpdateCategory command) {
         categoryValidator.validate(command);
 
-        final Set<UUID> subCategories = command.getSubCategories().stream().collect(Collectors.toSet());
+        final Set<UUID> subCategories = new HashSet<>(command.getSubCategories());
         subCategories.remove(null);
         final Category updatedCategory = Category.builder()
                 .id(command.getId())
