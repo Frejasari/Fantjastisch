@@ -9,6 +9,7 @@ import org.openapitools.client.models.ErrorEntryEntity
  * @param code die Fehlermeldung aus dem Backend
  *
  * @return Die ID der Fehlermeldung
+ * @author Freja Sender, Semjon Nirmann
  */
 fun mapError(code: ErrorEntryEntity.Code): Int {
     return when (code) {

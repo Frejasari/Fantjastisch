@@ -98,7 +98,6 @@ fun GlossaryView(
             itemsIndexed(viewModel.cards.value) { index, card ->
                 GlossaryCardView(card) {
                     coroutineScope.launch {
-                        // Animate scroll to the 10th item
                         listState.animateScrollToItem(index = index)
                     }
                 }

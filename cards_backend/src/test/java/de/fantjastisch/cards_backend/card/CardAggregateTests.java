@@ -27,8 +27,6 @@ import java.util.UUID;
 import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
-
 
 
 /**
@@ -421,7 +419,7 @@ public class CardAggregateTests {
 
     @Test
     public void shouldCreate() {
-        when(cardQueryRepository.getPage(null,null,null,false)).thenReturn(Collections.emptyList());
+        when(cardQueryRepository.getPage(null, null, null, false)).thenReturn(Collections.emptyList());
         when(categoryQueryRepository.get(category.getId())).thenReturn(category);
         when(uuidGenerator.randomUUID()).thenReturn(cardForSave.getId());
 
@@ -440,7 +438,7 @@ public class CardAggregateTests {
 
     @Test
     public void shouldCreateWithLinks() {
-        when(cardQueryRepository.getPage(null,null,null,false)).thenReturn(Collections.emptyList());
+        when(cardQueryRepository.getPage(null, null, null, false)).thenReturn(Collections.emptyList());
         when(categoryQueryRepository.get(category.getId())).thenReturn(category);
         when(uuidGenerator.randomUUID()).thenReturn(cardForSave.getId());
 
@@ -458,9 +456,9 @@ public class CardAggregateTests {
                 .build();
 
         Link link = Link.builder()
-                        .label("link")
-                        .target(linkedCard.getId())
-                        .build();
+                .label("link")
+                .target(linkedCard.getId())
+                .build();
 
         when(cardQueryRepository.get(linkedCard.getId())).thenReturn(linkedCard);
 
@@ -552,19 +550,19 @@ public class CardAggregateTests {
 
     @Test
     public void shouldGetPage() {
-        cardAggregate.handle(null,null,null,false);
-        verify(cardQueryRepository, times(1)).getPage(null,null,null,false);
+        cardAggregate.handle(null, null, null, false);
+        verify(cardQueryRepository, times(1)).getPage(null, null, null, false);
 
-        cardAggregate.handle(null,"Suchbegriff",null,false);
-        verify(cardQueryRepository, times(1)).getPage(null,"Suchbegriff",null,false);
+        cardAggregate.handle(null, "Suchbegriff", null, false);
+        verify(cardQueryRepository, times(1)).getPage(null, "Suchbegriff", null, false);
 
-        cardAggregate.handle(null,null,"Tag",false);
-        verify(cardQueryRepository, times(1)).getPage(null,null,"Tag",false);
+        cardAggregate.handle(null, null, "Tag", false);
+        verify(cardQueryRepository, times(1)).getPage(null, null, "Tag", false);
     }
 
     @Test
     public void shouldcreateWhenNoDuplicates() {
-        when(cardQueryRepository.getPage(null,null,null,false)).thenReturn(List.of(card));
+        when(cardQueryRepository.getPage(null, null, null, false)).thenReturn(List.of(card));
         when(categoryQueryRepository.get(category.getId())).thenReturn(category);
 
         CreateCard toCreate = CreateCard.builder()

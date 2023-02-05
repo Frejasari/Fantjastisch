@@ -4,8 +4,8 @@ import androidx.room.Transaction
 import de.fantjastisch.cards_frontend.config.AppDatabase
 import de.fantjastisch.cards_frontend.util.RepoResult
 import de.fantjastisch.cards_frontend.util.RepoResult.ServerError
-import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.UNEXPECTED_ERROR
 import de.fantjastisch.cards_frontend.util.RepoResult.Success
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.UNEXPECTED_ERROR
 import java.util.*
 
 /**

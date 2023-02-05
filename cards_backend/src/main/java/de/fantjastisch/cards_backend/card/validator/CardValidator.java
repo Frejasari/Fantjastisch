@@ -15,7 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
-import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.*;
+import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.CARD_DUPLICATE_VIOLATION;
+import static de.fantjastisch.cards_backend.util.validation.errors.ErrorCode.CATEGORY_DOESNT_EXIST_VIOLATION;
 
 /**
  * Diese Klasse stellt die Erweiterung der Basis-Klasse {@link Validator} dar und führt weitere

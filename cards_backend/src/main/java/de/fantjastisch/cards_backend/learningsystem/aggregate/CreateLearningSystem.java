@@ -1,13 +1,11 @@
 package de.fantjastisch.cards_backend.learningsystem.aggregate;
 
 import de.fantjastisch.cards_backend.util.validation.Commandable;
-import io.micrometer.common.lang.NonNullFields;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -31,12 +29,12 @@ public class CreateLearningSystem implements Commandable {
             description = "The learning system's label",
             required = true,
             example = "4-Boxen-System")
-     String label;
+    String label;
 
     @NotNull
     @Schema(
             description = "A List of Strings representing box labels.",
             required = true,
             example = "[schlecht, mittel, gut, fantjastisch]")
-     List<String> boxLabels;
+    List<String> boxLabels;
 }

@@ -1,26 +1,22 @@
 package org.openapitools.client.apis
 
 import org.openapitools.client.infrastructure.CollectionFormats.*
-import retrofit2.http.*
-import retrofit2.Call
-import okhttp3.RequestBody
-import com.squareup.moshi.Json
-
 import org.openapitools.client.models.CategoryEntity
 import org.openapitools.client.models.CreateCategoryEntity
-import org.openapitools.client.models.ErrorResponseEntity
 import org.openapitools.client.models.UpdateCategoryEntity
+import retrofit2.Call
+import retrofit2.http.*
 
 interface CategoryApi {
     /**
      * Create a new category
-     * 
+     *
      * Responses:
      *  - 201: Created
      *  - 404: Not Found
      *  - 422: Unprocessable Entity
      *
-     * @param createCategoryEntity 
+     * @param createCategoryEntity
      * @return [Call]<[kotlin.String]>
      */
     @POST("category/create")
@@ -28,13 +24,13 @@ interface CategoryApi {
 
     /**
      * Delete a category
-     * 
+     *
      * Responses:
      *  - 200: OK
      *  - 404: Not Found
      *  - 422: Unprocessable Entity
      *
-     * @param id 
+     * @param id
      * @return [Call]<[Unit]>
      */
     @DELETE("category/delete")
@@ -42,13 +38,13 @@ interface CategoryApi {
 
     /**
      * Get specific category
-     * 
+     *
      * Responses:
      *  - 404: Not Found
      *  - 422: Unprocessable Entity
      *  - 200: OK
      *
-     * @param id 
+     * @param id
      * @return [Call]<[CategoryEntity]>
      */
     @GET("category/get")
@@ -56,7 +52,7 @@ interface CategoryApi {
 
     /**
      * Get all categories
-     * 
+     *
      * Responses:
      *  - 200: OK
      *  - 404: Not Found
@@ -69,13 +65,13 @@ interface CategoryApi {
 
     /**
      * Update a category
-     * 
+     *
      * Responses:
      *  - 200: OK
      *  - 404: Not Found
      *  - 422: Unprocessable Entity
      *
-     * @param updateCategoryEntity 
+     * @param updateCategoryEntity
      * @return [Call]<[Unit]>
      */
     @PUT("category/update")

@@ -21,6 +21,7 @@ import java.util.*
  *
  * @property label Label, des Elements.
  * @property id Id, des Elements.
+ * @author Semjon Nirmann, Jessica Repty, Freja Sender
  */
 data class SingleSelectItem(val label: String, val id: UUID)
 
@@ -53,16 +54,12 @@ fun SingleSelect(
     val error = errors.find { it.field == field }
 
     Column() {
-        // Create an Outlined Text Field
-        // with icon and not expanded
         OutlinedTextFieldWithErrors(
             value = selectedItem?.label ?: "",
             onValueChange = { },
             modifier = Modifier
                 .clickable { isExpanded.value = !isExpanded.value }
                 .onGloballyPositioned { coordinates ->
-                    // This value is used to assign to
-                    // the DropDown the same width
                     textFieldSize.value = coordinates.size.toSize()
                 },
             placeholder = placeholder,
@@ -94,9 +91,6 @@ fun SingleSelect(
             enabled = false,
             field = field
         )
-
-        // Create a drop-down menu with list of cities,
-        // when clicked, set the Text Field text as the city selected
 
         DropdownMenu(
             expanded = isExpanded.value,

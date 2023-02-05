@@ -55,7 +55,7 @@ data class LearningBox(
  * @property label das Label der Lernbox
  * @property nrOfCards Anzahl der Karten in der Box
  *
- * * @author Freja Sender
+ * @author Freja Sender
  */
 data class LearningBoxWitNrOfCards(
     @ColumnInfo val id: UUID = generateId(),
