@@ -7,6 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.androidx.AndroidScreen
 import de.fantjastisch.cards.R
+import de.fantjastisch.cards_frontend.components.ClearFilterButton
+import de.fantjastisch.cards_frontend.components.FiltersButton
 
 /**
  * Zeigt den Screen um ein Lernobjekt zu erstellen
@@ -26,6 +28,10 @@ class CreateLearningObjectFragment : AndroidScreen() {
                         actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                     ),
                     title = { Text(text = stringResource(id = R.string.create_learningobject_headline)) },
+                    actions = {
+                        FiltersButton()
+                        ClearFilterButton()
+                    }
                 )
             }) {
             CreateLearningObjectView(modifier = Modifier.padding(it))

@@ -33,8 +33,6 @@ import java.util.*
 fun FantTopBar(
 ) {
     val tabNavigator = FantTabNavigator.current
-    // remember -> state nicht neu erzeugen, wenn Funktion neu aufgerufen wird.
-    val bottomSheetNavigator = LocalBottomSheetNavigator.current
     TopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
@@ -44,48 +42,58 @@ fun FantTopBar(
         title = { Text(text = tabNavigator.current.options.title) },
         actions = {
 
-            val filters by CardsFilters.filters.collectAsState()
-            val hasFilters =
-                filters.tag.isNotBlank() || filters.search.isNotBlank() || filters.categories.isNotEmpty()
-
-            AnimatedVisibility(visible = tabNavigator.current == GlossaryTab && hasFilters) {
-                IconButton(
-                    onClick = {
-                        CardsFilters.reset()
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.FilterAltOff,
-                        contentDescription = "clear filters"
-                    )
-                }
+            AnimatedVisibility(visible = tabNavigator.current == GlossaryTab) {
+                ClearFilterButton()
             }
             AnimatedVisibility(visible = tabNavigator.current == GlossaryTab) {
-                IconButton(
-                    onClick = {
-                        bottomSheetNavigator.show(
-                            GlossaryFilterView(bottomSheetNavigator = bottomSheetNavigator)
-                        )
-                    }
-                ) {
-                    Box {
-                        Icon(imageVector = Icons.Default.Tune, contentDescription = "more")
-                        if (hasFilters) {
-                            Box(
-                                modifier = Modifier
-                                    .align(Alignment.TopEnd)
-                                    .size(10.dp)
-                                    .background(
-                                        color = MaterialTheme.colorScheme.tertiaryContainer,
-                                        shape = RoundedCornerShape(50)
-                                    )
-                            )
-
-                        }
-                    }
-                }
+                FiltersButton()
             }
             TobBarCreateMenu()
         }
     )
+}
+
+@Composable
+fun FiltersButton() {
+    val bottomSheetNavigator = LocalBottomSheetNavigator.current
+    val hasFilters by CardsFilters.hasFilters.collectAsState(initial = false)
+    IconButton(
+        onClick = {
+            bottomSheetNavigator.show(
+                GlossaryFilterView(bottomSheetNavigator = bottomSheetNavigator)
+            )
+        }
+    ) {
+        Box {
+            Icon(imageVector = Icons.Default.Tune, contentDescription = "more")
+            if (hasFilters) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .size(10.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.tertiaryContainer,
+                            shape = RoundedCornerShape(50)
+                        )
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ClearFilterButton() {
+    val hasFilters by CardsFilters.hasFilters.collectAsState(initial = false)
+    if (hasFilters) {
+        IconButton(
+            onClick = {
+                CardsFilters.reset()
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Default.FilterAltOff,
+                contentDescription = "clear filters"
+            )
+        }
+    }
 }
