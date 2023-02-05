@@ -5,7 +5,6 @@ import de.fantjastisch.cards_frontend.card.CardSelectItem
 import de.fantjastisch.cards_frontend.category.CategoryRepository
 import de.fantjastisch.cards_frontend.category.CategorySelectItem
 import de.fantjastisch.cards_frontend.components.SingleSelectItem
-import de.fantjastisch.cards_frontend.learning_box.LearningBox
 import de.fantjastisch.cards_frontend.learning_box.LearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.learning_object.LearningObject
@@ -43,6 +42,8 @@ class CreateLearningObjectModel(
     private val cardRepository: CardRepository = CardRepository(),
     private val validator: CreateLearningObjectValidator = CreateLearningObjectValidator()
 ) {
+
+    var learningSystems: List<LearningSystemEntity> = emptyList()
 
     /**
      * Hält Daten für das hinzufügende Lernobjekt.
@@ -87,7 +88,7 @@ class CreateLearningObjectModel(
                 // Verarbeite
                 val cards = (cardsResult.result) as List<CardEntity>
                 val categories = categoriesResult.result as List<CategoryEntity>
-                val learningSystems = learningSystemsResult.result as List<LearningSystemEntity>
+                learningSystems = learningSystemsResult.result as List<LearningSystemEntity>
 
                 val cardSelectItems = cards.map { card ->
                     CardSelectItem(
@@ -120,16 +121,6 @@ class CreateLearningObjectModel(
     }
 
     /**
-     * Ermittelt, ob das ausgewählte Lernsystem in der Datenbank vorhanden ist.
-     *
-     * @param selectedSystemId Die UUID des Lernsystems, das ausgewählt wurde.
-     * @return RepoResult<LearningSystemEntity> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
-     * werden konnten, oder nicht.
-     */
-    private suspend fun getLearningSystemFromInput(selectedSystemId: UUID): RepoResult<LearningSystemEntity> =
-        learningSystemRepository.getLearningSystem(selectedSystemId)
-
-    /**
      * Holt alle Karten, die zu der asugewählten Kategorien gehören, indem die Anfrage,
      * an das Repository weitergeleitet wird.
      *
@@ -153,77 +144,6 @@ class CreateLearningObjectModel(
             )
         }
     }
-
-    /**
-     * Fügt die Lernboxen und die ausgewählte Karten in die
-     * entsprechenden Datenbanken ein.
-     *
-     * @param learningSystem Das Lernsystem des zu erstellenden Lernobjekts.
-     * @param learningObject Das Lernobjekt, zu dem die Lernboxen und Karten gehören.
-     * @param cardsToInsert Die Karten, die eingefügt werden sollen.
-     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
-     * werden konnten, oder nicht.
-     */
-    private suspend fun insertLearningBoxesWithCards(
-        learningSystem: LearningSystemEntity,
-        learningObject: LearningObject,
-        cardsToInsert: MutableList<UUID>,
-    ): RepoResult<Unit> {
-        learningSystem.boxLabels.forEachIndexed { index, label ->
-            // Erstelle die Lernbox
-            val learningBox = LearningBox(
-                learningObjectId = learningObject.id, boxNumber = index, label = label
-            )
-            // Füge sie in die DB ein
-            val result = insertLearningBox(learningBox = learningBox)
-
-            if (result is Success) {
-                // Setze gewählte Karten in die erste Lernbox ein, sonst eine leere Liste
-                val cardInsertionResponse = insertCardsIntoBox(
-                    learningBox = learningBox,
-                    cardIds = if (index == 0) cardsToInsert else mutableListOf()
-                )
-                if (cardInsertionResponse is Success) {
-                    return Success(Unit) // Konnte Karten nicht in Lernbox einsetzen
-                }
-            }
-        }
-        return ServerError(UNEXPECTED_ERROR)
-    }
-
-    /**
-     * Fügt eine Lernbox in die Datenbank ein, indem die Anfrage an das Repository weitergeleitet wird.
-     *
-     * @param learningBox Die hinzufügende Lernbox.
-     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
-     * werden konnten, oder nicht.
-     */
-    private suspend fun insertLearningBox(learningBox: LearningBox): RepoResult<Unit> =
-        learningBoxRepository.insert(learningBox = learningBox)
-
-    /**
-     * Fügt Karten zu einer Lernbox hinzu, indem die Anfrage an das Repository weitergeleitet wird.
-     *
-     * @param learningBox Die Lernbox, zu der die Karten hinzugefügt werden sollen.
-     * @param cardIds Die Liste der UUIDs von Karten, die zu einer Lernbox hinzugefügt werden sollen.
-     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
-     * werden konnten, oder nicht.
-     */
-    private suspend fun insertCardsIntoBox(
-        learningBox: LearningBox, cardIds: MutableList<UUID>
-    ): RepoResult<Unit> = cardToLearningBoxRepository.insertCards(cardIds, learningBox.id)
-
-
-    /**
-     * Fügt ein Lernobjekt in die Datenbank ein, indem die Anfrage an das Repository weitergeleitet wird.
-     *
-     * @param learningObject Das Lernobjekt, welches hinzugefügt wird.
-     * @return RepoResult<Unit> Ein parametrisiertes Objekt, das darstellt, ob alle Persistenzoperationen erfolgreich durchgeführt
-     * werden konnten, oder nicht.
-     */
-    private suspend fun insertLearningObject(
-        learningObject: LearningObject,
-    ): RepoResult<Unit> = learningObjectRepository.insert(learningObject = learningObject)
 
     /**
      * Sammelt Daten für ein Lernobjekt und fügt dies in die Datenbank ein.
@@ -250,13 +170,14 @@ class CreateLearningObjectModel(
         if (errors.isNotEmpty()) {
             return Error(errors = errors)
         }
-        val learningSystem = getLearningSystemFromInput(selectedSystem!!.id)
+
+        val learningSystem = learningSystems.find { it.id == selectedSystem?.id }!!
+
         val cardsFromSelectedCategories = getCardsFromCategories(categories = categories)
 
         // Hole Lernsystem und Karten aus angekreuzten Kategorien aus DB
         return when {
-            learningSystem is Success
-                    && cardsFromSelectedCategories is Success -> {
+            cardsFromSelectedCategories is Success -> {
                 // Sammle einzeln hinzugefügte Karten
                 val cardsToInsert: MutableList<UUID> =
                     cards
@@ -270,21 +191,17 @@ class CreateLearningObjectModel(
                 val learningObject =
                     LearningObject(
                         label = learningObjectLabel,
-                        learningSystemId = selectedSystem.id
+                        learningSystemId = selectedSystem!!.id
                     )
                 // Füge Lernobjekt in DB ein
-                val insertLearningObjectResponse = insertLearningObject(learningObject)
+                return learningObjectRepository.insert(
+                    learningObject = learningObject,
+                    boxLabels = learningSystem.boxLabels,
+                    cards = cardsToInsert
+                )
 
-                if (insertLearningObjectResponse is Success) {
-                    // Füge Lernboxen sowie ihren Inhalt in entsprechende Tabellen ein
-                    return insertLearningBoxesWithCards(
-                        learningSystem = learningSystem.result,
-                        learningObject = learningObject,
-                        cardsToInsert = cardsToInsert
-                    )
-                }
-                return ServerError(UNEXPECTED_ERROR)
             }
+            cardsFromSelectedCategories.isNetworkError() -> ServerError(NETWORK_ERROR)
             else -> ServerError(UNEXPECTED_ERROR)
         }
     }

@@ -1,9 +1,14 @@
 package de.fantjastisch.cards_frontend.learning_object
 
 import de.fantjastisch.cards_frontend.config.AppDatabase
+import de.fantjastisch.cards_frontend.learning_box.InternalLearningBoxRepository
+import de.fantjastisch.cards_frontend.learning_box.LearningBox
+import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.CardToLearningBox
+import de.fantjastisch.cards_frontend.learning_box.card_to_learning_box.InternalCardToLearningBoxRepository
 import de.fantjastisch.cards_frontend.util.RepoResult
-import de.fantjastisch.cards_frontend.util.RepoResult.*
-import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
+import de.fantjastisch.cards_frontend.util.RepoResult.ServerError
+import de.fantjastisch.cards_frontend.util.RepoResult.Success
+import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.UNEXPECTED_ERROR
 import java.util.*
 
 /**
@@ -17,7 +22,12 @@ import java.util.*
 class LearningObjectRepository(
     private val repository: InternalLearningObjectRepository = InternalLearningObjectRepository(
         AppDatabase.database.learningObjectDao()
-    )
+    ),
+    private val learningBoxRepository: InternalLearningBoxRepository = InternalLearningBoxRepository(
+        AppDatabase.database.learningBoxDao()
+    ),
+    private val cardToLearningBoxRepository: InternalCardToLearningBoxRepository
+    = InternalCardToLearningBoxRepository(AppDatabase.database.cardToLearningBoxDao())
 ) {
 
     /**
@@ -52,16 +62,33 @@ class LearningObjectRepository(
     }
 
     /**
-     * Fügt ein Lernobjekt in die Datenbank ein.
+     * Fügt ein Lernobjekt inklusive Boxen und Karten in der ersten Box in die Datenbank ein.
      *
      * @param learningObject Lernobjekt, welches in die Datenbank eingefügt werden soll.
      * @return RepoResult Succes/ServerError.
      */
     suspend fun insert(
-        learningObject: LearningObject
+        learningObject: LearningObject,
+        boxLabels: List<String>,
+        cards: MutableList<UUID>
     ): RepoResult<Unit> {
         return try {
             repository.insert(learningObject)
+
+            val learningBoxes = boxLabels.mapIndexed { index, label ->
+                LearningBox(learningObjectId = learningObject.id, boxNumber = index, label = label)
+            }
+
+            learningBoxRepository.insert(learningBoxes)
+
+            val learningBoxList = cards.map { cardId ->
+                CardToLearningBox(
+                    learningBoxId = learningBoxes[0].id,
+                    cardId = cardId
+                )
+            }.toList()
+
+            cardToLearningBoxRepository.insertCards(learningBoxList)
             Success(Unit)
         } catch (ex: Throwable) {
             ServerError(UNEXPECTED_ERROR)

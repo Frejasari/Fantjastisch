@@ -30,12 +30,12 @@ interface LearningBoxDao {
     suspend fun getAllBoxesForLearningObjectWithNrOfCards(learningObjectId: UUID): List<LearningBoxWitNrOfCards>
 
     /**
-     * Fügt eine Lernbox in die Datenbank ein.
+     * Fügt ein oder mehrere  Lernboxen in die Datenbank ein.
      *
-     * @param learningBox Lernbox, welche eingefügt werden soll.
+     * @param learningBoxes Lernboxen, welche eingefügt werden soll.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(learningBox: LearningBox)
+    suspend fun insert(learningBoxes: List<LearningBox>)
 
     /**
      * Löscht

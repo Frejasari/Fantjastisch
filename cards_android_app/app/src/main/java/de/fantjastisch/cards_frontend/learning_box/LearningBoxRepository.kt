@@ -9,12 +9,12 @@ import java.util.*
 /**
  * Repository, welches Lernboxen speichert.
  *
- * @property repository Das entsprechende InternalRepository.
+ * @property learningBoxRepository Das entsprechende InternalRepository.
  *
  * @author Semjon Nirmann, Jessica Repty, Freja Sender
  */
 class LearningBoxRepository(
-    private val repository: InternalLearningBoxRepository = InternalLearningBoxRepository(
+    private val learningBoxRepository: InternalLearningBoxRepository = InternalLearningBoxRepository(
         AppDatabase.database.learningBoxDao()
     )
 ) {
@@ -30,7 +30,7 @@ class LearningBoxRepository(
     ): RepoResult<List<LearningBoxWitNrOfCards>> {
         return try {
             val allBoxesForLearningObject =
-                repository.getAllBoxesForLearningObjectWithNrOfCards(learningObjectId)
+                learningBoxRepository.getAllBoxesForLearningObjectWithNrOfCards(learningObjectId)
             RepoResult.Success(allBoxesForLearningObject)
         } catch (ex: Throwable) {
             ServerError(UNEXPECTED_ERROR)
@@ -47,7 +47,8 @@ class LearningBoxRepository(
         learningObjectId: UUID
     ): RepoResult<List<Int>> {
         return try {
-            val cardsFromLearningObject = repository.getCardsFromLearningObject(learningObjectId)
+            val cardsFromLearningObject =
+                learningBoxRepository.getCardsFromLearningObject(learningObjectId)
             RepoResult.Success(cardsFromLearningObject)
         } catch (ex: Throwable) {
             ServerError(UNEXPECTED_ERROR)
@@ -56,28 +57,11 @@ class LearningBoxRepository(
 
 
     /**
-     * Fügt eine Lernbox in die Datenbank ein.
-     *
-     * @param learningBox Lernbox, welche eingefügt werden soll.
-     * @return RepoResult Succes/ServerError.
-     */
-    suspend fun insert(
-        learningBox: LearningBox,
-    ): RepoResult<Unit> {
-        return try {
-            repository.insert(learningBox)
-            RepoResult.Success(Unit)
-        } catch (ex: Throwable) {
-            ServerError(UNEXPECTED_ERROR)
-        }
-    }
-
-    /**
      * Löscht alle Lernboxen zu einem Lernobjekt
      *
      * @param learningObjectId Id des zugehörigen Lernobjektes
      */
     suspend fun deleteAllBoxesForObject(learningObjectId: UUID) {
-        return repository.deleteAllBoxesForObject(learningObjectId = learningObjectId)
+        return learningBoxRepository.deleteAllBoxesForObject(learningObjectId = learningObjectId)
     }
 }
