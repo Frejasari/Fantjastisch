@@ -115,6 +115,6 @@
   <string name="error_card_already_exists">Karte existiert bereits.</string>
   <string name="error_box_labels_null">Die Box-Labels dürfen nicht leer sein.</string>
   <string name="no_cards_found">Mit diesen Filtern konnten keine Karten gefunden werden.</string>
-  <string name="sub_categories_label">Kinds-Kategorien</string>
+  <string name="sub_categories_label">Unterkategorien</string>
 
 </resources>
