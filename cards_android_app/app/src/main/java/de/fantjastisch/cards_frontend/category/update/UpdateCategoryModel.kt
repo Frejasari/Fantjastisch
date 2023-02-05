@@ -7,7 +7,6 @@ import de.fantjastisch.cards_frontend.util.RepoResult
 import de.fantjastisch.cards_frontend.util.RepoResult.*
 import de.fantjastisch.cards_frontend.util.RepoResult.UnexpectedErrorType.*
 import de.fantjastisch.cards_frontend.util.isNetworkError
-import de.fantjastisch.cards_frontend.util.toUnselectedCategorySelectItems
 import kotlinx.coroutines.*
 import org.openapitools.client.models.*
 import java.util.*
@@ -80,7 +79,13 @@ class UpdateCategoryModel(
                 val categories = allCategoriesResult.result as List<CategoryEntity>
                 val categorySelectItems = categories
                     .filter { cat -> cat.id != id }
-                    .toUnselectedCategorySelectItems()
+                    .map { cat ->
+                        CategorySelectItem(
+                            id = cat.id,
+                            label = cat.label,
+                            isChecked = category.subCategories.contains(cat.id)
+                        )
+                    }
                 Success(
                     UpdateCategory(
                         id = category.id,

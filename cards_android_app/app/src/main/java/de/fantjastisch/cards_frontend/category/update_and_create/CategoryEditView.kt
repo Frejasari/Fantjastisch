@@ -25,7 +25,7 @@ import java.util.*
  * @author Tamari Bayer, Freja Sender, Semjon Nirmann
  */
 @Composable
-fun CategoryEdit(
+fun CategoryEditView(
     modifier: Modifier = Modifier,
     label: TextFieldState,
     categories: List<CategorySelectItem>,

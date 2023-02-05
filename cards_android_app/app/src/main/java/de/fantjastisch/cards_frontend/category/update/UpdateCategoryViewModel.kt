@@ -38,7 +38,6 @@ class UpdateCategoryViewModel(
         label.value = value
     }
 
-
     init {
         viewModelScope.launch {
             categoryModel

@@ -65,7 +65,10 @@ class LearningObjectRepository(
      * Fügt ein Lernobjekt inklusive Boxen und Karten in der ersten Box in die Datenbank ein.
      *
      * @param learningObject Lernobjekt, welches in die Datenbank eingefügt werden soll.
-     * @return RepoResult Succes/ServerError.
+     * @param boxLabels die Box Labels des dazugehörigen Lernsystems
+     * @param cards die initialen Karten
+     *
+     * @return RepoResult Success/ServerError.
      */
     suspend fun insert(
         learningObject: LearningObject,

@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.fantjastisch.cards_frontend.card.update.TextFieldState
-import de.fantjastisch.cards_frontend.category.update_and_create.CategoryEdit
+import de.fantjastisch.cards_frontend.category.update_and_create.CategoryEditView
 import de.fantjastisch.cards_frontend.infrastructure.effects.CloseScreenOnSignalEffect
 import de.fantjastisch.cards_frontend.infrastructure.effects.ShowErrorOnSignalEffect
 import java.util.*
@@ -28,7 +28,7 @@ fun UpdateCategoryView(
     CloseScreenOnSignalEffect(shouldClose = viewModel.isFinished.value)
     ShowErrorOnSignalEffect(viewModel = viewModel)
 
-    CategoryEdit(
+    CategoryEditView(
         modifier = modifier,
         label = TextFieldState(
             value = viewModel.label.value,
